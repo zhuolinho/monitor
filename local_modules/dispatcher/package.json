@@ -1,0 +1,11 @@
+{
+  "name": "dispatcher",
+  "description": "dispatcher Service",
+  "version": "1.0.0",
+  "main": "./dispatcher.js",
+  "private": true,
+  "dependencies": {
+    "path": "^0.12.7",
+    "q": "^1.4.1"
+  }
+}
