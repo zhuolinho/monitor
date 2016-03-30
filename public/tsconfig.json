@@ -36,7 +36,6 @@
     "app/layout_components/sidebar/sidebar.ts",
     "app/services/request.ts",
     "app/services/router.ts",
-    "components/main.component.ts",
     "typings/browser.d.ts",
     "typings/browser/ambient/es6-shim/index.d.ts",
     "typings/browser/ambient/jasmine/index.d.ts"

@@ -1,9 +1,9 @@
             <!-- START LEFT SIDEBAR NAV-->
             <aside id="left-sidebar-nav">
-                <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y" style="width: 240px;">
+                <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y" style="width: 240px; background:green">
 
                     <li class="bold" *ngFor="#nav of navigations">
-                        <a [routerLink]="[nav.link]"  class="waves-effect"><i class="{{nav.icon}}"></i> {{nav.title}}</a>
+                        <a [routerLink]="[nav.link]"  class="waves-effect nav-item"><i class="{{nav.icon}}"></i> {{nav.title}}</a>
                     </li>
 
 

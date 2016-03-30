@@ -11,6 +11,7 @@
    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
    <link rel='stylesheet' href='dist/css/lib.min.css' />
    <link rel='stylesheet' href='dist/css/admin.css' />
+   <link rel='stylesheet' href='dist/css/monitor.css' />
    <script src="dist/js/angular.min.js"></script>
    <script src="dist/js/lib.min.js"></script>
 
