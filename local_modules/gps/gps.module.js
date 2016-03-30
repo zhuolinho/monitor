@@ -39,19 +39,7 @@ gps.handleIncommingData =  function(m) {
   var r = {pl: {} , er:''};
   var deferred = q.defer();
 
-//   var Cat = mongoose.model('Cat', { name: String });
-//
-// var kitty = new Cat({ name: 'Zildjian' });
-// kitty.save(function (err) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log('meow');
-//   }
-// })
-
 var stream = m.pl;
-console.log("stream--",stream);
 
   if(stream){
 

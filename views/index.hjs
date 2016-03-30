@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Yozaii Admin</title>
+     <!-- Set the base href -->
+     <!-- prefix for url and for css,js and image download requests from te browser -->
+   <base href="/">
+
+   <title>Yozaii Admin</title>
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+   <link rel='stylesheet' href='dist/css/lib.min.css' />
+   <link rel='stylesheet' href='dist/css/admin.css' />
+   <script src="dist/js/angular.min.js"></script>
+   <script src="dist/js/lib.min.js"></script>
 
-    <!-- 1. Load libraries -->
-       <!-- IE required polyfills, in this exact order -->
-       <script src="node_modules/es6-shim/es6-shim.min.js"></script>
-       <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
-       <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
-
-       <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-       <script src="node_modules/systemjs/dist/system.src.js"></script>
-       <script src="node_modules/rxjs/bundles/Rx.js"></script>
-       <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
 
        <!-- 2. Configure SystemJS -->
        <script>
-         System.config({
-           packages: {
-             public: {
-               format: 'register',
-               defaultExtension: 'js'
-             }
-           }
-         });
-         System.import('components/boot')
-               .then(null, console.error.bind(console));
+            System.config({
+              packages: {
+                'app': {
+                  format: 'register',
+                  defaultExtension: 'js'
+                }
+              }
+            });
+        System.import('app/boot')
+              .then(null, console.error.bind(console));
+
+
        </script>
-
-
-
   </head>
   <body>
-    <h1>欢迎访问优载后台管理平台</h1>
-     <app-main>Loading...</app-main>
+
+     <main>Loading...</main>
+
+
   </body>
 </html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yozaii Admin</title>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel='stylesheet' href='common/resources/stylesheets/style.css' />
+   <link rel='stylesheet' href='dist/lib.min.css' />
+   <script src="dist/angular.min.js"></script>
+   <script src="dist/lib.min.js"></script>
+
+
+       <!-- 2. Configure SystemJS -->
+       <script>
+            System.config({
+              packages: {
+                components: {
+                  format: 'register',
+                  defaultExtension: 'js'
+                }
+              }
+            });
+        System.import('components/boot')
+              .then(null, console.error.bind(console));
+
+
+       </script>
+
+  </head>
+  <body>
+    // <h1>欢迎访问优载后台管理平台</h1>
+    //  <app-main>Loading...</app-main>
+
+
+
+
+
+
+    <header>
+    <div class="page-topbar" id="header">
+
+        <div class="navbar-fixed">
+            <nav class="brown">
+                <div class="nav-wrapper">
+
+                    <ul class="left">
+                      <li><h1 class="logo-wrapper"><a class="brand-logo darken-1"><img src="/assets/gineign/img/logo.png"></a> <span class="logo-text">Gineign Shop</span></h1></li>
+                    </ul>
+                    <div class="header-search-wrapper hide-on-med-and-down">
+                        <i class="mdi-action-search active"></i>
+                        <input class="header-search-input z-depth-2" name="Search" type="text" placeholder="Explore Gineign Shop">
+                    </div>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-block waves-light toggle-fullscreen"><i class="mdi-action-settings-overscan"></i></a>
+                        </li>
+                        <li><a class="waves-effect waves-block waves-light" href="javascript:void(0);"><i class="mdi-navigation-apps"></i></a>
+                        </li>
+                        <li><a class="waves-effect waves-block waves-light" href="javascript:void(0);"><i class="mdi-social-notifications"></i></a>
+                        </li>
+                        <li><a class="waves-effect waves-block waves-light chat-collapse" data-activates="chat-out" href="layout01/index.html#"><i class="mdi-communication-chat"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

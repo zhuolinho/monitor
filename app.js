@@ -6,29 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var q = require('q');
-var net = require('net');
 var dispatcher = require('./local_modules/dispatcher/dispatcher.module');
 var app = express();
 
 
 console.log('\nAPP: Loading APP ...');
 
-
-// var server = require('net').createServer();
-// var io = require('socket.io')(server);
-// io.on('connection', function(socket){
-//   socket.on('event', function(data){
-//     console.log("got evnt data----");
-//   });
-//   socket.on('disconnect', function(){
-//
-//     console.log("disconnnected--");
-//   });
-// });
-// server.listen(3000);
-
-var client1 = new net.Socket();
-var client2 = new net.Socket();
 
   dispatcher().then(function(r){
 
@@ -97,84 +80,6 @@ var client2 = new net.Socket();
                       error: {}
                     });
                   });
-
-
-
-
-
-
-
-
-
-
-                  //gps tcp Connection
-                  client1.connect(5553,"222.66.200.66", function(){
-                    client1.write("@024|1234|01||4872,4872.pwd|",function(){
-                      client1.write("@999|1235|02||4872|");
-                    });
-                  });
-
-                  client1.on('data', function (data) {
-                      console.log('Data1--: ' + data);
-
-                      var stream = data.toString('utf8');
-                      if(stream.length > 20){
-                        var param = {
-                              ns: 'gps',
-                              vs: '1.0',
-                              op: 'handleIncommingData',
-                              pl:stream
-                        }
-
-                        handler(param)
-                            .then(function (r) {
-                              //  helpers.sendResponse(res, 200, r);
-                              console.log("save data successful");
-                            })
-                            .fail(function (r) {
-                                console.log("save data fail");
-                            });
-                      }
-                  });
-
-                  client1.once('close', function () {
-                      console.log('Connection closed');
-                  });
-
-                  client2.connect(5557,"222.66.200.66", function(){
-                    client2.write("@024|1234|01||8932,8932.pwd|", function(){
-                        // client1.write("@015|1235|02||8932|");
-                              client1.write("@111|1235|02||8932|");
-                    });
-                  });
-
-                  client2.on('data', function (data) {
-                      console.log('Data2--: ' + data);
-
-                      var stream = data.toString('utf8');
-                      if(stream.length > 20){
-                        var param = {
-                              ns: 'gps',
-                              vs: '1.0',
-                              op: 'handleIncommingData',
-                              pl:stream
-                        }
-
-                        handler(param)
-                            .then(function (r) {
-                              //  helpers.sendResponse(res, 200, r);
-                              console.log("save data successful");
-                            })
-                            .fail(function (r) {
-                                console.log("save data fail");
-                            });
-                      }
-                  });
-
-                  client2.once('close', function () {
-                      console.log('Connection2 closed');
-                  });
-
 
             }
             else {
