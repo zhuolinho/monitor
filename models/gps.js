@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var gpsSchema = mongoose.Schema({
-                    sim:String,  //sim card 
+                    sim:String,  //sim card
                     rd:String,  //received date
                     rt:String, //received time
                     time:String, //yyyy-mm-dd hh:mm:ss

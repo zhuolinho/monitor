@@ -31,7 +31,7 @@ exports.four_oh_four = function(req, res) {
 
 
 exports.sendResponse = function(paramResponse, paramHeaderCode, paramResponseMessage) {
-  console.log("helper")
+  console.log("helper");
     paramResponse.writeHead(paramHeaderCode
         ,{ "Content-Type" : "application/json"
             ,"Cache-Control": "no-cache, no-store, must-revalidate"

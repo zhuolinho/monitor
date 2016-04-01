@@ -11,7 +11,7 @@ var gpsModel = require('../../models/gps');
 
 gps.init = function(m) {
     var r = {pl: {status:true} , er:''};
-  //  console.log("gps module INIT------")
+     console.log('-----gps init-----');
      return q(r);
     // if(!(m.pl.fn instanceof Function)) {
     //     r.er = {ec:null , em: 'Payload pl is not a function'};
@@ -36,7 +36,7 @@ gps.init = function(m) {
 
 gps.handleIncommingData =  function(m) {
   //console.log("handleIncommingData");
-  var r = {pl: {} , er:''};
+  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
 var stream = m.pl;
@@ -60,14 +60,22 @@ var stream = m.pl;
                         })
 
         gpsData.save(function (err, gps) {
-            if (err) return console.error(err);
-            r.pl.gps = gps;
-            deferred.resolve(r);
+            if (err){
+              r.er = err;
+              r.status = false;
+              deferred.reject(r);
+            }
+            else{
+              r.pl.gps = gps;
+              r.status = true;
+              deferred.resolve(r);
+            }
         })
     }
     else {
       r.er =  "empty data";
-          deferred.reject(r);
+      r.status = false
+      deferred.reject(r);
     }
   return deferred.promise;
 
@@ -76,13 +84,20 @@ var stream = m.pl;
 
 gps.getData =  function(m) {
   console.log("getData FUNCTION");
-  var r = {pl: {} , er:''};
+ var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
   gpsModel.find(function (err, gps) {
-      if (err) return console.error(err);
-      r.pl.gps = gps;
-      deferred.resolve(r);
+      if (err){
+        r.er = err;
+        r.status = false;
+        deferred.reject(r);
+      }
+      else{
+        r.pl.gps = gps;
+        r.status = true;
+        deferred.resolve(r);
+      }
   })
   return deferred.promise;
 

@@ -1,40 +1,125 @@
 var express = require('express');
-var userModel = require('../models/users');
+var helpers = require('../utilities/helpers');
 var router = express.Router();
+var passport = require('passport');
 
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+module.exports = function (handler)
+{
 
-router.get('/all', function(req, res, next) {
-      userModel.find(function (err, users) {
-        if (err) return console.error(err);
-        res.send(users);
-      })
-});
+  router.post('/signup', function(req, res, next) {
+        var param = {
+          ns: 'auth',
+          vs: '1.0',
+          op: 'registerUser',
+          pl:{
+            user:{
+              name:req.body.name,
+              password:req.body.password
+            }
+          }
+        };
 
-router.get('/single/:name', function(req, res, next) {
-      userModel.find({name:'rolland'},function (err, users) {
-        if (err) return console.error(err);
-        res.send(users);
-      })
-});
+        handler(param)
+            .then(function (r) {
+              console.log("user registered----",r);
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              // console.log(r.er);
+              var r = {pl: null, er:r.er};
+              helpers.sendResponse(res, 501, r);
+            });
+  });
 
-router.get('/new/:name/:email', function(req, res, next) {
-  console.log("query",req.params);
-  var newUser = new userModel();
-  newUser.name = req.params.name;
-  newUser.email = req.params.email;
-  console.log("new user",newUser);
-  newUser.save(function(err){
-    if(err){
-      throw err;
+
+
+
+
+
+  // login
+router.post('/authenticate', function(req, res) {
+
+  var param = {
+    ns: 'auth',
+    vs: '1.0',
+    op: 'authenticateUser',
+    pl:{
+      user:{
+        name:req.body.name,
+        password:req.body.password
+      }
     }
-    res.send(200,newUser);
-  })
+  };
 
+  handler(param)
+      .then(function (r) {
+        console.log("user authenticated--",r);
+         helpers.sendResponse(res, 200, r);
+      })
+      .fail(function (r) {
+        console.log(r.er);
+        var r = {pl: null, er: r.er};
+        helpers.sendResponse(res, 501, r);
+      });
 });
 
-module.exports = router;
+
+
+
+
+
+
+
+
+
+// restricted routes
+router.get('/admin', passport.authenticate('jwt', { session: false}), function(req, res) {
+
+  var param = {
+    ns: 'auth',
+    vs: '1.0',
+    op: 'hasAccess',
+    pl:{
+      headers:req.headers
+    }
+  };
+
+  handler(param)
+      .then(function (r) {
+        console.log("user has accesss--",r);
+         helpers.sendResponse(res, 200, r);
+      })
+      .fail(function (r) {
+        console.log(r.er);
+        var r = {pl: null, er: r.er};
+        helpers.sendResponse(res, 501, r);
+  });
+
+
+
+//  var token = getToken(req.headers);
+  // if (token) {
+  //   var decoded = jwt.decode(token, config.secret);
+  //   User.findOne({
+  //     name: decoded.name
+  //   }, function(err, user) {
+  //       if (err) throw err;
+  //
+  //       if (!user) {
+  //         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+  //       } else {
+  //         res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+  //       }
+  //   });
+  // } else {
+  //   return res.status(403).send({success: false, msg: 'No token provided.'});
+  // }
+});
+
+
+
+  // _tcpCLient(handler);
+
+  return router;
+};

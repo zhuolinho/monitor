@@ -62,7 +62,7 @@ for (var module_name in all_modules) {
         'pl': {}
         }
 
-        console.log('\nDISPATCHER: initiating ' + module_name);
+        // console.log('\nDISPATCHER: initiating ' + module_name);
         //p = current_module.init(init_message);
         p = handler(init_message);
         modules_initialization_promises.push(p);

@@ -1,6 +1,6 @@
 
 var helpers = require('../utilities/helpers');
-var config = require('../configs/config');
+var gpsConf = require('../configs/gps');
 var express = require('express');
 var net = require('net');
 var client1 = new net.Socket();
@@ -46,7 +46,7 @@ var _tcpCLient = function(handler){
             //gps tcp Connection
             // client1.connect(5553,"222.66.200.66", function(){
             //   client1.write("@024|1234|01||4872,4872.pwd|",function(){ //login
-            //     var delay = config.gps.timer;
+            //     var delay = gpsConf.timer;
             //     var timer = setInterval(function(){
             //           console.log("making request1")
             //           client1.write("@015|1235|02||4872|");             //request
@@ -90,7 +90,7 @@ var _tcpCLient = function(handler){
 
             client1.connect(5553,"222.66.200.66", function(){
 
-              var delay = config.gps.timer;
+              var delay = gpsConf.timer;
               var user = "4872";
               var initquery = queryGps(user)[0];
               console.log("initquery1--",initquery);
@@ -133,7 +133,7 @@ var _tcpCLient = function(handler){
 
             client2.connect(5557,"222.66.200.66", function(){
 
-              var delay = 2*config.gps.timer;
+              var delay = 2*gpsConf.timer;
               var user = "8932";
               var initquery = queryGps(user)[0];
               console.log("initquery2--",initquery);
