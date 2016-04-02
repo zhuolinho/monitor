@@ -65,7 +65,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/
                         ]
                     }),
                     router_1.RouteConfig([
-                        { path: '/home', component: home_component_1.Home, name: 'Home' },
+                        { path: '/', component: home_component_1.Home, name: 'Home' },
                         { path: '/gps', component: gps_component_1.Gps, name: 'Gps' }
                     ]), 
                     __metadata('design:paramtypes', [])

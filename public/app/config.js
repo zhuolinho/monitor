@@ -10,7 +10,8 @@ System.register([], function(exports_1, context_1) {
                 color: 'blue',
                 logo: 'dist/images/logo.jpg',
                 title: 'Monotor admin',
-                project: 'Monotor admin project'
+                project: 'Monotor admin project',
+                bdmkey: 'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg'
             });
         }
     }
