@@ -15,7 +15,7 @@ console.log('\nAPP: Loading APP ...');
 
   dispatcher().then(function(r){
 
-          console.log('\nAPP: DISPATCHER is fully loaded ...',r);
+          console.log('\nAPP: DISPATCHER is fully loaded ...');
             if(r && r.pl && r.pl.fn instanceof Function){
 
 

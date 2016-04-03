@@ -5,7 +5,7 @@ var gpsSchema = mongoose.Schema({
                     rd:String,  //received date
                     rt:String, //received time
                     time:String, //yyyy-mm-dd hh:mm:ss
-                    lon:String,  //longitude
+                    lng:String,  //longitude
                     lat:String, //latitude
                     speed:String,
                     course:String,  //angle

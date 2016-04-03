@@ -6,11 +6,20 @@ var net = require('net');
 var client1 = new net.Socket();
 var client2 = new net.Socket();
 var router = express.Router();
+
+//socket-------
+var gpsApp = require('express')();
+var server = require('http').Server(gpsApp);
+var io = require('socket.io')(server);
+server.listen(8080);
+
+
 var q = require('q');
 var count = 1000;
 
 module.exports = function (handler)
 {
+
 
   router.get('/all', function(req, res, next) {
 
@@ -34,60 +43,14 @@ module.exports = function (handler)
             });
   });
 
-  // _tcpCLient(handler);
+  //gps Connection
+  _tcpCLient(handler);
 
   return router;
 };
 
 
-
 var _tcpCLient = function(handler){
-
-            //gps tcp Connection
-            // client1.connect(5553,"222.66.200.66", function(){
-            //   client1.write("@024|1234|01||4872,4872.pwd|",function(){ //login
-            //     var delay = gpsConf.timer;
-            //     var timer = setInterval(function(){
-            //           console.log("making request1")
-            //           client1.write("@015|1235|02||4872|");             //request
-            //     },delay);
-            //
-            //   });
-            // });
-            //
-            // client1.on('data', function (data) {
-            //     // console.log('Data1--: ' + data);
-            //
-            //     var stream = data.toString('utf8');
-            //     if(stream.length > 20){
-            //       var param = {
-            //             ns: 'gps',
-            //             vs: '1.0',
-            //             op: 'handleIncommingData',
-            //             pl:stream
-            //       }
-            //
-            //       handler(param)
-            //           .then(function (r) {
-            //             //  helpers.sendResponse(res, 200, r);
-            //             console.log("save data successful");
-            //           })
-            //           .fail(function (r) {
-            //               console.log("save data fail");
-            //           });
-            //     }
-            // });
-            //
-            // client1.once('close', function () {
-            //     console.log('Connection closed');
-            // });
-
-
-
-
-
-
-
             client1.connect(5553,"222.66.200.66", function(){
 
               var delay = gpsConf.timer;
@@ -104,26 +67,13 @@ var _tcpCLient = function(handler){
               });
             });
 
+            client1.on('error',function(err){
+                console.log("GPS CONNECTION ERROR 1-----",err);
+            });
             client1.on('data', function (data) {
-                // console.log('Data2--: ' + data);
-
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                  var param = {
-                        ns: 'gps',
-                        vs: '1.0',
-                        op: 'handleIncommingData',
-                        pl:stream
-                  }
-
-                  handler(param)
-                      .then(function (r) {
-                        //  helpers.sendResponse(res, 200, r);
-                        console.log("save1 data successful");
-                      })
-                      .fail(function (r) {
-                          console.log("save1 data fail");
-                      });
+                  saveData(handler, stream,1);
                 }
             });
 
@@ -147,26 +97,14 @@ var _tcpCLient = function(handler){
               });
             });
 
-            client2.on('data', function (data) {
-                // console.log('Data2--: ' + data);
+            client2.on('error',function(err){
+                console.log("GPS CONNECTION ERROR 2-----",err);
+            });
 
+            client2.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                  var param = {
-                        ns: 'gps',
-                        vs: '1.0',
-                        op: 'handleIncommingData',
-                        pl:stream
-                  }
-
-                  handler(param)
-                      .then(function (r) {
-                        //  helpers.sendResponse(res, 200, r);
-                        console.log("save2 data successful");
-                      })
-                      .fail(function (r) {
-                          console.log("save2 data fail");
-                      });
+                    saveData(handler, stream,2);
                 }
             });
 
@@ -174,6 +112,26 @@ var _tcpCLient = function(handler){
                 console.log('Connection2 closed');
             });
 
+}
+
+
+function saveData(handler,data,which){
+
+  var param = {
+        ns: 'gps',
+        vs: '1.0',
+        op: 'handleIncommingData',
+        pl:data
+  }
+
+  handler(param)
+      .then(function (r) {
+        console.log("save"+which+" data successful");
+        io.emit("carMove",r);
+      })
+      .fail(function (r) {
+          console.log("save1 data fail");
+      });
 }
 
 
@@ -210,7 +168,7 @@ function buildStreams(count,user){
 }
 
 function formatLen(len){
-    console.log("len--",len)
+    // console.log("len--",len)
     var newLen = len.toString();
     if(newLen.length < 2){
         newLen = "00"+newLen;
@@ -219,7 +177,7 @@ function formatLen(len){
           newLen = "0"+newLen;
     }
 
-  console.log("newLen--",newLen)
+  // console.log("newLen--",newLen)
     return newLen;
 
 }

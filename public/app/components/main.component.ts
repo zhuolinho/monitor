@@ -14,6 +14,8 @@ import {Gps} from './gps/gps.component';
 import {config} from '../config';
 import {DynamicRouteConfigurator} from '../services/router';
 
+
+
 declare var jQuery:any;
 
 @Component({

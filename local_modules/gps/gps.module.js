@@ -49,7 +49,7 @@ var stream = m.pl;
       var gpsData = new gpsModel({
                                 sim:sim,
                                 loc:parseInt(loc,10),
-                                lon:data[1],
+                                lng:data[1],
                                 lat:data[2],
                                 speed:data[3],
                                 course:data[4],

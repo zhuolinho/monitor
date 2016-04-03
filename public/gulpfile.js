@@ -15,7 +15,8 @@ var libStyles = [
 
 var libScripts = [
         'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/Materialize/dist/js/materialize.min.js'
+        'bower_components/Materialize/dist/js/materialize.min.js',
+        'node_modules/socket.io-client/socket.io.js'
     // // 'bower_components/bootstrap/dist/js/bootstrap.min.js',
 ];
 
