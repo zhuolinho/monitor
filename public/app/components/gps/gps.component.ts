@@ -38,6 +38,7 @@ export class Gps{
 
     	var myP1 = new BMap.Point(116.380967,39.913285);    //起点
     	var myP2 = new BMap.Point(116.424374,39.914668);    //终点
+      //dist/images/truck.png
     	var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/Mario.png", new BMap.Size(32, 70), {    //小车图片
     		//offset: new BMap.Size(0, -5),    //相当于CSS精灵
     		imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
@@ -84,7 +85,7 @@ export class Gps{
                   var patern  = /[0,9]{1,3}['米']{1}/;
                     if(patern.test(data)){  //within metters
                         var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
-                        console.log('distance>>>>',distance);
+                        // console.log('distance>>>>',distance);
                         if(distance <= 100){
                           alert('已配送');
                         }
@@ -93,7 +94,6 @@ export class Gps{
 
                     // console.log("got new distance----",data);
                     // console.log("got new distance----",parseFloat(data));
-                    console.log('wethin metters',patern.test(data));
 
                 });
 

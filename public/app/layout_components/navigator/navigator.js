@@ -27,15 +27,17 @@ System.register(['angular2/core', 'angular2/router', '../../config'], function(e
             Navigator = (function () {
                 function Navigator() {
                     this.navigations = [
-                        { link: 'Home', title: 'Dashboard', icon: 'mdi-action-dashboard' },
-                        { link: 'Gps', title: 'Gps ', icon: 'mdi-editor-insert-invitation' },
+                        { link: 'Home', title: '首页', icon: 'dashboard' },
+                        { link: 'Monitor', title: '实时监控', icon: 'videocam' },
+                        { link: 'Gps', title: 'GPS ', icon: 'my_location' }
                     ];
                 }
                 Navigator = __decorate([
                     core_1.Component({
                         selector: 'navigator',
                         templateUrl: config_1.config.prefix + 'layout_components/navigator/navigator.html',
-                        directives: [router_1.RouterLink, router_1.ROUTER_DIRECTIVES]
+                        directives: [router_1.RouterLink, router_1.ROUTER_DIRECTIVES],
+                        styleUrls: [config_1.config.prefix + 'layout_components/navigator/resources/css/style.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], Navigator);

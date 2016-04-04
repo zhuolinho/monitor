@@ -10,6 +10,7 @@ import {Sidebar} from '../layout_components/sidebar/sidebar';
 import {Footer} from '../layout_components/footer/footer';
 import {Action} from '../layout_components/action/action';
 import {Home} from './home/home.component';
+import {Monitor} from './monitor/monitor.component';
 import {Gps} from './gps/gps.component';
 import {config} from '../config';
 import {DynamicRouteConfigurator} from '../services/router';
@@ -34,7 +35,8 @@ declare var jQuery:any;
 })
 
 @RouteConfig([
-  {path:'/', component:Home, name:'Home'},
+  {path:'/...', component:Home, name:'Home'},
+  {path:'/monitor', component:Monitor, name:'Monitor'},
   {path:'/gps', component:Gps, name:'Gps'}
 ])
 

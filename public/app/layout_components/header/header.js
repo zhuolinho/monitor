@@ -80,7 +80,8 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
                     core_1.Component({
                         selector: 'header',
                         templateUrl: config_1.config.prefix + 'layout_components/header/header.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.RouterLink]
+                        directives: [common_1.CORE_DIRECTIVES, router_1.RouterLink],
+                        styleUrls: [config_1.config.prefix + 'layout_components/header/resources/css/style.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], Header);

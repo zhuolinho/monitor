@@ -9,15 +9,16 @@ var gulp = require('gulp'),
 
 var libStyles = [
     // // 'bower_components/normalize-css/normalize.css',
-    'bower_components/Materialize/dist/css/materialize.min.css'
+    'bower_components/Materialize/dist/css/materialize.min.css',
+    // 'bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css'
     // 'bower_components/chartist/dist/chartist.min.css',
 ];
 
 var libScripts = [
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/Materialize/dist/js/materialize.min.js',
+        // 'bower_components/perfect-scrollbar/js/min/perfect-scrollbar.jquery.min.js',
         'node_modules/socket.io-client/socket.io.js'
-    // // 'bower_components/bootstrap/dist/js/bootstrap.min.js',
 ];
 
 var angularScripts = [

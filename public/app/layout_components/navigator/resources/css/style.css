@@ -1,0 +1,18 @@
+
+  .router-link-active.nav-item{
+    background-color: #1288C1
+  }
+
+  .leftside-navigation {
+    background-color: #1E252B;
+  }
+
+  .leftside-navigation .nav-item{
+      color:white;
+      font-size: 2em;
+      height: 60px;
+      line-height: 60px;
+  }
+  .leftside-navigation {
+    padding-top: 50px;
+  }

@@ -38,7 +38,7 @@
 
        </script>
   </head>
-  <body>
+  <body  style="background-color:#E4EAF0">
 
      <main>
      <div class="" style="height:100%; width:100%; position:absolute; top:0; left:0; background: rgba(0,0,0,1);">

@@ -10,7 +10,7 @@ export interface ConfigType {
 
 export const config:ConfigType = {
   prefix:'app/',
-  color:'blue',
+  color:'#1288C1',
   logo:'dist/images/logo.jpg',
   title: 'Monotor admin',
   project: 'Monotor admin project',

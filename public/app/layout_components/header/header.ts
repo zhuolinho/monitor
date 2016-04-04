@@ -8,7 +8,8 @@ declare var jQuery:any;
 @Component({
     selector: 'header',
     templateUrl: config.prefix + 'layout_components/header/header.html',
-    directives:[CORE_DIRECTIVES,RouterLink]
+    directives:[CORE_DIRECTIVES,RouterLink],
+    styleUrls:[config.prefix +'layout_components/header/resources/css/style.css']
 })
 
 export class Header {
