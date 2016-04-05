@@ -24,7 +24,13 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
             HomeProcssedAlerts = (function () {
                 function HomeProcssedAlerts() {
                     console.log("Home processed alerts is up and running");
+                    this.initMaterializeSelect();
                 }
+                HomeProcssedAlerts.prototype.initMaterializeSelect = function () {
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                    });
+                };
                 HomeProcssedAlerts = __decorate([
                     core_1.Component({
                         selector: 'home-processed-alerts',

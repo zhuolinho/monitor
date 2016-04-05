@@ -47,10 +47,10 @@ System.register(['angular2/core', '../../config', './alerts/home.alerts.componen
                     core_1.Component({
                         selector: 'home',
                         templateUrl: config_1.config.prefix + '/components/home/home.component.html',
-                        directives: [router_1.ROUTER_DIRECTIVES]
+                        directives: [router_1.ROUTER_DIRECTIVES, router_1.RouterLink]
                     }),
                     router_1.RouteConfig([
-                        { path: '/alerts', component: home_alerts_component_1.HomeAlerts, name: 'HomeAlerts' },
+                        { path: '/alerts', component: home_alerts_component_1.HomeAlerts, name: 'HomeAlerts', useAsDefault: true },
                         { path: '/processed', component: home_alerts_processed_component_1.HomeProcssedAlerts, name: 'HomeProcssedAlerts' }
                     ]), 
                     __metadata('design:paramtypes', [])

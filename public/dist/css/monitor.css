@@ -52,6 +52,10 @@
     color: white;
   }
 
+  .top-nav-item.router-link-active{
+      background-color: #425166 !important;
+      color: white;
+  }
 
 .monitor-arrow-right {
     position: absolute;
@@ -652,20 +656,24 @@
 }
 
 
+.helper-select-font-bigger .select-dropdown{
+  font-size: 1.5em !important;
+}
+
 
 .helper-gray-border {
     border: 1px solid #c8c8c8;
 }
 
 
-.helper-gray-bg {
+.helper-gray-bg-dark {
     background-color: #c8c8c8;
 }
 
-.helper-gray-bg2 {
+.helper-gray-bg{
     background-color: #eeeeee;
 }
-.helper-gray-bg3 {
+.helper-gray-bg-light {
     background-color: #fafafa;
 }
 

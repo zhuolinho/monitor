@@ -3,19 +3,19 @@ import {Component, provide} from 'angular2/core'
 import {config} from '../../config';
 import {HomeAlerts} from './alerts/home.alerts.component';
 import {HomeProcssedAlerts} from './alerts_processed/home.alerts.processed.component';
-import {ROUTER_DIRECTIVES,RouteConfig} from 'angular2/router';
+import {ROUTER_DIRECTIVES,RouteConfig, RouterLink} from 'angular2/router';
 declare var jQuery:any;
 
 @Component({
   selector:'home',
   templateUrl:config.prefix + '/components/home/home.component.html',
-  directives:[ROUTER_DIRECTIVES]
+  directives:[ROUTER_DIRECTIVES,RouterLink]
 })
 
 
 
 @RouteConfig([
-  {path:'/alerts', component:HomeAlerts, name:'HomeAlerts'},
+  {path:'/alerts', component:HomeAlerts, name:'HomeAlerts',useAsDefault:true},
   {path:'/processed', component:HomeProcssedAlerts, name:'HomeProcssedAlerts'}
 ])
 

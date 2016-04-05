@@ -11,6 +11,5 @@ declare var jQuery:any;
 export class HomeAlerts{
     constructor(){
     console.log("Home alerts is up and running");
-
     }
  }
