@@ -13,6 +13,7 @@ import {Home} from './home/home.component';
 import {Monitor} from './monitor/monitor.component';
 import {Gps} from './gps/gps.component';
 import {config} from '../config';
+import {Settings} from './settings/settings.component';
 import {DynamicRouteConfigurator} from '../services/router';
 
 
@@ -37,7 +38,8 @@ declare var jQuery:any;
 @RouteConfig([
   {path:'/...', component:Home, name:'Home'},
   {path:'/monitor', component:Monitor, name:'Monitor'},
-  {path:'/gps', component:Gps, name:'Gps'}
+  {path:'/gps', component:Gps, name:'Gps'},
+  {path:'/settings', component:Settings, name:'Settings'}
 ])
 
 export class MainComponent {

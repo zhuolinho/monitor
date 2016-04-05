@@ -29,7 +29,8 @@ System.register(['angular2/core', 'angular2/router', '../../config'], function(e
                     this.navigations = [
                         { link: 'Home', title: '首页', icon: 'dashboard' },
                         { link: 'Monitor', title: '实时监控', icon: 'videocam' },
-                        { link: 'Gps', title: 'GPS ', icon: 'my_location' }
+                        { link: 'Gps', title: 'GPS ', icon: 'my_location' },
+                        { link: 'Settings', title: '设置 ', icon: 'settings' }
                     ];
                 }
                 Navigator = __decorate([

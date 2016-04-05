@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../config'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -11,7 +11,7 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, config_1;
-    var HomeProcssedAlerts;
+    var Settings;
     return {
         setters:[
             function (core_1_1) {
@@ -21,26 +21,20 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
                 config_1 = config_1_1;
             }],
         execute: function() {
-            HomeProcssedAlerts = (function () {
-                function HomeProcssedAlerts() {
-                    console.log("Home processed alerts is up and running");
-                    this.initSelect();
+            Settings = (function () {
+                function Settings() {
+                    console.log("Settings is up and running");
                 }
-                HomeProcssedAlerts.prototype.initSelect = function () {
-                    setTimeout(function (_) {
-                        jQuery('select').material_select();
-                    });
-                };
-                HomeProcssedAlerts = __decorate([
+                Settings = __decorate([
                     core_1.Component({
-                        selector: 'home-processed-alerts',
-                        templateUrl: config_1.config.prefix + '/components/home/alerts_processed/home.alerts.processed.component.html'
+                        selector: 'settings',
+                        templateUrl: config_1.config.prefix + '/components/settings/settings.component.html'
                     }), 
                     __metadata('design:paramtypes', [])
-                ], HomeProcssedAlerts);
-                return HomeProcssedAlerts;
+                ], Settings);
+                return Settings;
             }());
-            exports_1("HomeProcssedAlerts", HomeProcssedAlerts);
+            exports_1("Settings", Settings);
         }
     }
 });

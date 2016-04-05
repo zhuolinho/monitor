@@ -13,11 +13,11 @@ export class HomeProcssedAlerts{
 
     constructor(){
     console.log("Home processed alerts is up and running");
-    this.initMaterializeSelect();
+    this.initSelect();
 
     }
 
-    initMaterializeSelect(){
+    initSelect(){
       setTimeout(_=>{
            jQuery('select').material_select();
       });

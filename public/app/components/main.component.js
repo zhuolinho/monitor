@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/router', '../services/request', '../layout_components/header/header', '../layout_components/navigator/navigator', './home/home.component', './monitor/monitor.component', './gps/gps.component', '../config'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/router', '../services/request', '../layout_components/header/header', '../layout_components/navigator/navigator', './home/home.component', './monitor/monitor.component', './gps/gps.component', '../config', './settings/settings.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, http_1, router_1, request_1, header_1, navigator_1, home_component_1, monitor_component_1, gps_component_1, config_1;
+    var core_1, common_1, http_1, router_1, request_1, header_1, navigator_1, home_component_1, monitor_component_1, gps_component_1, config_1, settings_component_1;
     var MainComponent;
     return {
         setters:[
@@ -46,6 +46,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/
             },
             function (config_1_1) {
                 config_1 = config_1_1;
+            },
+            function (settings_component_1_1) {
+                settings_component_1 = settings_component_1_1;
             }],
         execute: function() {
             MainComponent = (function () {
@@ -70,7 +73,8 @@ System.register(['angular2/core', 'angular2/common', 'angular2/http', 'angular2/
                     router_1.RouteConfig([
                         { path: '/...', component: home_component_1.Home, name: 'Home' },
                         { path: '/monitor', component: monitor_component_1.Monitor, name: 'Monitor' },
-                        { path: '/gps', component: gps_component_1.Gps, name: 'Gps' }
+                        { path: '/gps', component: gps_component_1.Gps, name: 'Gps' },
+                        { path: '/settings', component: settings_component_1.Settings, name: 'Settings' }
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], MainComponent);

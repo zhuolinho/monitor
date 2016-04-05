@@ -1,0 +1,80 @@
+
+        <!-- modal -->
+
+        <div id="modal1" class="modal  fixed helper-padding-bottom-20">
+          <div class="modal-content helper-overflow-hidden">
+            <i class="modal-close material-icons right">clear</i>
+
+              <!-- <h4>Modal Header</h4> -->
+              <div class="helper-font-double center-align helper-padding-30">
+                      C002-闸北区大宁路335号XX站
+              </div>
+
+              <div class="row modal-nav monitor-tabs">
+                <div class="col s3">
+                    <a (click)="showByDay(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均余量 </a>
+                </div>
+
+                <div class="col s3">
+                    <a  (click)="showByMonth(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均余量 </a>
+                </div>
+                <div class="col s3">
+
+                    <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+                </div>
+                <div class="col s3">
+                    <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
+                </div>
+
+              </div>
+
+              <div class="row helper-margin-top-15">
+                        <hr />
+              </div>
+
+
+              <div class="row modal-table helper-margin-top-20">
+
+                <div class="row valign-wrapper">
+                  <div class="col s2 m2 ">
+                    <div class="input-field">
+                        <select class="helper-select-font-bigger monitor-short-dropdown">
+                          <!-- <option value="" disabled selected>5月分</option> -->
+                          <option *ngFor="#item of currentSelect; #i = index" value="item">{{item}}</option>
+                        </select>
+                        <!-- <label>选在时间</label> -->
+                      </div>
+                  </div>
+                  <div class="container valign">
+                    <a class="btn right monitor-gray-button stripped waves-effect waves-light helper-margin-right-5">
+                      下载数据
+                    </a>
+                  </div>
+                </div>
+
+
+                  <div class="" style="height:30vh; overflow-y:auto; webkit-overflow-scrolling:auto;">
+                    <div class="monitor-table stripped">
+                      <div class="table-row  helper-gray-bg-light">
+                        <div class="table-cell"> CNG罐号 </div>
+                        <div class="table-cell">日期  </div>
+                        <div class="table-cell">瞬时流量  </div>
+                        <div class="table-cell">平均流量 </div>
+                        <div class="table-cell">峰值流量  </div>
+                      </div>
+                      <div class="table-row" *ngFor="#row of currentTable">
+
+                        <div class="table-cell"> {{row.code}} </div>
+                        <div class="table-cell"> {{row.date}}  </div>
+                        <div class="table-cell"> {{row.if}} </div>
+                        <div class="table-cell"> {{row.af}} </div>
+                        <div class="table-cell"> {{row.mf}} </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+          </div>
+      </div>

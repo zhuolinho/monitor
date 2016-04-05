@@ -5,7 +5,7 @@
           <div class="helper-white-bg ">
             <div class="row valign-wrapper">
               <div class="col s4 push-s8">
-                <div class=" monitor-alert right">
+                <div class="monitor-alert right">
                         余量报警
                 </div>
               </div>
@@ -33,9 +33,10 @@
                 <div class="table-cell">15.5.3-13:02/----  </div>
               </div>
 
-              <div class="monitor-arrow-right">
+                <!--  modal trigger-->
+              <div data-target="modal1"  class="monitor-arrow-right helper-pointer modal-trigger"></div>
 
-              </div>
+
             </div>
           </div>
 
@@ -44,6 +45,11 @@
         <div class="col s3 valign">
           <a class="waves-effect waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a>
         </div>
+
+
+        <!-- modal goes here -->
+        <home-alerts-detail [table]="{id:45,name:'table1'}"> </home-alerts-detail>
+
       </div>
 
 
