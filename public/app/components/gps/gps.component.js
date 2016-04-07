@@ -45,7 +45,8 @@ System.register(['angular2/core', '../../config', '../../services/request'], fun
                     var myP1 = new BMap.Point(116.380967, 39.913285); //起点
                     var myP2 = new BMap.Point(116.424374, 39.914668); //终点
                     //dist/images/truck.png
-                    var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/Mario.png", new BMap.Size(32, 70), {
+                    //http://developer.baidu.com/map/jsdemo/img/Mario.png
+                    var myIcon = new BMap.Icon("dist/images/truck.png", new BMap.Size(32, 70), {
                         //offset: new BMap.Size(0, -5),    //相当于CSS精灵
                         imageOffset: new BMap.Size(0, 0) //图片的偏移量。为了是图片底部中心对准坐标点。
                     });
