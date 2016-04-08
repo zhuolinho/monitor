@@ -1,59 +1,52 @@
+// flightplan.js
 var plan = require('flightplan');
 
-var appName = 'monitor';
-var username = 'webmaster';
-var startFile = 'bin/server';
-
-var tmpDir = appName+'-' + new Date().getTime();
-
 // configuration
-// plan.target('staging', [
-//   {
-//     host: '139.196.18.222',
-//     username: username,
-//     agent: process.env.SSH_AUTH_SOCK
-//   }
-// ]);
+// plan.target('staging', {
+//   host: 'staging.example.com',
+//   username: 'pstadler',
+//   agent: process.env.SSH_AUTH_SOCK
+// });
 
-plan.target('production', [  //can deploy to many servers
+plan.target('production', [
   {
     host: '139.196.18.222',
-    username: username,
+    username: 'webmaster',
     agent: process.env.SSH_AUTH_SOCK
-  },
-//add in another server if you have more than one
-// {
-//   host: '104.131.93.216',
-//   username: username,
-//   agent: process.env.SSH_AUTH_SOCK
-// }
+  }
 ]);
+
+var tmpDir = 'monitor-' + new Date().getTime();
 
 // run commands on localhost
 plan.local(function(local) {
-  // uncomment these if you need to run a build on your machine first
   // local.log('Run build');
   // local.exec('gulp build');
 
+  local.hostname();//print local host name;
+
   local.log('Copy files to remote hosts');
-  local.exec('find .', {exec: {maxBuffer: 100000*1024}});
-   local.ls('-al', {exec: {maxBuffer: 100000*1024}});  //incease buffer size
   var filesToCopy = local.exec('git ls-files', {silent: true});
-  // rsync files to all the destination's hosts
+  // rsync files to all the target's remote hosts
   local.transfer(filesToCopy, '/tmp/' + tmpDir);
 });
 
-// run commands on remote hosts (destinations)
+// run commands on the target's remote hosts
 plan.remote(function(remote) {
-  remote.log('Move folder to root');
-  remote.sudo('cp -R /tmp/' + tmpDir + ' ~', {user: username});
+  remote.log('Move folder to web root');
+  remote.sudo('cp -R /tmp/' + tmpDir + ' ~', {user: 'webmaster'});
   remote.rm('-rf /tmp/' + tmpDir);
-
+  remote.hostname();//print remote host name;
   remote.log('Install dependencies');
-  remote.sudo('npm --production --prefix ~/' + tmpDir + ' install ~/' + tmpDir, {user: username});
+  remote.sudo('npm --production --prefix ~/' + tmpDir
+                            + ' install ~/' + tmpDir, {user: 'webmaster'});
 
   remote.log('Reload application');
-  remote.sudo('ln -snf ~/' + tmpDir + ' ~/'+appName, {user: username});
-  remote.exec('forever stop ~/'+appName+'/'+startFile, {failsafe: true});
-  remote.exec('forever start ~/'+appName+'/'+startFile);
+  remote.sudo('ln -snf ~/' + tmpDir + ' ~/monitor', {user: 'webmaster'});
+  remote.sudo('pm2 reload monitor', {user: 'webmaster'});
 });
+
+// run more commands on localhost afterwards
+plan.local(function(local) { /* ... */ });
+// ...or on remote hosts
+plan.remote(function(remote) { /* ... */ })

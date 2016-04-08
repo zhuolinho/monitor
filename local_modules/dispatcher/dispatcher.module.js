@@ -21,7 +21,8 @@ var path = require('path');
              all_modules[module] = require(file_path);
           } catch (e) {
               console.log("DISPATCHER:---cannot load module---",module);
-              throw(e)
+              console.log('error file_path---',file_path);
+              throw(e);
           } finally {
           }
       }
@@ -71,10 +72,9 @@ for (var module_name in all_modules) {
 }
 
 
-
-      return q.all(modules_initialization_promises)
+return q.all(modules_initialization_promises)
           .then(function(r) {
-            console.log(r);
+            console.log('promisses init respone----',r);
             console.log('DISPATCHER: modules initialization successfull...');
             return q({pl:{fn:handler},er:null});
 
