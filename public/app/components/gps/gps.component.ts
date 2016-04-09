@@ -148,7 +148,12 @@ export class Gps{
 
 
     iniSocket(){
-        var socket = io('http://localhost:8080');
+        var url = 'http://139.196.18.222:8080';
+
+        if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
+          url = 'http://localhost:8080';
+        }
+        var socket = io(url);
        socket.on('carMove', function(data){
         //  console.log('carMove',data);
          if(data.pl&&data.pl.gps){
