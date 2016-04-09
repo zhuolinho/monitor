@@ -8,7 +8,7 @@ System.register([], function(exports_1, context_1) {
             exports_1("config", config = {
                 prefix: 'app/',
                 color: '#1288C1',
-                logo: 'dist/images/logo.jpg',
+                logo: 'dist/images/logo.png',
                 title: 'Monotor admin',
                 project: 'Monotor admin project',
                 bdmkey: 'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg'

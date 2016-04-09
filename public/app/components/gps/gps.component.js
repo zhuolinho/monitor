@@ -81,7 +81,7 @@ System.register(['angular2/core', '../../config', '../../services/request'], fun
                                             var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
                                             // console.log('distance>>>>',distance);
                                             if (distance <= 100) {
-                                                alert('已配送');
+                                                console.log('已配送');
                                             }
                                         }
                                         // console.log("got new distance----",data);

@@ -60,11 +60,15 @@
     line-height:normal;
   }
 
-  .monitor-gray-button:hover, .top-nav-item:hover , .monitor-tab-selected{
-    background-color: #425166;
-    color: white;
+  .monitor-gray-button:hover, .top-nav-item:hover , .monitor-tab-selected , .monitor-gray-button.btn-dark{
+    background-color: #425166 !important;
+    color: white !important;
   }
-
+  /*overwrite hover effects*/
+  .monitor-gray-button.no-hover:hover{
+      background-color: #CED6DF !important;
+      color: black !important;
+  }
   .monitor-short-dropdown .dropdown-content{
     max-height: 300px;
   }
@@ -177,10 +181,16 @@
     padding-right: 20px !important;
 }
 
+.helper-hpadding-25 {
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+}
+
 .helper-hpadding-30 {
     padding-left: 30px !important;
     padding-right: 30px !important;
 }
+
 
 .helper-vpadding-2 {
     padding-top: 2px !important;
@@ -577,7 +587,10 @@
 
 .helper-padding-top-20{
     padding-top: 20px !important;
+}
 
+.helper-padding-top-30{
+    padding-top: 30px !important;
 }
 
 .helper-padding-top-5{
@@ -704,6 +717,15 @@
 
 .helper-gray {
    color:  #c8c8c8;
+}
+
+
+.helper-black {
+   color:  black !important;
+}
+
+.helper-white {
+   color:  white !important;
 }
 
 

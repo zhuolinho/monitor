@@ -11,7 +11,7 @@ export interface ConfigType {
 export const config:ConfigType = {
   prefix:'app/',
   color:'#1288C1',
-  logo:'dist/images/logo.jpg',
+  logo:'dist/images/logo.png',
   title: 'Monotor admin',
   project: 'Monotor admin project',
   bdmkey:'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg'

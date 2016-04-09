@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -19,21 +19,23 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             Request = (function () {
                 function Request(httpService) {
-                    this.varHeaders = { headers: new http_1.Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }) };
+                    this.paramHeaders = new http_1.Headers({ 'Content-Type': 'application/json' });
                     this.http = httpService;
+                    this.paramOptions = new http_1.RequestOptions({ headers: this.paramHeaders });
                 }
                 Request.prototype.get = function (path) {
                     console.log('path', path);
-                    return this.http.get(path, this.varHeaders).map(function (response) {
+                    return this.http.get(path, this.paramOptions).map(function (response) {
                         return response.json();
                     });
                 };
                 Request.prototype.post = function (path, data) {
-                    return this.http.post(path, JSON.stringify(data), this.varHeaders).map(function (response) {
+                    return this.http.post(path, JSON.stringify(data), this.paramOptions).map(function (response) {
                         var r = response.json();
                         return r;
                     });

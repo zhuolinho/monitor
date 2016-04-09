@@ -1,0 +1,13 @@
+#loginWrapper{
+  background-color: #289DDC;
+  height: 100vh;
+  padding-top: 25vh;
+  color: white;
+}
+
+.logo{
+  display: block;
+  width: 300px;
+  height: 150px;
+  margin: auto;
+}

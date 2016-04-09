@@ -1,0 +1,40 @@
+<div class="container" id="loginWrapper">
+
+  <div class="row">
+    <div class="col s8">
+        <h2 class="center-align">上海万事红智能信息管理系统</h2>
+        <img class="logo" src="dist/images/logo.png" alt="" />
+        <h4 class="center-align">
+          团结 求实 开拓 高校
+        </h4>
+    </div>
+
+    <div class="col s4 helper-padding-top-30">
+      <div class="row helper-padding-top-10">
+        <form class="helper-white-bg helper-padding-15" style="width:85%; margin:auto;">
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix helper-gray">person</i>
+              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username">
+              <label for="icon_prefix">账号/手机号码</label>
+            </div>
+            <div class="input-field col s12">
+              <i class="material-icons prefix helper-gray">lock</i>
+              <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
+              <label for="icon_telephone">密码</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="helper-hpadding-25 helper-vpadding-10">
+        <a (click)="login()" class="btn monitor-gray-button btn-dark waves-effect  waves-light helper-font-bigger left" style="width:160px; height:50px; line-height:50px;">登录</a>
+        <a class="btn monitor-gray-button no-hover  waves-effect helper-font-bigger right" style="width:160px; height:50px; line-height:50px;">注册</a>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
