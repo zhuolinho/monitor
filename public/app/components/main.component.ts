@@ -26,7 +26,7 @@ declare var jQuery:any;
 })
 
 @RouteConfig([
-  {path:'/', component:LoginComponent, name:'Home'},
+  {path:'/', component:LoginComponent, name:'Login'},
   {path:'/admin/...', component:AdminComponent, name:'Admin'}
 ])
 

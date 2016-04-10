@@ -62,7 +62,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
                         ]
                     }),
                     router_1.RouteConfig([
-                        { path: '/...', component: home_component_1.Home, name: 'Home', useAsDefault: true },
+                        { path: '/...', component: home_component_1.Home, name: 'Home' },
                         { path: '/monitor', component: monitor_component_1.Monitor, name: 'Monitor' },
                         { path: '/gps', component: gps_component_1.Gps, name: 'Gps' },
                         { path: '/settings', component: settings_component_1.Settings, name: 'Settings' }

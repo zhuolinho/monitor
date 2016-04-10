@@ -33,7 +33,7 @@ declare var jQuery:any;
 })
 
 @RouteConfig([
-  {path:'/...', component:Home, name:'Home', useAsDefault:true},
+  {path:'/...', component:Home, name:'Home'},
   {path:'/monitor', component:Monitor, name:'Monitor'},
   {path:'/gps', component:Gps, name:'Gps'},
   {path:'/settings', component:Settings, name:'Settings'}
@@ -41,6 +41,6 @@ declare var jQuery:any;
 
 export class AdminComponent {
   constructor(){
-  console.log("admin is up and running");
+    console.log("admin is up and running");
   }
  }

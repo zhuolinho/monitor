@@ -50,7 +50,7 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', '../servic
                         ]
                     }),
                     router_1.RouteConfig([
-                        { path: '/', component: login_component_1.LoginComponent, name: 'Home' },
+                        { path: '/', component: login_component_1.LoginComponent, name: 'Login' },
                         { path: '/admin/...', component: admin_component_1.AdminComponent, name: 'Admin' }
                     ]), 
                     __metadata('design:paramtypes', [])

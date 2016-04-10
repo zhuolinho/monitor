@@ -25,7 +25,7 @@
   },
   "files": [
     "app/boot.ts",
-    "app/components/admin/settings.component.ts",
+    "app/components/admin/admin.component.ts",
     "app/components/gps/gps.component.ts",
     "app/components/home/alerts_processed/home.alerts.processed.component.ts",
     "app/components/home/alerts/details/alerts.table.ts",

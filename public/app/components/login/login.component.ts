@@ -12,13 +12,14 @@ declare var jQuery:any;
 })
 
 export class LoginComponent{
+
     user:any = {username:'', password:''};
     request:Request;
     router:Router;
     constructor(request:Request,router:Router){
         this.request = request;
         this.router = router;
-    console.log("login is up and running");
+        console.log("login is up and running");
 
     }
 
