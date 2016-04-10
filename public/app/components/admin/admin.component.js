@@ -56,13 +56,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
                         directives: [router_1.ROUTER_DIRECTIVES,
                             header_1.Header,
                             navigator_1.Navigator,
-                            common_1.CORE_DIRECTIVES, router_1.RouterLink],
-                        providers: [
-                            router_1.ROUTER_PROVIDERS
-                        ]
+                            common_1.CORE_DIRECTIVES, router_1.RouterLink]
                     }),
                     router_1.RouteConfig([
-                        { path: '/...', component: home_component_1.Home, name: 'Home' },
+                        { path: '/home/...', component: home_component_1.Home, name: 'Home', useAsDefault: true },
                         { path: '/monitor', component: monitor_component_1.Monitor, name: 'Monitor' },
                         { path: '/gps', component: gps_component_1.Gps, name: 'Gps' },
                         { path: '/settings', component: settings_component_1.Settings, name: 'Settings' }

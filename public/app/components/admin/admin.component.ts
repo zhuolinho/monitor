@@ -2,7 +2,7 @@
 import {Component ,Inject, Injectable, provide} from 'angular2/core'
 import {CORE_DIRECTIVES} from 'angular2/common';
 import {HTTP_PROVIDERS } from 'angular2/http';
-import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig,Location, LocationStrategy,AsyncRoute, HashLocationStrategy, Route, Router, RouterLink} from 'angular2/router';
+import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig,Location, LocationStrategy, HashLocationStrategy, Route, Router, RouterLink} from 'angular2/router';
 import {Request} from '../../services/request';
 import {Header} from '../../layout_components/header/header';
 import {Navigator} from '../../layout_components/navigator/navigator';
@@ -26,14 +26,11 @@ declare var jQuery:any;
   directives: [ROUTER_DIRECTIVES,
     Header,
      Navigator,
-     CORE_DIRECTIVES, RouterLink],
-     providers: [
-    ROUTER_PROVIDERS
-  ]
+     CORE_DIRECTIVES, RouterLink]
 })
 
 @RouteConfig([
-  {path:'/...', component:Home, name:'Home'},
+  {path:'/home/...', component:Home, name:'Home', useAsDefault:true},
   {path:'/monitor', component:Monitor, name:'Monitor'},
   {path:'/gps', component:Gps, name:'Gps'},
   {path:'/settings', component:Settings, name:'Settings'}

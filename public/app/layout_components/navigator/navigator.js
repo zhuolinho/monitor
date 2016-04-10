@@ -27,10 +27,10 @@ System.register(['angular2/core', 'angular2/router', '../../config'], function(e
             Navigator = (function () {
                 function Navigator() {
                     this.navigations = [
-                        { link: ['Admin', 'Home'], title: '首页', icon: 'dashboard' },
-                        { link: ['Admin', 'Monitor'], title: '实时监控', icon: 'videocam' },
-                        { link: ['Admin', 'Gps'], title: 'GPS ', icon: 'my_location' },
-                        { link: ['Admin', 'Settings'], title: '设置 ', icon: 'settings' }
+                        { link: ['/Admin', 'Home'], title: '首页', icon: 'dashboard' },
+                        { link: ['/Admin', 'Monitor'], title: '实时监控', icon: 'videocam' },
+                        { link: ['/Admin', 'Gps'], title: 'GPS ', icon: 'my_location' },
+                        { link: ['/Admin', 'Settings'], title: '设置 ', icon: 'settings' }
                     ];
                 }
                 Navigator = __decorate([
