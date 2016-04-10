@@ -13,8 +13,7 @@ declare var jQuery:any;
 
 export class Navigator {
    navigations:any[];
-
-    constructor() {
+   constructor() {
       this.navigations = [
           {link:['Admin','Home'], title:'首页', icon:'dashboard'},
           {link:['Admin','Monitor'], title:'实时监控', icon:'videocam'},
