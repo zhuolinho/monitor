@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var q = require('q');
-var dispatcher = require('./app_modules/dispatcher/dispatcher.module.min');
+var dispatcher = require('./app_modules/dispatcher/dispatcher.module');
 var app = express();
 var passport	= require('passport');
 
