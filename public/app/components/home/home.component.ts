@@ -20,6 +20,8 @@ declare var jQuery:any;
 ])
 
 export class Home{
+
+
   constructor(){
   console.log("Home is up and running");
 

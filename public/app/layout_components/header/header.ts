@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common'
-import {config} from '../../config'
-import {RouterLink} from 'angular2/router'
+import {CORE_DIRECTIVES} from 'angular2/common';
+import {config} from '../../config';
+import {RouterLink} from 'angular2/router';
+import {Router} from 'angular2/router';
 
 declare var jQuery:any;
 
@@ -17,7 +18,9 @@ export class Header {
     title:string = config.title;
     logo:string = config.logo;
     color:string = config.color;
-    constructor() {
+    router:Router;
+    constructor(router:Router) {
+      this.router = router;
       // this.logo = CONFIG.resourcePath + 'img/logo.png'
       // console.log(this.logo);
 
@@ -42,37 +45,9 @@ export class Header {
     change(val){
         console.log(val);
     }
-    toggleFullScreen() {
 
-        // if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-        //     if (document.documentElement.requestFullScreen) {
-        //         document.documentElement.requestFullScreen();
-        //     }
-        //     else if (document.documentElement.mozRequestFullScreen) {
-        //         document.documentElement.mozRequestFullScreen();
-        //     }
-        //     else if (document.documentElement.webkitRequestFullScreen) {
-        //         document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        //     }
-        // }
-        // else {
-        //     if (document.cancelFullScreen) {
-        //         document.cancelFullScreen();
-        //     }
-        //     else if (document.mozCancelFullScreen) {
-        //         document.mozCancelFullScreen();
-        //     }
-        //     else if (document.webkitCancelFullScreen) {
-        //         document.webkitCancelFullScreen();
-        //     }
-        // }
+    logout(){
+        this.router.navigate(['/Login']);
     }
+
 }
-// Fullscreen
-// function toggleFullScreen() {
-
-// }
-
-// $('.toggle-fullscreen').click(function() {
-//     toggleFullScreen();
-// });

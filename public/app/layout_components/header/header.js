@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, config_1, router_1;
+    var core_1, common_1, config_1, router_1, router_2;
     var Header;
     return {
         setters:[
@@ -25,16 +25,18 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+                router_2 = router_1_1;
             }],
         execute: function() {
             Header = (function () {
-                function Header() {
-                    // this.logo = CONFIG.resourcePath + 'img/logo.png'
-                    // console.log(this.logo);
+                function Header(router) {
                     this.search = 'Explore monitor';
                     this.title = config_1.config.title;
                     this.logo = config_1.config.logo;
                     this.color = config_1.config.color;
+                    this.router = router;
+                    // this.logo = CONFIG.resourcePath + 'img/logo.png'
+                    // console.log(this.logo);
                     // console.log('app header loaded...')
                     // Search class for focus
                     jQuery('.header-search-input').focus(function () {
@@ -52,29 +54,8 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
                 Header.prototype.change = function (val) {
                     console.log(val);
                 };
-                Header.prototype.toggleFullScreen = function () {
-                    // if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-                    //     if (document.documentElement.requestFullScreen) {
-                    //         document.documentElement.requestFullScreen();
-                    //     }
-                    //     else if (document.documentElement.mozRequestFullScreen) {
-                    //         document.documentElement.mozRequestFullScreen();
-                    //     }
-                    //     else if (document.documentElement.webkitRequestFullScreen) {
-                    //         document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-                    //     }
-                    // }
-                    // else {
-                    //     if (document.cancelFullScreen) {
-                    //         document.cancelFullScreen();
-                    //     }
-                    //     else if (document.mozCancelFullScreen) {
-                    //         document.mozCancelFullScreen();
-                    //     }
-                    //     else if (document.webkitCancelFullScreen) {
-                    //         document.webkitCancelFullScreen();
-                    //     }
-                    // }
+                Header.prototype.logout = function () {
+                    this.router.navigate(['/Login']);
                 };
                 Header = __decorate([
                     core_1.Component({
@@ -83,7 +64,7 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
                         directives: [common_1.CORE_DIRECTIVES, router_1.RouterLink],
                         styleUrls: [config_1.config.prefix + 'layout_components/header/resources/css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [router_2.Router])
                 ], Header);
                 return Header;
             }());
@@ -91,9 +72,3 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
         }
     }
 });
-// Fullscreen
-// function toggleFullScreen() {
-// }
-// $('.toggle-fullscreen').click(function() {
-//     toggleFullScreen();
-// });

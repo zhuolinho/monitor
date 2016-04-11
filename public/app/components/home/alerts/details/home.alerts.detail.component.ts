@@ -1,7 +1,7 @@
 
 import {Component, provide,Input} from 'angular2/core';
 import {config} from '../../../../config';
-import {AlertsTable} from './alerts.table';
+import {AlertModel} from '../../../../models/alert-model';
 declare var jQuery:any;
 
 @Component({
@@ -10,13 +10,13 @@ declare var jQuery:any;
 })
 
 export class HomeAlertsDetail{
-     _table:AlertsTable;
-    @Input('table')
-    set table(table:AlertsTable){
-      this._table = table;
+     paramTable:AlertModel;
+    @Input('data')
+    set table(data){
+      this.paramTable = data;
     }
 
-    get table(){return this._table;}
+    get table(){return this.paramTable;}
 
     tableByday:any[] = [{code:'C002',date:'1月1号', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
                         {code:'C002',date:'1月2号', if:0.0000, af:0.0000, mf:0.0000},

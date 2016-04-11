@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../../config', './alerts.table'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../../config'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../../config', './alerts.table'], funct
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, alerts_table_1;
+    var core_1, config_1;
     var HomeAlertsDetail;
     return {
         setters:[
@@ -19,9 +19,6 @@ System.register(['angular2/core', '../../../../config', './alerts.table'], funct
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (alerts_table_1_1) {
-                alerts_table_1 = alerts_table_1_1;
             }],
         execute: function() {
             HomeAlertsDetail = (function () {
@@ -72,9 +69,9 @@ System.register(['angular2/core', '../../../../config', './alerts.table'], funct
                     this.showByDay();
                 }
                 Object.defineProperty(HomeAlertsDetail.prototype, "table", {
-                    get: function () { return this._table; },
-                    set: function (table) {
-                        this._table = table;
+                    get: function () { return this.paramTable; },
+                    set: function (data) {
+                        this.paramTable = data;
                     },
                     enumerable: true,
                     configurable: true
@@ -97,9 +94,9 @@ System.register(['angular2/core', '../../../../config', './alerts.table'], funct
                     });
                 };
                 __decorate([
-                    core_1.Input('table'), 
-                    __metadata('design:type', alerts_table_1.AlertsTable), 
-                    __metadata('design:paramtypes', [alerts_table_1.AlertsTable])
+                    core_1.Input('data'), 
+                    __metadata('design:type', Object), 
+                    __metadata('design:paramtypes', [Object])
                 ], HomeAlertsDetail.prototype, "table", null);
                 HomeAlertsDetail = __decorate([
                     core_1.Component({

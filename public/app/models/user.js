@@ -1,16 +1,16 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var AlertsTable;
+    var User;
     return {
         setters:[],
         execute: function() {
-            AlertsTable = (function () {
-                function AlertsTable() {
+            User = (function () {
+                function User() {
                 }
-                return AlertsTable;
+                return User;
             }());
-            exports_1("AlertsTable", AlertsTable);
+            exports_1("User", User);
         }
     }
 });
