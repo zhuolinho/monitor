@@ -46,7 +46,7 @@ auth.init = function(m) {
 
 auth.registerUser = function(m){
 
-  var r = {pl: {}, er:''};
+  var r = {pl: {}, er:'',em:''};
   var deferred = q.defer();
 
   if(m.pl && m.pl.user && m.pl.user.name && m.pl.user.password){
@@ -59,6 +59,7 @@ auth.registerUser = function(m){
           // console.log('user saved--',err,user);
             if (err){
               r.er = err;
+              r.em = 'invalid user. already exist?';
               deferred.reject(r);
             }
             else{
@@ -69,7 +70,7 @@ auth.registerUser = function(m){
     }
     else {
       r.er =  "no user name or password";
-          deferred.reject(r);
+      deferred.reject(r);
     }
   return deferred.promise;
 
@@ -98,10 +99,22 @@ auth.authenticateUser = function(m){
             // if user is found and password is right create a token
             var token = jwt.encode(user, config.secret);
             // return the information including token as JSON
-            r.pl.success = true;
-            r.pl.token = 'JWT ' + token;
+            user.ll = new Date(); //update last login
+            user.save(function(err,user){
+                if(err){
+                  r.pl.success = false;
+                  r.er = 'Could not update last login';
+                  deferred.reject(r);
+                }
+                else {
+                  console.log('user saved after login',user);
+                  r.pl.success = true;
+                  r.pl.token = 'JWT ' + token;
+                  r.pl.user = user;
+                  deferred.resolve(r);
+                }
+            });
 
-            deferred.resolve(r);
           } else {
             r.pl.success = false;
             r.er = 'Authentication failed. User not found';
@@ -115,6 +128,22 @@ auth.authenticateUser = function(m){
 
  return deferred.promise;
 
+}
+
+auth.getUsers = function(m){
+  var r = {pl: {}, er:''};
+  var deferred = q.defer();
+    User.find({},function(err,users){
+
+      if(err){
+        r.er = err;
+        deferred.reject(r);
+      }
+        r.pl.users = users;
+        deferred.resolve(r);
+    });
+
+    return deferred.promise;
 }
 
 

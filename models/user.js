@@ -4,16 +4,24 @@ var bcrypt = require('bcrypt-nodejs');
 
 // set up a mongoose model
 var UserSchema = new Schema({
+  ll:{  //last login
+    type:Date,
+    default:new Date()
+  },
+  phone:{
+    type:String,
+    unique:true
+  },
   name: {
         type: String,
-        unique: true,
         required: true
     },
   password: {
         type: String,
         required: true
     }
-});
+},
+{timestamps:true});
 
 UserSchema.pre('save', function (next) {
     var user = this;
