@@ -5,24 +5,23 @@ var fs = require('fs');
 var q = require('q');
 var path = require('path');
 
-  ops = {}; // op to module
-  all_modules = {};
-  DEBUG = false;
+var  all_modules = {};
 
-  console.log('\n\DISPATCHER: loading system modules ...');
+  console.log('\n\DISPATCHER: UP ...');
 
   var modules_path = path.resolve (__dirname, '..');
+  var reader = fs.readdirSync;
 
-  fs.readdirSync(modules_path).forEach(function(module) {
+  reader(modules_path).forEach(function(module) {
 
-     if(!module.split('.')[1] && module != "dispatcher"){
+    var avoid = "dispatcher";
+     if(!module.split('.')[1] && module != avoid){
       var file_path = modules_path +'/'+ module +'/' + module + '.module';
           try {
              all_modules[module] = require(file_path);
           } catch (e) {
-              console.log("DISPATCHER:---cannot load module---",module);
-              console.log('error file_path---',file_path);
-              throw(e);
+            //  console.log("DISPATCHER:---not found---",module);
+            throw(e);
           } finally {
           }
       }
@@ -40,9 +39,9 @@ var path = require('path');
     }
     // turn failed promises into messages
     return all_modules[m.ns][m.op](m).fail(function(err) {
-      console.log('DISPATCHER: message routing failed: ', m.op, err);
+      console.log('DISPATCHER:  routing failed: ', m.op, err);
       return q.reject({
-        ns: all_modules_names[m.ns],
+        ns: m.ns,
         pl: null,
         er: {ec: null, em: err + ' for message: ' + m}
       });
@@ -74,12 +73,12 @@ for (var module_name in all_modules) {
 
 return q.all(modules_initialization_promises)
           .then(function(r) {
-            console.log('promisses init respone----',r);
-            console.log('DISPATCHER: modules initialization successfull...');
+
+            console.log('DISPATCHER: DONE! ');
             return q({pl:{fn:handler},er:null});
 
           }).fail(function(r){
-            console.log('DISPATCHER: modules initialized failed: ' + r);
+            console.log('DISPATCHER:  FAIL!  ' + r);
             return q({pl:null, er:{ec:null, em:r}})
           });
 }

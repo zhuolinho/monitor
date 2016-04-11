@@ -15,7 +15,6 @@ var auth = {};
 
 auth.init = function(m) {
     var r = {pl: {} , er:''};
-     console.log('-----auth init-----');
 
         mongoose.connect(config.database); //can't user create connection;
         require('../../configs/passport')(passport);

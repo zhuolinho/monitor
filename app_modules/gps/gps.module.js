@@ -11,7 +11,6 @@ var gpsModel = require('../../models/gps');
 
 gps.init = function(m) {
     var r = {pl: {status:true} , er:''};
-     console.log('-----gps init-----');
      return q(r);
     // if(!(m.pl.fn instanceof Function)) {
     //     r.er = {ec:null , em: 'Payload pl is not a function'};
