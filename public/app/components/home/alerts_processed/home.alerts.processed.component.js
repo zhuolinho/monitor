@@ -29,6 +29,9 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
                 HomeProcssedAlerts.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                        jQuery('.collapsible').collapsible({
+                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                        });
                     });
                 };
                 HomeProcssedAlerts = __decorate([

@@ -20,6 +20,9 @@ export class HomeProcssedAlerts{
     initSelect(){
       setTimeout(_=>{
            jQuery('select').material_select();
+           jQuery('.collapsible').collapsible({
+             accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+           });
       });
 
     }
