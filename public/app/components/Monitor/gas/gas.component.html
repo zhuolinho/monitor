@@ -1,0 +1,134 @@
+<div class="" style="overflow-x:hidden">
+
+
+  <div class="row helper-margin-bottom-5 valign-wrapper">
+    <div class="col s7  helper-white-bg">
+
+      <div class="input-field">
+          <select class="helper-select-font-bigger">
+            <option value="" disabled selected>C003-闸北区大宁路335号XX站</option>
+            <option  value="1">C003-闸北区大宁路335号XX站</option>
+            <option  value="2">C003-闸北区大宁路335号XX站</option>
+          </select>
+          <label >选择地址</label>
+        </div>
+    </div>
+
+    <div class="col s5">
+
+    </div>
+  </div>
+
+
+  <div class="row helper-vmargin-15">
+      <div class="col s7">
+        <div class="row modal-nav monitor-tabs">
+          <div class="col s3">
+              <a (click)="selectedtab=1;" data-target="detailModal" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button modal-trigger helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+          </div>
+
+          <div class="col s3">
+              <a (click)="selectedtab=2;" data-target="detailModal"[class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align modal-trigger"> 月均用量</a>
+          </div>
+          <div class="col s3">
+
+              <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+          </div>
+          <div class="col s3">
+              <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
+          </div>
+
+        </div>
+
+      </div>
+  </div>
+
+  <div class="divider">
+  </div>
+
+
+
+
+  <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+        <div class="helper-margin-bottom-20 valign-wrapper row">
+          <div class="col s9">
+            <div class="helper-white-bg ">
+              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block center-align">
+
+                C003-闸北区大宁路335号XX站
+              </div>
+
+              <div class="monitor-table helper-font-bigger">
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 使用情况</div>
+                  <div class="table-cell"> 正在使用</div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell"> 余量/压力</div>
+                  <div class="table-cell"> 89%/16kg/hps</div>
+                </div>
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 信号/异常</div>
+                  <div class="table-cell"> 信号良好/无泄漏</div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col s3 valign">
+            <!-- <a (click)="veProcessed(alert)" *ngIf="!alert.processed" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a> -->
+          </div>
+
+          <!-- modal goes here -->
+            <gas-detail [data]="{id:'detailModal',alert:{name:'C003-闸北区大宁路335号XX站'}}"> </gas-detail>
+
+        </div>
+
+
+
+        <div class="helper-margin-bottom-20 valign-wrapper row">
+          <div class="col s9">
+            <div class="helper-white-bg ">
+              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block center-align">
+
+                C003-闸北区大宁路335号XX站
+              </div>
+
+              <div class="monitor-table helper-font-bigger">
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 使用情况</div>
+                  <div class="table-cell"> 正在使用</div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell"> 余量/压力</div>
+                  <div class="table-cell"> 89%/16kg/hps</div>
+                </div>
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 信号/异常</div>
+                  <div class="table-cell"> 信号良好/无泄漏</div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col s3 valign">
+          </div>
+
+        </div>
+
+  </div>
+
+
+</div>

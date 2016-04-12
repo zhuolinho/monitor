@@ -1,14 +1,29 @@
 
-import {Component, provide} from 'angular2/core'
-import {config} from '../../config';
+
+ import {Component, provide} from 'angular2/core'
+ import {config} from '../../config';
+ import {Gas} from './gas/gas.component';
+ import {Camera} from './camera/camera.component';
+ import {ROUTER_DIRECTIVES,RouteConfig, RouterLink} from 'angular2/router';
+ declare var jQuery:any;
+
 
 @Component({
   selector:'monitor',
-  templateUrl:config.prefix + '/components/monitor/monitor.component.html'
+  templateUrl:config.prefix + '/components/monitor/monitor.component.html',
+  directives:[ROUTER_DIRECTIVES,RouterLink]
 })
 
-export class Monitor{
-  constructor(){
-  console.log("Monitor is up and running");
+
+
+ @RouteConfig([
+   {path:'/gas', component:Gas, name:'Gas',useAsDefault:true},
+   {path:'/camera', component:Camera, name:'Camera'}
+ ])
+
+
+ export class Monitor{
+   constructor(){
+   console.log("Monitor is up and running");
+   }
   }
- }
