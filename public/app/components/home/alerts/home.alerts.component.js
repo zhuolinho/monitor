@@ -89,11 +89,75 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                             processed: false,
                             alertTime: '5.5.3-13:02',
                             alertValue: '信号中断'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '泄漏报警',
+                            remainingTime: '',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '泄漏报警'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '泄漏报警',
+                            remainingTime: '',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '泄漏报警'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '压力报警',
+                            remainingTime: '',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '压力报警'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '压力报警',
+                            remainingTime: '',
+                            upTime: '15.5.3-13:02/----',
+                            processed: true,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '压力报警'
                         }
                     ]; //todo user flag and ng if to hide when filtering;
+                    this.currentSort = 'all';
                     console.log("Home alerts is up and running");
                     this.initModal();
                 }
+                HomeAlerts.prototype.veSortByShortage = function () {
+                    if (this.currentSort != '余量报警') {
+                        this.currentSort = '余量报警';
+                    }
+                };
+                HomeAlerts.prototype.veSortBySingal = function () {
+                    if (this.currentSort != '信号中断') {
+                        this.currentSort = '信号中断';
+                    }
+                };
+                HomeAlerts.prototype.veSortByPresure = function () {
+                    if (this.currentSort != '压力报警') {
+                        this.currentSort = '压力报警';
+                    }
+                };
+                HomeAlerts.prototype.veSortByLeakage = function () {
+                    if (this.currentSort != '泄漏报警') {
+                        this.currentSort = '泄漏报警';
+                    }
+                };
+                HomeAlerts.prototype.veProcessed = function (alert) {
+                    alert.processed = !alert.processed;
+                };
                 HomeAlerts.prototype.initModal = function () {
                     var _this = this;
                     setTimeout(function (_) {
