@@ -28,6 +28,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                 function ShipmentMap(request) {
                     this.request = request;
                     this.selectedtab = 1;
+                    this.delevered = false;
                     console.log("ShipmentMap is up and running");
                     this.initUi();
                     this.loadJScript();

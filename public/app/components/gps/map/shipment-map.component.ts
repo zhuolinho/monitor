@@ -18,6 +18,7 @@ export class ShipmentMap{
 
   static points:any = {};
   selectedtab:number=1;
+  delevered:boolean=false;
   constructor(public request:Request){
   console.log("ShipmentMap is up and running");
       this.initUi();

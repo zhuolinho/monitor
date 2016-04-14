@@ -24,11 +24,14 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
             ProcessedShipment = (function () {
                 function ProcessedShipment() {
                     console.log("processed-shipment is up and running");
-                    // this.initUi();
+                    this.initUi();
                 }
                 ProcessedShipment.prototype.initUi = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                        jQuery('.collapsible').collapsible({
+                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                        });
                     });
                 };
                 ProcessedShipment = __decorate([
