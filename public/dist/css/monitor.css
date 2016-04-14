@@ -8,6 +8,7 @@
   overflow-y: auto;;
   -webkit-overflow-scrolling: auto;
   padding: 10px 0;
+  position: relative;
 
 }
 
@@ -62,6 +63,16 @@
     right: 5px;
     top:7px;
   }
+
+
+    .table-text-badge{
+      color: gray;
+      font-size: 1em;
+      padding: 8px 15px;
+      position: absolute;
+      right: 5px;
+      top:7px;
+    }
 
   .monitor-gray-button, .top-nav-item{
     background-color: #CED6DF;

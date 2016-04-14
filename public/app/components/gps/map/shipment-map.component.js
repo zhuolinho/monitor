@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', 'angular2/router', '../../services/request', './map/shipment-map.component', './processed/processed-shipment.component', './shipment/shiment.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', '../../../services/request'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, router_1, request_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1;
-    var Gps;
+    var core_1, config_1, request_1;
+    var ShipmentMap;
     return {
         setters:[
             function (core_1_1) {
@@ -20,37 +20,25 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
             function (config_1_1) {
                 config_1 = config_1_1;
             },
-            function (router_1_1) {
-                router_1 = router_1_1;
-            },
             function (request_1_1) {
                 request_1 = request_1_1;
-            },
-            function (shipment_map_component_1_1) {
-                shipment_map_component_1 = shipment_map_component_1_1;
-            },
-            function (processed_shipment_component_1_1) {
-                processed_shipment_component_1 = processed_shipment_component_1_1;
-            },
-            function (shiment_component_1_1) {
-                shiment_component_1 = shiment_component_1_1;
             }],
         execute: function() {
-            Gps = (function () {
-                function Gps(request) {
+            ShipmentMap = (function () {
+                function ShipmentMap(request) {
                     this.request = request;
-                    console.log("Gps is up and running");
+                    console.log("ShipmentMap is up and running");
                     this.loadJScript();
                     this.iniSocket();
                 }
-                Gps.prototype.loadJScript = function () {
+                ShipmentMap.prototype.loadJScript = function () {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
                     script.src = 'http://api.map.baidu.com/api?v=2.0&ak=' + config_1.config.bdmkey + '&callback=initMap';
                     window.initMap = this.initGpsMap; //set global reference for initMap callback;
                     document.body.appendChild(script);
                 };
-                Gps.prototype.initGpsMap = function () {
+                ShipmentMap.prototype.initGpsMap = function () {
                     // 百度地图API功能
                     var map = new BMap.Map("allmap");
                     map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
@@ -129,7 +117,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                         return deferred.promise();
                     };
                 };
-                Gps.prototype.iniSocket = function () {
+                ShipmentMap.prototype.iniSocket = function () {
                     var url = 'http://139.196.18.222:8080';
                     if (window.location.hostname.indexOf('localhost') >= 0) {
                         url = 'http://localhost:8080';
@@ -141,23 +129,17 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                         }
                     });
                 };
-                Gps.points = {};
-                Gps = __decorate([
+                ShipmentMap.points = {};
+                ShipmentMap = __decorate([
                     core_1.Component({
-                        selector: 'gps',
-                        templateUrl: config_1.config.prefix + '/components/gps/gps.component.html',
-                        directives: [router_1.ROUTER_DIRECTIVES, router_1.RouterLink]
-                    }),
-                    router_1.RouteConfig([
-                        { path: '/map', component: shipment_map_component_1.ShipmentMap, name: 'ShipmentMap', useAsDefault: true },
-                        { path: '/processed', component: processed_shipment_component_1.ProcessedShipment, name: 'ProcessedShipment' },
-                        { path: '/shipment', component: shiment_component_1.Shipment, name: 'Shipment' }
-                    ]), 
+                        selector: 'shipment-map',
+                        templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html'
+                    }), 
                     __metadata('design:paramtypes', [request_1.Request])
-                ], Gps);
-                return Gps;
+                ], ShipmentMap);
+                return ShipmentMap;
             }());
-            exports_1("Gps", Gps);
+            exports_1("ShipmentMap", ShipmentMap);
         }
     }
 });

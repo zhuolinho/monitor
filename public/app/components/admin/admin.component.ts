@@ -32,7 +32,7 @@ declare var jQuery:any;
 @RouteConfig([
   {path:'/home/...', component:Home, name:'Home', useAsDefault:true},
   {path:'/monitor/...', component:Monitor, name:'Monitor'},
-  {path:'/gps', component:Gps, name:'Gps'},
+  {path:'/gps/...', component:Gps, name:'Gps'},
   {path:'/settings', component:Settings, name:'Settings'}
 ])
 

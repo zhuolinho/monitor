@@ -1,35 +1,23 @@
 
-import {Component, provide} from 'angular2/core'
-import {config} from '../../config';
-import {RouteConfig, ROUTER_DIRECTIVES, RouterLink} from 'angular2/router';
-import {Request} from '../../services/request';
-import {ShipmentMap} from './map/shipment-map.component';
-import {ProcessedShipment} from './processed/processed-shipment.component';
-import {Shipment} from './shipment/shiment.component';
+import {Component, provide} from 'angular2/core';
+import {config} from '../../../config';
+import {Request} from '../../../services/request';
+
 declare var BMap:any;
 declare var jQuery:any;
 declare var window:any;
 declare var io:any;
+
 @Component({
-  selector:'gps',
-  templateUrl:config.prefix + '/components/gps/gps.component.html',
-  directives:[ROUTER_DIRECTIVES,RouterLink]
+  selector:'shipment-map',
+  templateUrl:config.prefix + '/components/gps/map/shipment-map.component.html'
 })
 
-
-
-
- @RouteConfig([
-   {path:'/map', component:ShipmentMap, name:'ShipmentMap',useAsDefault:true},
-   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'},
-   {path:'/shipment', component:Shipment, name:'Shipment'}
- ])
-
-export class Gps{
+export class ShipmentMap{
 
   static points:any = {};
   constructor(public request:Request){
-  console.log("Gps is up and running");
+  console.log("ShipmentMap is up and running");
       this.loadJScript();
       this.iniSocket();
   }
@@ -45,32 +33,31 @@ export class Gps{
   }
 
   initGpsMap(){
+      // 百度地图API功能
+      var map = new BMap.Map("allmap");
+      map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
 
-    	// 百度地图API功能
-    	var map = new BMap.Map("allmap");
-    	map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
-
-    	var myP1 = new BMap.Point(116.380967,39.913285);    //起点
-    	var myP2 = new BMap.Point(116.424374,39.914668);    //终点
+      var myP1 = new BMap.Point(116.380967,39.913285);    //起点
+      var myP2 = new BMap.Point(116.424374,39.914668);    //终点
       //dist/images/truck.png
       //http://developer.baidu.com/map/jsdemo/img/Mario.png
-    	var myIcon = new BMap.Icon("dist/images/truck.png", new BMap.Size(32, 70), {    //小车图片
-    		//offset: new BMap.Size(0, -5),    //相当于CSS精灵
-    		imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
-    	  });
-    	var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});    //驾车实例
-    	driving2.search(myP1, myP2);    //显示一条公交线路
+      var myIcon = new BMap.Icon("dist/images/truck.png", new BMap.Size(32, 70), {    //小车图片
+        //offset: new BMap.Size(0, -5),    //相当于CSS精灵
+        imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
+        });
+      var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});    //驾车实例
+      driving2.search(myP1, myP2);    //显示一条公交线路
 
 
       //car on the move
-    	var run = function (){
-    		var driving = new BMap.DrivingRoute(map);    //驾车实例
-    		driving.search(myP1, myP2);
-    		driving.setSearchCompleteCallback(function(){  //after route has been set
+      var run = function (){
+        var driving = new BMap.DrivingRoute(map);    //驾车实例
+        driving.search(myP1, myP2);
+        driving.setSearchCompleteCallback(function(){  //after route has been set
 
 
-    			var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
-    			var paths = pts.length;    //获得有几个点
+          var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+          var paths = pts.length;    //获得有几个点
 
           var routeData = { //get distance and duration
                   distance:driving.getResults().getPlan(0).getDistance(true),
@@ -80,15 +67,15 @@ export class Gps{
           console.log("distance and time-----",routeData);
           var samplePoint  = pts[0];
 
-    			var carMk = new BMap.Marker(samplePoint, {icon:myIcon});
-    			map.addOverlay(carMk);
+          var carMk = new BMap.Marker(samplePoint, {icon:myIcon});
+          map.addOverlay(carMk);
           var i = 0;
 
-    			function resetMkPoint(){
+          function resetMkPoint(){
             // samplePoint.lng += 0.0001;
             // samplePoint.lat += 0.0001;
             samplePoint = pts[i]
-    				carMk.setPosition(samplePoint);
+            carMk.setPosition(samplePoint);
 
 
             if(i < paths){
@@ -127,10 +114,10 @@ export class Gps{
               console.log('done----');
             }
 
-    			}
+          }
           resetMkPoint();
-    		});
-    	}
+        });
+      }
 
       run();
 
@@ -180,4 +167,4 @@ export class Gps{
          }
        });
     }
-}
+ }
