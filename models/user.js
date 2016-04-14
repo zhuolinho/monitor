@@ -9,8 +9,7 @@ var UserSchema = new Schema({
     default:new Date()
   },
   phone:{
-    type:String,
-    unique:true
+    type:String
   },
   name: {
         type: String,
