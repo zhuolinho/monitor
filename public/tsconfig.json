@@ -20,6 +20,7 @@
     "!node_modules/**"
   ],
   "compileOnSave": true,
+  "browserRefreshOnSave": true,
   "atom": {
     "rewriteTsconfig": true
   },

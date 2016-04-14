@@ -24,9 +24,9 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
             HomeProcssedAlerts = (function () {
                 function HomeProcssedAlerts() {
                     console.log("Home processed alerts is up and running");
-                    this.initSelect();
+                    this.initUi();
                 }
-                HomeProcssedAlerts.prototype.initSelect = function () {
+                HomeProcssedAlerts.prototype.initUi = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                         jQuery('.collapsible').collapsible({

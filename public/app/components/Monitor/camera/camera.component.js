@@ -24,7 +24,13 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
             Camera = (function () {
                 function Camera() {
                     console.log("camera is up and running");
+                    this.initUi();
                 }
+                Camera.prototype.initUi = function () {
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                    });
+                };
                 Camera = __decorate([
                     core_1.Component({
                         selector: 'camera',

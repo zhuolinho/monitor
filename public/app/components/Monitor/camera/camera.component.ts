@@ -12,6 +12,13 @@ export class Camera{
 
     constructor(){
     console.log("camera is up and running");
+    this.initUi();
 
+    }
+
+    initUi(){
+      setTimeout(_=>{
+           jQuery('select').material_select();
+      });
     }
  }
