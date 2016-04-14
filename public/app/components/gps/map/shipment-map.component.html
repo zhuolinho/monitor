@@ -1,6 +1,110 @@
+<div class="row" style="overflow:hidden; height:100%; width:100%;">
+  <div class="col s6 " style="height:80vh; overflow:auto; padding-bottom:50px;">
+    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+      目的地
+    </span>
+    <div class="helper-margin-top-10 helper-margin-bottom-20">
+      <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15">  C002-闸北区大宁路355号XX站</span>
+    </div>
 
-<div id="allmap">
-  <div class="" style="height:95%; width:100%; position:absolute; top:0; left:0; background: rgba(0,0,0,1);">
-        <img src="dist/images/ajax-loader-white.gif" alt=""  style="display:block; width:70px; height:70px; position:absolute; top:50%; left:48%;" />
+    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+      选择车牌
+    </span>
+    <div class="row helper-margin-bottom-20">
+      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+          <select class="helper-select-font-bigger">
+            <option value="0" > 沪D. C92632</option>
+            <option  value="1">沪D. C922632</option>
+            <option  value="2">沪D. C86634</option>
+          </select>
+          <!-- <label>选在时间</label> -->
+        </div>
+    </div>
+
+
+    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+      选择气种
+    </span>
+    <div class="row helper-margin-bottom-20">
+      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+          <select class="helper-select-font-bigger">
+            <option value="0" > CNG </option>
+            <option  value="1"> CNG </option>
+            <option  value="2"> CNG </option>
+          </select>
+          <!-- <label>选在时间</label> -->
+        </div>
+    </div>
+
+
+
+    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+      选择储罐
+    </span>
+    <div class="row helper-margin-bottom-20">
+      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+          <select class="helper-select-font-bigger">
+            <option value="0" > 64662 </option>
+            <option  value="1"> 64663 </option>
+            <option  value="2"> 64664 </option>
+          </select>
+          <!-- <label>选在时间</label> -->
+        </div>
+    </div>
+
+
+
+        <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+          选择司机
+        </span>
+        <div class="row helper-margin-bottom-20">
+          <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+              <select class="helper-select-font-bigger">
+                <option value="0" > 671 </option>
+                <option  value="1"> 672 </option>
+                <option  value="2"> 673 </option>
+              </select>
+              <!-- <label>选在时间</label> -->
+            </div>
+        </div>
+
+
+        <span class="helper-white-bg helper-padding-5-15 helper-font-bigger helper-gray-border">
+          选择运员
+        </span>
+        <div class="row helper-margin-bottom-20">
+          <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+              <select class="helper-select-font-bigger">
+                <option value="0" > 822 </option>
+                <option  value="1"> 823 </option>
+                <option  value="2"> 824 </option>
+              </select>
+              <!-- <label>选在时间</label> -->
+            </div>
+        </div>
+
+
+        <div class="row monitor-tabs helper-padding-left-10 helper-padding-right-10">
+            <div class="col s4">
+                <a (click)="selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 显示全部 </a>
+            </div>
+
+            <div class="col s4">
+                <a  (click)="selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 确认配送 </a>
+            </div>
+            <div class="col s4">
+
+                <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 更换车辆 </a>
+            </div>
+        </div>
+
+
+  </div>
+  <div class="col s6 helper-relative helper-overflow">
+    <div class="row" id="allmap"  style="margin-right:-50px; display:block;" >
+      <div class="" style="height:100%;width:100%; position:absolute; top:0; left:0; background: rgba(0,0,0,1);">
+            <img src="dist/images/ajax-loader-white.gif" alt=""  style="display:block; width:70px; height:70px; position:absolute; top:50%; left:48%;" />
+      </div>
+    </div>
   </div>
 </div>

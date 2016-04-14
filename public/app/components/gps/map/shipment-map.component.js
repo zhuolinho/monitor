@@ -27,10 +27,17 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
             ShipmentMap = (function () {
                 function ShipmentMap(request) {
                     this.request = request;
+                    this.selectedtab = 1;
                     console.log("ShipmentMap is up and running");
+                    this.initUi();
                     this.loadJScript();
                     this.iniSocket();
                 }
+                ShipmentMap.prototype.initUi = function () {
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                    });
+                };
                 ShipmentMap.prototype.loadJScript = function () {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
@@ -44,11 +51,11 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                     map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
                     var myP1 = new BMap.Point(116.380967, 39.913285); //起点
                     var myP2 = new BMap.Point(116.424374, 39.914668); //终点
-                    //dist/images/truck.png
-                    //http://developer.baidu.com/map/jsdemo/img/Mario.png
-                    var myIcon = new BMap.Icon("dist/images/truck.png", new BMap.Size(32, 70), {
+                    var iconImage = 'dist/images/truck.png';
+                    var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+                    var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
                         //offset: new BMap.Size(0, -5),    //相当于CSS精灵
-                        imageOffset: new BMap.Size(0, 0) //图片的偏移量。为了是图片底部中心对准坐标点。
+                        imageOffset: new BMap.Size(0, 0.5) //图片的偏移量。为了是图片底部中心对准坐标点。
                     });
                     var driving2 = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true } }); //驾车实例
                     driving2.search(myP1, myP2); //显示一条公交线路
@@ -133,7 +140,8 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                 ShipmentMap = __decorate([
                     core_1.Component({
                         selector: 'shipment-map',
-                        templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html'
+                        templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
+                        styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
                     }), 
                     __metadata('design:paramtypes', [request_1.Request])
                 ], ShipmentMap);

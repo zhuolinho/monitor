@@ -10,18 +10,26 @@ declare var io:any;
 
 @Component({
   selector:'shipment-map',
-  templateUrl:config.prefix + '/components/gps/map/shipment-map.component.html'
+  templateUrl:config.prefix + '/components/gps/map/shipment-map.component.html',
+  styleUrls:[config.prefix + '/components/gps/map/resources//css/style.css']
 })
 
 export class ShipmentMap{
 
   static points:any = {};
+  selectedtab:number=1;
   constructor(public request:Request){
   console.log("ShipmentMap is up and running");
+      this.initUi();
       this.loadJScript();
       this.iniSocket();
   }
 
+  initUi(){
+    setTimeout(_=>{
+         jQuery('select').material_select();
+    });
+  }
 
 
  loadJScript() {
@@ -33,21 +41,22 @@ export class ShipmentMap{
   }
 
   initGpsMap(){
+
       // 百度地图API功能
       var map = new BMap.Map("allmap");
       map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
 
       var myP1 = new BMap.Point(116.380967,39.913285);    //起点
       var myP2 = new BMap.Point(116.424374,39.914668);    //终点
-      //dist/images/truck.png
-      //http://developer.baidu.com/map/jsdemo/img/Mario.png
-      var myIcon = new BMap.Icon("dist/images/truck.png", new BMap.Size(32, 70), {    //小车图片
+
+      var iconImage = 'dist/images/truck.png';
+      var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+      var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {    //小车图片
         //offset: new BMap.Size(0, -5),    //相当于CSS精灵
-        imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
+        imageOffset: new BMap.Size(0, 0.5)    //图片的偏移量。为了是图片底部中心对准坐标点。
         });
       var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});    //驾车实例
       driving2.search(myP1, myP2);    //显示一条公交线路
-
 
       //car on the move
       var run = function (){

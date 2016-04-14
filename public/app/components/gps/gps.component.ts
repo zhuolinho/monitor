@@ -6,10 +6,7 @@ import {Request} from '../../services/request';
 import {ShipmentMap} from './map/shipment-map.component';
 import {ProcessedShipment} from './processed/processed-shipment.component';
 import {Shipment} from './shipment/shiment.component';
-declare var BMap:any;
-declare var jQuery:any;
-declare var window:any;
-declare var io:any;
+
 @Component({
   selector:'gps',
   templateUrl:config.prefix + '/components/gps/gps.component.html',
