@@ -3,24 +3,29 @@
 
     <div class="row helper-padding-top-10">
       <form class=" helper-padding-15" style="width:85%; margin:auto;">
-        <div class="row">
-          <div class="input-field col s12">
-            <i class="material-icons prefix helper-gray">person</i>
-            <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username">
-            <label for="icon_prefix">账号/手机号码</label>
+        <div class="row" style="margin-top:10%;">
+
+          <div class="col s6 offset-s3">
+            <div class="input-field">
+              <i class="material-icons prefix helper-gray">person</i>
+              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username">
+              <label for="icon_prefix">账号</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix helper-gray">lock</i>
+              <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
+              <label for="icon_telephone">密码</label>
+            </div>
+
+
+                <div class="helper-hpadding-25 helper-margin-top-30 center-align">
+                  <a (click)="login()" class="btn monitor-gray-button waves-effect  waves-light helper-font-bigger" style="width:120px; height:40px; line-height:40px;">进入</a>
+                </div>
+
           </div>
-          <div class="input-field col s12">
-            <i class="material-icons prefix helper-gray">lock</i>
-            <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
-            <label for="icon_telephone">密码</label>
-          </div>
+
         </div>
       </form>
-    </div>
-
-    <div class="helper-hpadding-25 helper-vpadding-10">
-      <a (click)="login()" class="btn monitor-gray-button btn-dark waves-effect  waves-light helper-font-bigger left" style="width:160px; height:50px; line-height:50px;">登录</a>
-      <a class="btn monitor-gray-button no-hover  waves-effect helper-font-bigger right" style="width:160px; height:50px; line-height:50px;">注册</a>
     </div>
 
   </div>
