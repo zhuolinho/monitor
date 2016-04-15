@@ -1,6 +1,8 @@
 // flightplan.js
 var plan = require('flightplan');
 
+
+
 // configuration
 // plan.target('staging', {
 //   host: 'staging.example.com',
@@ -16,14 +18,14 @@ plan.target('production', [
   }
 ]);
 
-var tmpDir = 'monitor-' + new Date().getTime();
+var tmpDir = 'monitor' + new Date().getTime();
+
+
 
 // run commands on localhost
 plan.local(function(local) {
-  // local.log('Run build');
-  // local.exec('gulp build');
-
-  local.hostname();//print local host name;
+  local.log('Run build');
+  local.exec('gulp build');
 
   local.log('Copy files to remote hosts');
   var filesToCopy = local.exec('git ls-files', {silent: true});
@@ -36,10 +38,9 @@ plan.remote(function(remote) {
   remote.log('Move folder to web root');
   remote.sudo('cp -R /tmp/' + tmpDir + ' ~', {user: 'webmaster'});
   remote.rm('-rf /tmp/' + tmpDir);
-  remote.hostname();//print remote host name;
+
   remote.log('Install dependencies');
-  remote.sudo('npm --production --prefix ~/' + tmpDir
-                            + ' install ~/' + tmpDir, {user: 'webmaster'});
+  remote.sudo('npm --production --prefix ~/' + tmpDir   + ' install ~/' + tmpDir, {user: 'webmaster'});
 
   remote.log('Reload application');
   remote.sudo('ln -snf ~/' + tmpDir + ' ~/monitor', {user: 'webmaster'});
@@ -47,6 +48,6 @@ plan.remote(function(remote) {
 });
 
 // run more commands on localhost afterwards
-plan.local(function(local) { /* ... */ });
+plan.local(function(local) { /*  */ });
 // ...or on remote hosts
-plan.remote(function(remote) { /* ... */ })
+plan.remote(function(remote) { /* ... */ });
