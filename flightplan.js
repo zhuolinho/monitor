@@ -23,9 +23,9 @@ var tmpDir = 'monitor' + new Date().getTime();
 
 
 // run commands on localhost
-plan.local(function(local) {
+plan.local(function(local) {  
   local.log('Run build');
-  local.exec('gulp build');
+  local.exec('gulp');
 
   local.log('Copy files to remote hosts');
   var filesToCopy = local.exec('git ls-files', {silent: true});
@@ -39,7 +39,7 @@ plan.remote(function(remote) {
   remote.sudo('cp -R /tmp/' + tmpDir + ' ~', {user: 'webmaster'});
   remote.rm('-rf /tmp/' + tmpDir);
 
-  remote.log('Install dependencies');
+   remote.log('Install dependencies');
   remote.sudo('npm --production --prefix ~/' + tmpDir   + ' install ~/' + tmpDir, {user: 'webmaster'});
 
   remote.log('Reload application');
