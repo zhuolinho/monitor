@@ -2,3 +2,4 @@ node_modules
 app_modules/dispatcher/dev.dispatcher.module.js
 gulpfile.js
 public/gulpfile.js
+flightplan.js
