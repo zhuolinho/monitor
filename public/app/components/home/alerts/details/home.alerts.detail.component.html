@@ -2,7 +2,7 @@
         <!-- modal -->
 
         <div id="{{paramTable.id}}" class="modal  fixed helper-padding-bottom-20">
-          <div class="modal-content helper-overflow-hidden">
+          <div class="modal-content helper-overflow-hidden ">
             <i class="modal-close material-icons right">clear</i>
 
               <!-- <h4>Modal Header</h4> -->
@@ -34,7 +34,7 @@
 
 
 
-              <div *ngIf="!paymentState && !downloadAllState" class="row modal-table helper-margin-top-20" style="height:40vh; overflow-y:auto; webkit-overflow-scrolling:auto;">
+              <div *ngIf="!paymentState && !downloadAllState" class="row modal-table helper-margin-top-20" style="height:40vh; padding-bottom:50px; overflow-y:auto; webkit-overflow-scrolling:auto;">
 
                 <div class="row">
                   <img src="dist/images/chart.jpg" alt="" width="100%; heith:200px;">
@@ -64,7 +64,7 @@
                       <div class="table-row  helper-gray-bg-light">
                         <div class="table-cell"> CNG罐号 </div>
                         <div class="table-cell">日期  </div>
-                        <div class="table-cell">瞬时流量  </div>
+                        <!-- <div class="table-cell">瞬时流量  </div> -->
                         <div class="table-cell">平均流量 </div>
                         <div class="table-cell">峰值流量  </div>
                       </div>
@@ -72,7 +72,7 @@
 
                         <div class="table-cell"> {{row.code}} </div>
                         <div class="table-cell"> {{row.date}}  </div>
-                        <div class="table-cell"> {{row.if}} </div>
+                        <!-- <div class="table-cell"> {{row.if}} </div> -->
                         <div class="table-cell"> {{row.af}} </div>
                         <div class="table-cell"> {{row.mf}} </div>
                       </div>
@@ -94,5 +94,5 @@
                 下载所有数据
               </h4>
 
-              </div>
+            </div>
       </div>

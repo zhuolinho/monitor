@@ -324,6 +324,14 @@ body, html{
 }
 
 .helper-font-bigger {
+    font-size: 1.2em !important;
+}
+
+.helper-font-bigger150 {
+    font-size: 1.5em !important;
+}
+
+.helper-font-bigger180 {
     font-size: 1.5em !important;
 }
 

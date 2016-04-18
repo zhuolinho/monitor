@@ -1,21 +1,32 @@
 <div class="helper-border-top helper-relative">
     <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortByAdmin();  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 地址</a>
-        <a  (click)="veSortByAlertHandler();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 员工 </a>
-        <a  (click)="veSortByDeliveryStaff();  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">CNG</a>
-        <a   (click)="veSortByClient();  selectedtab=4;"  [class.monitor-tab-selected]="selectedtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> LNG</a>
+        <a (click)="veSortByAddress();  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 地址</a>
+        <a  (click)="veSortByStaff();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 员工 </a>
     </div>
-    <div class="space" style="padding-top:60px;">
+
+    <div *ngIf="selectedtab==1" class="helper-padding-10  helper-border-top monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:60px; left:0; width:100%;">
+        <a (click)="veSortByCng();  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> CNG</a>
+        <a  (click)="veSortByLng();  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> LNG </a>
+        <a  (click)="veSortByWebsite();  selectedsubtab=3;" [class.monitor-tab-selected]="selectedsubtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">管网</a>
     </div>
+
+
+    <div  *ngIf="selectedtab==2" class="helper-padding-10  helper-border-top monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:60px; left:0; width:100%;">
+        <a (click)="veSortByDriver();  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 司机</a>
+        <a  (click)="veSortByGuard();  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 押运员 </a>
+    </div>
+    <div class="space" style="padding-top:120px;">
+    </div>
+
 
     <!-- toto add a back to top button -->
 
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
       <ul class="collapsible row" data-collapsible="accordion">
-          <li *ngFor="#userGroup of userArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
-            <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 授权列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
-            <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
+          <li *ngFor="#addressGroup of addressArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+            <div *ngIf="(currentSubSort == addressGroup.type.id) || (currentSubSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 地址列表 ( {{addressGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
+            <div *ngIf="(currentSubSort == addressGroup.type.id) || (currentSubSort == 'all')" class="collapsible-body helper-padding-10">
 
               <div class="col s12">
                     <a href="{{'#id'+i}}"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
@@ -23,26 +34,20 @@
             <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
                   <div class="monitor-table helper-font-bigger">
                     <div class="table-row  helper-gray-bg-light">
-                      <div class="table-cell"> 账号 </div>
-                      <div class="table-cell">姓名 </div>
-                      <div class="table-cell">地址 </div>
-                      <div class="table-cell">手机号码 </div>
-                      <div class="table-cell">账号密码  </div>
-                      <div class="table-cell">权限  </div>
+                      <div class="table-cell"> 编号 </div>
+                      <div class="table-cell">厂区地址 </div>
+                      <div class="table-cell">PLC地址 </div>
                     </div>
-                    <div class="table-row" *ngFor="#user of userGroup.data">
+                    <div class="table-row" *ngFor="#address of addressGroup.data">
 
-                      <div class="table-cell"> {{user.an}} </div>
-                      <div class="table-cell"> {{user.name}}  </div>
-                      <div class="table-cell"> {{user.addr}} </div>
-                      <div class="table-cell"> {{user.phone}} </div>
-                      <div class="table-cell"> {{user.ap}} </div>
-                      <div class="table-cell"> {{user.p}} <a class="right"> 编辑</a></div>
+                      <div class="table-cell"> {{address.code}} </div>
+                      <div class="table-cell"> {{address.addr}} </div>
+                      <div class="table-cell"> {{address.plcaddr}} <a class="right"> 编辑</a></div>
                     </div>
                   </div>
 
                 <!-- modal goes here -->
-               <settings-add-address-user [data]="{id:'id'+i,users:userGroup}"> </settings-add-address-user>
+               <settings-add-address-user [data]="{id:'id'+i,pl:addressGroup}"> </settings-add-address-user>
               </div>
 
             </div>

@@ -26,13 +26,75 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
         execute: function() {
             SettingsAddress = (function () {
                 function SettingsAddress() {
-                    this.userArray = [
+                    this.addressArray = [
                         {
-                            type: { id: 1, value: '管理层' },
+                            type: { id: 1, value: 'CNG' },
+                            data: [
+                                {
+                                    code: 'C001',
+                                    addr: '闸北区天目东路111号XX站',
+                                    plcaddr: '192.167.0.1'
+                                },
+                                {
+                                    code: 'C002',
+                                    addr: '闸北区天目东路111号XXX站',
+                                    plcaddr: '192.167.1.2'
+                                },
+                                {
+                                    code: 'C003',
+                                    addr: '闸北区天目东路111号XX站',
+                                    plcaddr: '192.167.1.3'
+                                }
+                            ]
+                        },
+                        {
+                            type: { id: 2, value: 'LNG' },
+                            data: [
+                                {
+                                    code: 'L001',
+                                    addr: '闸北区沪太路111号XX站',
+                                    plcaddr: '192.167.1.8'
+                                },
+                                {
+                                    code: 'L002',
+                                    addr: '闸北区沪太路121号XXXX站',
+                                    plcaddr: '192.167.1.2'
+                                },
+                                {
+                                    code: 'L003',
+                                    addr: '闸北区沪太路222号XXX站',
+                                    plcaddr: '192.167.0.3'
+                                }
+                            ]
+                        },
+                        {
+                            type: { id: 3, value: '管网' },
+                            data: [
+                                {
+                                    code: 'G001',
+                                    addr: '闸北区新闸路55号XX站',
+                                    plcaddr: '192.167.1.8'
+                                },
+                                {
+                                    code: 'G002',
+                                    addr: '闸北区新闸路980号XXXX站',
+                                    plcaddr: '192.167.1.2'
+                                },
+                                {
+                                    code: 'G003',
+                                    addr: '闸北区新闸路201号XX站',
+                                    plcaddr: '192.167.0.3'
+                                }
+                            ]
+                        }
+                    ];
+                    this.staffArray = [
+                        {
+                            type: { id: 1, value: '司机' },
                             data: [
                                 {
                                     an: '101',
-                                    name: '胡某某',
+                                    name: '刘强',
                                     addr: '----',
                                     phone: '13987226225',
                                     ap: '1******6',
@@ -65,11 +127,11 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             ]
                         },
                         {
-                            type: { id: 2, value: '接警员' },
+                            type: { id: 2, value: '押运员' },
                             data: [
                                 {
                                     an: '201',
-                                    name: '韩丽',
+                                    name: '徐国龙',
                                     addr: '----',
                                     phone: '13987226223',
                                     ap: '1******6',
@@ -100,83 +162,61 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '2' //permission
                                 }
                             ]
-                        },
-                        {
-                            type: { id: 3, value: '配送员' },
-                            data: [
-                                {
-                                    an: '301',
-                                    name: '赵敏',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '3' //permission
-                                },
-                                {
-                                    an: '302',
-                                    name: '孔德',
-                                    addr: '----',
-                                    phone: '13987226225',
-                                    ap: '1******6',
-                                    p: '3' //permission
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 4, value: '客户' },
-                            data: [
-                                {
-                                    an: '401',
-                                    name: 'Candy',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                },
-                                {
-                                    an: '401',
-                                    name: '周璐',
-                                    addr: '----',
-                                    phone: '18987226003',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                },
-                                {
-                                    an: '401',
-                                    name: '黄金红',
-                                    addr: '----',
-                                    phone: '13937722609',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                }
-                            ]
                         }
                     ];
                     this.currentSort = 'all';
-                    this.selectedtab = 0;
+                    this.currentSubSort = 'all';
+                    this.selectedtab = 1;
+                    this.selectedsubtab = 0;
                     console.log("SettingsAddress is up and running");
                     this.initUi();
                 }
-                SettingsAddress.prototype.veSortByClient = function () {
-                    if (this.currentSort != '4') {
-                        this.currentSort = '4';
-                    }
-                };
-                SettingsAddress.prototype.veSortByDeliveryStaff = function () {
-                    if (this.currentSort != '3') {
-                        this.currentSort = '3';
-                    }
-                };
-                SettingsAddress.prototype.veSortByAlertHandler = function () {
-                    if (this.currentSort != '2') {
-                        this.currentSort = '2';
-                    }
-                };
-                SettingsAddress.prototype.veSortByAdmin = function () {
+                SettingsAddress.prototype.veSortByAddress = function () {
                     if (this.currentSort != '1') {
                         this.currentSort = '1';
                     }
+                    this.currentSubSort = 'all';
+                    this.selectedsubtab = 0;
                 };
+                ;
+                SettingsAddress.prototype.veSortByStaff = function () {
+                    if (this.currentSort != '2') {
+                        this.currentSort = '2';
+                    }
+                    this.currentSubSort = 'all';
+                    this.selectedsubtab = 0;
+                };
+                ;
+                SettingsAddress.prototype.veSortByCng = function () {
+                    if (this.currentSubSort != '1') {
+                        this.currentSubSort = '1';
+                    }
+                };
+                ;
+                SettingsAddress.prototype.veSortByLng = function () {
+                    if (this.currentSubSort != '2') {
+                        this.currentSubSort = '2';
+                    }
+                };
+                ;
+                SettingsAddress.prototype.veSortByWebsite = function () {
+                    if (this.currentSubSort != '3') {
+                        this.currentSubSort = '3';
+                    }
+                };
+                ;
+                SettingsAddress.prototype.veSortByGuard = function () {
+                    if (this.currentSubSort != '1') {
+                        this.currentSubSort = '1';
+                    }
+                };
+                ;
+                SettingsAddress.prototype.veSortByDriver = function () {
+                    if (this.currentSubSort != '2') {
+                        this.currentSubSort = '2';
+                    }
+                };
+                ;
                 SettingsAddress.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
@@ -193,11 +233,13 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                         });
                     });
                 };
+                ;
                 SettingsAddress.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
                 };
+                ;
                 SettingsAddress = __decorate([
                     core_1.Component({
                         selector: 'settings-address',

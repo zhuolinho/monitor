@@ -137,11 +137,11 @@ export class SettingsAccess{
               ]
             }
 
-  ]
+  ];
 
     currentSort:string = 'all';
     selectedtab:number = 0;
-    
+
     constructor(){
       console.log("SettingsAccess is up and running");
       this.initUi();
