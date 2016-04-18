@@ -10,12 +10,11 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
-   <!-- meterial icons -->
-   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
    <link rel='stylesheet' href='dist/css/lib.min.css' />
    <link rel='stylesheet' href='dist/css/admin.css' />
    <link rel='stylesheet' href='dist/css/monitor.css' />
+
    <!-- 1. Load libraries -->
       <!-- IE required polyfills, in this exact order -->
       <script src="node_modules/es6-shim/es6-shim.min.js"></script>

@@ -33,7 +33,13 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                     this.request = request;
                     this.router = router;
                     console.log("SettingsAuth is up and running");
+                    this.initUi();
                 }
+                SettingsAuth.prototype.initUi = function () {
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                    });
+                };
                 SettingsAuth.prototype.login = function () {
                     var _this = this;
                     this.request.post('users/login', { name: this.user.username, password: this.user.password }).subscribe(function (response) {

@@ -23,12 +23,19 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
         execute: function() {
             HomeProcssedAlerts = (function () {
                 function HomeProcssedAlerts() {
+                    this.months = ['1月', '2月', '3月', '4月'];
+                    this.selectedMonth = '';
                     console.log("Home processed alerts is up and running");
                     this.initUi();
                 }
+                HomeProcssedAlerts.prototype.veSelected = function (event, item) {
+                    this.selectedMonth = event.target.value;
+                };
                 HomeProcssedAlerts.prototype.initUi = function () {
+                    var _this = this;
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                        jQuery('select').on('change', _this.veSelected);
                         jQuery('.collapsible').collapsible({
                             accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
                         });

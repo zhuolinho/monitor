@@ -18,8 +18,13 @@ export class SettingsAuth{
       this.request = request;
       this.router = router;
       console.log("SettingsAuth is up and running");
-
-  }
+      this.initUi();
+      }
+      initUi(){
+        setTimeout(_=>{
+             jQuery('select').material_select();
+        });
+      }
 
     login(){
       var _this = this;
