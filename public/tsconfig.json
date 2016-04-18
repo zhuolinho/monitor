@@ -46,6 +46,7 @@
     "app/components/settings/address/partials/settings-add-address-user.component.ts",
     "app/components/settings/address/settings-address.component.ts",
     "app/components/settings/auth/settings-auth.component.ts",
+    "app/components/settings/formula/partials/settings-edit-formula.component.ts",
     "app/components/settings/formula/settings-formula.component.ts",
     "app/components/settings/settings.component.ts",
     "app/components/settings/sms/settings-sms.component.ts",

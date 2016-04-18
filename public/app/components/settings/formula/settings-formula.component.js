@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-edit-formula.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1;
+    var core_1, config_1, settings_edit_formula_component_1;
     var SettingsFormula;
     return {
         setters:[
@@ -19,16 +19,40 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
             },
             function (config_1_1) {
                 config_1 = config_1_1;
+            },
+            function (settings_edit_formula_component_1_1) {
+                settings_edit_formula_component_1 = settings_edit_formula_component_1_1;
             }],
         execute: function() {
             SettingsFormula = (function () {
                 function SettingsFormula() {
+                    this.selectedtab = 1;
                     console.log("SettingsFormula is up and running");
+                    this.initUi();
                 }
+                SettingsFormula.prototype.initUi = function () {
+                    var _this = this;
+                    setTimeout(function (_) {
+                        jQuery('.modal-trigger').leanModal({
+                            dismissible: true,
+                            opacity: .5,
+                            in_duration: 300,
+                            out_duration: 200,
+                            ready: function () { console.log('Ready'); _this.initSelect(); },
+                            complete: function () { console.log('Closed'); } // Callback for Modal close
+                        });
+                    });
+                };
+                SettingsFormula.prototype.initSelect = function () {
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                    });
+                };
                 SettingsFormula = __decorate([
                     core_1.Component({
                         selector: 'settings-formula',
-                        templateUrl: config_1.config.prefix + '/components/settings/formula/settings-formula.component.html'
+                        templateUrl: config_1.config.prefix + '/components/settings/formula/settings-formula.component.html',
+                        directives: [settings_edit_formula_component_1.SettingsEditFormula]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SettingsFormula);
