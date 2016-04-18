@@ -1,7 +1,7 @@
 <div class="helper-border-top helper-relative">
     <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)=" selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 报警参数</a>
-        <a  (click)=" selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 计算参数 </a>
+        <a (click)="veElertParameter(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 报警参数</a>
+        <a  (click)="veCalculateParameter(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 计算参数 </a>
     </div>
 
     <div class="space" style="padding-top:60px;">
@@ -11,41 +11,80 @@
 
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
-            <div class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
-               <div class="col s12 helper-font-bigger helper-vpadding-10">参数列表</div>
-              <div class="monitor-table helper-font-bigger">
-                <div class="table-row  helper-gray-bg-light">
-                  <div class="table-cell"> 百分比 </div>
-                  <div class="table-cell">地址 </div>
-                </div>
-                <div class="table-row">
-                  <div class="table-cell"> 15% </div>
-                  <div class="table-cell"> C001<a  href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                </div>
+              <div *ngIf="selectedtab == 1" class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
+                 <div class="col s12 helper-font-bigger helper-vpadding-10">参数列表</div>
+                <div class="monitor-table helper-font-bigger">
+                  <div class="table-row  helper-gray-bg-light">
+                    <div class="table-cell"> 百分比 </div>
+                    <div class="table-cell">地址 </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 15% </div>
+                    <div class="table-cell"> C001<a  href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+                  </div>
 
 
-                <div class="table-row">
-                  <div class="table-cell"> 15% </div>
-                  <div class="table-cell"> C002<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 15% </div>
+                    <div class="table-cell"> C002<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+                  </div>
 
 
-                <div class="table-row">
-                  <div class="table-cell"> 13% </div>
-                  <div class="table-cell"> C003<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 13% </div>
+                    <div class="table-cell"> C003<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+                  </div>
 
-                <div class="table-row">
-                  <div class="table-cell"> 13% </div>
-                  <div class="table-cell"> C004<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 13% </div>
+                    <div class="table-cell"> C004<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+                  </div>
 
-                <div class="table-row">
-                  <div class="table-cell"> 14% </div>
-                  <div class="table-cell"> C005<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 14% </div>
+                    <div class="table-cell"> C005<a href="#id222"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+                  </div>
+              </div>
+        </div>
+
+
+        <div *ngIf='selectedtab == 2' class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
+           <div class="col s12 helper-font-bigger helper-vpadding-10">公式列表</div>
+          <div class="monitor-table helper-font-bigger">
+            <div class="table-row  helper-gray-bg-light">
+              <div class="table-cell"> 公式 </div>
+              <div class="table-cell">地址 </div>
             </div>
+            <div class="table-row">
+              <div class="table-cell"> AxBxD/C </div>
+              <div class="table-cell"> C001<a  href="#id111"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+            </div>
+
+
+            <div class="table-row">
+              <div class="table-cell"> AxCxD/B </div>
+              <div class="table-cell"> C002<a href="#id111"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+            </div>
+
+
+            <div class="table-row">
+              <div class="table-cell"> DxBxA/C </div>
+              <div class="table-cell"> C003<a href="#id111"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+            </div>
+
+            <div class="table-row">
+              <div class="table-cell"> CxBxD/A </div>
+              <div class="table-cell"> C004<a href="#id111"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+            </div>
+
+            <div class="table-row">
+              <div class="table-cell"> AxCxD/B% </div>
+              <div class="table-cell"> C005<a href="#id111"  class=" modal-trigger helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+            </div>
+        </div>
+  </div>
     </div>
 
 
    <settings-edit-formula [data]="{id:'id222'}"> </settings-edit-formula>
+   <settings-edit-formula [data]="{id:'id111'}"> </settings-edit-formula>

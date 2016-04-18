@@ -18,6 +18,14 @@ export class SettingsFormula{
 
       }
 
+      veCalculateParameter(){
+          this.initUi();
+      }
+
+      veAleParameter(){
+            this.initUi();
+      }
+
       initUi(){
 
           var _this = this;

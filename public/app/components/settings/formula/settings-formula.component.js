@@ -30,6 +30,12 @@ System.register(['angular2/core', '../../../config', './partials/settings-edit-f
                     console.log("SettingsFormula is up and running");
                     this.initUi();
                 }
+                SettingsFormula.prototype.veCalculateParameter = function () {
+                    this.initUi();
+                };
+                SettingsFormula.prototype.veAleParameter = function () {
+                    this.initUi();
+                };
                 SettingsFormula.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
