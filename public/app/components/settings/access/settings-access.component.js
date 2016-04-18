@@ -26,134 +26,156 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
         execute: function() {
             SettingsAccess = (function () {
                 function SettingsAccess() {
-                    this.alertsList = [
+                    this.userArray = [
                         {
-                            name: 'C002-闸北区大宁路335号XX站',
-                            id: '6848',
-                            type: '余量报警',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
+                            type: { id: 1, value: '管理层' },
+                            data: [
+                                {
+                                    an: '101',
+                                    name: '胡某某',
+                                    addr: '----',
+                                    phone: '13987226225',
+                                    ap: '1******6',
+                                    p: '1' //permission
+                                },
+                                {
+                                    an: '102',
+                                    name: '徐某某',
+                                    addr: '----',
+                                    phone: '18987226225',
+                                    ap: '1******6',
+                                    p: '1' //permission
+                                },
+                                {
+                                    an: '103',
+                                    name: '高阳',
+                                    addr: '----',
+                                    phone: '17987226228',
+                                    ap: '1******6',
+                                    p: '1' //permission
+                                },
+                                {
+                                    an: '104',
+                                    name: '高琳',
+                                    addr: '----',
+                                    phone: '13987226228',
+                                    ap: '1******6',
+                                    p: '1' //permission
+                                }
+                            ]
                         },
                         {
-                            name: 'C003-闸北区大宁路335号XX站',
-                            id: '6848',
-                            type: '余量报警',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: true,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
+                            type: { id: 2, value: '接警员' },
+                            data: [
+                                {
+                                    an: '201',
+                                    name: '韩丽',
+                                    addr: '----',
+                                    phone: '13987226223',
+                                    ap: '1******6',
+                                    p: '2' //permission
+                                },
+                                {
+                                    an: '202',
+                                    name: '宋红',
+                                    addr: '----',
+                                    phone: '14987226225',
+                                    ap: '1******6',
+                                    p: '2' //permission
+                                },
+                                {
+                                    an: '203',
+                                    name: '高阳',
+                                    addr: '----',
+                                    phone: '17987226228',
+                                    ap: '1******6',
+                                    p: '2' //permission
+                                },
+                                {
+                                    an: '204',
+                                    name: '梁凯',
+                                    addr: '----',
+                                    phone: '1392226228',
+                                    ap: '1******6',
+                                    p: '2' //permission
+                                }
+                            ]
                         },
                         {
-                            name: 'C004-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '信号中断',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '信号中断'
+                            type: { id: 3, value: '配送员' },
+                            data: [
+                                {
+                                    an: '301',
+                                    name: '赵敏',
+                                    addr: '----',
+                                    phone: '13987226223',
+                                    ap: '1******6',
+                                    p: '3' //permission
+                                },
+                                {
+                                    an: '302',
+                                    name: '孔德',
+                                    addr: '----',
+                                    phone: '13987226225',
+                                    ap: '1******6',
+                                    p: '3' //permission
+                                }
+                            ]
                         },
                         {
-                            name: 'C005-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '信号中断',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: true,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '信号中断'
-                        },
-                        {
-                            name: 'C006-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '信号中断',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '信号中断'
-                        },
-                        {
-                            name: 'C007-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '信号中断',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '信号中断'
-                        },
-                        {
-                            name: 'C007-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '泄漏报警',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '泄漏报警'
-                        },
-                        {
-                            name: 'C007-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '泄漏报警',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '泄漏报警'
-                        },
-                        {
-                            name: 'C007-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '压力报警',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '压力报警'
-                        },
-                        {
-                            name: 'C007-闸北区大宁路335号XX站',
-                            id: '6832',
-                            type: '压力报警',
-                            remainingTime: '',
-                            upTime: '15.5.3-13:02/----',
-                            processed: true,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '压力报警'
+                            type: { id: 4, value: '客户' },
+                            data: [
+                                {
+                                    an: '401',
+                                    name: 'Candy',
+                                    addr: '----',
+                                    phone: '13987226223',
+                                    ap: '1******6',
+                                    p: '4' //permission
+                                },
+                                {
+                                    an: '401',
+                                    name: '周璐',
+                                    addr: '----',
+                                    phone: '18987226003',
+                                    ap: '1******6',
+                                    p: '4' //permission
+                                },
+                                {
+                                    an: '401',
+                                    name: '黄金红',
+                                    addr: '----',
+                                    phone: '13937722609',
+                                    ap: '1******6',
+                                    p: '4' //permission
+                                }
+                            ]
                         }
-                    ]; //todo user flag and ng if to hide when filtering;
+                    ];
                     this.currentSort = 'all';
+                    this.selectedtab = 0;
                     console.log("SettingsAccess is up and running");
                     this.initUi();
                 }
-                SettingsAccess.prototype.veSortByShortage = function () {
-                    if (this.currentSort != '余量报警') {
-                        this.currentSort = '余量报警';
+                SettingsAccess.prototype.veSortByClient = function () {
+                    if (this.currentSort != '4') {
+                        this.currentSort = '4';
                     }
                 };
-                SettingsAccess.prototype.veSortBySingal = function () {
-                    if (this.currentSort != '信号中断') {
-                        this.currentSort = '信号中断';
+                SettingsAccess.prototype.veSortByDeliveryStaff = function () {
+                    if (this.currentSort != '3') {
+                        this.currentSort = '3';
                     }
                 };
-                SettingsAccess.prototype.veSortByPresure = function () {
-                    if (this.currentSort != '压力报警') {
-                        this.currentSort = '压力报警';
+                SettingsAccess.prototype.veSortByAlertHandler = function () {
+                    if (this.currentSort != '2') {
+                        this.currentSort = '2';
                     }
                 };
-                SettingsAccess.prototype.veSortByLeakage = function () {
-                    if (this.currentSort != '泄漏报警') {
-                        this.currentSort = '泄漏报警';
+                SettingsAccess.prototype.veSortByAdmin = function () {
+                    if (this.currentSort != '1') {
+                        this.currentSort = '1';
                     }
-                };
-                SettingsAccess.prototype.veProcessed = function (alert) {
-                    alert.processed = !alert.processed;
                 };
                 SettingsAccess.prototype.initUi = function () {
                     var _this = this;

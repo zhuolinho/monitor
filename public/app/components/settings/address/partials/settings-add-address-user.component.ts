@@ -5,11 +5,11 @@ import {AlertModel} from '../../../../models/alert-model';
 declare var jQuery:any;
 
 @Component({
-  selector:'settings-add-user',
-  templateUrl:config.prefix + '/components/settings/access/partials/settings-add-user.component.html'
+  selector:'settings-add-address-user',
+  templateUrl:config.prefix + '/components/settings/address/partials/settings-add-address-user.component.html'
 })
 
-export class SettingsAddUser{
+export class SettingsAddAddressUser{
      data:any;
     @Input('data')
     set users(data){
@@ -20,7 +20,7 @@ export class SettingsAddUser{
 
 
     constructor(){
-      console.log("add user modal is up and running---");
+      console.log("add user address modal is up and running---");
     }
 
 

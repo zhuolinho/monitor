@@ -11,7 +11,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, config_1;
-    var SettingsAddUser;
+    var SettingsAddAddressUser;
     return {
         setters:[
             function (core_1_1) {
@@ -21,11 +21,11 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                 config_1 = config_1_1;
             }],
         execute: function() {
-            SettingsAddUser = (function () {
-                function SettingsAddUser() {
-                    console.log("add user modal is up and running---");
+            SettingsAddAddressUser = (function () {
+                function SettingsAddAddressUser() {
+                    console.log("add user address modal is up and running---");
                 }
-                Object.defineProperty(SettingsAddUser.prototype, "users", {
+                Object.defineProperty(SettingsAddAddressUser.prototype, "users", {
                     get: function () { return this.data; },
                     set: function (data) {
                         this.data = data;
@@ -33,7 +33,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     enumerable: true,
                     configurable: true
                 });
-                SettingsAddUser.prototype.initSelect = function () {
+                SettingsAddAddressUser.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
@@ -42,17 +42,17 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     core_1.Input('data'), 
                     __metadata('design:type', Object), 
                     __metadata('design:paramtypes', [Object])
-                ], SettingsAddUser.prototype, "users", null);
-                SettingsAddUser = __decorate([
+                ], SettingsAddAddressUser.prototype, "users", null);
+                SettingsAddAddressUser = __decorate([
                     core_1.Component({
-                        selector: 'settings-add-user',
-                        templateUrl: config_1.config.prefix + '/components/settings/access/partials/settings-add-user.component.html'
+                        selector: 'settings-add-address-user',
+                        templateUrl: config_1.config.prefix + '/components/settings/address/partials/settings-add-address-user.component.html'
                     }), 
                     __metadata('design:paramtypes', [])
-                ], SettingsAddUser);
-                return SettingsAddUser;
+                ], SettingsAddAddressUser);
+                return SettingsAddAddressUser;
             }());
-            exports_1("SettingsAddUser", SettingsAddUser);
+            exports_1("SettingsAddAddressUser", SettingsAddAddressUser);
         }
     }
 });

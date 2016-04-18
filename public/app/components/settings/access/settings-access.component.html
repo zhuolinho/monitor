@@ -1,9 +1,9 @@
 <div class="helper-border-top helper-relative">
-    <div class="helper-padding-10  herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortByShortage()" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span class="new-alert-badge">14</span></a>
-        <a  (click)="veSortByPresure()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警 </a>
-        <a  (click)="veSortBySingal()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断 <span class="new-alert-badge">1</span></a>
-        <a   (click)="veSortByLeakage()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 </a>
+    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
+        <a (click)="veSortByAdmin();  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 管理层</a>
+        <a  (click)="veSortByAlertHandler();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 接警员 </a>
+        <a  (click)="veSortByDeliveryStaff();  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">配送员</a>
+        <a   (click)="veSortByClient();  selectedtab=4;"  [class.monitor-tab-selected]="selectedtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 客户</a>
     </div>
     <div class="space" style="padding-top:60px;">
     </div>
@@ -13,76 +13,36 @@
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
       <ul class="collapsible row" data-collapsible="accordion">
-          <li *ngFor="#alert of alertsList; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
-            <div *ngIf="(currentSort == alert.type) || (currentSort == 'all')" class="collapsible-header active"> <span class="left">CNG罐号</span>  <i class="material-icons right">expand_more</i></div>
-            <div *ngIf="(currentSort == alert.type) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
+          <li *ngFor="#userGroup of userArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+            <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 授权列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
+            <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
-              <div class="helper-margin-bottom-20 valign-wrapper row">
-                <div class="col s9">
-                  <div class="helper-white-bg ">
-                    <div class="row valign-wrapper helper-padding-5">
-                      <div class="col s4 push-s8">
-                        <div *ngIf="!alert.processed" class="right">
-                              <a  href="{{'#id'+i}}" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger modal-trigger">更多</a>
-                        </div>
-
-                        <div *ngIf="alert.processed" class="right helper-font-bigger">
-                            已接报
-                        </div>
-
-                      </div>
-                      <div class="col s8 pull-s4 valign helper-font-bigger helper-padding-left-30">
-                        {{alert.name}}
-                      </div>
+              <div class="col s12">
+                    <a href="{{'#id'+i}}"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
+              </div>
+            <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
+                  <div class="monitor-table helper-font-bigger">
+                    <div class="table-row  helper-gray-bg-light">
+                      <div class="table-cell"> 账号 </div>
+                      <div class="table-cell">姓名 </div>
+                      <div class="table-cell">地址 </div>
+                      <div class="table-cell">手机号码 </div>
+                      <div class="table-cell">账号密码  </div>
+                      <div class="table-cell">权限  </div>
                     </div>
+                    <div class="table-row" *ngFor="#user of userGroup.data">
 
-                    <div class="monitor-table helper-font-bigger">
-                      <div class="table-row">
-                        <div class="table-cell"> 罐号 </div>
-                        <div class="table-cell">{{alert.id}}  </div>
-                      </div>
-                      <div class="table-row" *ngIf="alert.type == '余量报警'">
-                          <div class="table-cell"> 余量/压力 </div>
-                          <div class="table-cell">{{alert.alertValue}}
-
-                          <div class="monitor-alert" *ngIf="!alert.processed">
-                              余量报警
-                            </div>
-                         </div>
-                      </div>
-
-
-                      <div class="table-row" *ngIf="alert.type == '信号中断'">
-                        <div class="table-cell"> 信号/异常 </div>
-                        <div class="table-cell">{{alert.alertValue}}
-
-                          <div class="monitor-alert" *ngIf="!alert.processed">
-                                 信号中断
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="table-row" *ngIf="alert.type == '余量报警'">
-                        <div class="table-cell"> 剩余时间 </div>
-                        <div class="table-cell">{{alert.remainingTime}} </div>
-                      </div>
-
-                      <div class="table-row">
-                        <div class="table-cell"> 时间/工号 </div>
-                        <div class="table-cell">{{alert.upTime}} </div>
-                      </div>
-
+                      <div class="table-cell"> {{user.an}} </div>
+                      <div class="table-cell"> {{user.name}}  </div>
+                      <div class="table-cell"> {{user.addr}} </div>
+                      <div class="table-cell"> {{user.phone}} </div>
+                      <div class="table-cell"> {{user.ap}} </div>
+                      <div class="table-cell"> {{user.p}} <a class="right"> 编辑</a></div>
                     </div>
                   </div>
 
-                </div>
-                <div class="col s3 valign">
-                  <a (click)="veProcessed(alert)" *ngIf="!alert.processed" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a>
-                </div>
-
                 <!-- modal goes here -->
-                <settings-add-user [data]="{id:'id'+i,alert:alert}"> </settings-add-user>
-
+               <settings-add-user [data]="{id:'id'+i,users:userGroup}"> </settings-add-user>
               </div>
 
             </div>
