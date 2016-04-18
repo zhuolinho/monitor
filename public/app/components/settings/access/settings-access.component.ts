@@ -151,24 +151,28 @@ export class SettingsAccess{
       if(this.currentSort!='4'){
         this.currentSort='4';
       }
+        this.initUi();
     }
 
     veSortByDeliveryStaff(){
       if(this.currentSort!='3'){
         this.currentSort='3';
       }
+        this.initUi();
     }
 
     veSortByAlertHandler(){
       if(this.currentSort!='2'){
         this.currentSort='2';
       }
+        this.initUi();
     }
 
     veSortByAdmin(){
       if(this.currentSort!='1'){
         this.currentSort='1';
       }
+        this.initUi();
     }
     initUi(){
 

@@ -161,21 +161,25 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                     if (this.currentSort != '4') {
                         this.currentSort = '4';
                     }
+                    this.initUi();
                 };
                 SettingsAccess.prototype.veSortByDeliveryStaff = function () {
                     if (this.currentSort != '3') {
                         this.currentSort = '3';
                     }
+                    this.initUi();
                 };
                 SettingsAccess.prototype.veSortByAlertHandler = function () {
                     if (this.currentSort != '2') {
                         this.currentSort = '2';
                     }
+                    this.initUi();
                 };
                 SettingsAccess.prototype.veSortByAdmin = function () {
                     if (this.currentSort != '1') {
                         this.currentSort = '1';
                     }
+                    this.initUi();
                 };
                 SettingsAccess.prototype.initUi = function () {
                     var _this = this;

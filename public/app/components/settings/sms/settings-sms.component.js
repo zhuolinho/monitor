@@ -161,21 +161,25 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-sm
                     if (this.currentSort != '4') {
                         this.currentSort = '4';
                     }
+                    this.initUi();
                 };
                 SettingsSms.prototype.veSortByDeliveryStaffSms = function () {
                     if (this.currentSort != '3') {
                         this.currentSort = '3';
                     }
+                    this.initUi();
                 };
                 SettingsSms.prototype.veSortByAlertHandlerSms = function () {
                     if (this.currentSort != '2') {
                         this.currentSort = '2';
                     }
+                    this.initUi();
                 };
                 SettingsSms.prototype.veSortByAlertSms = function () {
                     if (this.currentSort != '1') {
                         this.currentSort = '1';
                     }
+                    this.initUi();
                 };
                 SettingsSms.prototype.initUi = function () {
                     var _this = this;

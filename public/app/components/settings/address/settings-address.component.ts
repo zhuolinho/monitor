@@ -189,21 +189,26 @@ export class SettingsAddress{
         if (this.currentSubSort != '2') {
             this.currentSubSort = '2';
         }
+
+          this.initUi();
     };
      veSortByWebsite (){
         if (this.currentSubSort != '3') {
             this.currentSubSort = '3';
         }
+          this.initUi();
     };
      veSortByGuard  (){
         if (this.currentSubSort != '1') {
             this.currentSubSort = '1';
         }
+          this.initUi();
     };
      veSortByDriver (){
         if (this.currentSubSort != '2') {
             this.currentSubSort = '2';
         }
+          this.initUi();
     };
 
     initUi (){

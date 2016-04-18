@@ -153,24 +153,29 @@ export class SettingsSms{
           if(this.currentSort!='4'){
             this.currentSort='4';
           }
+            this.initUi();
         }
 
         veSortByDeliveryStaffSms(){
           if(this.currentSort!='3'){
             this.currentSort='3';
           }
+            this.initUi();
         }
 
         veSortByAlertHandlerSms(){
           if(this.currentSort!='2'){
             this.currentSort='2';
           }
+            this.initUi();
         }
 
         veSortByAlertSms(){
           if(this.currentSort!='1'){
             this.currentSort='1';
           }
+
+          this.initUi();
         }
         initUi(){
 

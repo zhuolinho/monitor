@@ -199,24 +199,28 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     if (this.currentSubSort != '2') {
                         this.currentSubSort = '2';
                     }
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByWebsite = function () {
                     if (this.currentSubSort != '3') {
                         this.currentSubSort = '3';
                     }
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByGuard = function () {
                     if (this.currentSubSort != '1') {
                         this.currentSubSort = '1';
                     }
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByDriver = function () {
                     if (this.currentSubSort != '2') {
                         this.currentSubSort = '2';
                     }
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.initUi = function () {
