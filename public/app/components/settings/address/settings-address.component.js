@@ -193,6 +193,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     if (this.currentSubSort != '1') {
                         this.currentSubSort = '1';
                     }
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByLng = function () {

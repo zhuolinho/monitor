@@ -184,12 +184,12 @@ export class SettingsAddress{
         if (this.currentSubSort != '1') {
             this.currentSubSort = '1';
         }
+        this.initUi();
     };
      veSortByLng (){
         if (this.currentSubSort != '2') {
             this.currentSubSort = '2';
         }
-
           this.initUi();
     };
      veSortByWebsite (){
