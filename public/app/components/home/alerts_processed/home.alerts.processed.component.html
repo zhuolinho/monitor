@@ -15,7 +15,6 @@
                       <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth" (change)="veSelected($event, selectedMonth)">
                         <option *ngFor="#m of months; #i = index" [attr.selected]="i == 0" [value]="m">{{m}}</option>
                       </select>
-                      <!-- <label>选在时间</label> -->
                     </div>
                 </div>
                 <div class="container valign">
