@@ -93,7 +93,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             type: { id: 1, value: '司机' },
                             data: [
                                 {
-                                    an: '101',
+                                    an: '601',
                                     name: '刘强',
                                     addr: '----',
                                     phone: '13987226225',
@@ -101,7 +101,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '1' //permission
                                 },
                                 {
-                                    an: '102',
+                                    an: '602',
                                     name: '徐某某',
                                     addr: '----',
                                     phone: '18987226225',
@@ -109,7 +109,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '1' //permission
                                 },
                                 {
-                                    an: '103',
+                                    an: '603',
                                     name: '高阳',
                                     addr: '----',
                                     phone: '17987226228',
@@ -117,7 +117,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '1' //permission
                                 },
                                 {
-                                    an: '104',
+                                    an: '604',
                                     name: '高琳',
                                     addr: '----',
                                     phone: '13987226228',
@@ -130,7 +130,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             type: { id: 2, value: '押运员' },
                             data: [
                                 {
-                                    an: '201',
+                                    an: '801',
                                     name: '徐国龙',
                                     addr: '----',
                                     phone: '13987226223',
@@ -138,7 +138,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '2' //permission
                                 },
                                 {
-                                    an: '202',
+                                    an: '802',
                                     name: '宋红',
                                     addr: '----',
                                     phone: '14987226225',
@@ -146,7 +146,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '2' //permission
                                 },
                                 {
-                                    an: '203',
+                                    an: '803',
                                     name: '高阳',
                                     addr: '----',
                                     phone: '17987226228',
@@ -154,7 +154,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     p: '2' //permission
                                 },
                                 {
-                                    an: '204',
+                                    an: '804',
                                     name: '梁凯',
                                     addr: '----',
                                     phone: '1392226228',
@@ -177,6 +177,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     }
                     this.currentSubSort = 'all';
                     this.selectedsubtab = 0;
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByStaff = function () {
@@ -185,6 +186,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     }
                     this.currentSubSort = 'all';
                     this.selectedsubtab = 0;
+                    this.initUi();
                 };
                 ;
                 SettingsAddress.prototype.veSortByCng = function () {

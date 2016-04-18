@@ -23,7 +23,7 @@
 
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
-      <ul class="collapsible row" data-collapsible="accordion">
+      <ul *ngIf="selectedtab==1" class="collapsible row" data-collapsible="accordion">
           <li *ngFor="#addressGroup of addressArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
             <div *ngIf="(currentSubSort == addressGroup.type.id) || (currentSubSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 地址列表 ( {{addressGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
             <div *ngIf="(currentSubSort == addressGroup.type.id) || (currentSubSort == 'all')" class="collapsible-body helper-padding-10">
@@ -55,4 +55,48 @@
           <!-- end of block -->
 
         </ul>
+
+
+
+
+        <ul  *ngIf="selectedtab==2"  class="collapsible row" data-collapsible="accordion">
+              <li *ngFor="#userGroup of staffArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+                <div *ngIf="(currentSubSort == userGroup.type.id) || (currentSubSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 员工列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
+                <div *ngIf="(currentSubSort == userGroup.type.id) || (currentSubSort == 'all')" class="collapsible-body helper-padding-10">
+                  <div class="col s12">
+                        <a href="{{'#id'+i}}"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
+                  </div>
+                <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
+                      <div class="monitor-table helper-font-bigger">
+                        <div class="table-row  helper-gray-bg-light">
+                          <div class="table-cell"> 账号 </div>
+                          <div class="table-cell">姓名 </div>
+                          <div class="table-cell">地址 </div>
+                          <div class="table-cell">手机号码 </div>
+                          <div class="table-cell">账号密码  </div>
+                          <div class="table-cell">权限  </div>
+                        </div>
+
+                        <div class="table-row" *ngFor="#user of userGroup.data">
+
+                          <div class="table-cell"> {{user.an}} </div>
+                          <div class="table-cell"> {{user.name}}  </div>
+                          <div class="table-cell"> {{user.addr}} </div>
+                          <div class="table-cell"> {{user.phone}} </div>
+                          <div class="table-cell"> {{user.ap}} </div>
+                          <div class="table-cell"> {{user.p}} <a class="right"> 编辑</a></div>
+                        </div>
+                      </div>
+
+                    <!-- modal goes here -->
+                   <settings-add-user [data]="{id:'id'+i,users:userGroup}"> </settings-add-user>
+                  </div>
+
+                </div>
+              </li>
+              <!-- end of block -->
+
+        </ul>
+
+
     </div>
