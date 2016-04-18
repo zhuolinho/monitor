@@ -23,6 +23,8 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         execute: function() {
             HomeAlertsDetail = (function () {
                 function HomeAlertsDetail() {
+                    this.paymentState = false;
+                    this.downloadAllState = false;
                     this.tableByday = [{ code: 'C002', date: '1月1号', if: 0.0000, af: 0.0000, mf: 0.0000 },
                         { code: 'C002', date: '1月2号', if: 0.0000, af: 0.0000, mf: 0.0000 },
                         { code: 'C002', date: '1月3号', if: 0.0000, af: 0.0000, mf: 0.0000 },

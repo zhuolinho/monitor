@@ -12,18 +12,18 @@
 
               <div class="row modal-nav monitor-tabs">
                 <div class="col s3">
-                    <a (click)="showByDay(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+                    <a (click)="showByDay(); selectedtab=1;  paymentState=false; downloadAllState=false" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均用量 </a>
                 </div>
 
                 <div class="col s3">
-                    <a  (click)="showByMonth(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均用量</a>
+                    <a  (click)="showByMonth(); selectedtab=2;   paymentState=false; downloadAllState=false" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均用量</a>
                 </div>
                 <div class="col s3">
 
-                    <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+                    <a (click)="selectedtab=3;  paymentState=false; downloadAllState=true;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
                 </div>
                 <div class="col s3">
-                    <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
+                    <a (click)="selectedtab=4; paymentState=true; downloadAllState=false;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
                 </div>
 
               </div>
@@ -34,7 +34,7 @@
 
 
 
-                <div class="row modal-table helper-margin-top-20" style="height:40vh; overflow-y:auto; webkit-overflow-scrolling:auto;">
+            <div *ngIf="!paymentState && !downloadAllState" class="row modal-table helper-margin-top-20" style="height:40vh; overflow-y:auto; webkit-overflow-scrolling:auto;">
 
 
                   <div class="row">
@@ -80,5 +80,22 @@
                   </div>
 
               </div>
+
+
+
+
+
+              <h4 *ngIf="paymentState" class="center-align" style="margin:13% 0;">
+
+                在线支付
+
+              </h4>
+
+              <h4 *ngIf="downloadAllState" class="center-align" style="margin:13% 0;">
+                下载所有数据
+              </h4>
+
+
+
           </div>
       </div>

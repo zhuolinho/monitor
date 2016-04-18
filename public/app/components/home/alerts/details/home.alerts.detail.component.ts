@@ -11,6 +11,8 @@ declare var jQuery:any;
 
 export class HomeAlertsDetail{
      paramTable:AlertModel;
+     paymentState:boolean = false;
+     downloadAllState:boolean = false;
     @Input('data')
     set table(data){
       this.paramTable = data;

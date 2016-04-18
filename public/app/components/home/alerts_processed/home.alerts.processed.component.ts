@@ -16,8 +16,8 @@ export class HomeProcssedAlerts{
 
 
     constructor(){
-    console.log("Home processed alerts is up and running");
-    this.initUi();
+        console.log("Home processed alerts is up and running");
+        this.initUi();
     }
 
     veSelected(event, item){
