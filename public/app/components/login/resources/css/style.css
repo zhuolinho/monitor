@@ -1,6 +1,7 @@
 #loginWrapper{
   background-color: #289DDC;
   height: 100vh;
+  overflow-y: auto; 
   padding-top: 25vh;
   color: white;
 }
