@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yozaii Admin</title>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+	<style type="text/css">
+		body, html{width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    #allmap{width: 60%;height: 500px; margin: 100px auto;}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg"></script>
+	<title>带文字标签的覆盖物</title>
+</head>
+<body>
+
+  <video style="width:500px; height:500px;"
+  src="http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg==" >
+
+  </video>
+</body>
+</html>

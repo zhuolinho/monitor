@@ -124,9 +124,5 @@ router.get('/admin', passport.authenticate('jwt', { session: false}), function(r
 
 });
 
-
-
-  // _tcpCLient(handler);
-
   return router;
 };
