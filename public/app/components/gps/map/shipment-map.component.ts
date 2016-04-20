@@ -17,9 +17,11 @@ declare var io:any;
 export class ShipmentMap{
 
   static mapLoaded:boolean = false;
-  static points:any = {};
+  static allCars:any = {};
   selectedtab:number=1;
   delevered:boolean=false;
+  targetCar:any;
+  targetMarker:any;
   static gpsmap:any;
   constructor(public request:Request){
   console.log("ShipmentMap is up and running");
@@ -44,63 +46,68 @@ export class ShipmentMap{
   }
 
   mapLoadedCb(){
-    // if (!ShipmentMap.mapLoaded){
-    //       ShipmentMap.mapLoaded = true ;
-    //       // 百度地图API功能
-    //       ShipmentMap.gpsmap = new BMap.Map("allmap");
-    //   }
-
-      var map = new BMap.Map("allmap");
-      var point = new BMap.Point(116.404, 39.915);
-      map.centerAndZoom(point, 15);
-      // 编写自定义函数,创建标注
-      function addMarker(point){
-        var marker = new BMap.Marker(point);
-        var label = new BMap.Label("我是文字标注哦",{offset:new BMap.Size(20,-10)});
-        //
-        // marker.setLabel(label);
-        map.addOverlay(marker);
+    if (!ShipmentMap.mapLoaded){   //avoid initializing twice.
+          ShipmentMap.mapLoaded = true ;
+          // 百度地图API功能
+          ShipmentMap.gpsmap = new BMap.Map("allmap");
       }
-      // 随机向地图添加25个标注
-      var bounds = map.getBounds();
+
+      // var map = new BMap.Map("allmap");
+      var point = new BMap.Point(121.459, 31.293);
+      ShipmentMap.gpsmap.centerAndZoom(point, 7);
+      // // 编写自定义函数,创建标注
+
+      // // 随机向地图添加25个标注
+      var bounds = ShipmentMap.gpsmap.getBounds();
       var sw = bounds.getSouthWest();
       var ne = bounds.getNorthEast();
       var lngSpan = Math.abs(sw.lng - ne.lng);
       var latSpan = Math.abs(ne.lat - sw.lat);
-      for (var i = 0; i < 25; i ++) {
-        var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-        addMarker(point);
-      }
+      // for (var i = 0; i < 25; i ++) {
+      //   var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+      //   addMarker(point);
+      // }
   }
 
-  initGpsMap(cardata:any){
-    return;
+  addMarker(cardata){
+    var point = new BMap.Point(cardata.lng, cardata.lat);
+    var marker = new BMap.Marker(point);
+    ShipmentMap.gpsmap.addOverlay(marker);
+  }
 
-      // avoid socket call before init callback
-      if (!ShipmentMap.mapLoaded){
-            return ;
-        }
-
-        console.log('map got car---', cardata);
-
-      var center = new BMap.Point(116.404, 39.915);
-    	map.centerAndZoom(point, 15);
-
-      ShipmentMap.gpsmap.centerAndZoom(new BMap.Point(cardata.lon,  cardata.lat), 15);
-
-      var myPoint = new BMap.Point(cardata.lon,cardata.lat);    //起点
-
+  addCustomMarker(cardata){
       var iconImage = 'dist/images/truck.png';
       var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
       var myIcon = new BMap.Icon(testIconImage, new BMap.Size(32, 70), {    //小车图片
         //offset: new BMap.Size(0, -5),    //相当于CSS精灵
-        imageOffset: new BMap.Size(0, 0.5)    //图片的偏移量。为了是图片底部中心对准坐标点。
+          imageOffset: new BMap.Size(0, 0.5)    //图片的偏移量。为了是图片底部中心对准坐标点。
         });
 
-      // var carMk = new BMap.Marker(myPoint, {icon:myIcon});
-      var carMk = new BMap.Marker(myPoint);
-      ShipmentMap.gpsmap.addOverlay(carMk);
+        var point = new BMap.Point(cardata.lng, cardata.lat);
+        var marker = new BMap.Marker(point, {icon:myIcon});
 
+        this.targetMarker = marker;
+        ShipmentMap.gpsmap.addOverlay(this.targetMarker);
+  }
+
+
+  updatePosition(cardata){
+
+    var _this = this;
+
+        console.log('updatePosition---');
+
+        if(!this.targetCar){
+              // var initPoint = new BMap.Point(parseFloat(cardata.lng).toFixed(3),parseFloat(cardata.lat).toFixed(3));
+              // ShipmentMap.gpsmap.centerAndZoom(initPoint, 16);
+              this.targetCar = cardata;
+              this.addCustomMarker(cardata);
+        }
+        else if(cardata.sim == this.targetCar.sim){
+            console.log('same car on the move-----');
+            this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat))
+            // this.addCustomMarker(cardata)
+        }
 
     }
 
@@ -114,19 +121,23 @@ export class ShipmentMap{
         }
         var socket = io(url);
        socket.on('carMove', function(data){
-         console.log('carMove---->>>>---',data);
-
-         if(data.pl&&data.pl.gps){
-
-
+           if(data.pl&&data.pl.gps){
               var cardata = data.pl.gps;
-            _this.initGpsMap(cardata);
-          //  if(cardata.sim == "14721115321"){
-          //    console.log('same cardata',data);
-          //     Gps.points['14721115321'].lng = cardata.lon;
-          //     Gps.points['14721115321'].lat = cardata.lat;
-          //  }
-         }
+              _this.updatePosition(cardata);
+
+
+           }
        });
+    }
+
+    showAllCars(cardata){
+      var _this = this;
+        if(!ShipmentMap.allCars[cardata.sim]){
+           _this.addMarker(cardata);
+           ShipmentMap.allCars[cardata.sim] = cardata;
+        }
+        else{  //
+             console.log('same car------->>>>>>-----',cardata.sim);
+        }
     }
  }

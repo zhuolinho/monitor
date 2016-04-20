@@ -47,53 +47,56 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                     document.body.appendChild(script);
                 };
                 ShipmentMap.prototype.mapLoadedCb = function () {
-                    // if (!ShipmentMap.mapLoaded){
-                    //       ShipmentMap.mapLoaded = true ;
-                    //       // 百度地图API功能
-                    //       ShipmentMap.gpsmap = new BMap.Map("allmap");
-                    //   }
-                    var map = new BMap.Map("allmap");
-                    var point = new BMap.Point(116.404, 39.915);
-                    map.centerAndZoom(point, 15);
-                    // 编写自定义函数,创建标注
-                    function addMarker(point) {
-                        var marker = new BMap.Marker(point);
-                        var label = new BMap.Label("我是文字标注哦", { offset: new BMap.Size(20, -10) });
-                        //
-                        // marker.setLabel(label);
-                        map.addOverlay(marker);
+                    if (!ShipmentMap.mapLoaded) {
+                        ShipmentMap.mapLoaded = true;
+                        // 百度地图API功能
+                        ShipmentMap.gpsmap = new BMap.Map("allmap");
                     }
-                    // 随机向地图添加25个标注
-                    var bounds = map.getBounds();
+                    // var map = new BMap.Map("allmap");
+                    var point = new BMap.Point(121.459, 31.293);
+                    ShipmentMap.gpsmap.centerAndZoom(point, 7);
+                    // // 编写自定义函数,创建标注
+                    // // 随机向地图添加25个标注
+                    var bounds = ShipmentMap.gpsmap.getBounds();
                     var sw = bounds.getSouthWest();
                     var ne = bounds.getNorthEast();
                     var lngSpan = Math.abs(sw.lng - ne.lng);
                     var latSpan = Math.abs(ne.lat - sw.lat);
-                    for (var i = 0; i < 25; i++) {
-                        var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-                        addMarker(point);
-                    }
+                    // for (var i = 0; i < 25; i ++) {
+                    //   var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+                    //   addMarker(point);
+                    // }
                 };
-                ShipmentMap.prototype.initGpsMap = function (cardata) {
-                    return;
-                    // avoid socket call before init callback
-                    if (!ShipmentMap.mapLoaded) {
-                        return;
-                    }
-                    console.log('map got car---', cardata);
-                    var center = new BMap.Point(116.404, 39.915);
-                    map.centerAndZoom(point, 15);
-                    ShipmentMap.gpsmap.centerAndZoom(new BMap.Point(cardata.lon, cardata.lat), 15);
-                    var myPoint = new BMap.Point(cardata.lon, cardata.lat); //起点
+                ShipmentMap.prototype.addMarker = function (cardata) {
+                    var point = new BMap.Point(cardata.lng, cardata.lat);
+                    var marker = new BMap.Marker(point);
+                    ShipmentMap.gpsmap.addOverlay(marker);
+                };
+                ShipmentMap.prototype.addCustomMarker = function (cardata) {
                     var iconImage = 'dist/images/truck.png';
                     var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
                     var myIcon = new BMap.Icon(testIconImage, new BMap.Size(32, 70), {
                         //offset: new BMap.Size(0, -5),    //相当于CSS精灵
                         imageOffset: new BMap.Size(0, 0.5) //图片的偏移量。为了是图片底部中心对准坐标点。
                     });
-                    // var carMk = new BMap.Marker(myPoint, {icon:myIcon});
-                    var carMk = new BMap.Marker(myPoint);
-                    ShipmentMap.gpsmap.addOverlay(carMk);
+                    var point = new BMap.Point(cardata.lng, cardata.lat);
+                    var marker = new BMap.Marker(point, { icon: myIcon });
+                    this.targetMarker = marker;
+                    ShipmentMap.gpsmap.addOverlay(this.targetMarker);
+                };
+                ShipmentMap.prototype.updatePosition = function (cardata) {
+                    var _this = this;
+                    console.log('updatePosition---');
+                    if (!this.targetCar) {
+                        // var initPoint = new BMap.Point(parseFloat(cardata.lng).toFixed(3),parseFloat(cardata.lat).toFixed(3));
+                        // ShipmentMap.gpsmap.centerAndZoom(initPoint, 16);
+                        this.targetCar = cardata;
+                        this.addCustomMarker(cardata);
+                    }
+                    else if (cardata.sim == this.targetCar.sim) {
+                        console.log('same car on the move-----');
+                        this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
+                    }
                 };
                 ShipmentMap.prototype.iniSocket = function () {
                     var _this = this;
@@ -103,15 +106,24 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                     }
                     var socket = io(url);
                     socket.on('carMove', function (data) {
-                        console.log('carMove---->>>>---', data);
                         if (data.pl && data.pl.gps) {
                             var cardata = data.pl.gps;
-                            _this.initGpsMap(cardata);
+                            _this.updatePosition(cardata);
                         }
                     });
                 };
+                ShipmentMap.prototype.showAllCars = function (cardata) {
+                    var _this = this;
+                    if (!ShipmentMap.allCars[cardata.sim]) {
+                        _this.addMarker(cardata);
+                        ShipmentMap.allCars[cardata.sim] = cardata;
+                    }
+                    else {
+                        console.log('same car------->>>>>>-----', cardata.sim);
+                    }
+                };
                 ShipmentMap.mapLoaded = false;
-                ShipmentMap.points = {};
+                ShipmentMap.allCars = {};
                 ShipmentMap = __decorate([
                     core_1.Component({
                         selector: 'shipment-map',
