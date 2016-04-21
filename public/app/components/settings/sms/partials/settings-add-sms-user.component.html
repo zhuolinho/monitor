@@ -4,7 +4,9 @@
         <div id="{{data.id}}" class="modal " style="overflow:auto;">
           <div class="modal-content">
             <i class="modal-close material-icons right">clear</i>
-            <h4>  设置捷报短信权限</h4>
+            <h4 *ngIf="!editMode">  设置捷报短信权限</h4>
+            <h4 *ngIf="editMode">  编辑短信权限</h4>
+
 
             <div class="row">
               <div class="col s12 helper-font-bigger center-align">

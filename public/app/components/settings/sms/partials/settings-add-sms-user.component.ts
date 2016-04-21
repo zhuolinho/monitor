@@ -11,6 +11,8 @@ declare var jQuery:any;
 
 export class SettingsAddSmsUser{
      data:any;
+     editMode:boolean = false;
+     editTarget:any;
     @Input('data')
     set users(data){
       this.data = data;

@@ -23,6 +23,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         execute: function() {
             SettingsAddAddressUser = (function () {
                 function SettingsAddAddressUser() {
+                    this.editMode = false;
                     console.log("add user address modal is up and running---");
                 }
                 Object.defineProperty(SettingsAddAddressUser.prototype, "users", {

@@ -4,7 +4,8 @@
         <div id="{{data.id}}" class="modal " style="overflow:auto;">
           <div class="modal-content">
             <i class="modal-close material-icons right">clear</i>
-            <h4>  添加到 "{{data.users.type.value}}"</h4>
+            <h4 *ngIf="!editMode">  添加到 "{{data.users.type.value}}"</h4>
+            <h4 *ngIf="editMode">  编辑 "{{data.users.type.value}}"</h4>
 
             <div class="row">
               <div class="col s12 helper-font-bigger center-align">

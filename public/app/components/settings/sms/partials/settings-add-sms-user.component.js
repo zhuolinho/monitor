@@ -23,6 +23,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         execute: function() {
             SettingsAddSmsUser = (function () {
                 function SettingsAddSmsUser() {
+                    this.editMode = false;
                     console.log("add SettingsAddSmsUser modal is up and running---");
                 }
                 Object.defineProperty(SettingsAddSmsUser.prototype, "users", {

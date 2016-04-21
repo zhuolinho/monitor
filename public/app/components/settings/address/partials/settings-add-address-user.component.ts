@@ -16,6 +16,9 @@ export class SettingsAddAddressUser{
       this.data = data;
     }
 
+    editMode:boolean = false;
+    editTarget:any;
+
     get users(){return this.data;}
 
 

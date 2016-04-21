@@ -18,7 +18,7 @@
             <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
               <div class="col s12">
-                    <a href="{{'#id'+i}}"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
+                    <a href="{{'#id'+i}}" (click) = "modal.editMode = false;"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
               </div>
             <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
                   <div class="monitor-table helper-font-bigger">
@@ -31,18 +31,17 @@
                       <div class="table-cell">权限  </div>
                     </div>
                     <div class="table-row" *ngFor="#user of userGroup.data">
-
                       <div class="table-cell"> {{user.an}} </div>
                       <div class="table-cell"> {{user.name}}  </div>
                       <div class="table-cell"> {{user.addr}} </div>
                       <div class="table-cell"> {{user.phone}} </div>
                       <div class="table-cell"> {{user.ap}} </div>
-                      <div class="table-cell"> {{user.p}}<a href="{{'#id'+i}}"   class="right modal-trigger"> 编辑</a></div>
+                      <div class="table-cell"> {{user.p}}<a href="{{'#id'+i}}"   class="right modal-trigger" (click)="modal.editMode = true; modal.editTarget = user"> 编辑</a></div>
                     </div>
                   </div>
 
                 <!-- modal goes here -->
-               <settings-add-sms-user [data]="{id:'id'+i,users:userGroup}"> </settings-add-sms-user>
+               <settings-add-sms-user [data]="{id:'id'+i,users:userGroup}" #modal> </settings-add-sms-user>
               </div>
 
             </div>

@@ -18,6 +18,9 @@ export class SettingsAddUser{
 
     get users(){return this.data;}
 
+    editMode:boolean = false;
+    editTarget:any;
+
 
     constructor(){
       console.log("add user modal is up and running---");
