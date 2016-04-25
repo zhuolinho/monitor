@@ -10,7 +10,7 @@
 
     <!-- toto add a back to top button -->
 
-    <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+    <div class="helper-vscrolling" style=" height:80vh;padding-bottom:100px;">
         <div *ngFor="#alert of alertsList; #i = index;">
           <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="(currentSort == alert.type) || (currentSort == 'all')">
             <div class="col s9">
@@ -80,5 +80,4 @@
 
           </div>
         </div>
-
     </div>

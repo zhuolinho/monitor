@@ -47,13 +47,19 @@ a{
   cursor: pointer;
 }
 #homeMainContainer{
-  height: 80vh;
+  /*height: 80vh;
   width: 100%;
   overflow-y: auto;;
-  -webkit-overflow-scrolling: auto;
+  -webkit-overflow-scrolling: auto;*/
   padding: 10px 0;
   position: relative;
 
+}
+
+.helper-vscrolling{
+  overflow-y:auto;
+  overflow-x:hidden;
+  webkit-overflow-scrolling:auto;
 }
 
 body, html{
