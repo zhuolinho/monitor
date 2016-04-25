@@ -22,7 +22,7 @@ export class SettingsFormula{
           this.initUi();
       }
 
-      veAleParameter(){
+      veElertParameter(){
             this.initUi();
       }
 

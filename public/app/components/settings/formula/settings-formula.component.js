@@ -33,7 +33,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-edit-f
                 SettingsFormula.prototype.veCalculateParameter = function () {
                     this.initUi();
                 };
-                SettingsFormula.prototype.veAleParameter = function () {
+                SettingsFormula.prototype.veElertParameter = function () {
                     this.initUi();
                 };
                 SettingsFormula.prototype.initUi = function () {

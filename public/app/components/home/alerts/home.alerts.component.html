@@ -1,9 +1,9 @@
 <div class="helper-border-top helper-relative">
     <div class="helper-padding-10  herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortByShortage()" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span class="new-alert-badge">14</span></a>
-        <a  (click)="veSortByPresure()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警 </a>
-        <a  (click)="veSortBySingal()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断 <span class="new-alert-badge">1</span></a>
-        <a   (click)="veSortByLeakage()" class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 </a>
+        <a (click)="veSortByShortage(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span class="new-alert-badge">14</span></a>
+        <a  (click)="veSortByPresure();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警 </a>
+        <a  (click)="veSortBySingal();  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断 <span class="new-alert-badge">1</span></a>
+        <a   (click)="veSortByLeakage();  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 </a>
     </div>
     <div class="space" style="padding-top:60px;">
     </div>
