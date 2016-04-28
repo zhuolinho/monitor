@@ -23,6 +23,7 @@ console.log('\nAPP: Loading APP ...');
 
                   var handler = r.pl.fn;
                   var gps = require('./routes/gps')(handler);
+                  var plc = require('./routes/plc')(handler);
                   var index = require('./routes/index');
                   var users = require('./routes/users')(handler);
                   // view engine setup
@@ -43,6 +44,7 @@ console.log('\nAPP: Loading APP ...');
                   app.use('/', index);
                   app.use('/users', users);
                   app.use('/gps', gps);
+                  app.use('/plc', plc);
 
 
                   //connecting to the database

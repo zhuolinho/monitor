@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "Materialize": "materialize#^0.97.5",
+    "material-design-icons":"^2.2.3"
     "perfect-scrollbar": "^0.6.10"
   }
 }
