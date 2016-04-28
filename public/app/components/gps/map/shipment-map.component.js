@@ -24,6 +24,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                 request_1 = request_1_1;
             }],
         execute: function() {
+            Int16Array;
             ShipmentMap = (function () {
                 function ShipmentMap(request) {
                     this.request = request;
@@ -100,9 +101,9 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                 };
                 ShipmentMap.prototype.iniSocket = function () {
                     var _this = this;
-                    var url = 'http://139.196.18.222:8080';
+                    var url = 'http://139.196.18.222:3001';
                     if (window.location.hostname.indexOf('localhost') >= 0) {
-                        url = 'http://localhost:8080';
+                        url = 'http://localhost:3001';
                     }
                     var socket = io(url);
                     socket.on('carMove', function (data) {

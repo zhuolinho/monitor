@@ -1,4 +1,4 @@
-
+Int16Array
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {Request} from '../../../services/request';
@@ -114,10 +114,10 @@ export class ShipmentMap{
 
     iniSocket(){
       var _this = this;
-        var url = 'http://139.196.18.222:8080';
+        var url = 'http://139.196.18.222:3001';
 
         if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-          url = 'http://localhost:8080';
+          url = 'http://localhost:3001';
         }
         var socket = io(url);
        socket.on('carMove', function(data){

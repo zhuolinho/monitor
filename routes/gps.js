@@ -11,7 +11,7 @@ var router = express.Router();
 var gpsApp = require('express')();
 var server = require('http').Server(gpsApp);
 var io = require('socket.io')(server);
-server.listen(8080);
+server.listen(3001);
 
 
 var q = require('q');
