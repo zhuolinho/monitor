@@ -59,8 +59,11 @@
     "app/layout_components/sidebar/sidebar.ts",
     "app/models/alert-model.ts",
     "app/models/user.ts",
-    "app/services/request.ts",
-    "app/services/router.ts",
+    "app/services/app-injector.ts",
+    "app/services/has-settings-access.ts",
+    "app/services/is-logged-in.ts",
+    "app/services/request.service.ts",
+    "app/services/user.service.ts",
     "typings/browser.d.ts",
     "typings/browser/ambient/es6-shim/index.d.ts",
     "typings/browser/ambient/jasmine/index.d.ts"

@@ -1,5 +1,5 @@
 
-  <div class="row  helper-white-bg" style="height:100%;">
+  <div class="row  helper-white-bg" style="height:80vh;">
 
     <div class="row helper-padding-top-10">
       <form class=" helper-padding-15" style="width:85%; margin:auto;">
@@ -8,7 +8,7 @@
           <div class="col s6 offset-s3">
             <div class="input-field">
               <i class="material-icons prefix helper-gray">person</i>
-              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username">
+              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username" disabled>
               <label for="icon_prefix">账号</label>
             </div>
             <div class="input-field">
@@ -16,11 +16,9 @@
               <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
               <label for="icon_telephone">密码</label>
             </div>
-
-                <div class="helper-hpadding-25 helper-margin-top-30 center-align">
-                  <a (click)="login()" class="btn monitor-gray-button waves-effect  waves-light helper-font-bigger" style="width:120px; height:40px; line-height:40px;">进入</a>
-                </div>
-
+            <div class="helper-hpadding-25 helper-margin-top-30 center-align">
+              <a (click)="login()" class="btn monitor-gray-button waves-effect  waves-light helper-font-bigger" style="width:120px; height:40px; line-height:40px;">进入</a>
+            </div>
           </div>
 
         </div>

@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', '../../../services/request'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', '../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_1;
+    var core_1, config_1, request_service_1;
     var ShipmentMap;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
             function (config_1_1) {
                 config_1 = config_1_1;
             },
-            function (request_1_1) {
-                request_1 = request_1_1;
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
             }],
         execute: function() {
             Int16Array;
@@ -131,7 +131,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                         templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
                         styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [request_1.Request])
+                    __metadata('design:paramtypes', [request_service_1.RequestService])
                 ], ShipmentMap);
                 return ShipmentMap;
             }());

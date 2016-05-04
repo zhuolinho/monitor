@@ -2,7 +2,7 @@
 import {Component, provide} from 'angular2/core'
 import {config} from '../../config';
 import {RouteConfig, ROUTER_DIRECTIVES, RouterLink} from 'angular2/router';
-import {Request} from '../../services/request';
+import {RequestService} from '../../services/request.service';
 import {ShipmentMap} from './map/shipment-map.component';
 import {ProcessedShipment} from './processed/processed-shipment.component';
 import {Shipment} from './shipment/shiment.component';
@@ -23,9 +23,8 @@ import {Shipment} from './shipment/shiment.component';
  ])
 
 export class Gps{
-
   static points:any = {};
-  constructor(public request:Request){
+  constructor(public request:RequestService){
     console.log("Gps is up and running");
   }
 }

@@ -16,7 +16,7 @@ module.exports = function (handler)
   router.get('/all', function(req, res, next) {
 
         var param = {
-          ns: 'gps',
+          ns: 'plc',
           vs: '1.0',
           op: 'getData',
           pl:{
@@ -47,23 +47,43 @@ var _tcpCLient = function(handler){
 
   console.log("plc client up and runing---");
   var client = new net.Socket();
+  var client2 = new net.Socket();
 
     client.connect(3002, '127.0.0.1', function() {
     	console.log('plc client: Connected');
-    	client.write('Hello, connection successful!');
+    	client.write('Hello saf, connection successful!');
     });
 
     client.on('data', function(data) {
-    	console.log('plc client:  Received data: ' + data);
+    	console.log('plc client saf:  Received data: ' + data);
     	// client.destroy(); // kill client after server's response
     });
 
     client.on('error', function(error) {
-      console.log('plc client: Received error: ',error );
+      console.log('plc client saf: Received error: ',error );
     });
 
     client.on('close', function() {
-    	console.log('plc client: Connection closed');
+    	console.log('plc client saf: Connection closed');
+    });
+
+
+    client2.connect(3002, '139.196.18.222', function() {
+      console.log('plc client2 saf:: Connected');
+      client2.write('client2 saf:Hello, connection successful!');
+    });
+
+    client2.on('data', function(data) {
+      console.log('plc client2 saf::  Received data: ' + data);
+      // client.destroy(); // kill client after server's response
+    });
+
+    client2.on('error', function(error) {
+      console.log('plc client2 saf:: Received error: ' );
+    });
+
+    client2.on('close', function() {
+      console.log('plc client2:: Connection closed');
     });
 
 }
@@ -73,33 +93,37 @@ var _tcpSerever = function(handler){
 
   // Keep track of the chat clients
   var clients = [];
-
+  console.log('plc server: Start');
   // Start a TCP Server
   net.createServer(function (socket) {
 
+    console.log('plc got new socket-----');
     // Identify this client
-    socket.name = socket.remoteAddress + ":" + socket.remotePort
+    socket.name = socket.remoteAddress + ":" + socket.remotePort;
 
     // Put this new client in the list
     clients.push(socket);
 
-    console.log('plc server: incoming client----',socket.name);
+    console.log('plc server: incoming socket----',socket.name);
 
     // Send a nice welcome message and announce
     socket.write("Welcome " + socket.name + "\n");
-    broadcast(socket.name + " joined the chat\n", socket);
+    // broadcast(socket.name + " joined the chat\n", socket);
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
-      console.log('plc server: got data----',data);
-      broadcast(socket.name + "> " + data, socket);
+        console.log('plc server: got data raw----',data);
+        var stream = socket.name +' sent-- : '+data.toString('utf8');
+      console.log('plc server: got data stream----',stream);
+      saveData(handler, stream);
+      // broadcast(socket.name + "> " + data, socket);
     });
 
     // Remove the client from the list when it leaves
     socket.on('end', function () {
       console.log('plc server: client left----', socket.name );
-      clients.splice(clients.indexOf(socket), 1);
-      broadcast(socket.name + " left the chat.\n");
+      // clients.splice(clients.indexOf(socket), 1);
+      // broadcast(socket.name + " left the chat.\n");
     });
 
     // Send a message to all clients
@@ -117,23 +141,22 @@ var _tcpSerever = function(handler){
 }
 
 
-function saveData(handler,data,which){
+function saveData(handler,data){
 
-  // var param = {
-  //       ns: 'gps',
-  //       vs: '1.0',
-  //       op: 'handleIncommingData',
-  //       pl:data
-  // }
-  //
-  // handler(param)
-  //     .then(function (r) {
-  //       console.log("save"+which+" data successful");
-  //       io.emit("carMove",r);
-  //     })
-  //     .fail(function (r) {
-  //         console.log("save1 data fail");
-  //     });
+  var param = {
+        ns: 'plc',
+        vs: '1.0',
+        op: 'handleIncommingData',
+        pl:data
+  }
+
+  handler(param)
+      .then(function (r) {
+        console.log("plc route save data successful---",r);
+      })
+      .fail(function (r) {
+          console.log("plc save data fail----",r);
+      });
 }
 
 function buildStreams(count,user){

@@ -1,6 +1,8 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {SettingsAddAddressUser} from './partials/settings-add-address-user.component';
+import {hasSettingsAcess} from '../../../services/has-settings-access';
+import {CanActivate} from 'angular2/router';
 declare var jQuery:any;
 
 @Component({
@@ -9,6 +11,9 @@ declare var jQuery:any;
   directives:[SettingsAddAddressUser]
 })
 
+@CanActivate((to, from) => {
+  return hasSettingsAcess();  //working fine.ignore red line warning
+})
 
 
 export class SettingsAddress{

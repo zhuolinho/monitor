@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', '../../../services/request', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', '../../../services/user.service', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_1, router_1;
+    var core_1, config_1, user_service_1, router_1;
     var SettingsAuth;
     return {
         setters:[
@@ -20,19 +20,20 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
             function (config_1_1) {
                 config_1 = config_1_1;
             },
-            function (request_1_1) {
-                request_1 = request_1_1;
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
             }],
         execute: function() {
             SettingsAuth = (function () {
-                function SettingsAuth(request, router) {
-                    this.user = { username: '', password: '' };
-                    this.request = request;
+                function SettingsAuth(localUserService, router) {
+                    this.localUserService = localUserService;
                     this.router = router;
+                    this.user = { username: 'saf', password: '111111' };
                     console.log("SettingsAuth is up and running");
+                    // this.user.username = this.localUserService.getUser().name;
                     this.initUi();
                 }
                 SettingsAuth.prototype.initUi = function () {
@@ -42,9 +43,14 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                 };
                 SettingsAuth.prototype.login = function () {
                     var _this = this;
-                    this.request.post('users/login', { name: this.user.username, password: this.user.password }).subscribe(function (response) {
-                        console.log('got respone---', response);
-                        _this.router.navigate(['SettingsAccess']);
+                    this.localUserService.login({ name: this.user.username, password: this.user.password }).subscribe(function (response) {
+                        console.log('got settings login respone---', response);
+                        if (!response.er) {
+                            _this.localUserService.logedInSettings();
+                            setTimeout(function () {
+                                _this.router.parent.navigate(['SettingsAccess']);
+                            });
+                        }
                     });
                 };
                 SettingsAuth = __decorate([
@@ -52,7 +58,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request'
                         selector: 'settings-auth',
                         templateUrl: config_1.config.prefix + '/components/settings/auth/settings-auth.component.html'
                     }), 
-                    __metadata('design:paramtypes', [request_1.Request, router_1.Router])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], SettingsAuth);
                 return SettingsAuth;
             }());

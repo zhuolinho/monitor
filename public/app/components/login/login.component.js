@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', '../../services/request', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../config', '../../services/user.service', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../config', '../../services/request', 'ang
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_1, router_1;
+    var core_1, config_1, user_service_1, router_1;
     var LoginComponent;
     return {
         setters:[
@@ -20,25 +20,28 @@ System.register(['angular2/core', '../../config', '../../services/request', 'ang
             function (config_1_1) {
                 config_1 = config_1_1;
             },
-            function (request_1_1) {
-                request_1 = request_1_1;
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
             }],
         execute: function() {
             LoginComponent = (function () {
-                function LoginComponent(request, router) {
+                function LoginComponent(localUserService, router) {
+                    this.localUserService = localUserService;
                     this.user = { username: '', password: '' };
-                    this.request = request;
                     this.router = router;
                     console.log("login is up and running");
                 }
                 LoginComponent.prototype.login = function () {
                     var _this = this;
-                    this.request.post('users/login', { name: this.user.username, password: this.user.password }).subscribe(function (response) {
-                        console.log('got respone---', response);
-                        _this.router.navigate(['Admin']);
+                    console.log("this.user.password---", this.user);
+                    this.localUserService.login({ name: this.user.username, password: this.user.password }).subscribe(function (res) {
+                        if (!res.er) {
+                            _this.localUserService.saveUser(res.pl);
+                            _this.router.navigate(['Admin']);
+                        }
                     });
                 };
                 LoginComponent = __decorate([
@@ -47,7 +50,7 @@ System.register(['angular2/core', '../../config', '../../services/request', 'ang
                         templateUrl: config_1.config.prefix + '/components/login/login.component.html',
                         styleUrls: [config_1.config.prefix + '/components/login/resources/css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [request_1.Request, router_1.Router])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], LoginComponent);
                 return LoginComponent;
             }());

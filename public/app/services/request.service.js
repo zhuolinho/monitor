@@ -11,7 +11,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1;
-    var Request;
+    var RequestService;
     return {
         setters:[
             function (core_1_1) {
@@ -22,31 +22,31 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
             },
             function (_1) {}],
         execute: function() {
-            Request = (function () {
-                function Request(httpService) {
+            RequestService = (function () {
+                function RequestService(httpService) {
                     this.paramHeaders = new http_1.Headers({ 'Content-Type': 'application/json' });
                     this.http = httpService;
                     this.paramOptions = new http_1.RequestOptions({ headers: this.paramHeaders });
                 }
-                Request.prototype.get = function (path) {
-                    console.log('path', path);
+                RequestService.prototype.get = function (path) {
                     return this.http.get(path, this.paramOptions).map(function (response) {
                         return response.json();
                     });
                 };
-                Request.prototype.post = function (path, data) {
+                RequestService.prototype.post = function (path, data) {
+                    // console.log(' this.paramOptions', this.paramOptions);
                     return this.http.post(path, JSON.stringify(data), this.paramOptions).map(function (response) {
                         var r = response.json();
                         return r;
                     });
                 };
-                Request = __decorate([
+                RequestService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], Request);
-                return Request;
+                ], RequestService);
+                return RequestService;
             }());
-            exports_1("Request", Request);
+            exports_1("RequestService", RequestService);
         }
     }
 });

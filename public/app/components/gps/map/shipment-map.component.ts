@@ -1,7 +1,7 @@
 Int16Array
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
-import {Request} from '../../../services/request';
+import {RequestService} from '../../../services/request.service';
 
 declare var BMap:any;
 declare var jQuery:any;
@@ -23,7 +23,7 @@ export class ShipmentMap{
   targetCar:any;
   targetMarker:any;
   static gpsmap:any;
-  constructor(public request:Request){
+  constructor(public request:RequestService){
   console.log("ShipmentMap is up and running");
       this.initUi();
       this.loadJScript();

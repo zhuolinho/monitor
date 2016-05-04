@@ -3,6 +3,7 @@ import {CORE_DIRECTIVES} from 'angular2/common';
 import {config} from '../../config';
 import {RouterLink} from 'angular2/router';
 import {Router} from 'angular2/router';
+import {UserService} from '../../services/user.service';
 
 declare var jQuery:any;
 
@@ -19,7 +20,7 @@ export class Header {
     logo:string = config.logo;
     color:string = config.color;
     router:Router;
-    constructor(router:Router) {
+    constructor(router:Router, private localUserService:UserService) {
       this.router = router;
       // this.logo = CONFIG.resourcePath + 'img/logo.png'
       // console.log(this.logo);
@@ -47,6 +48,7 @@ export class Header {
     }
 
     logout(){
+        this.localUserService.logout();
         this.router.navigate(['/Login']);
     }
 

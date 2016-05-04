@@ -1,6 +1,6 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
-import {Request} from '../../../services/request';
+import {UserService} from '../../../services/user.service';
 import {Router} from 'angular2/router';
 declare var jQuery:any;
 
@@ -10,14 +10,11 @@ declare var jQuery:any;
 })
 
 export class SettingsAuth{
-  user:any = {username:'', password:''};
-  request:Request;
-  router:Router;
+  user:any = {username:'saf', password:'111111'};
 
-  constructor(request:Request,router:Router){
-      this.request = request;
-      this.router = router;
+  constructor(public localUserService:UserService,public router:Router){
       console.log("SettingsAuth is up and running");
+      // this.user.username = this.localUserService.getUser().name;
       this.initUi();
       }
       initUi(){
@@ -28,9 +25,14 @@ export class SettingsAuth{
 
     login(){
       var _this = this;
-      this.request.post('users/login',{name:this.user.username, password:this.user.password}).subscribe(response => {
-         console.log('got respone---',response);
-          _this.router.navigate(['SettingsAccess']);
+      this.localUserService.login({name:this.user.username, password:this.user.password}).subscribe(response => {
+         console.log('got settings login respone---',response);
+         if(!response.er){
+           _this.localUserService.logedInSettings();
+          setTimeout(function(){
+             _this.router.parent.navigate(['SettingsAccess']);
+          });
+         }
 
       });
     }

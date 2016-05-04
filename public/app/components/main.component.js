@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'angular2/router', '../services/request', './login/login.component', './admin/admin.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './login/login.component', './admin/admin.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,21 +10,15 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', '../servic
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, router_1, request_1, login_component_1, admin_component_1;
+    var core_1, router_1, login_component_1, admin_component_1;
     var MainComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (http_1_1) {
-                http_1 = http_1_1;
-            },
             function (router_1_1) {
                 router_1 = router_1_1;
-            },
-            function (request_1_1) {
-                request_1 = request_1_1;
             },
             function (login_component_1_1) {
                 login_component_1 = login_component_1_1;
@@ -42,12 +36,7 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', '../servic
                         selector: 'main',
                         template: '<router-outlet></router-outlet>',
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        providers: [
-                            http_1.HTTP_PROVIDERS,
-                            router_1.ROUTER_PROVIDERS,
-                            core_1.provide(router_1.LocationStrategy, { useClass: router_1.HashLocationStrategy }),
-                            request_1.Request
-                        ]
+                        providers: [] //providers were moved to the boot due to login redirect CanActivate implementation
                     }),
                     router_1.RouteConfig([
                         { path: '/', component: login_component_1.LoginComponent, name: 'Login' },

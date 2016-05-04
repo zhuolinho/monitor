@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', 'angular2/router', '../../services/request', './map/shipment-map.component', './processed/processed-shipment.component', './shipment/shiment.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../config', 'angular2/router', '../../services/request.service', './map/shipment-map.component', './processed/processed-shipment.component', './shipment/shiment.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, router_1, request_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1;
+    var core_1, config_1, router_1, request_service_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1;
     var Gps;
     return {
         setters:[
@@ -23,8 +23,8 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (request_1_1) {
-                request_1 = request_1_1;
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
             },
             function (shipment_map_component_1_1) {
                 shipment_map_component_1 = shipment_map_component_1_1;
@@ -53,7 +53,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                         { path: '/processed', component: processed_shipment_component_1.ProcessedShipment, name: 'ProcessedShipment' },
                         { path: '/shipment', component: shiment_component_1.Shipment, name: 'Shipment' }
                     ]), 
-                    __metadata('design:paramtypes', [request_1.Request])
+                    __metadata('design:paramtypes', [request_service_1.RequestService])
                 ], Gps);
                 return Gps;
             }());

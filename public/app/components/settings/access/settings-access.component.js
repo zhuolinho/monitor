@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-user.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-add-user.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_user_component_1;
+    var core_1, config_1, settings_add_user_component_1, has_settings_access_1, router_1;
     var SettingsAccess;
     return {
         setters:[
@@ -22,6 +22,12 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
             },
             function (settings_add_user_component_1_1) {
                 settings_add_user_component_1 = settings_add_user_component_1_1;
+            },
+            function (has_settings_access_1_1) {
+                has_settings_access_1 = has_settings_access_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
             SettingsAccess = (function () {
@@ -207,6 +213,9 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                         selector: 'settings-access',
                         templateUrl: config_1.config.prefix + '/components/settings/access/settings-access.component.html',
                         directives: [settings_add_user_component_1.SettingsAddUser]
+                    }),
+                    router_1.CanActivate(function (to, from) {
+                        return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SettingsAccess);

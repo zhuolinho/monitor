@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../layout_components/header/header', '../../layout_components/navigator/navigator', '../home/home.component', '../monitor/monitor.component', '../gps/gps.component', '../../config', '../settings/settings.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../services/user.service', '../../services/is-logged-in', '../../layout_components/header/header', '../../layout_components/navigator/navigator', '../home/home.component', '../monitor/monitor.component', '../gps/gps.component', '../../config', '../settings/settings.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, header_1, navigator_1, home_component_1, monitor_component_1, gps_component_1, config_1, settings_component_1;
+    var core_1, common_1, router_1, user_service_1, is_logged_in_1, header_1, navigator_1, home_component_1, monitor_component_1, gps_component_1, config_1, settings_component_1;
     var AdminComponent;
     return {
         setters:[
@@ -22,6 +22,12 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
+            },
+            function (is_logged_in_1_1) {
+                is_logged_in_1 = is_logged_in_1_1;
             },
             function (header_1_1) {
                 header_1 = header_1_1;
@@ -46,8 +52,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
             }],
         execute: function() {
             AdminComponent = (function () {
-                function AdminComponent() {
-                    console.log("admin is up and running");
+                function AdminComponent(localUserService, router) {
+                    this.localUserService = localUserService;
+                    this.router = router;
+                    console.log("admin is up and running", this.localUserService.getUser());
                 }
                 AdminComponent = __decorate([
                     core_1.Component({
@@ -58,13 +66,16 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../l
                             navigator_1.Navigator,
                             common_1.CORE_DIRECTIVES, router_1.RouterLink]
                     }),
+                    router_1.CanActivate(function (to, from) {
+                        return is_logged_in_1.isLoggedIn(); //working fine.ignore red line warning
+                    }),
                     router_1.RouteConfig([
                         { path: '/home/...', component: home_component_1.Home, name: 'Home', useAsDefault: true },
                         { path: '/monitor/...', component: monitor_component_1.Monitor, name: 'Monitor' },
                         { path: '/gps/...', component: gps_component_1.Gps, name: 'Gps' },
                         { path: '/settings/...', component: settings_component_1.Settings, name: 'Settings' }
                     ]), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], AdminComponent);
                 return AdminComponent;
             }());

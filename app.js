@@ -46,7 +46,6 @@ console.log('\nAPP: Loading APP ...');
                   app.use('/gps', gps);
                   app.use('/plc', plc);
 
-
                   //connecting to the database
                   mongoose.createConnection('mongodb://localhost:27017/test_db', function(err){
                     if(err) throw err;

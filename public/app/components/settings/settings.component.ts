@@ -1,7 +1,8 @@
 
 import {Component, provide} from 'angular2/core';
 import {config} from '../../config';
-import {ROUTER_DIRECTIVES,RouteConfig, RouterLink} from 'angular2/router';
+import {ROUTER_DIRECTIVES,RouteConfig,Router, RouterLink} from 'angular2/router';
+import {UserService} from '../../services/user.service';
 import {SettingsSms} from './sms/settings-sms.component';
 import {SettingsAuth} from './auth/settings-auth.component';
 import {SettingsAccess} from './access/settings-access.component';
@@ -26,9 +27,15 @@ declare var jQuery:any;
 
 
 export class Settings{
-
-    constructor(){
+  user:any;
+    constructor(public localUserService:UserService, public router:Router){
     console.log("Settings is up and running");
 
+    // this.user = this.localUserService.Auth();
+    console.log("this.user---",this.user);
+      // if(!this.user.settingsAcces){
+      //       console.log('settings user not logged in ----');
+      //     this.router.navigate(['/Admin','Settings','SettingsAuth']);
+      // }
     }
  }
