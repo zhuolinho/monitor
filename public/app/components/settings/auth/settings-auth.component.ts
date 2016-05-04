@@ -10,11 +10,11 @@ declare var jQuery:any;
 })
 
 export class SettingsAuth{
-  user:any = {username:'saf', password:'111111'};
+  user:any = {username:'', password:''};
 
   constructor(public localUserService:UserService,public router:Router){
       console.log("SettingsAuth is up and running");
-      // this.user.username = this.localUserService.getUser().name;
+      this.user.username = this.localUserService.getUser().name;
       this.initUi();
       }
       initUi(){
