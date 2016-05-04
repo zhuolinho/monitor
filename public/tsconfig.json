@@ -34,6 +34,7 @@
     "app/components/home/alerts_processed/home.alerts.processed.component.ts",
     "app/components/home/alerts/details/home.alerts.detail.component.ts",
     "app/components/home/alerts/home.alerts.component.ts",
+    "app/components/home/alerts/return_details/home.return.alerts.detail.component.ts",
     "app/components/home/home.component.ts",
     "app/components/login/login.component.ts",
     "app/components/main.component.ts",

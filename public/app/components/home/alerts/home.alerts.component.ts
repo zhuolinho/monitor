@@ -2,6 +2,7 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {HomeAlertsDetail} from './details/home.alerts.detail.component';
+import {HomeReturnAlertsDetail} from './return_details/home.return.alerts.detail.component';
 import {AlertModel} from '../../../models/alert-model';
 import {CORE_DIRECTIVES} from 'angular2/common';
 declare var jQuery:any;
@@ -9,12 +10,12 @@ declare var jQuery:any;
 @Component({
   selector:'home-alerts',
   templateUrl:config.prefix + '/components/home/alerts/home.alerts.component.html',
-  directives:[HomeAlertsDetail,CORE_DIRECTIVES]
+  directives:[HomeAlertsDetail,HomeReturnAlertsDetail,CORE_DIRECTIVES]
 })
 
 export class HomeAlerts{
 
-    alertsList:AlertModel[]=[
+    alertsList:any[]=[
         {
           name:'C002-闸北区大宁路335号XX站',
           id:'6848',
@@ -23,7 +24,8 @@ export class HomeAlerts{
           upTime:'15.5.3-13:02/----',
           processed:false,
           alertTime:'5.5.3-13:02',
-          alertValue:'6%/12kg/hps'
+          alertValue:'6%/12kg/hps',
+          processedAgent:'234'
         },
         {
           name:'C003-闸北区大宁路335号XX站',
@@ -114,6 +116,26 @@ export class HomeAlerts{
             processed:true,
             alertTime:'5.5.3-13:02',
             alertValue:'压力报警'
+          },
+          {
+            name:'C007-闸北区大宁路335号XX站',
+            id:'6832',
+            type:'拉回报警',
+            selectedJars:['12345','62545','27456','72145','19345','92342','82345','63245','63245','63245','63245','63245','63245','63245'],
+            processed:false,
+            alertTime:'5.5.3-13:02',
+            processedAgent:'267',
+            alertValue:'拉回报警'
+          },
+          {
+            name:'C007-闸北区大宁路335号XX站',
+            id:'6832',
+            type:'拉回报警',
+            selectedJars:['12345','62545','27456','72145','19345','92342','82345','63245','63245','63245','63245','63245','63245','63245'],
+            processed:true,
+            alertTime:'5.5.2-11:00',
+            processedAgent:'428',
+            alertValue:'拉回报警'
           }
 
 
@@ -150,10 +172,14 @@ export class HomeAlerts{
       }
     }
 
+    veSortByReturn(){
+      if(this.currentSort!='拉回报警'){
+        this.currentSort='拉回报警';
+      }
+    }
+
     veProcessed(alert){
-
       alert.processed = !alert.processed;
-
     }
     initModal(){
 

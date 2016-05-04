@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './details/home.alerts.detail.component', 'angular2/common'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './details/home.alerts.detail.component', './return_details/home.return.alerts.detail.component', 'angular2/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, home_alerts_detail_component_1, common_1;
+    var core_1, config_1, home_alerts_detail_component_1, home_return_alerts_detail_component_1, common_1;
     var HomeAlerts;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
             },
             function (home_alerts_detail_component_1_1) {
                 home_alerts_detail_component_1 = home_alerts_detail_component_1_1;
+            },
+            function (home_return_alerts_detail_component_1_1) {
+                home_return_alerts_detail_component_1 = home_return_alerts_detail_component_1_1;
             },
             function (common_1_1) {
                 common_1 = common_1_1;
@@ -38,7 +41,8 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                             upTime: '15.5.3-13:02/----',
                             processed: false,
                             alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
+                            alertValue: '6%/12kg/hps',
+                            processedAgent: '234'
                         },
                         {
                             name: 'C003-闸北区大宁路335号XX站',
@@ -129,6 +133,26 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                             processed: true,
                             alertTime: '5.5.3-13:02',
                             alertValue: '压力报警'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '拉回报警',
+                            selectedJars: ['12345', '62545', '27456', '72145', '19345', '92342', '82345', '63245', '63245', '63245', '63245', '63245', '63245', '63245'],
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            processedAgent: '267',
+                            alertValue: '拉回报警'
+                        },
+                        {
+                            name: 'C007-闸北区大宁路335号XX站',
+                            id: '6832',
+                            type: '拉回报警',
+                            selectedJars: ['12345', '62545', '27456', '72145', '19345', '92342', '82345', '63245', '63245', '63245', '63245', '63245', '63245', '63245'],
+                            processed: true,
+                            alertTime: '5.5.2-11:00',
+                            processedAgent: '428',
+                            alertValue: '拉回报警'
                         }
                     ]; //todo user flag and ng if to hide when filtering;
                     this.currentSort = 'all';
@@ -153,6 +177,11 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                 HomeAlerts.prototype.veSortByLeakage = function () {
                     if (this.currentSort != '泄漏报警') {
                         this.currentSort = '泄漏报警';
+                    }
+                };
+                HomeAlerts.prototype.veSortByReturn = function () {
+                    if (this.currentSort != '拉回报警') {
+                        this.currentSort = '拉回报警';
                     }
                 };
                 HomeAlerts.prototype.veProcessed = function (alert) {
@@ -181,7 +210,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     core_1.Component({
                         selector: 'home-alerts',
                         templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
-                        directives: [home_alerts_detail_component_1.HomeAlertsDetail, common_1.CORE_DIRECTIVES]
+                        directives: [home_alerts_detail_component_1.HomeAlertsDetail, home_return_alerts_detail_component_1.HomeReturnAlertsDetail, common_1.CORE_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], HomeAlerts);

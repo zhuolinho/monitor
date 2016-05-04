@@ -4,6 +4,7 @@
         <a  (click)="veSortByPresure();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警 </a>
         <a  (click)="veSortBySingal();  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断 <span class="new-alert-badge">1</span></a>
         <a   (click)="veSortByLeakage();  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 </a>
+        <a   (click)="veSortByReturn();  selectedtab=5;" [class.monitor-tab-selected]="selectedtab==5"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 拉回报警 </a>
     </div>
     <div class="space" style="padding-top:60px;">
     </div>
@@ -17,7 +18,7 @@
               <div class="helper-white-bg ">
                 <div class="row valign-wrapper helper-padding-5">
                   <div class="col s4 push-s8">
-                    <div *ngIf="!alert.processed" class="right">
+                    <div *ngIf="!alert.processed && alert.type != '拉回报警'" class="right">
                           <a  href="{{'#homealert'+i}}" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger modal-trigger">更多</a>
                     </div>
 
@@ -33,19 +34,20 @@
 
                 <div class="monitor-table helper-font-bigger">
                   <div class="table-row">
-                    <div class="table-cell"> 罐号 </div>
+                    <!-- set first collum width on the common field to 40% to keep alignment  -->
+                    <div class="table-cell" style="width:40% !important;"> 罐号 </div>
                     <div class="table-cell">{{alert.id}}  </div>
                   </div>
                   <div class="table-row" *ngIf="alert.type == '余量报警'">
                       <div class="table-cell"> 余量/压力 </div>
-                      <div class="table-cell">{{alert.alertValue}}
+                      <div class="table-cell">
+                        {{alert.alertValue}}
 
                       <div class="monitor-alert" *ngIf="!alert.processed">
                           余量报警
                         </div>
                      </div>
                   </div>
-
 
                   <div class="table-row" *ngIf="alert.type == '信号中断'">
                     <div class="table-cell"> 信号/异常 </div>
@@ -62,10 +64,44 @@
                     <div class="table-cell">{{alert.remainingTime}} </div>
                   </div>
 
-                  <div class="table-row">
-                    <div class="table-cell"> 时间/工号 </div>
+
+                  <div class="table-row" *ngIf="alert.type == '拉回报警'">
+                    <div class="table-cell" > 已选罐号 </div>
+                    <div class="table-cell">
+
+                      <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
+                          <span *ngFor="#n of alert.selectedJars"> {{n}}, </span>
+                      </div>
+
+                      <div class="monitor-alert" *ngIf="!alert.processed">
+                             拉回报警
+                      </div>
+
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="alert.processed">
+                        <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
+                      </div>
+                    </div>
+                  </div>
+
+                 <div class="table-row" *ngIf="alert.type == '拉回报警'">
+                    <div class="table-cell"> 拉回数量 </div>
+                    <div class="table-cell">
+                      {{alert.selectedJars.length}} 个
+                    </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.type != '拉回报警'">
+                    <div class="table-cell" > 时间/工号 </div>
                     <div class="table-cell">{{alert.upTime}} </div>
                   </div>
+
+                  <div class="table-row" *ngIf="alert.type == '拉回报警'">
+                    <div class="table-cell"> 报警时间/接警员 </div>
+                    <div class="table-cell">{{alert.alertTime}} / {{alert.processedAgent}}</div>
+                  </div>
+
+
+                  <div class="clearfix"></div>
 
                 </div>
               </div>
@@ -76,7 +112,8 @@
             </div>
 
             <!-- modal goes here -->
-            <home-alerts-detail [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
+            <home-alerts-detail *ngIf ='alert.type != "拉回报警" ' [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
+            <home-return-alerts-detail *ngIf ='alert.type == "拉回报警" ' [data]="{id:'homereturnalert'+i,alert:alert}"> </home-return-alerts-detail>
 
           </div>
         </div>
