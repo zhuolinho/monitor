@@ -6,84 +6,143 @@
     <div class="helper-margin-top-10 helper-margin-bottom-20">
       <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15">  C002-闸北区大宁路355号XX站</span>
     </div>
-
-    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-      选择车牌
-    </span>
-    <div class="row helper-margin-bottom-20">
-      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-          <select class="helper-select-font-bigger">
-            <option value="0" > 沪D C92632</option>
-            <option  value="1"> 沪D C922632</option>
-            <option  value="2"> 沪D C86634</option>
-          </select>
-          <!-- <label>选在时间</label> -->
-        </div>
+    <div>
+      <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
+        选择车牌
+      </span>
+      <div class="helper-margin-bottom-20">
+        <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+            <select class="helper-select-font-bigger">
+              <option value="0" > 沪D C92632</option>
+              <option  value="1"> 沪D C922632</option>
+              <option  value="2"> 沪D C86634</option>
+            </select>
+            <!-- <label>选在时间</label> -->
+          </div>
+          <div class="clearfix"></div>
+      </div>
     </div>
 
 
-    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-      选择气种
-    </span>
-    <div class="row helper-margin-bottom-20">
-      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-          <select class="helper-select-font-bigger">
-            <option value="0" > CNG </option>
-            <option  value="1"> CNG </option>
-            <option  value="2"> CNG </option>
-          </select>
-          <!-- <label>选在时间</label> -->
-        </div>
+    <div>
+      <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
+        选择气种
+      </span>
+      <div class=" helper-margin-bottom-20">
+        <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+            <select class="helper-select-font-bigger">
+              <option value="CNG" > CNG </option>
+              <option  value="LNG"> LNG </option>
+              <option  value="小罐"> 小罐 </option>
+              <option  value="拉回"> 拉回 </option>
+            </select>
+            <!-- <label>选在时间</label> -->
+          </div>
+
+          <div class="clearfix"></div>
+      </div>
+
     </div>
 
 
-
-    <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-      选择储罐
-    </span>
-    <div class="row helper-margin-bottom-20">
-      <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-          <select class="helper-select-font-bigger">
-            <option value="0" > 6462 </option>
-            <option  value="1"> 6463 </option>
-            <option  value="2"> 6464 </option>
-          </select>
-          <!-- <label>选在时间</label> -->
-        </div>
-    </div>
-
-
-
+      <div >
         <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-          选择司机
+          回站加气
         </span>
-        <div class="row helper-margin-bottom-20">
+        <div class=" helper-margin-bottom-20">
           <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-              <select class="helper-select-font-bigger">
-                <option value="0" > 671 </option>
-                <option  value="1"> 672 </option>
-                <option  value="2"> 673 </option>
+              <select class="helper-select-font-bigger returnToRefill" (change)="veReturnToRefill($event,this)">
+                <option value="是" > 是 </option>
+                <option  value="否"> 否 </option>
               </select>
               <!-- <label>选在时间</label> -->
             </div>
+            <div class="clearfix"></div>
         </div>
+      </div>
 
 
+      <div *ngIf="returnToRefill">
         <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-          选择运员
+          加气地点
         </span>
-        <div class="row helper-margin-bottom-20">
+        <div class=" helper-margin-bottom-20">
           <div class="input-field helper-white-bg col s12 helper-margin-top-10">
               <select class="helper-select-font-bigger">
-                <option value="0" > 822 </option>
-                <option  value="1"> 823 </option>
-                <option  value="2"> 824 </option>
+                <option value="总站" > 总站 </option>
+                <option  value="青浦加气站"> 青浦加气站 </option>
+                <option  value="松江加气站"> 松江加气站 </option>
+                <option  value="嘉定加气站"> 嘉定加气站 </option>
+               <option  value="闵行加气站"> 闵行加气站 </option>
+
               </select>
               <!-- <label>选在时间</label> -->
             </div>
+            <div class="clearfix"></div>
         </div>
+      </div>
 
-        <div class="row monitor-tabs helper-padding-left-10 helper-padding-right-10">
+
+
+    <div>
+      <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
+        选择储罐
+      </span>
+      <div class=" helper-margin-bottom-20">
+        <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+            <select class="helper-select-font-bigger">
+              <option value="0" > 6462 </option>
+              <option  value="1"> 6463 </option>
+              <option  value="2"> 6464 </option>
+            </select>
+            <!-- <label>选在时间</label> -->
+          </div>
+
+          <div class="clearfix"></div>
+      </div>
+
+    </div>
+
+    <div>
+      <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
+        选择司机
+      </span>
+      <div class=" helper-margin-bottom-20">
+        <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+            <select class="helper-select-font-bigger">
+              <option value="0"> 671 </option>
+              <option  value="1"> 672 </option>
+              <option  value="2"> 673 </option>
+            </select>
+            <!-- <label>选在时间</label> -->
+          </div>
+
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+
+
+    <div>
+      <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
+        选择运员
+      </span>
+      <div class="helper-margin-bottom-20">
+        <div class="input-field helper-white-bg col s12 helper-margin-top-10">
+            <select class="helper-select-font-bigger">
+              <option value="0" > 822 </option>
+              <option  value="1"> 823 </option>
+              <option  value="2"> 824 </option>
+            </select>
+            <!-- <label>选在时间</label> -->
+          </div>
+          <div class="clearfix"></div>
+      </div>
+    </div>
+
+
+        <div class="monitor-tabs helper-padding-left-10 helper-padding-right-10">
             <div class="col s4">
                 <a (click)="selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 显示全部 </a>
             </div>
@@ -98,7 +157,6 @@
                         已送达
                       </span>
 
-
                  </a>
             </div>
             <div class="col s4">
@@ -108,7 +166,7 @@
         </div>
 
         <!--scroll helper  -->
-        <div style="height:50px;"></div>
+        <div style="height:100px;"></div>
 
 
   </div>

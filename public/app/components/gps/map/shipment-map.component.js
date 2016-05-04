@@ -30,15 +30,27 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     this.request = request;
                     this.selectedtab = 1;
                     this.delevered = false;
+                    this.returnToRefill = true;
                     console.log("ShipmentMap is up and running");
                     this.initUi();
                     this.loadJScript();
                     this.iniSocket();
                 }
                 ShipmentMap.prototype.initUi = function () {
+                    var _this = this;
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                        jQuery('select.returnToRefill').on('change', _this.veReturnToRefill);
                     });
+                };
+                ShipmentMap.prototype.veReturnToRefill = function (event, item) {
+                    console.log("event----", event.target.value, this.returnToRefill, item);
+                    if (event.target.value == "是") {
+                        this.returnToRefill = true;
+                    }
+                    else {
+                        this.returnToRefill = false;
+                    }
                 };
                 ShipmentMap.prototype.loadJScript = function () {
                     var script = document.createElement("script");

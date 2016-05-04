@@ -22,6 +22,7 @@ export class ShipmentMap{
   delevered:boolean=false;
   targetCar:any;
   targetMarker:any;
+  returnToRefill:boolean = true;
   static gpsmap:any;
   constructor(public request:RequestService){
   console.log("ShipmentMap is up and running");
@@ -33,7 +34,20 @@ export class ShipmentMap{
   initUi(){
     setTimeout(_=>{
          jQuery('select').material_select();
+         jQuery('select.returnToRefill').on('change',this.veReturnToRefill);
     });
+  }
+
+  veReturnToRefill(event, item){
+            console.log("event----",event.target.value,  this.returnToRefill, item);
+      if(event.target.value == "是"){
+        this.returnToRefill = true;
+
+
+      }
+      else{
+          this.returnToRefill = false;
+      }
   }
 
 
