@@ -40,17 +40,21 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     var _this = this;
                     setTimeout(function (_) {
                         jQuery('select').material_select();
-                        jQuery('select.returnToRefill').on('change', _this.veReturnToRefill);
+                        jQuery('select.returnToRefill').on('change', function (event) {
+                            _this.veReturnToRefill(event, _this);
+                        });
                     });
                 };
-                ShipmentMap.prototype.veReturnToRefill = function (event, item) {
-                    console.log("event----", event.target.value, this.returnToRefill, item);
-                    if (event.target.value == "是") {
-                        this.returnToRefill = true;
+                ShipmentMap.prototype.veReturnToRefill = function (event, compRef) {
+                    if (event) {
+                        if (event.target.value == "是") {
+                            compRef.returnToRefill = true;
+                        }
+                        else {
+                            compRef.returnToRefill = false;
+                        }
                     }
-                    else {
-                        this.returnToRefill = false;
-                    }
+                    compRef.initUi();
                 };
                 ShipmentMap.prototype.loadJScript = function () {
                     var script = document.createElement("script");

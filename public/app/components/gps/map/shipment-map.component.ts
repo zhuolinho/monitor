@@ -32,22 +32,26 @@ export class ShipmentMap{
   }
 
   initUi(){
+    var _this = this;
     setTimeout(_=>{
          jQuery('select').material_select();
-         jQuery('select.returnToRefill').on('change',this.veReturnToRefill);
+         jQuery('select.returnToRefill').on('change',function(event){
+           _this.veReturnToRefill(event, _this)
+         });
     });
   }
 
-  veReturnToRefill(event, item){
-            console.log("event----",event.target.value,  this.returnToRefill, item);
-      if(event.target.value == "是"){
-        this.returnToRefill = true;
 
-
-      }
-      else{
-          this.returnToRefill = false;
-      }
+  veReturnToRefill(event, compRef){
+        if(event){
+          if(event.target.value == "是"){
+            compRef.returnToRefill = true;
+          }
+          else{
+              compRef.returnToRefill = false;
+          }
+        }
+        compRef.initUi();
   }
 
 
