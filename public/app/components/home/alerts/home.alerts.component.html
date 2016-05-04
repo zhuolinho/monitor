@@ -70,7 +70,7 @@
                     <div class="table-cell">
 
                       <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
-                          <span *ngFor="#n of alert.selectedJars"> {{n}}, </span>
+                          <span *ngFor="#n of alert.selectedTanks"> {{n}}, </span>
                       </div>
 
                       <div class="monitor-alert" *ngIf="!alert.processed">
@@ -86,7 +86,7 @@
                  <div class="table-row" *ngIf="alert.type == '拉回报警'">
                     <div class="table-cell"> 拉回数量 </div>
                     <div class="table-cell">
-                      {{alert.selectedJars.length}} 个
+                      {{alert.selectedTanks.length}} 个
                     </div>
                   </div>
 

@@ -97,6 +97,10 @@ body, html{
       position: relative;
       display: table-cell  !important;
   }
+
+  .monitor-table.vstrip .table-cell{
+      padding:10px 15px;
+  }
   .new-alert-badge{
     border-radius: 50%;
     height: 20px;

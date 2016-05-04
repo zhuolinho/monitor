@@ -77,6 +77,8 @@
                   <div class="table-cell"> 信号良好/无泄漏</div>
                 </div>
 
+                    <div class="clearfix"></div>
+
               </div>
             </div>
 
@@ -95,41 +97,32 @@
         <div class="helper-margin-bottom-20 valign-wrapper row">
           <div class="col s9">
             <div class="helper-white-bg" style="overflow-x:hidden;">
-              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block center-align">
+              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block">
 
                 C003-闸北区大宁路335号XX站
+
+                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veSelectAllTanks()">全选</a>
+                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veReturnSelectedTanks()">拉回</a>
               </div>
 
               <div class="row valign-wrapper  helper-gray-border-light">
                 <div class="col s4 valign helper-font-bigger center-align">
                   现有储罐
-
                 </div>
 
                 <div class="col s8">
-
-                            <div class="monitor-table helper-font-bigger" style="border-top:hidden; border-bottom:hidden;">
-                                  <div class="table-row">
-                                    <div class="table-cell"> 51311</div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 26122</div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 67334</div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 61334</div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 27384</div>
-                                  </div>
-
-                                </div>
+                    <div class="monitor-table vstrip helper-font-bigger" style="border-top:hidden; border-bottom:hidden;">
+                          <div class="table-row" *ngFor="#tank of availableTanks; #i=index;">
+                            <div class="table-cell" style="">
+                            <span class="left" style="margin-top:6px;">{{tank.id}}</span>
+                              <a class="right" style="margin-top:8px;" >
+                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veSelectTank(tank)" [attr.checked] = "tank.selected?'checked':null" />
+                                <label attr.for="{{tank.id+i}}"></label>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="clearfix"></div>
+                    </div>
 
                 </div>
 
