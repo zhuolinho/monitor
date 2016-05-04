@@ -7,7 +7,8 @@
     <div *ngIf="selectedtab==1" class="helper-padding-10  helper-border-top monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:60px; left:0; width:100%;">
         <a (click)="veSortByCng();  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> CNG</a>
         <a  (click)="veSortByLng();  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> LNG </a>
-        <a  (click)="veSortByWebsite();  selectedsubtab=3;" [class.monitor-tab-selected]="selectedsubtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">管网</a>
+        <a  (click)="veSortBySmallTank();  selectedsubtab=3;" [class.monitor-tab-selected]="selectedsubtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">小罐</a>
+        <a  (click)="veSortByWebsite();  selectedsubtab=4;" [class.monitor-tab-selected]="selectedsubtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">管网</a>
     </div>
 
 

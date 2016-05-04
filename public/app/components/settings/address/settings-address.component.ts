@@ -59,7 +59,27 @@ export class SettingsAddress{
           ]
       },
       {
-          type: { id: 3, value: '管网' },
+          type: { id: 3, value: '小罐' },
+          data: [
+              {
+                  code: 'X001',
+                  addr: '闸北区新闸路55号XX站',
+                  plcaddr: ''
+              },
+              {
+                  code: 'X002',
+                  addr: '闸北区新闸路980号XXXX站',
+                  plcaddr: ''
+              },
+              {
+                  code: 'X003',
+                  addr: '闸北区新闸路201号XX站',
+                  plcaddr: ''
+              }
+          ]
+      },
+      {
+          type: { id: 4, value: '管网' },
           data: [
               {
                   code: 'G001',
@@ -197,12 +217,18 @@ export class SettingsAddress{
         }
           this.initUi();
     };
-     veSortByWebsite (){
+     veSortBySmallTank (){
         if (this.currentSubSort != '3') {
             this.currentSubSort = '3';
         }
           this.initUi();
     };
+    veSortByWebsite (){
+       if (this.currentSubSort != '4') {
+           this.currentSubSort = '4';
+       }
+         this.initUi();
+   };
      veSortByGuard  (){
         if (this.currentSubSort != '1') {
             this.currentSubSort = '1';
