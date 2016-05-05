@@ -112,11 +112,10 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
-        console.log('plc server: got data raw----',data);
+        // console.log('plc server: got data raw----',data);
         var stream = socket.name +' sent-- : '+data.toString('utf8');
       console.log('plc server: got data stream----',stream);
-      saveData(handler, stream);
-      // broadcast(socket.name + "> " + data, socket);
+      // saveData(handler, stream);
     });
 
     // Remove the client from the list when it leaves
