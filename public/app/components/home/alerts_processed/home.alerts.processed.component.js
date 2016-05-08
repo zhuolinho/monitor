@@ -25,6 +25,131 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
                 function HomeProcssedAlerts() {
                     this.months = ['1月', '2月', '3月', '4月'];
                     this.selectedMonth = '';
+                    this.alertsList = [{
+                            groupId: 1,
+                            groupName: "余量报警",
+                            data: [{
+                                    code: 'C002-6328',
+                                    alertTime: '5.2-14:02',
+                                    processedTime: '5.2-14:33',
+                                    processedAgent: '2320',
+                                    alertType: '余量报警',
+                                    typeId: 1,
+                                },
+                                {
+                                    code: 'C002-6379',
+                                    alertTime: '5.2-14:02',
+                                    processedTime: '5.6-11:20',
+                                    processedAgent: '2322',
+                                    alertType: '余量报警',
+                                    typeId: 1,
+                                }
+                            ] },
+                        {
+                            groupId: 2,
+                            groupName: "压力报警",
+                            data: [{
+                                    code: 'C003-9328',
+                                    alertTime: '5.2-14:02',
+                                    processedTime: '5.3-14:03',
+                                    processedAgent: '2320',
+                                    alertType: '压力报警',
+                                    typeId: 2,
+                                },
+                                {
+                                    code: 'C005-8370',
+                                    alertTime: '5.2-14:02',
+                                    processedTime: '5.1-11:12',
+                                    processedAgent: '2372',
+                                    alertType: '压力报警',
+                                    typeId: 2,
+                                }
+                            ] },
+                        {
+                            groupId: 3,
+                            groupName: "信号中断",
+                            data: [{
+                                    code: 'C004-9628',
+                                    alertTime: '5.2-13:12',
+                                    processedTime: '5.3-14:03',
+                                    processedAgent: '4920',
+                                    alertType: '信号中断',
+                                    typeId: 3,
+                                },
+                                {
+                                    code: 'C006-1379',
+                                    alertTime: '5.2-12:17',
+                                    processedTime: '5.1-18:30',
+                                    processedAgent: '8328',
+                                    alertType: '信号中断',
+                                    typeId: 3,
+                                },
+                                {
+                                    code: 'C006-1379',
+                                    alertTime: '5.2-12:17',
+                                    processedTime: '5.2-18:37',
+                                    processedAgent: '5328',
+                                    alertType: '信号中断',
+                                    typeId: 3,
+                                }
+                            ] },
+                        {
+                            groupId: 4,
+                            groupName: "泄漏报警",
+                            data: [{
+                                    code: 'C009-9828',
+                                    alertTime: '5.2-13:12',
+                                    processedTime: '5.3-14:03',
+                                    processedAgent: '1977',
+                                    alertType: '泄漏报警',
+                                    typeId: 4,
+                                },
+                                {
+                                    code: 'C007-8379',
+                                    alertTime: '5.2-12:17',
+                                    processedTime: '5.1-18:30',
+                                    processedAgent: '8328',
+                                    alertType: '泄漏报警',
+                                    typeId: 4,
+                                },
+                                {
+                                    code: 'C003-0379',
+                                    alertTime: '5.2-12:17',
+                                    processedTime: '5.2-18:37',
+                                    processedAgent: '5328',
+                                    alertType: '泄漏报警',
+                                    typeId: 4,
+                                }
+                            ] },
+                        {
+                            groupId: 5,
+                            groupName: "拉回报警",
+                            data: [{
+                                    code: 'C005-5528',
+                                    alertTime: '5.2-13:12',
+                                    processedTime: '5.3-14:03',
+                                    processedAgent: '1997',
+                                    alertType: '拉回报警',
+                                    typeId: 5,
+                                },
+                                {
+                                    code: 'C010-2279',
+                                    alertTime: '4.2-12:17',
+                                    processedTime: '5.1-22:32',
+                                    processedAgent: '8118',
+                                    alertType: '拉回报警',
+                                    typeId: 5,
+                                },
+                                {
+                                    code: 'C022-1379',
+                                    alertTime: '5.2-12:17',
+                                    processedTime: '4.2-18:37',
+                                    processedAgent: '5668',
+                                    alertType: '拉回报警',
+                                    typeId: 5,
+                                }
+                            ] },
+                    ]; //todo user flag and ng if to hide when filtering;
                     console.log("Home processed alerts is up and running");
                     this.initUi();
                 }
