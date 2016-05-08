@@ -7,7 +7,6 @@ export const hasSettingsAcess = (to, from) => {
 	let userServc = injector.get(UserService);
 	let router = injector.get(Router);
 
-
   if(userServc.getSettingAcess()){
 		return true;
   }

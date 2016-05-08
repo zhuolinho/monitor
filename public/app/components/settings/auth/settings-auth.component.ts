@@ -1,7 +1,9 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {UserService} from '../../../services/user.service';
-import {Router} from 'angular2/router';
+import {Router, CanActivate} from 'angular2/router';
+import {hasSettingsAcess} from '../../../services/has-settings-access';
+
 declare var jQuery:any;
 
 @Component({
@@ -14,6 +16,11 @@ export class SettingsAuth{
 
   constructor(public localUserService:UserService,public router:Router){
       console.log("SettingsAuth is up and running");
+
+      if(this.localUserService.getSettingAcess()){  //redirect if already signed in.
+        this.router.navigate(['SettingsAccess']);
+        return;
+      }
       this.user.username = this.localUserService.getUser().name;
       this.initUi();
       }

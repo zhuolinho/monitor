@@ -33,6 +33,10 @@ System.register(['angular2/core', '../../../config', '../../../services/user.ser
                     this.router = router;
                     this.user = { username: '', password: '' };
                     console.log("SettingsAuth is up and running");
+                    if (this.localUserService.getSettingAcess()) {
+                        this.router.navigate(['SettingsAccess']);
+                        return;
+                    }
                     this.user.username = this.localUserService.getUser().name;
                     this.initUi();
                 }
