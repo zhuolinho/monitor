@@ -157,37 +157,22 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     ]; //todo user flag and ng if to hide when filtering;
                     this.currentSort = 'all';
                     console.log("Home alerts is up and running");
-                    this.initModal();
+                    this.initUi();
                 }
-                HomeAlerts.prototype.veSortByShortage = function () {
-                    if (this.currentSort != '余量报警') {
-                        this.currentSort = '余量报警';
-                    }
-                };
-                HomeAlerts.prototype.veSortBySingal = function () {
-                    if (this.currentSort != '信号中断') {
-                        this.currentSort = '信号中断';
-                    }
-                };
-                HomeAlerts.prototype.veSortByPresure = function () {
-                    if (this.currentSort != '压力报警') {
-                        this.currentSort = '压力报警';
-                    }
-                };
-                HomeAlerts.prototype.veSortByLeakage = function () {
-                    if (this.currentSort != '泄漏报警') {
-                        this.currentSort = '泄漏报警';
-                    }
-                };
-                HomeAlerts.prototype.veSortByReturn = function () {
-                    if (this.currentSort != '拉回报警') {
-                        this.currentSort = '拉回报警';
+                HomeAlerts.prototype.veSortBy = function (wich) {
+                    var _this = this;
+                    if (this.currentSort != wich) {
+                        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+                        setTimeout(function (_) {
+                            _this.currentSort = wich;
+                            _this.initUi();
+                        }, 100);
                     }
                 };
                 HomeAlerts.prototype.veProcessed = function (alert) {
                     alert.processed = !alert.processed;
                 };
-                HomeAlerts.prototype.initModal = function () {
+                HomeAlerts.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
                         jQuery('.modal-trigger').leanModal({
