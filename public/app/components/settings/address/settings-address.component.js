@@ -115,6 +115,26 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                     plcaddr: '192.167.0.3'
                                 }
                             ]
+                        },
+                        {
+                            type: { id: 5, value: '中转站' },
+                            data: [
+                                {
+                                    code: '总公司',
+                                    addr: '闸北区新闸路55号XX站',
+                                    plcaddr: ''
+                                },
+                                {
+                                    code: '中转站1号',
+                                    addr: '闸北区新闸路180号',
+                                    plcaddr: ''
+                                },
+                                {
+                                    code: '中转站2号',
+                                    addr: '闸北区新闸路801号',
+                                    plcaddr: ''
+                                }
+                            ]
                         }
                     ];
                     this.staffArray = [
@@ -200,66 +220,28 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     console.log("SettingsAddress is up and running");
                     this.initUi();
                 }
-                SettingsAddress.prototype.veSortByAddress = function () {
-                    if (this.currentSort != '1') {
-                        this.currentSort = '1';
+                SettingsAddress.prototype.veSortBy = function (which) {
+                    var _this = this;
+                    if (this.currentSort != which) {
+                        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+                        setTimeout(function (_) {
+                            _this.currentSort = which;
+                            _this.currentSubSort = 'all';
+                            _this.selectedsubtab = 0;
+                            _this.initUi();
+                        }, 100);
                     }
-                    this.currentSubSort = 'all';
-                    this.selectedsubtab = 0;
-                    this.initUi();
                 };
-                ;
-                SettingsAddress.prototype.veSortByStaff = function () {
-                    if (this.currentSort != '2') {
-                        this.currentSort = '2';
+                SettingsAddress.prototype.veSortSubBy = function (which) {
+                    var _this = this;
+                    if (this.currentSubSort != which) {
+                        this.currentSubSort = null;
+                        setTimeout(function (_) {
+                            _this.currentSubSort = which;
+                            _this.initUi();
+                        }, 100);
                     }
-                    this.currentSubSort = 'all';
-                    this.selectedsubtab = 0;
-                    this.initUi();
                 };
-                ;
-                SettingsAddress.prototype.veSortByCng = function () {
-                    if (this.currentSubSort != '1') {
-                        this.currentSubSort = '1';
-                    }
-                    this.initUi();
-                };
-                ;
-                SettingsAddress.prototype.veSortByLng = function () {
-                    if (this.currentSubSort != '2') {
-                        this.currentSubSort = '2';
-                    }
-                    this.initUi();
-                };
-                ;
-                SettingsAddress.prototype.veSortBySmallTank = function () {
-                    if (this.currentSubSort != '3') {
-                        this.currentSubSort = '3';
-                    }
-                    this.initUi();
-                };
-                ;
-                SettingsAddress.prototype.veSortByWebsite = function () {
-                    if (this.currentSubSort != '4') {
-                        this.currentSubSort = '4';
-                    }
-                    this.initUi();
-                };
-                ;
-                SettingsAddress.prototype.veSortByGuard = function () {
-                    if (this.currentSubSort != '1') {
-                        this.currentSubSort = '1';
-                    }
-                    this.initUi();
-                };
-                ;
-                SettingsAddress.prototype.veSortByDriver = function () {
-                    if (this.currentSubSort != '2') {
-                        this.currentSubSort = '2';
-                    }
-                    this.initUi();
-                };
-                ;
                 SettingsAddress.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {

@@ -3,19 +3,18 @@
 
   <div class="row helper-margin-bottom-5 valign-wrapper">
     <div class="col s7  helper-white-bg">
-
       <div class="input-field">
           <select class="helper-select-font-bigger">
-            <option value="" disabled selected>C003-闸北区大宁路335号XX站</option>
-            <option  value="1">C003-闸北区大宁路335号XX站</option>
-            <option  value="2">C003-闸北区大宁路335号XX站</option>
+            <option value="0" disabled selected> 总公司</option>
+            <option  value="1">中转站1号 闸北区大宁路999号</option>
+            <option  value="2">C...</option>
+            <option  value="2">L...</option>
+            <option  value="2">X...</option>
           </select>
           <label >选择地址</label>
         </div>
     </div>
-
     <div class="col s5">
-
     </div>
   </div>
 
@@ -103,6 +102,7 @@
 
                 <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veSelectAllTanks()">全选</a>
                 <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veReturnSelectedTanks()">拉回</a>
+                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veAddSelectedTanks()">进场</a>
               </div>
 
               <div class="row valign-wrapper  helper-gray-border-light">

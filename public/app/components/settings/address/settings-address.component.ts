@@ -98,6 +98,26 @@ export class SettingsAddress{
                   plcaddr: '192.167.0.3'
               }
           ]
+      },
+      {
+          type: { id: 5, value: '中转站' },
+          data: [
+              {
+                  code: '总公司',
+                  addr: '闸北区新闸路55号XX站',
+                  plcaddr: ''
+              },
+              {
+                  code: '中转站1号',
+                  addr: '闸北区新闸路180号',
+                  plcaddr: ''
+              },
+              {
+                  code: '中转站2号',
+                  addr: '闸北区新闸路801号',
+                  plcaddr: ''
+              }
+          ]
       }
   ];
   staffArray = [
@@ -188,60 +208,27 @@ export class SettingsAddress{
       this.initUi();
     }
 
+   veSortBy(which){
+     if (this.currentSort != which) {
+       this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+       setTimeout(_=>{
+            this.currentSort = which;
+            this.currentSubSort = 'all';
+            this.selectedsubtab = 0;
+            this.initUi();
+       },100);
+     }
+   }
 
-
-     veSortByAddress(){
-        if (this.currentSort != '1') {
-            this.currentSort = '1';
-        }
-        this.currentSubSort = 'all';
-        this.selectedsubtab = 0;
-        this.initUi();
-    };
-     veSortByStaff (){
-        if (this.currentSort != '2') {
-            this.currentSort = '2';
-        }
-        this.currentSubSort = 'all';
-        this.selectedsubtab = 0;
-        this.initUi();
-    };
-     veSortByCng (){
-        if (this.currentSubSort != '1') {
-            this.currentSubSort = '1';
-        }
-        this.initUi();
-    };
-     veSortByLng (){
-        if (this.currentSubSort != '2') {
-            this.currentSubSort = '2';
-        }
-          this.initUi();
-    };
-     veSortBySmallTank (){
-        if (this.currentSubSort != '3') {
-            this.currentSubSort = '3';
-        }
-          this.initUi();
-    };
-    veSortByWebsite (){
-       if (this.currentSubSort != '4') {
-           this.currentSubSort = '4';
-       }
-         this.initUi();
-   };
-     veSortByGuard  (){
-        if (this.currentSubSort != '1') {
-            this.currentSubSort = '1';
-        }
-          this.initUi();
-    };
-     veSortByDriver (){
-        if (this.currentSubSort != '2') {
-            this.currentSubSort = '2';
-        }
-          this.initUi();
-    };
+   veSortSubBy(which){
+     if (this.currentSubSort != which) {
+          this.currentSubSort = null;
+          setTimeout(_=>{
+               this.currentSubSort = which;
+               this.initUi();
+          },100);
+     }
+   }
 
     initUi (){
         var _this = this;

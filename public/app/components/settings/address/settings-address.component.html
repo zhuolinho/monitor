@@ -1,20 +1,21 @@
 <div class="helper-border-top helper-relative">
     <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortByAddress();  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 地址</a>
-        <a  (click)="veSortByStaff();  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 员工 </a>
+        <a (click)="veSortBy(1);  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 地址</a>
+        <a  (click)="veSortBy(2);  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 员工 </a>
     </div>
 
     <div *ngIf="selectedtab==1" class="helper-padding-10  helper-border-top monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:60px; left:0; width:100%;">
-        <a (click)="veSortByCng();  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> CNG</a>
-        <a  (click)="veSortByLng();  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> LNG </a>
-        <a  (click)="veSortBySmallTank();  selectedsubtab=3;" [class.monitor-tab-selected]="selectedsubtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">小罐</a>
-        <a  (click)="veSortByWebsite();  selectedsubtab=4;" [class.monitor-tab-selected]="selectedsubtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">管网</a>
+        <a (click)="veSortSubBy(1);  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> CNG</a>
+        <a  (click)="veSortSubBy(2);  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> LNG </a>
+        <a  (click)="veSortSubBy(3);  selectedsubtab=3;" [class.monitor-tab-selected]="selectedsubtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">小罐</a>
+        <a  (click)="veSortSubBy(4);  selectedsubtab=4;" [class.monitor-tab-selected]="selectedsubtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">管网</a>
+        <a  (click)="veSortSubBy(5);  selectedsubtab=5;" [class.monitor-tab-selected]="selectedsubtab==5" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">中转站</a>
     </div>
 
 
     <div  *ngIf="selectedtab==2" class="helper-padding-10  helper-border-top monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:60px; left:0; width:100%;">
-        <a (click)="veSortByDriver();  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 司机</a>
-        <a  (click)="veSortByGuard();  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 押运员 </a>
+        <a (click)="veSortSubBy(1);  selectedsubtab=1;" [class.monitor-tab-selected]="selectedsubtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 司机</a>
+        <a  (click)="veSortSubBy(2);  selectedsubtab=2;" [class.monitor-tab-selected]="selectedsubtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 押运员 </a>
     </div>
     <div class="space" style="padding-top:120px;">
     </div>

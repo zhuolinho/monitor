@@ -55,15 +55,25 @@ export class Gas{
           selectedTanks.push(this.availableTanks[i]);
         }
        }
-      //  console.log("selectedTanks--",selectedTanks.length,selectedTanks);
+       console.log("selectedTanks--",selectedTanks.length,selectedTanks);
+    }
+
+    veAddSelectedTanks(){
+      var selectedTanks = [];
+      for (let i = 0; i < this.availableTanks.length; i++) {
+        if(this.availableTanks[i].selected){
+          selectedTanks.push(this.availableTanks[i]);
+        }
+       }
+       console.log("selectedTanks--",selectedTanks.length,selectedTanks);
     }
    veSelectAllTanks(){
     for (let i = 0; i < this.availableTanks.length; i++) {
          this.availableTanks[i].selected = true;
      }
-
-    //  console.log("all selected----",this.availableTanks.length,this.availableTanks);
    }
+
+
 
    veSelectTank(tank){
      tank.selected = !tank.selected;

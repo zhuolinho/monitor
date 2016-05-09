@@ -58,7 +58,7 @@ export class SettingsAccess{
               ]
             },
             {
-              type:{id:2,value:'接警员'},
+              type:{id:2,value:'监管员'},
               data:[
                 {
                   an:'201',  //account number
@@ -95,7 +95,7 @@ export class SettingsAccess{
               ]
             },
             {
-              type:{id:3,value:'配送员'},
+              type:{id:3,value:'调度员'},
               data:[
                 {
                   an:'301',  //account number
