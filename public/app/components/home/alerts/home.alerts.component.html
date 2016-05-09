@@ -5,6 +5,7 @@
         <a  (click)="veSortBy('信号中断');  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断 <span class="new-alert-badge">1</span></a>
         <a   (click)="veSortBy('泄漏报警');  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 </a>
         <a   (click)="veSortBy('拉回报警');  selectedtab=5;" [class.monitor-tab-selected]="selectedtab==5"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 拉回报警 </a>
+        <a   (click)="veSortBy('进场报警');  selectedtab=6;" [class.monitor-tab-selected]="selectedtab==6"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 进场报警 </a>
     </div>
     <div class="space" style="padding-top:60px;">
     </div>
@@ -18,7 +19,7 @@
               <div class="helper-white-bg ">
                 <div class="row valign-wrapper helper-padding-5">
                   <div class="col s4 push-s8">
-                    <div *ngIf="!alert.processed && alert.type != '拉回报警'" class="right">
+                    <div *ngIf="!alert.processed && alert.type != '拉回报警' && alert.type != '进场报警'" class="right">
                           <a  href="{{'#homealert'+i}}" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger modal-trigger">查看</a>
                     </div>
 
@@ -65,7 +66,7 @@
                   </div>
 
 
-                  <div class="table-row" *ngIf="alert.type == '拉回报警'">
+                  <div class="table-row" *ngIf ='(alert.type == "拉回报警")'>
                     <div class="table-cell" > 已选罐号 </div>
                     <div class="table-cell">
 
@@ -83,19 +84,38 @@
                     </div>
                   </div>
 
-                 <div class="table-row" *ngIf="alert.type == '拉回报警'">
+
+                  <div class="table-row" *ngIf ='(alert.type == "进场报警")'>
+                    <div class="table-cell" > 已选罐号 </div>
+                    <div class="table-cell">
+
+                      <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
+                          <span *ngFor="#n of alert.selectedTanks"> {{n}}, </span>
+                      </div>
+
+                      <div class="monitor-alert" *ngIf="!alert.processed">
+                             进场报警
+                      </div>
+
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="alert.processed">
+                        <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
+                      </div>
+                    </div>
+                  </div>
+
+                 <div class="table-row" *ngIf ='(alert.type == "拉回报警") || (alert.type == "进场报警")'>
                     <div class="table-cell"> 拉回数量 </div>
                     <div class="table-cell">
                       {{alert.selectedTanks.length}} 个
                     </div>
                   </div>
 
-                  <div class="table-row" *ngIf="alert.type != '拉回报警'">
+                  <div class="table-row" *ngIf ='(alert.type == "拉回报警") || (alert.type == "进场报警")'>
                     <div class="table-cell" > 时间/工号 </div>
                     <div class="table-cell">{{alert.upTime}} </div>
                   </div>
 
-                  <div class="table-row" *ngIf="alert.type == '拉回报警'">
+                  <div class="table-row" *ngIf ='(alert.type == "拉回报警") || (alert.type == "进场报警")'>
                     <div class="table-cell"> 报警时间/接警员 </div>
                     <div class="table-cell">{{alert.alertTime}} / {{alert.processedAgent}}</div>
                   </div>
@@ -112,8 +132,8 @@
             </div>
 
             <!-- modal goes here -->
-            <home-alerts-detail *ngIf ='alert.type != "拉回报警" ' [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
-            <home-return-alerts-detail *ngIf ='alert.type == "拉回报警" ' [data]="{id:'homereturnalert'+i,alert:alert}"> </home-return-alerts-detail>
+            <home-alerts-detail *ngIf ='(alert.type != "拉回报警") && (alert.type != "进场报警") ' [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
+            <home-return-alerts-detail *ngIf ='(alert.type == "拉回报警") || (alert.type == "进场报警")' [data]="{id:'homereturnalert'+i,alert:alert}"> </home-return-alerts-detail>
 
           </div>
         </div>

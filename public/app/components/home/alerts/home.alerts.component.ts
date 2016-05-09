@@ -136,6 +136,26 @@ export class HomeAlerts{
             alertTime:'5.5.2-11:00',
             processedAgent:'428',
             alertValue:'拉回报警'
+          },
+          {
+            name:'C007-闸北区大宁路335号',
+            id:'1111',
+            type:'进场报警',
+            selectedTanks:['82345','62545','27456','72145','19345','92342','82345','63245','63245','63245','63245','63245','63245','63245'],
+            processed:false,
+            alertTime:'5.2.10-16:01',
+            processedAgent:'223',
+            alertValue:'进场报警'
+          },
+          {
+            name:'C007-闸北区大宁路335号',
+            id:'3333',
+            type:'进场报警',
+            selectedTanks:['22345','6666','8889','72145','19345','92342','82345','63245','63245','63245','63245','63245','63245','63245'],
+            processed:true,
+            alertTime:'5.2.10-16:01',
+            processedAgent:'888',
+            alertValue:'进场报警'
           }
 
 

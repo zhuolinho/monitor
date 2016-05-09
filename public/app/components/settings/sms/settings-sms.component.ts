@@ -149,41 +149,53 @@ export class SettingsSms{
         currentSort:string = 'all';
         selectedtab:number = 0;
 
-
         constructor(){
           console.log("SettingsSms is up and running");
             this.initUi();
         }
 
 
-        veSortByArivalSms(){
-          if(this.currentSort!='4'){
-            this.currentSort='4';
-          }
+
+      veSortBy(wich){
+        if(this.currentSort!=wich){
+          this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+          setTimeout(_=>{
+            this.currentSort = wich;
             this.initUi();
+          },100);
         }
+      }
 
-        veSortByDeliveryStaffSms(){
-          if(this.currentSort!='3'){
-            this.currentSort='3';
-          }
-            this.initUi();
-        }
 
-        veSortByAlertHandlerSms(){
-          if(this.currentSort!='2'){
-            this.currentSort='2';
-          }
-            this.initUi();
-        }
-
-        veSortByAlertSms(){
-          if(this.currentSort!='1'){
-            this.currentSort='1';
-          }
-
-          this.initUi();
-        }
+        //
+        // veSortByArivalSms(){
+        //   if(this.currentSort!='4'){
+        //     this.currentSort='4';
+        //   }
+        //     this.initUi();
+        // }
+        //
+        // veSortByDeliveryStaffSms(){
+        //   if(this.currentSort!='3'){
+        //     this.currentSort='3';
+        //   }
+        //     this.initUi();
+        // }
+        //
+        // veSortByAlertHandlerSms(){
+        //   if(this.currentSort!='2'){
+        //     this.currentSort='2';
+        //   }
+        //     this.initUi();
+        // }
+        //
+        // veSortByAlertSms(){
+        //   if(this.currentSort!='1'){
+        //     this.currentSort='1';
+        //   }
+        //
+        //   this.initUi();
+        // }
         initUi(){
 
           var _this = this;

@@ -163,30 +163,45 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-sm
                     console.log("SettingsSms is up and running");
                     this.initUi();
                 }
-                SettingsSms.prototype.veSortByArivalSms = function () {
-                    if (this.currentSort != '4') {
-                        this.currentSort = '4';
+                SettingsSms.prototype.veSortBy = function (wich) {
+                    var _this = this;
+                    if (this.currentSort != wich) {
+                        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+                        setTimeout(function (_) {
+                            _this.currentSort = wich;
+                            _this.initUi();
+                        }, 100);
                     }
-                    this.initUi();
                 };
-                SettingsSms.prototype.veSortByDeliveryStaffSms = function () {
-                    if (this.currentSort != '3') {
-                        this.currentSort = '3';
-                    }
-                    this.initUi();
-                };
-                SettingsSms.prototype.veSortByAlertHandlerSms = function () {
-                    if (this.currentSort != '2') {
-                        this.currentSort = '2';
-                    }
-                    this.initUi();
-                };
-                SettingsSms.prototype.veSortByAlertSms = function () {
-                    if (this.currentSort != '1') {
-                        this.currentSort = '1';
-                    }
-                    this.initUi();
-                };
+                //
+                // veSortByArivalSms(){
+                //   if(this.currentSort!='4'){
+                //     this.currentSort='4';
+                //   }
+                //     this.initUi();
+                // }
+                //
+                // veSortByDeliveryStaffSms(){
+                //   if(this.currentSort!='3'){
+                //     this.currentSort='3';
+                //   }
+                //     this.initUi();
+                // }
+                //
+                // veSortByAlertHandlerSms(){
+                //   if(this.currentSort!='2'){
+                //     this.currentSort='2';
+                //   }
+                //     this.initUi();
+                // }
+                //
+                // veSortByAlertSms(){
+                //   if(this.currentSort!='1'){
+                //     this.currentSort='1';
+                //   }
+                //
+                //   this.initUi();
+                // }
                 SettingsSms.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
