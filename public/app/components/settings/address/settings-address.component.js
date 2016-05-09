@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-address-user.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-add-address-user.component', './partials/settings-add-address.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_address_user_component_1, has_settings_access_1, router_1;
+    var core_1, config_1, settings_add_address_user_component_1, settings_add_address_component_1, has_settings_access_1, router_1;
     var SettingsAddress;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
             },
             function (settings_add_address_user_component_1_1) {
                 settings_add_address_user_component_1 = settings_add_address_user_component_1_1;
+            },
+            function (settings_add_address_component_1_1) {
+                settings_add_address_component_1 = settings_add_address_component_1_1;
             },
             function (has_settings_access_1_1) {
                 has_settings_access_1 = has_settings_access_1_1;
@@ -43,12 +46,12 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                 },
                                 {
                                     code: 'C002',
-                                    addr: '闸北区天目东路111号XXX站',
+                                    addr: '闸北区天目东路112号XXX站',
                                     plcaddr: '192.167.1.2'
                                 },
                                 {
                                     code: 'C003',
-                                    addr: '闸北区天目东路111号XX站',
+                                    addr: '闸北区天目东路114号XX站',
                                     plcaddr: '192.167.1.3'
                                 }
                             ]
@@ -58,7 +61,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             data: [
                                 {
                                     code: 'L001',
-                                    addr: '闸北区沪太路111号XX站',
+                                    addr: '闸北区沪太路113号XX站',
                                     plcaddr: '192.167.1.8'
                                 },
                                 {
@@ -68,7 +71,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                                 },
                                 {
                                     code: 'L003',
-                                    addr: '闸北区沪太路222号XXX站',
+                                    addr: '闸北区沪太路220号XXX站',
                                     plcaddr: '192.167.0.3'
                                 }
                             ]
@@ -284,7 +287,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     core_1.Component({
                         selector: 'settings-address',
                         templateUrl: config_1.config.prefix + '/components/settings/address/settings-address.component.html',
-                        directives: [settings_add_address_user_component_1.SettingsAddAddressUser]
+                        directives: [settings_add_address_user_component_1.SettingsAddAddressUser, settings_add_address_component_1.SettingsAddAddress]
                     }),
                     router_1.CanActivate(function (to, from) {
                         return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning

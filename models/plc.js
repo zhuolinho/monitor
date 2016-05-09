@@ -8,12 +8,18 @@ var plcSchema = mongoose.Schema({
                     at:String,//alert time
                     pt:String,// processed time
                     pa:String,//processed agent
-                    type:{tn:String,ti:String}, //alert type {type name, type id} -- {余量报警,001},{压力报警,002},{信号中断,003},{泄漏报警,004},{拉回报警,005}
+                    at:{      //alert type {type name, type id} -- {余量报警,001},{压力报警,002},{信号中断,003},{泄漏报警,004},{拉回报警,005}
+                      tn:String,
+                      ti:String
+                    },
                     addr:String, //tank address
                     ra:String, //remaining amount(余量报警)
                     rt:String, //remaining time(余量报警)
-                    status:{value:String,default:'pending'}, //processed, pending
-                    st:[{ti:String}]  //selected tanks : ti -- tank id (拉回报警)
+                    status:{
+                      type:String,
+                      default:'pending'
+                    }, //processed, pending
+                    st:[{ti:String}],  //selected tanks : ti -- tank id (拉回报警)
                     ns:String  //nanosecond
               });
 //

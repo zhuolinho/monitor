@@ -1,6 +1,7 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {SettingsAddAddressUser} from './partials/settings-add-address-user.component';
+import {SettingsAddAddress} from './partials/settings-add-address.component';
 import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {CanActivate} from 'angular2/router';
 declare var jQuery:any;
@@ -8,7 +9,7 @@ declare var jQuery:any;
 @Component({
   selector:'settings-address',
   templateUrl:config.prefix + '/components/settings/address/settings-address.component.html',
-  directives:[SettingsAddAddressUser]
+  directives:[SettingsAddAddressUser,SettingsAddAddress]
 })
 
 @CanActivate((to, from) => {
@@ -28,12 +29,12 @@ export class SettingsAddress{
               },
               {
                   code: 'C002',
-                  addr: '闸北区天目东路111号XXX站',
+                  addr: '闸北区天目东路112号XXX站',
                   plcaddr: '192.167.1.2'
               },
               {
                   code: 'C003',
-                  addr: '闸北区天目东路111号XX站',
+                  addr: '闸北区天目东路114号XX站',
                   plcaddr: '192.167.1.3'
               }
           ]
@@ -43,7 +44,7 @@ export class SettingsAddress{
           data: [
               {
                   code: 'L001',
-                  addr: '闸北区沪太路111号XX站',
+                  addr: '闸北区沪太路113号XX站',
                   plcaddr: '192.167.1.8'
               },
               {
@@ -53,7 +54,7 @@ export class SettingsAddress{
               },
               {
                   code: 'L003',
-                  addr: '闸北区沪太路222号XXX站',
+                  addr: '闸北区沪太路220号XXX站',
                   plcaddr: '192.167.0.3'
               }
           ]

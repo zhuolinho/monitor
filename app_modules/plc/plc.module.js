@@ -47,7 +47,7 @@ var incommingData = m.pl;
                                 rawd:incommingData.toString('hex'),
                                 stdd:dateInfo.stdDate, //standard date.
                                 wd:dateInfo.weekday, //weekday
-                                nanosecond:dateInfo.nanosecond
+                                ns:dateInfo.nanosecond
                         })
 
         plcData.save(function (err, plc) {

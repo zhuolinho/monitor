@@ -4,8 +4,8 @@
         <div id="{{data.id}}" class="modal " style="overflow:auto;">
           <div class="modal-content">
             <i class="modal-close material-icons right">clear</i>
-            <h4 *ngIf="!editMode">  添加到 "{{data.pl.type.value}}"</h4>
-            <h4 *ngIf="editMode">  编辑 "{{data.pl.type.value}}"</h4>
+            <h4 *ngIf="!editMode">  添加到 "{{data.users.type.value}}"</h4>
+            <h4 *ngIf="editMode">  编辑 "{{data.users.type.value}}"</h4>
 
             <div class="row">
               <div class="col s12 helper-font-bigger center-align">
@@ -59,10 +59,32 @@
            <div class="row">
                 <div class="input-field col s12">
                   <input id="account" type="text" class="validate">
-                  <label for="account">识别ID:</label>
+                  <label for="account">账号:</label>
                 </div>
 
-              </div>
+                <div class="input-field col s12">
+                  <input id="password" type="text" class="validate">
+                  <label for="password">密码:</label>
+                </div>
+
+                <div class="input-field col s12">
+                  <select>
+                    <option value="" disabled selected>请选择级别</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                  <label>级别</label>
+                </div>
+
+
+                <div class="input-field col s12">
+                  <input id="address" type="text" class="validate">
+                  <label for="address">地址:</label>
+                </div>
+
+            </div>
 
           </div>
 
@@ -71,5 +93,5 @@
          </div>
 
           <!-- for the select -->
-         <div style="padding-bottom:30px;"></div>
+         <div style="padding-bottom:60px;"></div>
       </div>
