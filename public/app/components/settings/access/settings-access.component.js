@@ -140,7 +140,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     p: '4' //permission
                                 },
                                 {
-                                    an: '401',
+                                    an: '402',
                                     name: '周璐',
                                     addr: '----',
                                     phone: '18987226003',
@@ -148,7 +148,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     p: '4' //permission
                                 },
                                 {
-                                    an: '401',
+                                    an: '403',
                                     name: '黄金红',
                                     addr: '----',
                                     phone: '13937722609',
@@ -163,33 +163,22 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                     console.log("SettingsAccess is up and running");
                     this.initUi();
                 }
-                SettingsAccess.prototype.veSortByClient = function () {
-                    if (this.currentSort != '4') {
-                        this.currentSort = '4';
+                SettingsAccess.prototype.veSortBy = function (wich) {
+                    var _this = this;
+                    if (this.currentSort != wich) {
+                        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
+                        setTimeout(function (_) {
+                            _this.currentSort = wich;
+                            _this.initUi();
+                        }, 100);
                     }
-                    this.initUi();
-                };
-                SettingsAccess.prototype.veSortByDeliveryStaff = function () {
-                    if (this.currentSort != '3') {
-                        this.currentSort = '3';
-                    }
-                    this.initUi();
-                };
-                SettingsAccess.prototype.veSortByAlertHandler = function () {
-                    if (this.currentSort != '2') {
-                        this.currentSort = '2';
-                    }
-                    this.initUi();
-                };
-                SettingsAccess.prototype.veSortByAdmin = function () {
-                    if (this.currentSort != '1') {
-                        this.currentSort = '1';
-                    }
-                    this.initUi();
                 };
                 SettingsAccess.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
+                        jQuery('.collapsible').collapsible({
+                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                        });
                         jQuery('.modal-trigger').leanModal({
                             dismissible: true,
                             opacity: .5,
@@ -197,9 +186,6 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                             out_duration: 200,
                             ready: function () { console.log('Ready'); _this.initSelect(); },
                             complete: function () { console.log('Closed'); } // Callback for Modal close
-                        });
-                        jQuery('.collapsible').collapsible({
-                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
                         });
                     });
                 };

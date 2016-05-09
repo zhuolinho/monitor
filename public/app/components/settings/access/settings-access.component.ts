@@ -4,6 +4,7 @@ import {SettingsAddUser} from './partials/settings-add-user.component';
 import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {CanActivate} from 'angular2/router';
 declare var jQuery:any;
+declare var _:any;
 
 @Component({
   selector:'settings-access',
@@ -126,7 +127,7 @@ export class SettingsAccess{
                   p:'4' //permission
                 },
                 {
-                  an:'401',  //account number
+                  an:'402',  //account number
                   name: '周璐',
                   addr:'----',
                   phone:'18987226003',
@@ -134,7 +135,7 @@ export class SettingsAccess{
                   p:'4' //permission
                 },
                 {
-                  an:'401',  //account number
+                  an:'403',  //account number
                   name: '黄金红',
                   addr:'----',
                   phone:'13937722609',
@@ -146,7 +147,7 @@ export class SettingsAccess{
 
   ];
 
-    currentSort:string = 'all';
+    currentSort:any = 'all';
     selectedtab:number = 0;
 
     constructor(){
@@ -154,38 +155,23 @@ export class SettingsAccess{
       this.initUi();
     }
 
-    veSortByClient(){
-      if(this.currentSort!='4'){
-        this.currentSort='4';
-      }
-        this.initUi();
-    }
-
-    veSortByDeliveryStaff(){
-      if(this.currentSort!='3'){
-        this.currentSort='3';
-      }
-        this.initUi();
-    }
-
-    veSortByAlertHandler(){
-      if(this.currentSort!='2'){
-        this.currentSort='2';
-      }
-        this.initUi();
-    }
-
-    veSortByAdmin(){
-      if(this.currentSort!='1'){
-        this.currentSort='1';
-      }
-        this.initUi();
-    }
-    initUi(){
-
-      var _this = this;
-
+    veSortBy(wich){
+      if(this.currentSort!=wich){
+        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
         setTimeout(_=>{
+          this.currentSort = wich;
+          this.initUi();
+        },100);
+      }
+    }
+
+    initUi(){
+      var _this = this;
+        setTimeout(_=>{
+            jQuery('.collapsible').collapsible({
+              accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            });
+
             jQuery('.modal-trigger').leanModal({
                  dismissible: true, // Modal can be dismissed by clicking outside of the modal
                  opacity: .5, // Opacity of modal background
@@ -193,9 +179,6 @@ export class SettingsAccess{
                  out_duration: 200, // Transition out duration
                  ready: function() { console.log('Ready');  _this.initSelect()}, // Callback for Modal open
                  complete: function() { console.log('Closed'); } // Callback for Modal close
-           });
-           jQuery('.collapsible').collapsible({
-             accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
            });
         });
     }

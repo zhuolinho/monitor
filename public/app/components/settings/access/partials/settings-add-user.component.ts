@@ -23,7 +23,7 @@ export class SettingsAddUser{
 
 
     constructor(){
-      console.log("add user modal is up and running---");
+      console.log("add user modal is up and running>>---");
     }
 
 
