@@ -10,7 +10,6 @@ var gpsSchema = mongoose.Schema({
                     speed:String,
                     course:String,  //angle
                     alarm:String,
-                    addr:String,
                     loc:Number,   //0 reliable, 1 unreliable
                     rawd:String  //raw data
               });

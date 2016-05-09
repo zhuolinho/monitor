@@ -49,9 +49,9 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                         directives: [router_1.ROUTER_DIRECTIVES, router_1.RouterLink]
                     }),
                     router_1.RouteConfig([
-                        { path: '/map', component: shipment_map_component_1.ShipmentMap, name: 'ShipmentMap', useAsDefault: true },
-                        { path: '/processed', component: processed_shipment_component_1.ProcessedShipment, name: 'ProcessedShipment' },
-                        { path: '/shipment', component: shiment_component_1.Shipment, name: 'Shipment' }
+                        { path: '/shipment', component: shiment_component_1.Shipment, name: 'Shipment', useAsDefault: true },
+                        { path: '/map', component: shipment_map_component_1.ShipmentMap, name: 'ShipmentMap' },
+                        { path: '/processed', component: processed_shipment_component_1.ProcessedShipment, name: 'ProcessedShipment' }
                     ]), 
                     __metadata('design:paramtypes', [request_service_1.RequestService])
                 ], Gps);

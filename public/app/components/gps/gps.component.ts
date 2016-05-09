@@ -17,9 +17,9 @@ import {Shipment} from './shipment/shiment.component';
 
 
  @RouteConfig([
-   {path:'/map', component:ShipmentMap, name:'ShipmentMap',useAsDefault:true},
-   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'},
-   {path:'/shipment', component:Shipment, name:'Shipment'}
+   {path:'/shipment', component:Shipment, name:'Shipment',useAsDefault:true},
+   {path:'/map', component:ShipmentMap, name:'ShipmentMap'},
+   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'}
  ])
 
 export class Gps{
