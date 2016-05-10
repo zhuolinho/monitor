@@ -50,12 +50,34 @@
                      </div>
                   </div>
 
+
+                  <div class="table-row" *ngIf="alert.type == '压力报警'">
+                      <div class="table-cell"> 压力/异常 </div>
+                      <div class="table-cell">
+                        {{alert.alertValue}}
+
+                      <div class="monitor-alert" *ngIf="!alert.processed">
+                          压力报警
+                        </div>
+                     </div>
+                  </div>
+
                   <div class="table-row" *ngIf="alert.type == '信号中断'">
                     <div class="table-cell"> 信号/异常 </div>
                     <div class="table-cell">{{alert.alertValue}}
 
                       <div class="monitor-alert" *ngIf="!alert.processed">
                              信号中断
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.type == '泄漏报警'">
+                    <div class="table-cell"> 泄漏/异常 </div>
+                    <div class="table-cell">{{alert.alertValue}}
+
+                      <div class="monitor-alert" *ngIf="!alert.processed">
+                             泄漏报警
                       </div>
                     </div>
                   </div>
@@ -110,7 +132,7 @@
                     </div>
                   </div>
 
-                  <div class="table-row" *ngIf ='(alert.type == "拉回报警") || (alert.type == "进场报警")'>
+                  <div class="table-row" *ngIf ='(alert.type != "拉回报警") && (alert.type != "进场报警")'>
                     <div class="table-cell" > 时间/工号 </div>
                     <div class="table-cell">{{alert.upTime}} </div>
                   </div>
