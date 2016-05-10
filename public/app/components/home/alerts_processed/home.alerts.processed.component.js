@@ -149,6 +149,34 @@ System.register(['angular2/core', '../../../config'], function(exports_1, contex
                                     typeId: 5,
                                 }
                             ] },
+                        {
+                            groupId: 6,
+                            groupName: "进场报警",
+                            data: [{
+                                    code: 'C015-5528',
+                                    alertTime: '5.2-13:12',
+                                    processedTime: '5.6-14:03',
+                                    processedAgent: '9997',
+                                    alertType: '进场报警',
+                                    typeId: 6,
+                                },
+                                {
+                                    code: 'C019-2279',
+                                    alertTime: '4.2-12:17',
+                                    processedTime: '5.1-22:32',
+                                    processedAgent: '8018',
+                                    alertType: '进场报警',
+                                    typeId: 6,
+                                },
+                                {
+                                    code: 'C102-2379',
+                                    alertTime: '5.8-22:17',
+                                    processedTime: '4.2-18:37',
+                                    processedAgent: '7668',
+                                    alertType: '进场报警',
+                                    typeId: 6,
+                                }
+                            ] }
                     ]; //todo user flag and ng if to hide when filtering;
                     console.log("Home processed alerts is up and running");
                     this.initUi();
