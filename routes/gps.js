@@ -43,8 +43,31 @@ module.exports = function (handler)
             });
   });
 
+
+  router.get('/cars/all', function(req, res, next) {
+
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'getAllCars',
+          pl:{
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
+              var r = {pl: null, er: {ec: 404, em: "could not find comment"}};
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   //gps Connection
-  // _tcpCLient(handler);
+  _tcpCLient(handler);
 
   return router;
 };

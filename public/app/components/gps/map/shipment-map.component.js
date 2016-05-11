@@ -70,7 +70,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         ShipmentMap.gpsmap = new BMap.Map("allmap");
                     }
                     // var map = new BMap.Map("allmap");
-                    var point = new BMap.Point(121.459, 31.293);
+                    var point = new BMap.Point(118.273, 33.779);
                     ShipmentMap.gpsmap.centerAndZoom(point, 7);
                     // // 编写自定义函数,创建标注
                     // // 随机向地图添加25个标注
@@ -129,15 +129,21 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         }
                     });
                 };
-                ShipmentMap.prototype.showAllCars = function (cardata) {
+                ShipmentMap.prototype.showAllCars = function () {
+                    //shandong shanghai: 118.273, 33.779  //7
+                    //shanghai 121.454,31.153   //10
                     var _this = this;
-                    if (!ShipmentMap.allCars[cardata.sim]) {
-                        _this.addMarker(cardata);
-                        ShipmentMap.allCars[cardata.sim] = cardata;
-                    }
-                    else {
-                        console.log('same car------->>>>>>-----', cardata.sim);
-                    }
+                    var point = new BMap.Point(121.454, 31.153);
+                    ShipmentMap.gpsmap.centerAndZoom(point, 10);
+                    this.request.get('/gps/cars/all').subscribe(function (res) {
+                        var cars = res.pl.cars;
+                        var allcars = Object.keys(cars).map(function (key) {
+                            return cars[key];
+                        });
+                        for (var i = 0; i < allcars.length; i++) {
+                            _this.addMarker(allcars[i]);
+                        }
+                    });
                 };
                 ShipmentMap.mapLoaded = false;
                 ShipmentMap.allCars = {};

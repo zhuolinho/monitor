@@ -3,6 +3,7 @@
 
 var mongoose = null ; //mongoose object
 var message = null;   // message function
+var allCars = {};
 var gps = {};
 
 
@@ -58,6 +59,9 @@ var stream = m.pl;
                                 rawd:stream
                         })
 
+
+        allCars[sim] = gpsData;  //save latest position of each car;
+
         gpsData.save(function (err, gps) {
             if (err){
               r.er = err;
@@ -98,6 +102,18 @@ gps.getData =  function(m) {
         deferred.resolve(r);
       }
   })
+  return deferred.promise;
+
+}
+
+
+
+gps.getAllCars =  function(m) {
+  console.log("getAllCars FUNCTION");
+ var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+  r.pl.cars = allCars;
+  deferred.resolve(r);
   return deferred.promise;
 
 }
