@@ -17,8 +17,9 @@
 
            <div class="row">
                 <div class="input-field col s12">
-                  <input id="name" type="text" class="validate">
-                  <label for="name">姓名:</label>
+                  <input *ngIf="editTarget" id="name" type="text" class="validate" [(value)]="editTarget.name">
+                  <input *ngIf="!editTarget" id="name" type="text" class="validate">
+                  <label for="name" class="active">姓名:</label>
                 </div>
 
 
@@ -27,11 +28,11 @@
 
                     <a class="helper-inline-block helper-margin-right-20">
                       <input name="gender" type="radio" id="male" />
-                      <label for="male">男</label>
+                      <label  for="male">男</label>
                     </a>
                     <a class="helper-inline-block">
                       <input name="gender" type="radio" id="female" />
-                      <label for="female">女</label>
+                      <label for="female" class="active">女</label>
                     </a>
 
                 </div>
@@ -39,8 +40,9 @@
               </form>
 
               <div class="input-field col s12">
-                <input id="phone" type="text" class="validate">
-                <label for="phone">手机:</label>
+                <input *ngIf="editTarget" id="phone" type="text" class="validate" [(value)]="editTarget.phone">
+                <input *ngIf="!editTarget" id="phone" type="text" class="validate" >
+                <label for="phone" class="active">手机:</label>
               </div>
 
 
@@ -58,13 +60,15 @@
 
            <div class="row">
                 <div class="input-field col s12">
-                  <input id="account" type="text" class="validate">
-                  <label for="account">账号:</label>
+                  <input *ngIf="!editTarget" id="account" type="text" class="validate">
+                  <input *ngIf="editTarget" id="account" type="text" class="validate" [(value)]="editTarget.an">
+                  <label  class="active" for="account">账号:</label>
                 </div>
 
                 <div class="input-field col s12">
-                  <input id="password" type="text" class="validate">
-                  <label for="password">密码:</label>
+                  <input *ngIf="editTarget" id="password" type="text" class="validate" [(value)]="editTarget.ap">
+                  <input *ngIf="!editTarget" id="password" type="text" class="validate">
+                  <label for="password" class="active">密码:</label>
                 </div>
 
                 <div class="input-field col s12">
@@ -75,13 +79,13 @@
                     <option value="3">3</option>
                     <option value="4">4</option>
                   </select>
-                  <label>级别</label>
+                  <label >级别</label>
                 </div>
 
 
                 <div class="input-field col s12">
                   <input id="address" type="text" class="validate">
-                  <label for="address">地址:</label>
+                  <label class="active" for="address">地址:</label>
                 </div>
 
             </div>

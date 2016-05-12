@@ -18,7 +18,7 @@
             <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
               <div class="col s12">
-                    <a href="{{'#modalid' + userGroup.id}}"  (click) = "modal.editMode = false;" class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
+                    <a href="{{'#modalid' + userGroup.id}}"  (click) = "modal.editMode = false; modal.editTarget = null;" class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
               </div>
             <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
                   <div class="monitor-table helper-font-bigger">
@@ -36,7 +36,7 @@
                       <div class="table-cell"> {{user.addr}} </div>
                       <div class="table-cell"> {{user.phone}} </div>
                       <div class="table-cell"> {{user.ap}} </div>
-                      <div class="table-cell"> {{user.p}} <a href="{{'#modalid'+ userGroup.id}}"   class="right modal-trigger"  (click) = "modal.editMode = true;"> 编辑</a></div>
+                      <div class="table-cell"> {{user.p}} <a href="{{'#modalid'+ userGroup.id}}"   class="right modal-trigger"  (click) = "modal.editMode = true; modal.editTarget = user;"> 编辑</a></div>
                     </div>
                   </div>
 
