@@ -77,7 +77,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             ]
                         },
                         {
-                            type: { id: 3, value: '小罐' },
+                            type: { id: 3, value: '集格' },
                             data: [
                                 {
                                     code: 'X001',
@@ -97,7 +97,27 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             ]
                         },
                         {
-                            type: { id: 4, value: '管网' },
+                            type: { id: 4, value: '杜瓦瓶' },
+                            data: [
+                                {
+                                    code: 'X011',
+                                    addr: '闸北区新闸路77号XX站',
+                                    plcaddr: ''
+                                },
+                                {
+                                    code: 'X022',
+                                    addr: '闸北区新闸路180号XXXX站',
+                                    plcaddr: ''
+                                },
+                                {
+                                    code: 'X013',
+                                    addr: '闸北区新闸路331号XX站',
+                                    plcaddr: ''
+                                }
+                            ]
+                        },
+                        {
+                            type: { id: 5, value: '管网' },
                             data: [
                                 {
                                     code: 'G001',
@@ -117,7 +137,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             ]
                         },
                         {
-                            type: { id: 5, value: '中转站' },
+                            type: { id: 6, value: '中转站' },
                             data: [
                                 {
                                     code: '总公司',
