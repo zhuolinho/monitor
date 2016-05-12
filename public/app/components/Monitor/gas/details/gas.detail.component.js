@@ -23,8 +23,6 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         execute: function() {
             GasDetail = (function () {
                 function GasDetail() {
-                    this.paymentState = false;
-                    this.downloadAllState = false;
                     this.tableByday = [{ code: 'C002', date: '1月1号', if: 0.0000, af: 0.0000, mf: 0.0000 },
                         { code: 'C002', date: '1月2号', if: 0.0000, af: 0.0000, mf: 0.0000 },
                         { code: 'C002', date: '1月3号', if: 0.0000, af: 0.0000, mf: 0.0000 },
@@ -66,7 +64,6 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                         '13日', '14日', '15日', '16日', '17日', '18日', '19日', '20日', '21日', '22日', '23日', '24日',
                         '25日', '26日', '27日', '28日', '29日', '30日', '31日'
                     ];
-                    this.selectedtab = 1; //to switch tabs, the rest is controlled on the page
                     console.log("gas detail is up and running---");
                     this.showByDay();
                 }
@@ -80,12 +77,14 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                 });
                 GasDetail.prototype.showByDay = function () {
                     // alert('by day');
+                    console.log("by day");
                     this.currentTable = this.tableByday;
                     this.currentSelect = this.months;
                     this.initSelect();
                 };
                 GasDetail.prototype.showByMonth = function () {
                     //  alert('by month');
+                    console.log("by month");
                     this.currentTable = this.tableByMonth;
                     this.currentSelect = this.years;
                     this.initSelect();

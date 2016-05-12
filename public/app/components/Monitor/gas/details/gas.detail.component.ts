@@ -11,8 +11,6 @@ declare var jQuery:any;
 
 export class GasDetail{
      paramTable:AlertModel;
-     paymentState:boolean = false;
-     downloadAllState:boolean = false;
     @Input('data')
     set table(data){
       this.paramTable = data;
@@ -66,7 +64,7 @@ export class GasDetail{
                       '25日','26日','27日','28日','29日','30日','31日'
                     ];
 
-    selectedtab:number=1;  //to switch tabs, the rest is controlled on the page
+    selectedtab:number;  //to switch tabs, the rest is controlled on the page
     currentTable:any;
     currentSelect:string[];
     constructor(){
@@ -77,6 +75,7 @@ export class GasDetail{
 
     showByDay(){
         // alert('by day');
+        console.log("by day");
         this.currentTable = this.tableByday;
         this.currentSelect = this.months;
         this.initSelect();
@@ -85,6 +84,7 @@ export class GasDetail{
 
     showByMonth(){
       //  alert('by month');
+        console.log("by month");
         this.currentTable = this.tableByMonth;
         this.currentSelect = this.years;
         this.initSelect();

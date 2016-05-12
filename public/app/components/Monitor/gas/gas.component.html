@@ -5,7 +5,7 @@
     <div class="col s7  helper-white-bg">
       <div class="input-field">
           <select class="helper-select-font-bigger">
-            <option value="0"  selected> 总公司</option>
+            <option value="0"  selected> 母站</option>
             <option  value="中转站1号">中转站1号</option>
            <option  value="中转站2号">中转站2号</option>
            <option  value="中转站3号">中转站3号</option>
@@ -32,18 +32,18 @@
       <div class="col s7">
         <div class="row modal-nav monitor-tabs">
           <div class="col s3">
-              <a (click)="selectedtab=1;" data-target="detailModal" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button modal-trigger helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+              <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; detailmodal.showByDay();" data-target="detailModal" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button modal-trigger helper-font-bigger helper-display-block center-align"> 日均用量 </a>
           </div>
 
           <div class="col s3">
-              <a (click)="selectedtab=2;" data-target="detailModal"[class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align modal-trigger"> 月均用量</a>
+              <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  detailmodal.showByMonth();" data-target="detailModal"[class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align modal-trigger"> 月均用量</a>
           </div>
           <div class="col s3">
 
-              <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+              <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
           </div>
           <div class="col s3">
-              <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
+              <a (click)="selectedtab=4; detailmodal.selectedtab = selectedtab;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
           </div>
 
         </div>
@@ -96,7 +96,7 @@
           </div>
 
           <!-- modal goes here -->
-            <gas-detail [data]="{id:'detailModal',alert:{name:'C003-闸北区大宁路335号XX站'}}"> </gas-detail>
+            <gas-detail [data]="{id:'detailModal',alert:{name:'C003-闸北区大宁路335号XX站'}}" #detailmodal> </gas-detail>
 
         </div>
 
