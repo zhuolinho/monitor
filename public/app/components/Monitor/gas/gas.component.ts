@@ -3,6 +3,7 @@ import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {GasDetail} from './details/gas.detail.component';
 declare var jQuery:any;
+declare var _:any;
 
 @Component({
   selector:'gas',
@@ -13,28 +14,30 @@ declare var jQuery:any;
 export class Gas{
 
     availableTanks:any[] = [
-        {id:'12345', selected:true},
-        {id:'62545', selected:true},
+        {id:'12345', selected:false},
+        {id:'62545', selected:false},
         {id:'27456', selected:false},
         {id:'72145', selected:false},
-        {id:'19345', selected:true},
+        {id:'19345', selected:false},
         {id:'82345', selected:false},
-        {id:'32345', selected:true},
+        {id:'32345', selected:false},
         {id:'11345', selected:false},
         {id:'22345', selected:false},
-        {id:'82322', selected:true},
-        {id:'22325', selected:true},
-        {id:'99345', selected:true},
+        {id:'82322', selected:false},
+        {id:'22325', selected:false},
+        {id:'99345', selected:false},
         {id:'902345', selected:false},
-        {id:'102345', selected:true},
-        {id:'444235', selected:true},
+        {id:'102345', selected:false},
+        {id:'444235', selected:false},
         {id:'602345', selected:false},
-        {id:'62340', selected:true},
+        {id:'62340', selected:false},
         {id:'72305', selected:false},
-        {id:'50345', selected:true},
-        {id:'56665', selected:true}
+        {id:'50345', selected:false},
+        {id:'56665', selected:false}
     ]
 
+    allTankSelected:boolean = false;
+    selectedTanks:any[] = [];
     constructor(){
       console.log("gas is up and running");
       this.initSelect();
@@ -49,34 +52,47 @@ export class Gas{
     }
 
     veReturnSelectedTanks(){
-      var selectedTanks = [];
-      for (let i = 0; i < this.availableTanks.length; i++) {
-        if(this.availableTanks[i].selected){
-          selectedTanks.push(this.availableTanks[i]);
-        }
-       }
-       console.log("selectedTanks--",selectedTanks.length,selectedTanks);
+      if(this.selectedTanks.length){
+           console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
+      }
     }
 
     veAddSelectedTanks(){
-      var selectedTanks = [];
-      for (let i = 0; i < this.availableTanks.length; i++) {
-        if(this.availableTanks[i].selected){
-          selectedTanks.push(this.availableTanks[i]);
-        }
-       }
-       console.log("selectedTanks--",selectedTanks.length,selectedTanks);
+      if(this.selectedTanks.length){
+           console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
+      }
     }
    veSelectAllTanks(){
-    for (let i = 0; i < this.availableTanks.length; i++) {
-         this.availableTanks[i].selected = true;
+
+     if(!this.allTankSelected){
+       for (let i = 0; i < this.availableTanks.length; i++) {
+            this.availableTanks[i].selected = true;
+        }
      }
+     else{
+       for (let i = 0; i < this.availableTanks.length; i++) {
+            this.availableTanks[i].selected = false;
+        }
+     }
+     this.allTankSelected = !this.allTankSelected;
+
    }
 
 
 
    veSelectTank(tank){
      tank.selected = !tank.selected;
+     if(tank.selected){
+          this.selectedTanks.push(tank);
+     }
+     else{
+       var array =  _.remove(this.selectedTanks, function(o){
+          return o.id == tank.id;
+        })
+     }
+
+      console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks,tank,array);
+
    }
     initModal(){
 

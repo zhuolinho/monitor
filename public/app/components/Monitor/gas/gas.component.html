@@ -109,9 +109,18 @@
 
                 C003-闸北区大宁路335号XX站
 
-                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veSelectAllTanks()">全选</a>
-                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veReturnSelectedTanks()">拉回</a>
-                <a class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veAddSelectedTanks()">进场</a>
+                <a  class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veSelectAllTanks()">
+                  <span *ngIf="!allTankSelected">
+                    全选
+                  </span>
+
+                  <!-- this.selectedTanks.length -->
+                  <span *ngIf="allTankSelected">
+                    反选
+                  </span>
+                </a>
+                <a [class.disabled]="!selectedTanks.length" class="monitor-gray-button  right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veReturnSelectedTanks()">拉回</a>
+                <a [class.disabled]="!selectedTanks.length" class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veAddSelectedTanks()">进场</a>
               </div>
 
               <div class="row valign-wrapper  helper-gray-border-light">
@@ -124,7 +133,7 @@
                           <div class="table-row" *ngFor="#tank of availableTanks; #i=index;">
                             <div class="table-cell" style="">
                             <span class="left" style="margin-top:6px;">{{tank.id}}</span>
-                              <a class="right" style="margin-top:8px;" >
+                              <a class="right" style="margin-top:8px;"  >
                                 <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veSelectTank(tank)" [attr.checked] = "tank.selected?'checked':null" />
                                 <label attr.for="{{tank.id+i}}"></label>
                               </a>

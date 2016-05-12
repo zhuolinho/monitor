@@ -173,10 +173,24 @@ body, html{
     color: white !important;
   }
   /*overwrite hover effects*/
-  .monitor-gray-button.no-hover:hover{
+  .monitor-gray-button.no-hover:hover,
+  .monitor-gray-button.disabled:hover{
       background-color: #CED6DF !important;
       color: black !important;
   }
+
+ .monitor-gray-button.disabled{
+   opacity: 0.6;
+   cursor: default !important;
+   -webkit-tap-highlight-color:transparent;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none;   /* Chrome/Safari/Opera */
+   -khtml-user-select: none;    /* Konqueror */
+   -moz-user-select: none;      /* Firefox */
+   -ms-user-select: none;       /* Internet Explorer/Edge */
+   user-select: none;           /* Non-prefixed version, currently   not supported by any browser */
+ }
+
   .monitor-short-dropdown .dropdown-content{
     max-height: 300px;
   }

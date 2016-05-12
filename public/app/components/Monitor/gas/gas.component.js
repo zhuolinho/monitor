@@ -27,27 +27,29 @@ System.register(['angular2/core', '../../../config', './details/gas.detail.compo
             Gas = (function () {
                 function Gas() {
                     this.availableTanks = [
-                        { id: '12345', selected: true },
-                        { id: '62545', selected: true },
+                        { id: '12345', selected: false },
+                        { id: '62545', selected: false },
                         { id: '27456', selected: false },
                         { id: '72145', selected: false },
-                        { id: '19345', selected: true },
+                        { id: '19345', selected: false },
                         { id: '82345', selected: false },
-                        { id: '32345', selected: true },
+                        { id: '32345', selected: false },
                         { id: '11345', selected: false },
                         { id: '22345', selected: false },
-                        { id: '82322', selected: true },
-                        { id: '22325', selected: true },
-                        { id: '99345', selected: true },
+                        { id: '82322', selected: false },
+                        { id: '22325', selected: false },
+                        { id: '99345', selected: false },
                         { id: '902345', selected: false },
-                        { id: '102345', selected: true },
-                        { id: '444235', selected: true },
+                        { id: '102345', selected: false },
+                        { id: '444235', selected: false },
                         { id: '602345', selected: false },
-                        { id: '62340', selected: true },
+                        { id: '62340', selected: false },
                         { id: '72305', selected: false },
-                        { id: '50345', selected: true },
-                        { id: '56665', selected: true }
+                        { id: '50345', selected: false },
+                        { id: '56665', selected: false }
                     ];
+                    this.allTankSelected = false;
+                    this.selectedTanks = [];
                     console.log("gas is up and running");
                     this.initSelect();
                     this.initModal();
@@ -58,30 +60,39 @@ System.register(['angular2/core', '../../../config', './details/gas.detail.compo
                     });
                 };
                 Gas.prototype.veReturnSelectedTanks = function () {
-                    var selectedTanks = [];
-                    for (var i = 0; i < this.availableTanks.length; i++) {
-                        if (this.availableTanks[i].selected) {
-                            selectedTanks.push(this.availableTanks[i]);
-                        }
+                    if (this.selectedTanks.length) {
+                        console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
                     }
-                    console.log("selectedTanks--", selectedTanks.length, selectedTanks);
                 };
                 Gas.prototype.veAddSelectedTanks = function () {
-                    var selectedTanks = [];
-                    for (var i = 0; i < this.availableTanks.length; i++) {
-                        if (this.availableTanks[i].selected) {
-                            selectedTanks.push(this.availableTanks[i]);
-                        }
+                    if (this.selectedTanks.length) {
+                        console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
                     }
-                    console.log("selectedTanks--", selectedTanks.length, selectedTanks);
                 };
                 Gas.prototype.veSelectAllTanks = function () {
-                    for (var i = 0; i < this.availableTanks.length; i++) {
-                        this.availableTanks[i].selected = true;
+                    if (!this.allTankSelected) {
+                        for (var i = 0; i < this.availableTanks.length; i++) {
+                            this.availableTanks[i].selected = true;
+                        }
                     }
+                    else {
+                        for (var i = 0; i < this.availableTanks.length; i++) {
+                            this.availableTanks[i].selected = false;
+                        }
+                    }
+                    this.allTankSelected = !this.allTankSelected;
                 };
                 Gas.prototype.veSelectTank = function (tank) {
                     tank.selected = !tank.selected;
+                    if (tank.selected) {
+                        this.selectedTanks.push(tank);
+                    }
+                    else {
+                        var array = _.remove(this.selectedTanks, function (o) {
+                            return o.id == tank.id;
+                        });
+                    }
+                    console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks, tank, array);
                 };
                 Gas.prototype.initModal = function () {
                     var _this = this;
