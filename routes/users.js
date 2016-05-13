@@ -13,16 +13,37 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'registerUser',
           pl:{
-            user:{
-              name:req.body.name,
-              password:req.body.password
-            }
+            user:req.body
           }
         };
 
         handler(param)
             .then(function (r) {
               console.log("user registered----",r);
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              // console.log(r.er);
+              var r = {pl: null, er:r.er};
+              helpers.sendResponse(res, 501, r);
+            });
+  });
+
+
+
+  router.put('/update', function(req, res, next) {
+        var param = {
+          ns: 'auth',
+          vs: '1.0',
+          op: 'updateUser',
+          pl:{
+            user:req.body
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+              console.log("user updated----",r);
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {

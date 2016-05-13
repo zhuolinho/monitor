@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../../config'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../../config', '../../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1;
+    var core_1, config_1, request_service_1;
     var SettingsAddUser;
     return {
         setters:[
@@ -19,10 +19,22 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
             },
             function (config_1_1) {
                 config_1 = config_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
             }],
         execute: function() {
             SettingsAddUser = (function () {
-                function SettingsAddUser() {
+                function SettingsAddUser(request) {
+                    this.request = request;
+                    this.newUser = {
+                        name: "",
+                        phone: "",
+                        pw: "",
+                        addr: "",
+                        ap: "",
+                        sex: ""
+                    };
                     this.editMode = false;
                     console.log("add user modal is up and running>>---");
                 }
@@ -34,9 +46,23 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     enumerable: true,
                     configurable: true
                 });
+                SettingsAddUser.prototype.addNewUser = function () {
+                    console.log("posting ----", this.newUser);
+                    this.request.post('/users/signup', this.newUser).subscribe(function (res) {
+                        console.log("user added-----", res);
+                    });
+                };
+                SettingsAddUser.prototype.vePrivilegeSelected = function (event, compRef) {
+                    compRef.newUser.ap = parseInt(event.target.value);
+                    console.log("event.target.value;----", compRef.newUser.ap);
+                };
                 SettingsAddUser.prototype.initSelect = function () {
+                    var _this = this;
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                        jQuery('select').on('change', function (event) {
+                            _this.vePrivilegeSelected(event, _this);
+                        });
                     });
                 };
                 __decorate([
@@ -49,7 +75,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                         selector: 'settings-add-user',
                         templateUrl: config_1.config.prefix + '/components/settings/access/partials/settings-add-user.component.html'
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [request_service_1.RequestService])
                 ], SettingsAddUser);
                 return SettingsAddUser;
             }());

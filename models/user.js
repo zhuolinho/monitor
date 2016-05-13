@@ -2,22 +2,48 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
+
 // set up a mongoose model
 var UserSchema = new Schema({
   ll:{  //last login
     type:Date,
     default:new Date()
   },
-  phone:{
-    type:String
+  an:{ //account Number
+    type:String,
+    required:true,
+    unique:true
   },
   name: {
         type: String,
         required: true
-    },
-  password: {
+  },
+  phone:{
+    type:String,
+    required:true,
+    unique:true
+  },
+  pw: {
         type: String,
         required: true
+    },
+    addr:{
+      type:String,
+      default:'----'
+    },
+    ap:{   //access priviledge
+      type:Number,
+      default:8    //driver
+    },
+    sex:{  //0 male, 1 female
+      type:Number,
+      default:0
+    },
+    anc:{  //alert notification access
+      la:{type:Boolean, default:false},   //leakage alert  泄漏报警
+      sa:{type:Boolean, default:false},   //shipment alert 配送短信
+      sca:{type:Boolean, default:false}, //shipment complete alert 送达短信
+      sia:{type:Boolean, default:false}, //signal interruption alert 信号中断
     }
 },
 {timestamps:true});

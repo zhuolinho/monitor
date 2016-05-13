@@ -7,6 +7,7 @@ var passport	= require('passport');
 var config   = require('../../configs/database');
 var User   = require('../../models/user');
 var jwt    = require('jwt-simple');
+var UserCounter = require('../../models/user-counter');
 
 var q = require('q');
 
@@ -19,7 +20,15 @@ auth.init = function(m) {
         mongoose.connect(config.database); //can't user create connection;
         require('../../configs/passport')(passport);
 
-
+        UserCounter.find({code:"users"},function(error, doc){
+          if(doc&&doc.length){
+              return;
+         }else {
+           // save counter to init it of not there.
+          var counter = new UserCounter({});
+          counter.save(function(error, counter){});
+         }
+        });
 
         // pass passport for configuration
 
@@ -41,39 +50,92 @@ auth.init = function(m) {
 
 
 
-
-
 auth.registerUser = function(m){
+
+  console.log("register user----");
 
   var r = {pl: {}, er:'',em:''};
   var deferred = q.defer();
 
-  if(m.pl && m.pl.user && m.pl.user.name && m.pl.user.password){
+
+  if(m.pl && m.pl.user && m.pl.user.name && m.pl.user.pw){
+
+      var ap = parseInt(m.pl.user.ap);
+      var sex = m.pl.user.sex?parseInt(m.pl.user.sex):0;
       var newUser = new User({
                           name:m.pl.user.name,
-                          password:m.pl.user.password
+                          pw:m.pl.user.pw,
+                          addr:m.pl.user.addr,
+                          ap:ap,
+                          sex:sex,
+                          phone:m.pl.user.phone,
+                          an:''
                         });
 
-        newUser.save(function (err, user){
-          // console.log('user saved--',err,user);
-            if (err){
-              r.er = err;
-              r.em = 'invalid user. already exist?';
-              deferred.reject(r);
-            }
-            else{
-              r.pl.user = user;
-              deferred.resolve(r);
-            }
-        });
+
+       UserCounter.findOne({code: 'users'},function(error, counter){
+         counter.seqs['sid'+ap] +=1;
+
+         counter.save(function(err1, cnt){
+           newUser.an = cnt.seqs['sid'+ap];
+           if(!err1){
+             newUser.save(function (err2, user){
+                 if (!err2){
+                   r.pl.user = user;
+                   deferred.resolve(r);
+                 }
+                 else{
+                   r.er = err2;
+                   r.em = 'invalid user. already exist?';
+                   deferred.reject(r);
+                 }
+             });
+           }
+           else {
+             r.er =  "could not increment user id";
+             deferred.reject(r);
+           }
+         })
+
+       });
+
     }
     else {
       r.er =  "no user name or password";
       deferred.reject(r);
     }
   return deferred.promise;
-
 }
+
+
+
+auth.updateUser = function(m){
+
+  console.log("update user----");
+
+  var r = {pl: {}, er:'',em:''};
+  var deferred = q.defer();
+
+  if(m.pl && m.pl.user && m.pl.user.an ){
+    User.findOneAndUpdate({ an: m.pl.user.an }, { new: true }, function(err, user) {
+              if (err){
+                r.er = err;
+                r.em = 'problem fiding user';
+                deferred.reject(r);
+              }
+              else{
+                r.pl.user = user;
+                deferred.resolve(r);
+              }
+    });
+    }
+    else {
+      r.er =  "no user name or password";
+      deferred.reject(r);
+    }
+  return deferred.promise;
+}
+
 
 
 auth.authenticateUser = function(m){

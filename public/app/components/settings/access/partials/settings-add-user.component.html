@@ -17,8 +17,8 @@
 
            <div class="row">
                 <div class="input-field col s12">
-                  <input *ngIf="editTarget" id="name" type="text" class="validate" [(value)]="editTarget.name">
-                  <input *ngIf="!editTarget" id="name" type="text" class="validate">
+                  <input *ngIf="editTarget" id="name" type="text" class="validate" [(ngModel)]="editTarget.name">
+                  <input *ngIf="!editTarget" id="name" type="text" class="validate" [(ngModel)]="newUser.name">
                   <label for="name" class="active">姓名:</label>
                 </div>
 
@@ -27,11 +27,11 @@
                   <div class="helper-margin-top-15" >性别:
 
                     <a class="helper-inline-block helper-margin-right-20">
-                      <input name="gender" type="radio" id="male" />
+                      <input name="gender" type="radio" id="male"  (click)="newUser.sex = 0" />
                       <label  for="male">男</label>
                     </a>
                     <a class="helper-inline-block">
-                      <input name="gender" type="radio" id="female" />
+                      <input name="gender" type="radio" id="female"  (click)="newUser.sex = 1"  />
                       <label for="female" class="active">女</label>
                     </a>
 
@@ -40,8 +40,8 @@
               </form>
 
               <div class="input-field col s12">
-                <input *ngIf="editTarget" id="phone" type="text" class="validate" [(value)]="editTarget.phone">
-                <input *ngIf="!editTarget" id="phone" type="text" class="validate" >
+                <input *ngIf="editTarget" id="phone" type="text" class="validate" [(ngModel)]="editTarget.phone">
+                <input *ngIf="!editTarget" id="phone" type="text" class="validate"  [(ngModel)]="newUser.phone">
                 <label for="phone" class="active">手机:</label>
               </div>
 
@@ -59,15 +59,15 @@
             </div>
 
            <div class="row">
-                <div class="input-field col s12">
-                  <input *ngIf="!editTarget" id="account" type="text" class="validate">
-                  <input *ngIf="editTarget" id="account" type="text" class="validate" [(value)]="editTarget.an">
+                <div *ngIf="editTarget" class="input-field col s12">
+                  <!-- <input *ngIf="!editTarget" id="account" type="text" class="validate" [(ngModel)]="newUser.an"> -->
+                  <input id="account" type="text" class="validate" [(ngModel)]="editTarget.an">
                   <label  class="active" for="account">账号:</label>
                 </div>
 
                 <div class="input-field col s12">
-                  <input *ngIf="editTarget" id="password" type="text" class="validate" [(value)]="editTarget.ap">
-                  <input *ngIf="!editTarget" id="password" type="text" class="validate">
+                  <input *ngIf="editTarget" id="password" type="text" class="validate" [(ngModel)]="editTarget.ap">
+                  <input *ngIf="!editTarget" id="password" type="text" class="validate" [(ngModel)]="newUser.pw">
                   <label for="password" class="active">密码:</label>
                 </div>
 
@@ -78,13 +78,17 @@
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
                   </select>
                   <label >级别</label>
                 </div>
 
 
                 <div class="input-field col s12">
-                  <input id="address" type="text" class="validate">
+                  <input id="address" type="text" class="validate" [(ngModel)]="newUser.addr">
                   <label class="active" for="address">地址:</label>
                 </div>
 
@@ -93,7 +97,7 @@
           </div>
 
           <div class="modal-footer">
-           <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+           <a (click)="addNewUser()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
          </div>
 
           <!-- for the select -->
