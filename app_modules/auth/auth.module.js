@@ -79,7 +79,10 @@ auth.registerUser = function(m){
          counter.save(function(err1, cnt){
            newUser.an = cnt.seqs['sid'+ap];
            if(!err1){
+             console.log("user to save---", newUser);
+
              newUser.save(function (err2, user){
+               console.log("new use saved----",user);
                  if (!err2){
                    r.pl.user = user;
                    deferred.resolve(r);

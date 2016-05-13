@@ -37,6 +37,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                     };
                     this.editMode = false;
                     console.log("add user modal is up and running>>---");
+                    this.initUi();
                 }
                 Object.defineProperty(SettingsAddUser.prototype, "users", {
                     get: function () { return this.data; },
@@ -54,15 +55,47 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                 };
                 SettingsAddUser.prototype.vePrivilegeSelected = function (event, compRef) {
                     compRef.newUser.ap = parseInt(event.target.value);
-                    console.log("event.target.value;----", compRef.newUser.ap);
                 };
-                SettingsAddUser.prototype.initSelect = function () {
+                SettingsAddUser.prototype.validateForm = function () {
+                    jQuery("#addNewUserModal").validate({
+                        rules: {
+                            name: "required",
+                            phone: {
+                                required: true,
+                                minlength: 11
+                            },
+                            password: {
+                                required: true,
+                                minlength: 6
+                            }
+                        },
+                        //For custom messages
+                        messages: {
+                            name: "safort",
+                            phone: {
+                                required: "safort",
+                                minlength: "too short"
+                            }
+                        },
+                        errorElement: 'div',
+                        errorPlacement: function (error, element) {
+                            var placement = jQuery(element).data('error');
+                            if (placement) {
+                                jQuery(placement).append(error);
+                            }
+                            else {
+                                error.insertAfter(element);
+                            }
+                        }
+                    });
+                };
+                SettingsAddUser.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
-                        jQuery('select').material_select();
-                        jQuery('select').on('change', function (event) {
+                        jQuery('select.privilege').on('change', function (event) {
                             _this.vePrivilegeSelected(event, _this);
                         });
+                        _this.validateForm();
                     });
                 };
                 __decorate([
