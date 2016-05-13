@@ -63,108 +63,134 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     window.mapLoadedCb = this.mapLoadedCb; //set global reference for initMap callback;
                     document.body.appendChild(script);
                 };
-                //up to date one
+                ShipmentMap.prototype.mapLoadedCb = function () {
+                    if (!ShipmentMap.mapLoaded) {
+                        ShipmentMap.mapLoaded = true;
+                        // 百度地图API功能
+                        ShipmentMap.gpsmap = new BMap.Map("allmap");
+                    }
+                    // var map = new BMap.Map("allmap");
+                    var point = new BMap.Point(118.273, 33.779);
+                    ShipmentMap.gpsmap.centerAndZoom(point, 7);
+                };
+                //old one
                 // mapLoadedCb(){
-                //   if (!ShipmentMap.mapLoaded){   //avoid initializing twice.
-                //         ShipmentMap.mapLoaded = true ;
-                //         // 百度地图API功能
-                //         ShipmentMap.gpsmap = new BMap.Map("allmap");
+                //
+                //
+                //     // 百度地图API功能
+                //     var map = new BMap.Map("allmap");
+                //     map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+                //
+                //     // 添加带有定位的导航控件
+                //     var navigationControl = new BMap.NavigationControl({
+                //       // 靠左上角位置
+                //       anchor: BMAP_ANCHOR_TOP_LEFT,
+                //       // LARGE类型
+                //       type: BMAP_NAVIGATION_CONTROL_LARGE,
+                //       // 启用显示定位
+                //       enableGeolocation: true
+                //     });
+                //     map.addControl(navigationControl);
+                //
+                //
+                //     var myP1 = new BMap.Point(116.380967,39.913285);    //起点
+                //     var myP2 = new BMap.Point(116.424374,39.914668);    //终点
+                //
+                //     var iconImage = 'dist/images/truck.png';
+                //     var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+                //     var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {    //小车图片
+                //       // offset: new BMap.Size(0, -5),    //相当于CSS精灵
+                //       imageOffset: new BMap.Size(0, 10)    //图片的偏移量。为了是图片底部中心对准坐标点。
+                //       });
+                //     var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});    //驾车实例
+                //     driving2.search(myP1, myP2);    //显示一条公交线路
+                //
+                //     //car on the move
+                //     var run = function (){
+                //       var driving = new BMap.DrivingRoute(map);    //驾车实例
+                //       driving.search(myP1, myP2);
+                //       driving.setSearchCompleteCallback(function(){  //after route has been set
+                //
+                //
+                //         var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+                //         var paths = pts.length;    //获得有几个点
+                //
+                //         //get distance and duration
+                //         var routeData = {
+                //                 distance:driving.getResults().getPlan(0).getDistance(true),
+                //                 duration:driving.getResults().getPlan(0).getDuration(true)
+                //         };
+                //
+                //         console.log("distance and time-----",routeData);
+                //         var samplePoint  = pts[0];
+                //
+                //         var carMk = new BMap.Marker(samplePoint, {icon:myIcon});
+                //         map.addOverlay(carMk);
+                //         var i = 0;
+                //
+                //         function resetMkPoint(){
+                //           // samplePoint.lng += 0.0001;
+                //           // samplePoint.lat += 0.0001;
+                //           samplePoint = pts[i]
+                //           carMk.setPosition(samplePoint);
+                //
+                //
+                //           if(i < paths){
+                //             //  console.log('updating----',samplePoint);
+                //
+                //               calculateDistance(map,pts[i],pts[paths-1]).then(function(data){
+                //                 var patern  = /[0,9]{1,3}['米']{1}/;
+                //                   if(patern.test(data)){  //within metters
+                //                       var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
+                //                       // console.log('distance>>>>',distance);
+                //                       if(distance <= 100){
+                //                         console.log('已配送');
+                //                       }
+                //                   }
+                //               });
+                //
+                //               i++;
+                //
+                //             setTimeout(function(){
+                //               resetMkPoint();
+                //             },1000);
+                //           }
+                //           else{
+                //             console.log('done----');
+                //           }
+                //
+                //         }
+                //         resetMkPoint();
+                //       });
                 //     }
                 //
-                //     // var map = new BMap.Map("allmap");
-                //     var point = new BMap.Point(118.273, 33.779);
-                //     ShipmentMap.gpsmap.centerAndZoom(point, 7);
-                // }
+                //     run();
                 //
-                //old and
-                ShipmentMap.prototype.mapLoadedCb = function () {
-                    // 百度地图API功能
-                    var map = new BMap.Map("allmap");
-                    map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
-                    // 添加带有定位的导航控件
-                    var navigationControl = new BMap.NavigationControl({
-                        // 靠左上角位置
-                        anchor: BMAP_ANCHOR_TOP_LEFT,
-                        // LARGE类型
-                        type: BMAP_NAVIGATION_CONTROL_LARGE,
-                        // 启用显示定位
-                        enableGeolocation: true
-                    });
-                    map.addControl(navigationControl);
-                    var myP1 = new BMap.Point(116.380967, 39.913285); //起点
-                    var myP2 = new BMap.Point(116.424374, 39.914668); //终点
-                    var iconImage = 'dist/images/truck.png';
-                    var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
-                    var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
-                        // offset: new BMap.Size(0, -5),    //相当于CSS精灵
-                        imageOffset: new BMap.Size(0, 10) //图片的偏移量。为了是图片底部中心对准坐标点。
-                    });
-                    var driving2 = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true } }); //驾车实例
-                    driving2.search(myP1, myP2); //显示一条公交线路
-                    //car on the move
-                    var run = function () {
-                        var driving = new BMap.DrivingRoute(map); //驾车实例
-                        driving.search(myP1, myP2);
-                        driving.setSearchCompleteCallback(function () {
-                            var pts = driving.getResults().getPlan(0).getRoute(0).getPath(); //通过驾车实例，获得一系列点的数组
-                            var paths = pts.length; //获得有几个点
-                            //get distance and duration
-                            var routeData = {
-                                distance: driving.getResults().getPlan(0).getDistance(true),
-                                duration: driving.getResults().getPlan(0).getDuration(true)
-                            };
-                            console.log("distance and time-----", routeData);
-                            var samplePoint = pts[0];
-                            var carMk = new BMap.Marker(samplePoint, { icon: myIcon });
-                            map.addOverlay(carMk);
-                            var i = 0;
-                            function resetMkPoint() {
-                                // samplePoint.lng += 0.0001;
-                                // samplePoint.lat += 0.0001;
-                                samplePoint = pts[i];
-                                carMk.setPosition(samplePoint);
-                                if (i < paths) {
-                                    //  console.log('updating----',samplePoint);
-                                    calculateDistance(map, pts[i], pts[paths - 1]).then(function (data) {
-                                        var patern = /[0,9]{1,3}['米']{1}/;
-                                        if (patern.test(data)) {
-                                            var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
-                                            // console.log('distance>>>>',distance);
-                                            if (distance <= 100) {
-                                                console.log('已配送');
-                                            }
-                                        }
-                                    });
-                                    i++;
-                                    setTimeout(function () {
-                                        resetMkPoint();
-                                    }, 1000);
-                                }
-                                else {
-                                    console.log('done----');
-                                }
-                            }
-                            resetMkPoint();
-                        });
-                    };
-                    run();
-                    var calculateDistance = function (map, scrPoint, desPoint) {
-                        var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat); //起点
-                        var p2 = new BMap.Point(desPoint.lng, desPoint.lat); //终点
-                        // var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat);    //起点
-                        // var p2 = new BMap.Point(scrPoint.lng+0.0001, scrPoint.lat+0.0001);    //终点
-                        var tempDriving = new BMap.DrivingRoute(map); //驾车实例
-                        tempDriving.search(p1, p2);
-                        var distance = null;
-                        var deferred = jQuery.Deferred();
-                        tempDriving.setSearchCompleteCallback(function () {
-                            distance = tempDriving.getResults().getPlan(0).getDistance(true);
-                            // console.log("new distance-----",distance);
-                            deferred.resolve(distance);
-                        });
-                        return deferred.promise();
-                    };
-                };
+                //
+                //     var calculateDistance = function(map, scrPoint,desPoint){
+                //
+                //           var p1 = new BMap.Point(scrPoint.lng,scrPoint.lat);    //起点
+                //           var p2 = new BMap.Point(desPoint.lng,desPoint.lat);    //终点
+                //           // var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat);    //起点
+                //           // var p2 = new BMap.Point(scrPoint.lng+0.0001, scrPoint.lat+0.0001);    //终点
+                //
+                //           var tempDriving = new BMap.DrivingRoute(map);    //驾车实例
+                //           tempDriving.search(p1, p2);
+                //
+                //           var distance = null;
+                //
+                //           var deferred = jQuery.Deferred();
+                //
+                //           tempDriving.setSearchCompleteCallback(function(){  //after route has been set
+                //               distance = tempDriving.getResults().getPlan(0).getDistance(true);
+                //               // console.log("new distance-----",distance);
+                //               deferred.resolve(distance);
+                //           });
+                //
+                //           return deferred.promise();
+                //
+                //     }
+                // }
                 ShipmentMap.prototype.addMarker = function (cardata) {
                     var point = new BMap.Point(cardata.lng, cardata.lat);
                     var marker = new BMap.Marker(point);
@@ -174,8 +200,8 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     var iconImage = 'dist/images/truck.png';
                     var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
                     var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
-                        //offset: new BMap.Size(0, -5),    //相当于CSS精灵
-                        imageOffset: new BMap.Size(0, 0.5) //图片的偏移量。为了是图片底部中心对准坐标点。
+                        // offset: new BMap.Size(0, -5),    //相当于CSS精灵
+                        imageOffset: new BMap.Size(0, 10) //图片的偏移量。为了是图片底部中心对准坐标点。
                     });
                     var point = new BMap.Point(cardata.lng, cardata.lat);
                     var marker = new BMap.Marker(point, { icon: myIcon });
