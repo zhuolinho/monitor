@@ -34,10 +34,21 @@
                 </div>
 
                 <div class="monitor-table helper-font-bigger">
-                  <div class="table-row">
+                  <div class="table-row" *ngIf ='(alert.type != "拉回报警") && (alert.type != "进场报警") ' >
                     <!-- set first collum width on the common field to 40% to keep alignment  -->
                     <div class="table-cell" style="width:40% !important;"> 罐号 </div>
-                    <div class="table-cell">{{alert.id}}  </div>
+                    <div class="table-cell">
+                      <!-- {{alert.id}} -->
+
+                        <select class="" name="">
+
+                          <option value="6348">6348</option>
+                          <option value="6548">6548</option>
+                          <option value="6898">6898</option>
+
+                        </select>
+
+                    </div>
                   </div>
                   <div class="table-row" *ngIf="alert.type == '余量报警'">
                       <div class="table-cell"> 余量/压力 </div>

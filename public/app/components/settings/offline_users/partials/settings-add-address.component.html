@@ -1,0 +1,73 @@
+
+        <!-- modal -->
+
+        <div id="{{data.id}}" class="modal " style="overflow:auto;">
+          <div class="modal-content">
+            <i class="modal-close material-icons right">clear</i>
+            <h4 *ngIf="!editMode">  添加到 "{{data.addresses.type.value}}"</h4>
+            <h4 *ngIf="editMode">  编辑 "{{data.addresses.type.value}}"</h4>
+
+
+            <div class="col s12 m12 helper-margin-bottom-20  helper-margin-top-30">
+              <div class="input-field">
+                <select id="tankCode">
+                    <option value="C100">
+                      C100
+                    </option>
+                    <option value="C101">
+                      C101
+                    </option>
+
+                    <option value="C102">
+                      C102
+                    </option>
+
+                </select>
+
+                <label for="tankCode">
+                  选择罐号
+                </label>
+              </div>
+            </div>
+
+           <div class="col s12 m12 helper-margin-bottom-20">
+             <div class="input-field">
+               <input type="text" id="addrInput" *ngIf ="editTarget" [(value)]="editTarget.addr">
+              <input type="text" id="addrInput" *ngIf ="!editTarget" >
+               <label class="active" for="addrInput">请输入地址</label>
+             </div>
+           </div>
+
+
+              <div class="col s12 m12 helper-margin-bottom-20">
+                <div class="input-field">
+                  <select id="plcAddr" >
+                      <option value="C100">
+                      192.167.0.1
+                      </option>
+                      <option value="C101">
+                          192.167.0.2
+                      </option>
+
+                      <option value="C102">
+                        192.167.0.3
+                      </option>
+
+                  </select>
+                  <label for="plcAddr">
+                  选择 PLC 地址。
+                  </label>
+                </div>
+              </div>
+
+
+
+          </div>
+
+          <div class="modal-footer">
+           <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+         </div>
+
+          <!-- for the select -->
+         <div class="clearfix" style="height:80px;"> </div>
+      </div>

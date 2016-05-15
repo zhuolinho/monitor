@@ -37,7 +37,7 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                 LoginComponent.prototype.login = function () {
                     var _this = this;
                     console.log("this.user.password---", this.user);
-                    this.localUserService.login({ name: this.user.username, password: this.user.password }).subscribe(function (res) {
+                    this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (res) {
                         if (!res.er) {
                             _this.localUserService.saveUser(res.pl);
                             _this.router.navigate(['Admin']);

@@ -23,7 +23,7 @@ export class LoginComponent{
     login(){
       var _this = this;
       console.log("this.user.password---",this.user);
-      this.localUserService.login({name:this.user.username, password:this.user.password}).subscribe(res => {
+      this.localUserService.login({username:this.user.username, password:this.user.password}).subscribe(res => {
         if(!res.er){
             _this.localUserService.saveUser(res.pl);
           _this.router.navigate(['Admin']);

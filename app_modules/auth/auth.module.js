@@ -158,7 +158,7 @@ auth.authenticateUser = function(m){
           deferred.reject(r);
       } else {
         // check if password matches
-        user.comparePassword(m.pl.user.password, function (err, isMatch) {
+        user.comparePassword(m.pl.user.pw, function (err, isMatch) {
           if (isMatch && !err) {
             // if user is found and password is right create a token
             var token = jwt.encode(user, config.secret);
@@ -181,7 +181,7 @@ auth.authenticateUser = function(m){
 
           } else {
             r.pl.success = false;
-            r.er = 'Authentication failed. User not found';
+            r.er = 'Authentication failed. passport not matching';
             deferred.reject(r);
           }
         });

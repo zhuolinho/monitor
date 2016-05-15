@@ -47,7 +47,7 @@ System.register(['angular2/core', '../../../config', '../../../services/user.ser
                 };
                 SettingsAuth.prototype.login = function () {
                     var _this = this;
-                    this.localUserService.login({ name: this.user.username, password: this.user.password }).subscribe(function (response) {
+                    this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (response) {
                         console.log('got settings login respone---', response);
                         if (!response.er) {
                             _this.localUserService.logedInSettings();

@@ -33,7 +33,9 @@
             <select class="helper-select-font-bigger">
               <option value="CNG" > CNG </option>
               <option  value="LNG"> LNG </option>
-              <option  value="小罐"> 小罐 </option>
+              <option  value="小罐"> 集格 </option>
+              <option  value="拉回"> 杜瓦瓶 </option>
+              <option  value="拉回"> 进场 </option>
               <option  value="拉回"> 拉回 </option>
             </select>
             <!-- <label>选在时间</label> -->
@@ -69,11 +71,12 @@
         <div class=" helper-margin-bottom-20">
           <div class="input-field helper-white-bg col s12 helper-margin-top-10">
               <select class="helper-select-font-bigger">
-                <option value="总站" > 总站 </option>
-                <option  value="青浦加气站"> 青浦加气站 </option>
-                <option  value="松江加气站"> 松江加气站 </option>
-                <option  value="嘉定加气站"> 嘉定加气站 </option>
-               <option  value="闵行加气站"> 闵行加气站 </option>
+                <option value="0"  selected> 母站</option>
+                <option  value="中转站1号">中转站1号</option>
+               <option  value="中转站2号">中转站2号</option>
+               <option  value="中转站3号">中转站3号</option>
+               <option  value="中转站4号">中转站4号</option>
+                <option  value="中转站5号">中转站5号</option>
 
               </select>
               <!-- <label>选在时间</label> -->
@@ -105,7 +108,7 @@
 
     <div>
       <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-        选择司机
+        选司机
       </span>
       <div class=" helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
@@ -122,11 +125,9 @@
       </div>
     </div>
 
-
-
     <div>
       <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
-        选择运员
+        选押运员
       </span>
       <div class="helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
@@ -149,14 +150,7 @@
 
             <div class="col s4">
                 <a  (click)="selectedtab=2; delevered=!delevered;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align">
-                      <span *ngIf="!delevered">
                         确认配送
-                      </span>
-
-                      <span *ngIf="delevered">
-                        已送达
-                      </span>
-
                  </a>
             </div>
             <div class="col s4">

@@ -66,10 +66,7 @@ router.post('/login', function(req, res) {
     vs: '1.0',
     op: 'authenticateUser',
     pl:{
-      user:{
-        name:req.body.name,
-        password:req.body.password
-      }
+      user:{name:req.body.username, pw:req.body.password}
     }
   };
 
