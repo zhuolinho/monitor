@@ -98,6 +98,15 @@ body, html{
       display: table-cell  !important;
   }
 
+  .monitor-table .table-cell.with-select .caret{
+    top:0;
+  }
+
+ .table-cell.with-select .select-wrapper input.select-dropdown{
+    height: 12px !important;
+    margin-bottom: 0 !important;
+  }
+
   .monitor-table.vstrip .table-cell{
       padding:10px 15px;
   }
