@@ -134,7 +134,8 @@
                             <div class="table-cell" style="">
                             <span class="left" style="margin-top:6px;">{{tank.id}}</span>
                               <a class="right" style="margin-top:8px;"  >
-                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veSelectTank(tank)" [attr.checked] = "tank.selected?'checked':null" />
+                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
+                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
                                 <label attr.for="{{tank.id+i}}"></label>
                               </a>
                             </div>

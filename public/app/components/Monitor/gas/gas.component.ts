@@ -67,23 +67,23 @@ export class Gas{
      if(!this.allTankSelected){
        for (let i = 0; i < this.availableTanks.length; i++) {
             this.availableTanks[i].selected = true;
-            this.selectedTanks.push(this.availableTanks[i]);
         }
+        this.selectedTanks = this.availableTanks;
      }
      else{
        for (let i = 0; i < this.availableTanks.length; i++) {
-            this.availableTanks[i].selected = null;
+            this.availableTanks[i].selected = false;
         }
      }
 
-     console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
+    //  console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
      this.allTankSelected = !this.allTankSelected;
 
    }
 
 
 
-   veSelectTank(tank){
+   veToggleSelectTank(tank){
      tank.selected = !tank.selected;
      if(tank.selected){
           this.selectedTanks.push(tank);
@@ -93,8 +93,6 @@ export class Gas{
           return o.id == tank.id;
         })
      }
-
-      console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks,tank,array);
 
    }
     initModal(){

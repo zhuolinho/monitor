@@ -74,18 +74,18 @@ System.register(['angular2/core', '../../../config', './details/gas.detail.compo
                     if (!this.allTankSelected) {
                         for (var i = 0; i < this.availableTanks.length; i++) {
                             this.availableTanks[i].selected = true;
-                            this.selectedTanks.push(this.availableTanks[i]);
                         }
+                        this.selectedTanks = this.availableTanks;
                     }
                     else {
                         for (var i = 0; i < this.availableTanks.length; i++) {
-                            this.availableTanks[i].selected = null;
+                            this.availableTanks[i].selected = false;
                         }
                     }
-                    console.log("this.selectedTanks ----", this.selectedTanks.length, this.selectedTanks);
+                    //  console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
                     this.allTankSelected = !this.allTankSelected;
                 };
-                Gas.prototype.veSelectTank = function (tank) {
+                Gas.prototype.veToggleSelectTank = function (tank) {
                     tank.selected = !tank.selected;
                     if (tank.selected) {
                         this.selectedTanks.push(tank);
@@ -95,7 +95,6 @@ System.register(['angular2/core', '../../../config', './details/gas.detail.compo
                             return o.id == tank.id;
                         });
                     }
-                    console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks, tank, array);
                 };
                 Gas.prototype.initModal = function () {
                     var _this = this;
