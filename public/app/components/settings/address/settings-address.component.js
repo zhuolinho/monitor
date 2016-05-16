@@ -77,17 +77,17 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             type: { id: 3, value: '集格' },
                             data: [
                                 {
-                                    code: 'X001',
+                                    code: 'J001',
                                     addr: '闸北区新闸路55号XX站',
                                     plcaddr: ''
                                 },
                                 {
-                                    code: 'X002',
+                                    code: 'J002',
                                     addr: '闸北区新闸路980号XXXX站',
                                     plcaddr: ''
                                 },
                                 {
-                                    code: 'X003',
+                                    code: 'J003',
                                     addr: '闸北区新闸路201号XX站',
                                     plcaddr: ''
                                 }
@@ -97,17 +97,17 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             type: { id: 4, value: '杜瓦瓶' },
                             data: [
                                 {
-                                    code: 'X011',
+                                    code: 'D011',
                                     addr: '闸北区新闸路77号XX站',
                                     plcaddr: ''
                                 },
                                 {
-                                    code: 'X022',
+                                    code: 'D022',
                                     addr: '闸北区新闸路180号XXXX站',
                                     plcaddr: ''
                                 },
                                 {
-                                    code: 'X013',
+                                    code: 'D013',
                                     addr: '闸北区新闸路331号XX站',
                                     plcaddr: ''
                                 }

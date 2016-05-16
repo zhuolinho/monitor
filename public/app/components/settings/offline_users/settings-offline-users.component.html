@@ -25,14 +25,14 @@
                         <div class="table-row  helper-gray-bg-light">
                           <div class="table-cell"> 账号 </div>
                           <div class="table-cell">姓名 </div>
-                          <div class="table-cell">地址 </div>
+                          <!-- <div class="table-cell">地址 </div> -->
                           <div class="table-cell">手机号码 </div>
                         </div>
 
                         <div class="table-row" *ngFor="#user of userGroup.data">
                           <div class="table-cell"> {{user.an}} </div>
                           <div class="table-cell"> {{user.name}}  </div>
-                          <div class="table-cell"> {{user.addr}} </div>
+                          <!-- <div class="table-cell"> {{user.addr}} </div> -->
                           <div class="table-cell"> {{user.phone}} <a href="{{'#id'+i}}"   class="right modal-trigger" (click) = "usermodal.editMode = true;"> 编辑</a></div>
                         </div>
                       </div>
