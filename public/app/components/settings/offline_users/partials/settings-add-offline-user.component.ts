@@ -5,11 +5,11 @@ import {AlertModel} from '../../../../models/alert-model';
 declare var jQuery:any;
 
 @Component({
-  selector:'settings-add-address-user',
-  templateUrl:config.prefix + '/components/settings/address/partials/settings-add-address-user.component.html'
+  selector:'settings-add-offline-user',
+  templateUrl:config.prefix + '/components/settings/offline_users/partials/settings-add-offline-user.component.html'
 })
 
-export class SettingsAddAddressUser{
+export class SettingsAddOfflineUser{
      data:any;
     @Input('data')
     set users(data){
@@ -23,7 +23,7 @@ export class SettingsAddAddressUser{
 
 
     constructor(){
-      console.log("add user address modal is up and running---");
+      console.log("add user offline modal is up and running---");
     }
 
 

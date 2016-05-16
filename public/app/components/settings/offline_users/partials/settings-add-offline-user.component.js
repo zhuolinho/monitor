@@ -11,7 +11,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, config_1;
-    var SettingsAddAddress;
+    var SettingsAddOfflineUser;
     return {
         setters:[
             function (core_1_1) {
@@ -21,12 +21,12 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                 config_1 = config_1_1;
             }],
         execute: function() {
-            SettingsAddAddress = (function () {
-                function SettingsAddAddress() {
+            SettingsAddOfflineUser = (function () {
+                function SettingsAddOfflineUser() {
                     this.editMode = false;
-                    console.log("add  address modal is up and running---");
+                    console.log("add user offline modal is up and running---");
                 }
-                Object.defineProperty(SettingsAddAddress.prototype, "users", {
+                Object.defineProperty(SettingsAddOfflineUser.prototype, "users", {
                     get: function () { return this.data; },
                     set: function (data) {
                         this.data = data;
@@ -34,7 +34,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     enumerable: true,
                     configurable: true
                 });
-                SettingsAddAddress.prototype.initSelect = function () {
+                SettingsAddOfflineUser.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
@@ -43,17 +43,17 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     core_1.Input('data'), 
                     __metadata('design:type', Object), 
                     __metadata('design:paramtypes', [Object])
-                ], SettingsAddAddress.prototype, "users", null);
-                SettingsAddAddress = __decorate([
+                ], SettingsAddOfflineUser.prototype, "users", null);
+                SettingsAddOfflineUser = __decorate([
                     core_1.Component({
-                        selector: 'settings-add-address',
-                        templateUrl: config_1.config.prefix + '/components/settings/address/partials/settings-add-address.component.html'
+                        selector: 'settings-add-offline-user',
+                        templateUrl: config_1.config.prefix + '/components/settings/offline_users/partials/settings-add-offline-user.component.html'
                     }), 
                     __metadata('design:paramtypes', [])
-                ], SettingsAddAddress);
-                return SettingsAddAddress;
+                ], SettingsAddOfflineUser);
+                return SettingsAddOfflineUser;
             }());
-            exports_1("SettingsAddAddress", SettingsAddAddress);
+            exports_1("SettingsAddOfflineUser", SettingsAddOfflineUser);
         }
     }
 });

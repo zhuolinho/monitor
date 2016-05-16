@@ -39,6 +39,7 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
                     this.logo = config_1.config.logo;
                     this.color = config_1.config.color;
                     this.router = router;
+                    this.user = this.localUserService.getUser();
                     // this.logo = CONFIG.resourcePath + 'img/logo.png'
                     // console.log(this.logo);
                     // console.log('app header loaded...')

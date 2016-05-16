@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-address-user.component', './partials/settings-add-address.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-add-address.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_address_user_component_1, settings_add_address_component_1, has_settings_access_1, router_1;
+    var core_1, config_1, settings_add_address_component_1, has_settings_access_1, router_1;
     var SettingsAddress;
     return {
         setters:[
@@ -19,9 +19,6 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (settings_add_address_user_component_1_1) {
-                settings_add_address_user_component_1 = settings_add_address_user_component_1_1;
             },
             function (settings_add_address_component_1_1) {
                 settings_add_address_component_1 = settings_add_address_component_1_1;
@@ -157,86 +154,8 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                             ]
                         }
                     ];
-                    this.staffArray = [
-                        {
-                            type: { id: 1, value: '司机' },
-                            data: [
-                                {
-                                    an: '601',
-                                    name: '刘强',
-                                    addr: '----',
-                                    phone: '13987226225',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '602',
-                                    name: '徐某某',
-                                    addr: '----',
-                                    phone: '18987226225',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '603',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '604',
-                                    name: '高琳',
-                                    addr: '----',
-                                    phone: '13987226228',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 2, value: '押运员' },
-                            data: [
-                                {
-                                    an: '801',
-                                    name: '徐国龙',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '802',
-                                    name: '宋红',
-                                    addr: '----',
-                                    phone: '14987226225',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '803',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '804',
-                                    name: '梁凯',
-                                    addr: '----',
-                                    phone: '1392226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                }
-                            ]
-                        }
-                    ];
                     this.currentSort = 'all';
-                    this.currentSubSort = 'all';
                     this.selectedtab = 1;
-                    this.selectedsubtab = 0;
                     console.log("SettingsAddress is up and running");
                     this.initUi();
                 }
@@ -246,18 +165,6 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                         this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
                         setTimeout(function (_) {
                             _this.currentSort = which;
-                            _this.currentSubSort = 'all';
-                            _this.selectedsubtab = 0;
-                            _this.initUi();
-                        }, 100);
-                    }
-                };
-                SettingsAddress.prototype.veSortSubBy = function (which) {
-                    var _this = this;
-                    if (this.currentSubSort != which) {
-                        this.currentSubSort = null;
-                        setTimeout(function (_) {
-                            _this.currentSubSort = which;
                             _this.initUi();
                         }, 100);
                     }
@@ -289,7 +196,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     core_1.Component({
                         selector: 'settings-address',
                         templateUrl: config_1.config.prefix + '/components/settings/address/settings-address.component.html',
-                        directives: [settings_add_address_user_component_1.SettingsAddAddressUser, settings_add_address_component_1.SettingsAddAddress]
+                        directives: [settings_add_address_component_1.SettingsAddAddress]
                     }),
                     router_1.CanActivate(function (to, from) {
                         return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning

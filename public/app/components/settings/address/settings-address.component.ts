@@ -1,6 +1,5 @@
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
-import {SettingsAddAddressUser} from './partials/settings-add-address-user.component';
 import {SettingsAddAddress} from './partials/settings-add-address.component';
 import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {CanActivate} from 'angular2/router';
@@ -9,7 +8,7 @@ declare var jQuery:any;
 @Component({
   selector:'settings-address',
   templateUrl:config.prefix + '/components/settings/address/settings-address.component.html',
-  directives:[SettingsAddAddressUser,SettingsAddAddress]
+  directives:[SettingsAddAddress]
 })
 
 @CanActivate((to, from) => {
@@ -141,87 +140,9 @@ export class SettingsAddress{
           ]
       }
   ];
-  staffArray = [
-      {
-          type: { id: 1, value: '司机' },
-          data: [
-              {
-                  an: '601',
-                  name: '刘强',
-                  addr: '----',
-                  phone: '13987226225',
-                  ap: '1******6',
-                  p: '1' //permission
-              },
-              {
-                  an: '602',
-                  name: '徐某某',
-                  addr: '----',
-                  phone: '18987226225',
-                  ap: '1******6',
-                  p: '1' //permission
-              },
-              {
-                  an: '603',
-                  name: '高阳',
-                  addr: '----',
-                  phone: '17987226228',
-                  ap: '1******6',
-                  p: '1' //permission
-              },
-              {
-                  an: '604',
-                  name: '高琳',
-                  addr: '----',
-                  phone: '13987226228',
-                  ap: '1******6',
-                  p: '1' //permission
-              }
-          ]
-      },
-      {
-          type: { id: 2, value: '押运员' },
-          data: [
-              {
-                  an: '801',
-                  name: '徐国龙',
-                  addr: '----',
-                  phone: '13987226223',
-                  ap: '1******6',
-                  p: '2' //permission
-              },
-              {
-                  an: '802',
-                  name: '宋红',
-                  addr: '----',
-                  phone: '14987226225',
-                  ap: '1******6',
-                  p: '2' //permission
-              },
-              {
-                  an: '803',
-                  name: '高阳',
-                  addr: '----',
-                  phone: '17987226228',
-                  ap: '1******6',
-                  p: '2' //permission
-              },
-              {
-                  an: '804',
-                  name: '梁凯',
-                  addr: '----',
-                  phone: '1392226228',
-                  ap: '1******6',
-                  p: '2' //permission
-              }
-          ]
-      }
-  ];
 
   currentSort = 'all';
-  currentSubSort = 'all';
   selectedtab = 1;
-  selectedsubtab = 0;
 
 
     constructor(){
@@ -233,21 +154,9 @@ export class SettingsAddress{
      if (this.currentSort != which) {
        this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
        setTimeout(_=>{
-            this.currentSort = which;
-            this.currentSubSort = 'all';
-            this.selectedsubtab = 0;
+            this.currentSort = which
             this.initUi();
        },100);
-     }
-   }
-
-   veSortSubBy(which){
-     if (this.currentSubSort != which) {
-          this.currentSubSort = null;
-          setTimeout(_=>{
-               this.currentSubSort = which;
-               this.initUi();
-          },100);
      }
    }
 

@@ -20,8 +20,10 @@ export class Header {
     logo:string = config.logo;
     color:string = config.color;
     router:Router;
+    user:any;
     constructor(router:Router, private localUserService:UserService) {
       this.router = router;
+      this.user = this.localUserService.getUser();
       // this.logo = CONFIG.resourcePath + 'img/logo.png'
       // console.log(this.logo);
 

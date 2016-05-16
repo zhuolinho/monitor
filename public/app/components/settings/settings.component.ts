@@ -8,6 +8,7 @@ import {SettingsAuth} from './auth/settings-auth.component';
 import {SettingsAccess} from './access/settings-access.component';
 import {SettingsAddress} from './address/settings-address.component';
 import {SettingsFormula} from './formula/settings-formula.component';
+import {SettingsOfflineUsers} from './offline_users/settings-offline-users.component';
 declare var jQuery:any;
 
 @Component({
@@ -21,7 +22,8 @@ declare var jQuery:any;
    {path:'/auth', component:SettingsAuth, name:'SettingsAuth',useAsDefault:true},
    {path:'/sms', component:SettingsSms, name:'SettingsSms'},
    {path:'/access', component:SettingsAccess, name:'SettingsAccess'},
-  {path:'/address', component:SettingsAddress, name:'SettingsAddress'},
+   {path:'/address', component:SettingsAddress, name:'SettingsAddress'},
+   {path:'/offline-users', component:SettingsOfflineUsers, name:'SettingsOfflineUsers'},
    {path:'/formula', component:SettingsFormula, name:'SettingsFormula'}
  ])
 

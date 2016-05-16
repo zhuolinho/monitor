@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', 'angular2/router', '../../services/user.service', './sms/settings-sms.component', './auth/settings-auth.component', './access/settings-access.component', './address/settings-address.component', './formula/settings-formula.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../config', 'angular2/router', '../../services/user.service', './sms/settings-sms.component', './auth/settings-auth.component', './access/settings-access.component', './address/settings-address.component', './formula/settings-formula.component', './offline_users/settings-offline-users.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, router_1, user_service_1, settings_sms_component_1, settings_auth_component_1, settings_access_component_1, settings_address_component_1, settings_formula_component_1;
+    var core_1, config_1, router_1, user_service_1, settings_sms_component_1, settings_auth_component_1, settings_access_component_1, settings_address_component_1, settings_formula_component_1, settings_offline_users_component_1;
     var Settings;
     return {
         setters:[
@@ -40,6 +40,9 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
             },
             function (settings_formula_component_1_1) {
                 settings_formula_component_1 = settings_formula_component_1_1;
+            },
+            function (settings_offline_users_component_1_1) {
+                settings_offline_users_component_1 = settings_offline_users_component_1_1;
             }],
         execute: function() {
             Settings = (function () {
@@ -65,6 +68,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                         { path: '/sms', component: settings_sms_component_1.SettingsSms, name: 'SettingsSms' },
                         { path: '/access', component: settings_access_component_1.SettingsAccess, name: 'SettingsAccess' },
                         { path: '/address', component: settings_address_component_1.SettingsAddress, name: 'SettingsAddress' },
+                        { path: '/offline-users', component: settings_offline_users_component_1.SettingsOfflineUsers, name: 'SettingsOfflineUsers' },
                         { path: '/formula', component: settings_formula_component_1.SettingsFormula, name: 'SettingsFormula' }
                     ]), 
                     __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
