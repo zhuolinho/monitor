@@ -1,7 +1,8 @@
 
   <div class="row  helper-white-bg" style="height:80vh;">
 
-    <div class="row helper-padding-top-10">
+    <!-- <div class="row helper-padding-top-10" *ngIf="authUser.ap == 1"> -->
+    <div class="row helper-padding-top-10" >
       <form class=" helper-padding-15" style="width:85%; margin:auto;">
         <div class="row" style="margin-top:10%;">
 
@@ -24,5 +25,16 @@
         </div>
       </form>
     </div>
+
+  <!-- <div *ngIf="authUser.ap != 1" class="center-align" >
+    <h4 style="padding-top:35vh;">
+      授权区
+    </h4>
+
+    <span class="center-align">
+      您无权限!!!
+    </span>
+  </div> -->
+
 
   </div>

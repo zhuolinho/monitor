@@ -69,17 +69,20 @@ System.register(['angular2/core', '../../../config', './details/gas.detail.compo
                         console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
                     }
                 };
-                Gas.prototype.veSelectAllTanks = function () {
+                Gas.prototype.veToggleSelectAllTanks = function () {
+                    this.selectedTanks = [];
                     if (!this.allTankSelected) {
                         for (var i = 0; i < this.availableTanks.length; i++) {
                             this.availableTanks[i].selected = true;
+                            this.selectedTanks.push(this.availableTanks[i]);
                         }
                     }
                     else {
                         for (var i = 0; i < this.availableTanks.length; i++) {
-                            this.availableTanks[i].selected = false;
+                            this.availableTanks[i].selected = null;
                         }
                     }
+                    console.log("this.selectedTanks ----", this.selectedTanks.length, this.selectedTanks);
                     this.allTankSelected = !this.allTankSelected;
                 };
                 Gas.prototype.veSelectTank = function (tank) {

@@ -37,7 +37,8 @@ System.register(['angular2/core', '../../../config', '../../../services/user.ser
                         this.router.navigate(['SettingsAccess']);
                         return;
                     }
-                    this.user.username = this.localUserService.getUser().name;
+                    this.authUser = this.localUserService.getUser();
+                    this.user.username = this.authUser.name;
                     this.initUi();
                 }
                 SettingsAuth.prototype.initUi = function () {

@@ -62,18 +62,21 @@ export class Gas{
            console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
       }
     }
-   veSelectAllTanks(){
-
+   veToggleSelectAllTanks(){
+      this.selectedTanks = [];
      if(!this.allTankSelected){
        for (let i = 0; i < this.availableTanks.length; i++) {
             this.availableTanks[i].selected = true;
+            this.selectedTanks.push(this.availableTanks[i]);
         }
      }
      else{
        for (let i = 0; i < this.availableTanks.length; i++) {
-            this.availableTanks[i].selected = false;
+            this.availableTanks[i].selected = null;
         }
      }
+
+     console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
      this.allTankSelected = !this.allTankSelected;
 
    }
