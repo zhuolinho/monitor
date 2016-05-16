@@ -44,7 +44,6 @@
     "app/components/monitor/monitor.component.ts",
     "app/components/settings/access/partials/settings-add-user.component.ts",
     "app/components/settings/access/settings-access.component.ts",
-    "app/components/settings/address/partials/settings-add-address-user.component.ts",
     "app/components/settings/address/partials/settings-add-address.component.ts",
     "app/components/settings/address/settings-address.component.ts",
     "app/components/settings/auth/settings-auth.component.ts",
