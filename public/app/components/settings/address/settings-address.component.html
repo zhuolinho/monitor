@@ -30,11 +30,13 @@
                     <div class="table-row  helper-gray-bg-light">
                       <div class="table-cell"> 编号 </div>
                       <div class="table-cell">厂区地址 </div>
-                      <div class="table-cell">PLC地址 </div>
+                      <div class="table-cell">PLC地址1 </div>
+                      <div class="table-cell">PLC地址2 </div>
                     </div>
                     <div class="table-row" *ngFor="#address of addressGroup.data">
                       <div class="table-cell"> {{address.code}} </div>
                       <div class="table-cell"> {{address.addr}} </div>
+                      <div class="table-cell"> {{address.plcaddr}}</div>
                       <div class="table-cell"> {{address.plcaddr}} <a href="{{'#id'+i}}"   class="right modal-trigger"  (click) = "modal.editMode = true; modal.editTarget = address;" >  编辑</a></div>
                     </div>
                   </div>
