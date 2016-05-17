@@ -11,15 +11,10 @@
             <div class="col s12 m12 helper-margin-bottom-20  helper-margin-top-30">
               <div class="input-field">
                 <select id="tankCode">
-                    <option value="C100">
-                      C100
-                    </option>
-                    <option value="C101">
-                      C101
-                    </option>
 
-                    <option value="C102">
-                      C102
+
+                    <option *ngFor="#tank of currentTanks">
+                      {{tank}}
                     </option>
 
                 </select>

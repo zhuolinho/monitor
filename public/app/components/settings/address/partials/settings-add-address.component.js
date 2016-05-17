@@ -24,12 +24,53 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
             SettingsAddAddress = (function () {
                 function SettingsAddAddress() {
                     this.editMode = false;
+                    this.lngTanks = [
+                        'L004', 'L005', 'L006', 'L007'
+                    ];
+                    this.cngTanks = [
+                        'C004', 'C005', 'C006', 'C007'
+                    ];
+                    this.jigeTanks = [
+                        'J004', 'J005', 'J006', 'J007'
+                    ];
+                    this.duwapingTanks = [
+                        'D004', 'D005', 'D006', 'D007'
+                    ];
+                    this.guanwangTanks = [
+                        'G004', 'G005', 'G006', 'G007'
+                    ];
+                    this.zhongzhuanTanks = [
+                        '中转站3号', '中转站4号', '中转站5号'
+                    ];
+                    this.currentTanks = [];
                     console.log("add  address modal is up and running---");
                 }
                 Object.defineProperty(SettingsAddAddress.prototype, "users", {
                     get: function () { return this.data; },
                     set: function (data) {
                         this.data = data;
+                        switch (data.addresses.type.value) {
+                            case 'CNG':
+                                this.currentTanks = this.cngTanks;
+                                break;
+                            case 'LNG':
+                                this.currentTanks = this.lngTanks;
+                                break;
+                            case '集格':
+                                this.currentTanks = this.jigeTanks;
+                                break;
+                            case '杜瓦瓶':
+                                this.currentTanks = this.duwapingTanks;
+                                break;
+                            case '管网':
+                                this.currentTanks = this.guanwangTanks;
+                                break;
+                            case '中转站':
+                                this.currentTanks = this.zhongzhuanTanks;
+                                break;
+                            default:
+                                console.log('default');
+                        }
                     },
                     enumerable: true,
                     configurable: true

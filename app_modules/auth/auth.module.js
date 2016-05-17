@@ -133,7 +133,7 @@ auth.updateUser = function(m){
     });
     }
     else {
-      r.er =  "no user name or password";
+      r.er =  "no user account provided";
       deferred.reject(r);
     }
   return deferred.promise;

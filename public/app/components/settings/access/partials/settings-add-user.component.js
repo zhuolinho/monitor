@@ -53,8 +53,17 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                         console.log("user added-----", res);
                     });
                 };
+                SettingsAddUser.prototype.updateUser = function () {
+                    console.log("posting ----", this.editTarget);
+                    this.request.put('/users/update', this.editTarget).subscribe(function (res) {
+                        console.log("user added-----", res);
+                    });
+                };
                 SettingsAddUser.prototype.vePrivilegeSelected = function (event, compRef) {
                     compRef.newUser.ap = parseInt(event.target.value);
+                };
+                SettingsAddUser.prototype.veSelectGender = function (event) {
+                    console.log("value-----", event);
                 };
                 SettingsAddUser.prototype.validateForm = function () {
                     jQuery("#addNewUserModal").validate({

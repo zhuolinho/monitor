@@ -29,7 +29,8 @@ export class SettingsAccess{
                   addr:'----',
                   phone:'13987226225',
                   ap:'1******6',  // account password
-                  p:'1' //permission
+                  p:'1', //permission
+                  sex:0
                 },
                 {
                   an:'102',  //account number
@@ -37,7 +38,8 @@ export class SettingsAccess{
                   addr:'----',
                   phone:'18987226225',
                   ap:'1******6',  // account password
-                  p:'1' //permission
+                  p:'1', //permission
+                  sex:1
                 },
                 {
                   an:'103',  //account number
@@ -45,7 +47,8 @@ export class SettingsAccess{
                   addr:'----',
                   phone:'17987226228',
                   ap:'1******6',  // account password
-                  p:'1' //permission
+                  p:'1', //permission
+                  sex:0
                 },
                 {
                   an:'104',  //account number
@@ -53,7 +56,8 @@ export class SettingsAccess{
                   addr:'----',
                   phone:'13987226228',
                   ap:'1******6',  // account password
-                  p:'1' //permission
+                  p:'1', //permission
+                  sex:1
                 }
               ]
             },

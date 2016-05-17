@@ -49,8 +49,19 @@ export class SettingsAddUser{
         });
     }
 
+    updateUser(){
+      console.log("posting ----",this.editTarget);
+      this.request.put('/users/update',this.editTarget).subscribe(res => {
+          console.log("user added-----", res);
+      });
+    }
+
     vePrivilegeSelected(event, compRef){
       compRef.newUser.ap = parseInt(event.target.value);
+    }
+
+    veSelectGender(event){
+        console.log("value-----",event);
     }
 
     validateForm(){

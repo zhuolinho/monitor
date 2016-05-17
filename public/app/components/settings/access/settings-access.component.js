@@ -42,7 +42,8 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     addr: '----',
                                     phone: '13987226225',
                                     ap: '1******6',
-                                    p: '1' //permission
+                                    p: '1',
+                                    sex: 0
                                 },
                                 {
                                     an: '102',
@@ -50,7 +51,8 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     addr: '----',
                                     phone: '18987226225',
                                     ap: '1******6',
-                                    p: '1' //permission
+                                    p: '1',
+                                    sex: 1
                                 },
                                 {
                                     an: '103',
@@ -58,7 +60,8 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     addr: '----',
                                     phone: '17987226228',
                                     ap: '1******6',
-                                    p: '1' //permission
+                                    p: '1',
+                                    sex: 0
                                 },
                                 {
                                     an: '104',
@@ -66,7 +69,8 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                                     addr: '----',
                                     phone: '13987226228',
                                     ap: '1******6',
-                                    p: '1' //permission
+                                    p: '1',
+                                    sex: 1
                                 }
                             ]
                         },

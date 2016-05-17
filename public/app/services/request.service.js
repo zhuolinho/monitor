@@ -40,6 +40,13 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                         return r;
                     });
                 };
+                RequestService.prototype.put = function (path, data) {
+                    // console.log(' this.paramOptions', this.paramOptions);
+                    return this.http.put(path, JSON.stringify(data), this.paramOptions).map(function (response) {
+                        var r = response.json();
+                        return r;
+                    });
+                };
                 RequestService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])

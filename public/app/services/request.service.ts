@@ -26,4 +26,12 @@ export class RequestService {
         return r;
     });
   }
+
+  put(path, data) {
+    // console.log(' this.paramOptions', this.paramOptions);
+    return this.http.put(path,  JSON.stringify(data), this.paramOptions).map((response: Response) => {
+        var r: any = response.json();
+        return r;
+    });
+  }
 }
