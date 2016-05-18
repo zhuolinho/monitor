@@ -100,7 +100,7 @@ export class SettingsOfflineUsers{
   currentSort = 'all';
   selectedtab = 1;
 
-  userArray:any[] = [];
+  staffArray:any[] = [];
   users:any[];
 
     constructor(private request:RequestService, private settingsSrvc:SettingsService){
@@ -120,14 +120,14 @@ export class SettingsOfflineUsers{
         [6,8].forEach(function(key){
            if(config.usersPrivileges[key+'']){
              var group = {type:{id:key,value:config.usersPrivileges[key+'']},data:groupUsersObj[key]||[]};
-             self.userArray.push(group);
+             self.staffArray.push(group);
            }
 
          });
 
          this.settingsSrvc.newUserAdded$.subscribe(newUser => {
             console.log("here is the new user----", newUser);
-            var correspondingGroup =  _.find(self.userArray,function(o){
+            var correspondingGroup =  _.find(self.staffArray,function(o){
                 return o.type.id == newUser.ap;
               });
 
@@ -142,7 +142,7 @@ export class SettingsOfflineUsers{
          });
         this.initUi();
 
-          // console.log("key by", self.userArray)
+          // console.log("key by", self.staffArray)
       });
     }
 

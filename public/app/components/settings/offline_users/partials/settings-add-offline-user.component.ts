@@ -39,12 +39,13 @@ export class SettingsAddOfflineUser{
     }
 
     addNewUser(){
+       console.log("this.data.userGroup----");
 
-      this.newUser.ap = this.data.id;
+      this.newUser.ap = this.data.users.type.id;
       console.log("posting ----",this.newUser);
 
         this.request.post('/users/signup',this.newUser).subscribe(res => {
-            console.log("sub comp user added-----", res);
+            console.log("sub comp offline user added-----", res);
             if(res.pl && res.pl.user){
                 this.settingsSrvc.addUser(res.pl.user);
                 jQuery("#"+this.data.id).closeModal();

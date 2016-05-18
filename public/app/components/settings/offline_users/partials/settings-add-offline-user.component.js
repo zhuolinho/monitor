@@ -53,10 +53,11 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                 });
                 SettingsAddOfflineUser.prototype.addNewUser = function () {
                     var _this = this;
-                    this.newUser.ap = this.data.id;
+                    console.log("this.data.userGroup----");
+                    this.newUser.ap = this.data.users.type.id;
                     console.log("posting ----", this.newUser);
                     this.request.post('/users/signup', this.newUser).subscribe(function (res) {
-                        console.log("sub comp user added-----", res);
+                        console.log("sub comp offline user added-----", res);
                         if (res.pl && res.pl.user) {
                             _this.settingsSrvc.addUser(res.pl.user);
                             jQuery("#" + _this.data.id).closeModal();

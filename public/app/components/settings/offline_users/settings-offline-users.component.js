@@ -119,7 +119,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                     // ];
                     this.currentSort = 'all';
                     this.selectedtab = 1;
-                    this.userArray = [];
+                    this.staffArray = [];
                     console.log("Settings Offline users is up and running");
                     var self = this;
                     this.request.get("/users/offline").subscribe(function (res) {
@@ -132,12 +132,12 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                         [6, 8].forEach(function (key) {
                             if (config_1.config.usersPrivileges[key + '']) {
                                 var group = { type: { id: key, value: config_1.config.usersPrivileges[key + ''] }, data: groupUsersObj[key] || [] };
-                                self.userArray.push(group);
+                                self.staffArray.push(group);
                             }
                         });
                         _this.settingsSrvc.newUserAdded$.subscribe(function (newUser) {
                             console.log("here is the new user----", newUser);
-                            var correspondingGroup = _.find(self.userArray, function (o) {
+                            var correspondingGroup = _.find(self.staffArray, function (o) {
                                 return o.type.id == newUser.ap;
                             });
                             if (correspondingGroup) {
@@ -148,7 +148,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                             console.log("here is the updated user----", user);
                         });
                         _this.initUi();
-                        // console.log("key by", self.userArray)
+                        // console.log("key by", self.staffArray)
                     });
                 }
                 SettingsOfflineUsers.prototype.veSortBy = function (which) {
