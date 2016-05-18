@@ -120,7 +120,7 @@ auth.updateUser = function(m){
   var deferred = q.defer();
 
   if(m.pl && m.pl.user && m.pl.user.an ){
-    User.findOneAndUpdate({ an: m.pl.user.an }, { new: true }, function(err, user) {
+    User.findOneAndUpdate({ an: m.pl.user.an }, m.pl.user, { new: true }, function(err, user) {
               if (err){
                 r.er = err;
                 r.em = 'problem fiding user';
@@ -206,6 +206,43 @@ auth.getUsers = function(m){
         r.pl.users = users;
         deferred.resolve(r);
     });
+
+    return deferred.promise;
+}
+
+
+auth.getAccessUsers = function(m){
+  var r = {pl: {}, er:''};
+  var deferred = q.defer();
+  // Thing.find().gt('age', 21)
+    User.find().where('an').lt(600).exec(
+      function(err,users){
+
+        if(err){
+          r.er = err;
+          deferred.reject(r);
+        }
+          r.pl.users = users;
+          deferred.resolve(r);
+      });
+    return deferred.promise;
+}
+
+
+auth.getOfflineUsers = function(m){
+  var r = {pl: {}, er:''};
+  var deferred = q.defer();
+  // Thing.find().gt('age', 21)
+    User.find().where('an').gte(600).exec(
+      function(err,users){
+
+        if(err){
+          r.er = err;
+          deferred.reject(r);
+        }
+          r.pl.users = users;
+          deferred.resolve(r);
+      });
 
     return deferred.promise;
 }

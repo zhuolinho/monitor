@@ -10,7 +10,7 @@ var UserSchema = new Schema({
     default:new Date()
   },
   an:{ //account Number
-    type:String,
+    type:Number,
     required:true,
     unique:true
   },

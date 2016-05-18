@@ -3,6 +3,7 @@ import {Component, provide,Input} from 'angular2/core';
 import {config} from '../../../../config';
 import {AlertModel} from '../../../../models/alert-model';
 import {RequestService} from '../../../../services/request.service';
+import {SettingsService} from '../../../../services/settings.service';
 declare var jQuery:any;
 
 @Component({
@@ -35,7 +36,7 @@ export class SettingsAddUser{
 
 
     constructor(
-      public request:RequestService
+      private request:RequestService, private settingsSrvc:SettingsService
     ){
       console.log("add user modal is up and running>>---");
       this.initUi();
@@ -45,7 +46,11 @@ export class SettingsAddUser{
       console.log("posting ----",this.newUser);
 
         this.request.post('/users/signup',this.newUser).subscribe(res => {
-            console.log("user added-----", res);
+            console.log("sub comp user added-----", res);
+            if(res.pl && res.pl.user){
+                this.settingsSrvc.addUser(res.pl.user);
+                jQuery("#"+this.data.id).closeModal();
+            }
         });
     }
 
@@ -53,6 +58,11 @@ export class SettingsAddUser{
       console.log("posting ----",this.editTarget);
       this.request.put('/users/update',this.editTarget).subscribe(res => {
           console.log("user added-----", res);
+          if(res.pl && res.pl.user){
+              this.settingsSrvc.updateUser(res.pl.user);
+             jQuery("#"+this.data.id).closeModal();
+          }
+
       });
     }
 

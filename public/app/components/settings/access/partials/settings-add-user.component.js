@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../../config', '../../../../services/request.service'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../../config', '../../../../services/request.service', '../../../../services/settings.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1;
+    var core_1, config_1, request_service_1, settings_service_1;
     var SettingsAddUser;
     return {
         setters:[
@@ -22,11 +22,15 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
+            },
+            function (settings_service_1_1) {
+                settings_service_1 = settings_service_1_1;
             }],
         execute: function() {
             SettingsAddUser = (function () {
-                function SettingsAddUser(request) {
+                function SettingsAddUser(request, settingsSrvc) {
                     this.request = request;
+                    this.settingsSrvc = settingsSrvc;
                     this.newUser = {
                         name: "",
                         phone: "",
@@ -48,15 +52,25 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                     configurable: true
                 });
                 SettingsAddUser.prototype.addNewUser = function () {
+                    var _this = this;
                     console.log("posting ----", this.newUser);
                     this.request.post('/users/signup', this.newUser).subscribe(function (res) {
-                        console.log("user added-----", res);
+                        console.log("sub comp user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.addUser(res.pl.user);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
                     });
                 };
                 SettingsAddUser.prototype.updateUser = function () {
+                    var _this = this;
                     console.log("posting ----", this.editTarget);
                     this.request.put('/users/update', this.editTarget).subscribe(function (res) {
                         console.log("user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.updateUser(res.pl.user);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
                     });
                 };
                 SettingsAddUser.prototype.vePrivilegeSelected = function (event, compRef) {
@@ -117,7 +131,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                         selector: 'settings-add-user',
                         templateUrl: config_1.config.prefix + '/components/settings/access/partials/settings-add-user.component.html'
                     }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsAddUser);
                 return SettingsAddUser;
             }());

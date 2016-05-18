@@ -5,7 +5,8 @@ export interface ConfigType {
   title: string,
   logo:string,
   color:string,
-  bdmkey:string
+  bdmkey:string,
+  usersPrivileges:any
 }
 
 export const config:ConfigType = {
@@ -14,5 +15,13 @@ export const config:ConfigType = {
   logo:'dist/images/logo.png',
   title: 'Monotor admin',
   project: 'Monotor admin project',
-  bdmkey:'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg'
+  bdmkey:'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg',
+  usersPrivileges:{
+    '1':'管理层',
+    '2':'监管员',
+    '3':'调度员',
+    '4':'客户',
+    '6':'司机',
+    '8':'押运员'
+  }
 };

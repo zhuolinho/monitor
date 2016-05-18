@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../../config'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../../config', '../../../../services/request.service', '../../../../services/settings.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1;
+    var core_1, config_1, request_service_1, settings_service_1;
     var SettingsAddOfflineUser;
     return {
         setters:[
@@ -19,12 +19,29 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
             },
             function (config_1_1) {
                 config_1 = config_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
+            },
+            function (settings_service_1_1) {
+                settings_service_1 = settings_service_1_1;
             }],
         execute: function() {
             SettingsAddOfflineUser = (function () {
-                function SettingsAddOfflineUser() {
+                function SettingsAddOfflineUser(request, settingsSrvc) {
+                    this.request = request;
+                    this.settingsSrvc = settingsSrvc;
+                    this.newUser = {
+                        name: "",
+                        phone: "",
+                        pw: "111111",
+                        addr: "",
+                        ap: "",
+                        sex: ""
+                    };
                     this.editMode = false;
-                    console.log("add user offline modal is up and running---");
+                    console.log("add offline user modal is up and running>>---");
+                    this.initUi();
                 }
                 Object.defineProperty(SettingsAddOfflineUser.prototype, "users", {
                     get: function () { return this.data; },
@@ -34,7 +51,30 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     enumerable: true,
                     configurable: true
                 });
-                SettingsAddOfflineUser.prototype.initSelect = function () {
+                SettingsAddOfflineUser.prototype.addNewUser = function () {
+                    var _this = this;
+                    this.newUser.ap = this.data.id;
+                    console.log("posting ----", this.newUser);
+                    this.request.post('/users/signup', this.newUser).subscribe(function (res) {
+                        console.log("sub comp user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.addUser(res.pl.user);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
+                    });
+                };
+                SettingsAddOfflineUser.prototype.updateUser = function () {
+                    var _this = this;
+                    console.log("posting ----", this.editTarget);
+                    this.request.put('/users/update', this.editTarget).subscribe(function (res) {
+                        console.log("user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.updateUser(res.pl.user);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
+                    });
+                };
+                SettingsAddOfflineUser.prototype.initUi = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
@@ -49,7 +89,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                         selector: 'settings-add-offline-user',
                         templateUrl: config_1.config.prefix + '/components/settings/offline_users/partials/settings-add-offline-user.component.html'
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsAddOfflineUser);
                 return SettingsAddOfflineUser;
             }());

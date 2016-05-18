@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-offline-user.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-add-offline-user.component', '../../../services/has-settings-access', 'angular2/router', '../../../services/request.service', '../../../services/settings.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_offline_user_component_1, has_settings_access_1, router_1;
+    var core_1, config_1, settings_add_offline_user_component_1, has_settings_access_1, router_1, request_service_1, settings_service_1;
     var SettingsOfflineUsers;
     return {
         setters:[
@@ -28,90 +28,128 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
+            },
+            function (settings_service_1_1) {
+                settings_service_1 = settings_service_1_1;
             }],
         execute: function() {
             SettingsOfflineUsers = (function () {
-                function SettingsOfflineUsers() {
-                    this.staffArray = [
-                        {
-                            type: { id: 1, value: '司机' },
-                            data: [
-                                {
-                                    an: '601',
-                                    name: '刘强',
-                                    addr: '----',
-                                    phone: '13987226225',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '602',
-                                    name: '徐某某',
-                                    addr: '----',
-                                    phone: '18987226225',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '603',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                },
-                                {
-                                    an: '604',
-                                    name: '高琳',
-                                    addr: '----',
-                                    phone: '13987226228',
-                                    ap: '1******6',
-                                    p: '1' //permission
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 2, value: '押运员' },
-                            data: [
-                                {
-                                    an: '801',
-                                    name: '徐国龙',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '802',
-                                    name: '宋红',
-                                    addr: '----',
-                                    phone: '14987226225',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '803',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '804',
-                                    name: '梁凯',
-                                    addr: '----',
-                                    phone: '1392226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                }
-                            ]
-                        }
-                    ];
+                function SettingsOfflineUsers(request, settingsSrvc) {
+                    var _this = this;
+                    this.request = request;
+                    this.settingsSrvc = settingsSrvc;
+                    // staffArray = [
+                    //     {
+                    //         type: { id: 1, value: '司机' },
+                    //         data: [
+                    //             {
+                    //                 an: '601',
+                    //                 name: '刘强',
+                    //                 addr: '----',
+                    //                 phone: '13987226225',
+                    //                 ap: '1******6',
+                    //                 p: '1' //permission
+                    //             },
+                    //             {
+                    //                 an: '602',
+                    //                 name: '徐某某',
+                    //                 addr: '----',
+                    //                 phone: '18987226225',
+                    //                 ap: '1******6',
+                    //                 p: '1' //permission
+                    //             },
+                    //             {
+                    //                 an: '603',
+                    //                 name: '高阳',
+                    //                 addr: '----',
+                    //                 phone: '17987226228',
+                    //                 ap: '1******6',
+                    //                 p: '1' //permission
+                    //             },
+                    //             {
+                    //                 an: '604',
+                    //                 name: '高琳',
+                    //                 addr: '----',
+                    //                 phone: '13987226228',
+                    //                 ap: '1******6',
+                    //                 p: '1' //permission
+                    //             }
+                    //         ]
+                    //     },
+                    //     {
+                    //         type: { id: 2, value: '押运员' },
+                    //         data: [
+                    //             {
+                    //                 an: '801',
+                    //                 name: '徐国龙',
+                    //                 addr: '----',
+                    //                 phone: '13987226223',
+                    //                 ap: '1******6',
+                    //                 p: '2' //permission
+                    //             },
+                    //             {
+                    //                 an: '802',
+                    //                 name: '宋红',
+                    //                 addr: '----',
+                    //                 phone: '14987226225',
+                    //                 ap: '1******6',
+                    //                 p: '2' //permission
+                    //             },
+                    //             {
+                    //                 an: '803',
+                    //                 name: '高阳',
+                    //                 addr: '----',
+                    //                 phone: '17987226228',
+                    //                 ap: '1******6',
+                    //                 p: '2' //permission
+                    //             },
+                    //             {
+                    //                 an: '804',
+                    //                 name: '梁凯',
+                    //                 addr: '----',
+                    //                 phone: '1392226228',
+                    //                 ap: '1******6',
+                    //                 p: '2' //permission
+                    //             }
+                    //         ]
+                    //     }
+                    // ];
                     this.currentSort = 'all';
                     this.selectedtab = 1;
+                    this.userArray = [];
                     console.log("Settings Offline users is up and running");
-                    this.initUi();
+                    var self = this;
+                    this.request.get("/users/offline").subscribe(function (res) {
+                        console.log("got response--", res);
+                        if (res.pl && res.pl.users) {
+                            _this.users = res.pl.users;
+                        }
+                        console.log("got users--", _this.users);
+                        var groupUsersObj = _.groupBy(_this.users, 'ap');
+                        [6, 8].forEach(function (key) {
+                            if (config_1.config.usersPrivileges[key + '']) {
+                                var group = { type: { id: key, value: config_1.config.usersPrivileges[key + ''] }, data: groupUsersObj[key] || [] };
+                                self.userArray.push(group);
+                            }
+                        });
+                        _this.settingsSrvc.newUserAdded$.subscribe(function (newUser) {
+                            console.log("here is the new user----", newUser);
+                            var correspondingGroup = _.find(self.userArray, function (o) {
+                                return o.type.id == newUser.ap;
+                            });
+                            if (correspondingGroup) {
+                                correspondingGroup.data.unshift(newUser);
+                            }
+                        });
+                        _this.settingsSrvc.userUpdated$.subscribe(function (user) {
+                            console.log("here is the updated user----", user);
+                        });
+                        _this.initUi();
+                        // console.log("key by", self.userArray)
+                    });
                 }
                 SettingsOfflineUsers.prototype.veSortBy = function (which) {
                     var _this = this;
@@ -155,7 +193,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                     router_1.CanActivate(function (to, from) {
                         return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsOfflineUsers);
                 return SettingsOfflineUsers;
             }());

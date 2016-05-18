@@ -84,14 +84,57 @@ router.post('/login', function(req, res) {
 
 
 
-
-// login
 router.get('/all', function(req, res) {
 
 var param = {
   ns: 'auth',
   vs: '1.0',
   op: 'getUsers',
+  pl:{}
+};
+
+handler(param)
+    .then(function (r) {
+      console.log("found users--");
+       helpers.sendResponse(res, 200, r);
+    })
+    .fail(function (r) {
+      console.log(r.er);
+      var r = {pl: null, er: r.er};
+      helpers.sendResponse(res, 501, r);
+    });
+});
+
+
+router.get('/access', function(req, res) {
+
+var param = {
+  ns: 'auth',
+  vs: '1.0',
+  op: 'getAccessUsers',
+  pl:{}
+};
+
+handler(param)
+    .then(function (r) {
+      console.log("found users--");
+       helpers.sendResponse(res, 200, r);
+    })
+    .fail(function (r) {
+      console.log(r.er);
+      var r = {pl: null, er: r.er};
+      helpers.sendResponse(res, 501, r);
+    });
+});
+
+
+
+router.get('/offline', function(req, res) {
+
+var param = {
+  ns: 'auth',
+  vs: '1.0',
+  op: 'getOfflineUsers',
   pl:{}
 };
 

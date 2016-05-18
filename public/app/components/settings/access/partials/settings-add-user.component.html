@@ -29,13 +29,13 @@
                           <div class="helper-margin-top-15" >性别:
 
                             <a class="helper-inline-block helper-margin-right-20">
-                              <input *ngIf="!editTarget" name="gender" type="radio" id="male"  (click)="veSelectGender(0)" />
-                              <input *ngIf="editTarget" name="gender" type="radio" id="male" [attr.checked]="editTarget.sex == 0 ? 'checked':null"  (click)="editTarget.sex = 0" />
+                              <input *ngIf="!editTarget" name="gender" type="radio" id="male"  (click)="newUser.sex = 0;" />
+                              <input *ngIf="editTarget" name="gender" type="radio" id="male" [attr.checked]="editTarget.sex == 0 ? 'checked':null"  (click)="editTarget.sex = 0;" />
                               <label  for="male">男</label>
                             </a>
                             <a class="helper-inline-block">
-                              <input *ngIf="!editTarget" name="gender" type="radio" id="female"  (click)="newUser.sex = 1"  />
-                              <input *ngIf="editTarget" name="gender" type="radio" id="female" [attr.checked]="editTarget.sex == 1 ? 'checked':null" (click)="editTarget.sex = 1"  />
+                              <input *ngIf="!editTarget" name="gender" type="radio" id="female"  (click)="newUser.sex = 1;"  />
+                              <input *ngIf="editTarget" name="gender" type="radio" id="female" [attr.checked]="editTarget.sex == 1 ? 'checked':null" (click)="editTarget.sex = 1;"  />
                               <label for="female" class="active">女</label>
                             </a>
 

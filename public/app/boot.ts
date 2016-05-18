@@ -5,6 +5,7 @@ import {enableProdMode,provide} from 'angular2/core'
 import {appInjector} from './services/app-injector';
 import {UserService} from './services/user.service';
 import {RequestService} from './services/request.service';
+import {SettingsService} from './services/settings.service';
 import {HTTP_PROVIDERS } from 'angular2/http';
 import {ROUTER_PROVIDERS,LocationStrategy, HashLocationStrategy,} from 'angular2/router';
 
@@ -14,7 +15,9 @@ bootstrap(MainComponent,[
   HTTP_PROVIDERS,
   ROUTER_PROVIDERS,
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
-  RequestService, UserService
+  RequestService,
+  UserService,
+  SettingsService
 ]).then((appRef) => {
   // store a reference to the injector
   appInjector(appRef.injector);

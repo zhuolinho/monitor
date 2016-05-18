@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-user.component', '../../../services/has-settings-access', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', './partials/settings-add-user.component', '../../../services/has-settings-access', 'angular2/router', '../../../services/request.service', '../../../services/settings.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_user_component_1, has_settings_access_1, router_1;
+    var core_1, config_1, settings_add_user_component_1, has_settings_access_1, router_1, request_service_1, settings_service_1;
     var SettingsAccess;
     return {
         setters:[
@@ -28,144 +28,183 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
+            },
+            function (settings_service_1_1) {
+                settings_service_1 = settings_service_1_1;
             }],
         execute: function() {
             SettingsAccess = (function () {
-                function SettingsAccess() {
-                    this.userArray = [
-                        {
-                            type: { id: 1, value: '管理层' },
-                            data: [
-                                {
-                                    an: '101',
-                                    name: '胡某某',
-                                    addr: '----',
-                                    phone: '13987226225',
-                                    ap: '1******6',
-                                    p: '1',
-                                    sex: 0
-                                },
-                                {
-                                    an: '102',
-                                    name: '徐某某',
-                                    addr: '----',
-                                    phone: '18987226225',
-                                    ap: '1******6',
-                                    p: '1',
-                                    sex: 1
-                                },
-                                {
-                                    an: '103',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '1',
-                                    sex: 0
-                                },
-                                {
-                                    an: '104',
-                                    name: '高琳',
-                                    addr: '----',
-                                    phone: '13987226228',
-                                    ap: '1******6',
-                                    p: '1',
-                                    sex: 1
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 2, value: '监管员' },
-                            data: [
-                                {
-                                    an: '201',
-                                    name: '韩丽',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '202',
-                                    name: '宋红',
-                                    addr: '----',
-                                    phone: '14987226225',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '203',
-                                    name: '高阳',
-                                    addr: '----',
-                                    phone: '17987226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                },
-                                {
-                                    an: '204',
-                                    name: '梁凯',
-                                    addr: '----',
-                                    phone: '1392226228',
-                                    ap: '1******6',
-                                    p: '2' //permission
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 3, value: '调度员' },
-                            data: [
-                                {
-                                    an: '301',
-                                    name: '赵敏',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '3' //permission
-                                },
-                                {
-                                    an: '302',
-                                    name: '孔德',
-                                    addr: '----',
-                                    phone: '13987226225',
-                                    ap: '1******6',
-                                    p: '3' //permission
-                                }
-                            ]
-                        },
-                        {
-                            type: { id: 4, value: '客户' },
-                            data: [
-                                {
-                                    an: '401',
-                                    name: 'Candy',
-                                    addr: '----',
-                                    phone: '13987226223',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                },
-                                {
-                                    an: '402',
-                                    name: '周璐',
-                                    addr: '----',
-                                    phone: '18987226003',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                },
-                                {
-                                    an: '403',
-                                    name: '黄金红',
-                                    addr: '----',
-                                    phone: '13937722609',
-                                    ap: '1******6',
-                                    p: '4' //permission
-                                }
-                            ]
-                        }
-                    ];
+                function SettingsAccess(request, settingsSrvc) {
+                    var _this = this;
+                    this.request = request;
+                    this.settingsSrvc = settingsSrvc;
+                    // userArray:any[] = [
+                    //           {
+                    //             type:{id:1,value:'管理层'}, // 管理层
+                    //             data:[
+                    //               {
+                    //                 an:'101',  //account number
+                    //                 name: '胡某某',
+                    //                 addr:'----',
+                    //                 phone:'13987226225',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'1', //permission
+                    //                 sex:0
+                    //               },
+                    //               {
+                    //                 an:'102',  //account number
+                    //                 name: '徐某某',
+                    //                 addr:'----',
+                    //                 phone:'18987226225',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'1', //permission
+                    //                 sex:1
+                    //               },
+                    //               {
+                    //                 an:'103',  //account number
+                    //                 name: '高阳',
+                    //                 addr:'----',
+                    //                 phone:'17987226228',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'1', //permission
+                    //                 sex:0
+                    //               },
+                    //               {
+                    //                 an:'104',  //account number
+                    //                 name: '高琳',
+                    //                 addr:'----',
+                    //                 phone:'13987226228',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'1', //permission
+                    //                 sex:1
+                    //               }
+                    //             ]
+                    //           },
+                    //           {
+                    //             type:{id:2,value:'监管员'},
+                    //             data:[
+                    //               {
+                    //                 an:'201',  //account number
+                    //                 name: '韩丽',
+                    //                 addr:'----',
+                    //                 phone:'13987226223',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'2' //permission
+                    //               },
+                    //               {
+                    //                 an:'202',  //account number
+                    //                 name: '宋红',
+                    //                 addr:'----',
+                    //                 phone:'14987226225',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'2' //permission
+                    //               },
+                    //               {
+                    //                 an:'203',  //account number
+                    //                 name: '高阳',
+                    //                 addr:'----',
+                    //                 phone:'17987226228',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'2' //permission
+                    //               },
+                    //               {
+                    //                 an:'204',  //account number
+                    //                 name: '梁凯',
+                    //                 addr:'----',
+                    //                 phone:'1392226228',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'2' //permission
+                    //               }
+                    //             ]
+                    //           },
+                    //           {
+                    //             type:{id:3,value:'调度员'},
+                    //             data:[
+                    //               {
+                    //                 an:'301',  //account number
+                    //                 name: '赵敏',
+                    //                 addr:'----',
+                    //                 phone:'13987226223',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'3' //permission
+                    //               },
+                    //               {
+                    //                 an:'302',  //account number
+                    //                 name: '孔德',
+                    //                 addr:'----',
+                    //                 phone:'13987226225',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'3' //permission
+                    //               }
+                    //             ]
+                    //           },
+                    //           {
+                    //             type:{id:4,value:'客户'},
+                    //             data:[
+                    //               {
+                    //                 an:'401',  //account number
+                    //                 name: 'Candy',
+                    //                 addr:'----',
+                    //                 phone:'13987226223',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'4' //permission
+                    //               },
+                    //               {
+                    //                 an:'402',  //account number
+                    //                 name: '周璐',
+                    //                 addr:'----',
+                    //                 phone:'18987226003',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'4' //permission
+                    //               },
+                    //               {
+                    //                 an:'403',  //account number
+                    //                 name: '黄金红',
+                    //                 addr:'----',
+                    //                 phone:'13937722609',
+                    //                 ap:'1******6',  // account password
+                    //                 p:'4' //permission
+                    //               }
+                    //             ]
+                    //           }
+                    //
+                    // ];
+                    this.userArray = [];
                     this.currentSort = 'all';
                     this.selectedtab = 0;
+                    var self = this;
                     console.log("SettingsAccess is up and running");
-                    this.initUi();
+                    this.request.get("/users/access").subscribe(function (res) {
+                        console.log("got response--", res);
+                        if (res.pl && res.pl.users) {
+                            _this.users = res.pl.users;
+                        }
+                        console.log("got users--", _this.users);
+                        var groupUsersObj = _.groupBy(_this.users, 'ap');
+                        [1, 2, 3, 4].forEach(function (key) {
+                            if (config_1.config.usersPrivileges[key + '']) {
+                                var group = { type: { id: key, value: config_1.config.usersPrivileges[key + ''] }, data: groupUsersObj[key] || [] };
+                                self.userArray.push(group);
+                            }
+                        });
+                        _this.settingsSrvc.newUserAdded$.subscribe(function (newUser) {
+                            console.log("here is the new user----", newUser);
+                            var correspondingGroup = _.find(self.userArray, function (o) {
+                                return o.type.id == newUser.ap;
+                            });
+                            if (correspondingGroup) {
+                                correspondingGroup.data.unshift(newUser);
+                            }
+                        });
+                        _this.settingsSrvc.userUpdated$.subscribe(function (user) {
+                            console.log("here is the updated user----", user);
+                        });
+                        _this.initUi();
+                        // console.log("key by", self.userArray)
+                    });
                 }
                 SettingsAccess.prototype.veSortBy = function (wich) {
                     var _this = this;
@@ -207,7 +246,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                     router_1.CanActivate(function (to, from) {
                         return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsAccess);
                 return SettingsAccess;
             }());

@@ -11,7 +11,15 @@ System.register([], function(exports_1, context_1) {
                 logo: 'dist/images/logo.png',
                 title: 'Monotor admin',
                 project: 'Monotor admin project',
-                bdmkey: 'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg'
+                bdmkey: 'RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg',
+                usersPrivileges: {
+                    '1': '管理层',
+                    '2': '监管员',
+                    '3': '调度员',
+                    '4': '客户',
+                    '6': '司机',
+                    '8': '押运员'
+                }
             });
         }
     }
