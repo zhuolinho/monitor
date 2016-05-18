@@ -53,6 +53,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                 });
                 SettingsAddUser.prototype.addNewUser = function () {
                     var _this = this;
+                    this.newUser.ap = this.data.users.type.id;
                     console.log("posting ----", this.newUser);
                     this.request.post('/users/signup', this.newUser).subscribe(function (res) {
                         console.log("sub comp user added-----", res);
@@ -73,9 +74,9 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                         }
                     });
                 };
-                SettingsAddUser.prototype.vePrivilegeSelected = function (event, compRef) {
-                    compRef.newUser.ap = parseInt(event.target.value);
-                };
+                // vePrivilegeSelected(event, compRef){
+                //   compRef.newUser.ap = parseInt(event.target.value);
+                // }
                 SettingsAddUser.prototype.veSelectGender = function (event) {
                     console.log("value-----", event);
                 };
@@ -115,9 +116,9 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                 SettingsAddUser.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {
-                        jQuery('select.privilege').on('change', function (event) {
-                            _this.vePrivilegeSelected(event, _this);
-                        });
+                        //  jQuery('select.privilege').on('change',function(event){
+                        //    _this.vePrivilegeSelected(event, _this)
+                        //  });
                         _this.validateForm();
                     });
                 };

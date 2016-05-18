@@ -187,6 +187,7 @@ export class SettingsAccess{
 
             if(correspondingGroup){
               correspondingGroup.data.unshift(newUser);
+              self.initModal();
             }
          });
 
@@ -211,18 +212,27 @@ export class SettingsAccess{
     }
 
     initUi(){
-      var _this = this;
-        setTimeout(_=>{
-            jQuery('.collapsible').collapsible({
-              accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
+      this.initCollapase();
+      this.initModal();
 
+    }
+    initCollapase(){
+      setTimeout(_=>{
+          jQuery('.collapsible').collapsible({
+            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+          });
+      });
+    }
+
+    initModal(){
+        var that = this;
+        setTimeout(_=>{
             jQuery('.modal-trigger').leanModal({
                  dismissible: true, // Modal can be dismissed by clicking outside of the modal
                  opacity: .5, // Opacity of modal background
                  in_duration: 300, // Transition in duration
                  out_duration: 200, // Transition out duration
-                 ready: function() { console.log('Ready');  _this.initSelect()}, // Callback for Modal open
+                 ready: function() { console.log('Ready');  that.initSelect()}, // Callback for Modal open
                  complete: function() { console.log('Closed'); } // Callback for Modal close
            });
         });

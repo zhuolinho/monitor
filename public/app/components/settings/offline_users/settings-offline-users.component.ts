@@ -133,6 +133,7 @@ export class SettingsOfflineUsers{
 
             if(correspondingGroup){
               correspondingGroup.data.unshift(newUser);
+              self.initModal();
             }
          });
 
@@ -156,26 +157,37 @@ export class SettingsOfflineUsers{
       }
     }
 
-    initUi (){
-        var _this = this;
-        setTimeout(function (_) {
-            jQuery('.modal-trigger').leanModal({
-                dismissible: true,
-                opacity: .5,
-                in_duration: 300,
-                out_duration: 200,
-                ready: function () { console.log('Ready'); _this.initSelect(); },
-                complete: function () { console.log('Closed'); } // Callback for Modal close
-            });
-            jQuery('.collapsible').collapsible({
-                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
-        });
-    };
 
-   initSelect() {
-        setTimeout(function (_) {
-            jQuery('select').material_select();
-        });
-    };
+        initUi(){
+          this.initCollapase();
+          this.initModal();
+
+        }
+        initCollapase(){
+          setTimeout(_=>{
+              jQuery('.collapsible').collapsible({
+                accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+              });
+          });
+        }
+
+        initModal(){
+            var that = this;
+            setTimeout(_=>{
+                jQuery('.modal-trigger').leanModal({
+                     dismissible: true, // Modal can be dismissed by clicking outside of the modal
+                     opacity: .5, // Opacity of modal background
+                     in_duration: 300, // Transition in duration
+                     out_duration: 200, // Transition out duration
+                     ready: function() { console.log('Ready');  that.initSelect()}, // Callback for Modal open
+                     complete: function() { console.log('Closed'); } // Callback for Modal close
+               });
+            });
+        }
+
+        initSelect(){
+          setTimeout(_=>{
+               jQuery('select').material_select();
+          });
+        }
 }

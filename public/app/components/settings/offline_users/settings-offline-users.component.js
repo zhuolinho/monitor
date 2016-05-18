@@ -142,6 +142,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                             });
                             if (correspondingGroup) {
                                 correspondingGroup.data.unshift(newUser);
+                                self.initModal();
                             }
                         });
                         _this.settingsSrvc.userUpdated$.subscribe(function (user) {
@@ -162,28 +163,34 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                     }
                 };
                 SettingsOfflineUsers.prototype.initUi = function () {
-                    var _this = this;
+                    this.initCollapase();
+                    this.initModal();
+                };
+                SettingsOfflineUsers.prototype.initCollapase = function () {
+                    setTimeout(function (_) {
+                        jQuery('.collapsible').collapsible({
+                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                        });
+                    });
+                };
+                SettingsOfflineUsers.prototype.initModal = function () {
+                    var that = this;
                     setTimeout(function (_) {
                         jQuery('.modal-trigger').leanModal({
                             dismissible: true,
                             opacity: .5,
                             in_duration: 300,
                             out_duration: 200,
-                            ready: function () { console.log('Ready'); _this.initSelect(); },
+                            ready: function () { console.log('Ready'); that.initSelect(); },
                             complete: function () { console.log('Closed'); } // Callback for Modal close
-                        });
-                        jQuery('.collapsible').collapsible({
-                            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
                         });
                     });
                 };
-                ;
                 SettingsOfflineUsers.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
                 };
-                ;
                 SettingsOfflineUsers = __decorate([
                     core_1.Component({
                         selector: 'settings-address',

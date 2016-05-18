@@ -43,6 +43,8 @@ export class SettingsAddUser{
     }
 
     addNewUser(){
+
+      this.newUser.ap = this.data.users.type.id;
       console.log("posting ----",this.newUser);
 
         this.request.post('/users/signup',this.newUser).subscribe(res => {
@@ -66,9 +68,9 @@ export class SettingsAddUser{
       });
     }
 
-    vePrivilegeSelected(event, compRef){
-      compRef.newUser.ap = parseInt(event.target.value);
-    }
+    // vePrivilegeSelected(event, compRef){
+    //   compRef.newUser.ap = parseInt(event.target.value);
+    // }
 
     veSelectGender(event){
         console.log("value-----",event);
@@ -122,9 +124,9 @@ export class SettingsAddUser{
     initUi(){
       var _this = this;
       setTimeout(_=>{
-           jQuery('select.privilege').on('change',function(event){
-             _this.vePrivilegeSelected(event, _this)
-           });
+          //  jQuery('select.privilege').on('change',function(event){
+          //    _this.vePrivilegeSelected(event, _this)
+          //  });
 
            _this.validateForm();
       });

@@ -75,7 +75,7 @@
                           <label for="password" class="active">密码:</label>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12" *ngIf="editTarget" >
                           <select class="privilege">
                             <option value="" disabled >请选择级别</option>
                             <option value="1" [attr.selected]="editTarget?.ap == 1">1</option>
