@@ -7,7 +7,8 @@ var plc = {};
 
 
 var q = require('q');
-var plcModel = require('../../models/plc');
+var Plc = require('../../models/plc');
+var Tank = require('../../models/tank');
 
 plc.init = function(m) {
     var r = {pl: {status:true} , er:''};
@@ -43,7 +44,7 @@ var incommingData = m.pl;
 
     var dateInfo =  _extractDateInfo(incommingData);
 
-      var plcData = new plcModel({
+      var plcData = new Plc({
                                 rawd:incommingData.toString('hex'),
                                 stdd:dateInfo.stdDate, //standard date.
                                 wd:dateInfo.weekday, //weekday
@@ -110,12 +111,15 @@ var _extractDateInfo = function(data){
 }
 
 
+
+
+
 plc.getData =  function(m) {
   console.log("plc module: getData FUNCTION");
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  plcModel.find(function (err, plc) {
+  Plc.find(function (err, plc) {
       if (err){
         r.er = err;
         r.status = false;
@@ -128,7 +132,111 @@ plc.getData =  function(m) {
       }
   })
   return deferred.promise;
-
 }
+
+
+plc.getTanks =  function(m) {
+  console.log("plc module: getData FUNCTION");
+ var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+
+  Tank.find(function (err, tanks) {
+      if (err){
+        r.er = err;
+        r.status = false;
+        deferred.reject(r);
+      }
+      else{
+        r.pl.tanks = tanks;
+        r.status = true;
+        deferred.resolve(r);
+      }
+  })
+  return deferred.promise;
+}
+
+
+// plc.getSingle = function(m){  mongodb lookup
+//   db.plc.aggregate([
+//       {$match: {_id:m.pl._id}},
+//       {
+//         $lookup:
+//           {
+//             from: "tank",
+//             localField: "tank",
+//             foreignField: "code",
+//             as: "target_tank"
+//           }
+//      }
+//   ])
+// }
+
+
+plc.addNewTank =  function(m) {
+
+    console.log("add new tank----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+
+    if(m.pl && m.pl.tank && m.pl.tank.code){
+        var newtank = new Tank({
+                          code:m.pl.tank.code,
+                          addr:m.pl.tank.addr,
+                          plcaddr1:m.pl.tank.plcaddr1,
+                          plcaddr2:m.pl.tank.plcaddr2
+                          });
+
+               newtank.save(function (error, tank){
+                 console.log("new tank saved----",tank);
+                   if (!error){
+                     r.pl.tank = tank;
+                     deferred.resolve(r);
+                   }
+                   else{
+                     r.er = error;
+                     r.em = 'invalid tank. already exist?';
+                     deferred.reject(r);
+                   }
+               });
+      }
+      else {
+        r.er =  "no tank or tank code provided";
+        deferred.reject(r);
+      }
+    return deferred.promise;
+}
+
+
+
+plc.updateTank =  function(m) {
+
+    console.log(" update tank----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+    if(m.pl && m.pl.tank && m.pl.tank.code){
+
+      Tank.findOneAndUpdate({code:m.pl.tank.code}, m.pl.tank, { new: true }, function(err, tank) {
+                if (err){
+                  r.er = err;
+                  r.em = 'problem finding tank';
+                  deferred.reject(r);
+                }
+                else{
+                  r.pl.tank = tank;
+                  deferred.resolve(r);
+                }
+      });
+      }
+      else {
+        r.er =  "no tank or tank code provided";
+        deferred.reject(r);
+      }
+    return deferred.promise;
+}
+
 
 module.exports = plc;

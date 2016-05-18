@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../../config'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../../config', '../../../../services/settings.service', '../../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1;
+    var core_1, config_1, settings_service_1, request_service_1;
     var SettingsAddAddress;
     return {
         setters:[
@@ -19,11 +19,18 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
             },
             function (config_1_1) {
                 config_1 = config_1_1;
+            },
+            function (settings_service_1_1) {
+                settings_service_1 = settings_service_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
             }],
         execute: function() {
             SettingsAddAddress = (function () {
-                function SettingsAddAddress() {
-                    this.editMode = false;
+                function SettingsAddAddress(settingsSrvc, request) {
+                    this.settingsSrvc = settingsSrvc;
+                    this.request = request;
                     this.lngTanks = [
                         'L004', 'L005', 'L006', 'L007'
                     ];
@@ -43,13 +50,21 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                         '中转站3号', '中转站4号', '中转站5号'
                     ];
                     this.currentTanks = [];
+                    this.editMode = false;
+                    this.newTank = {
+                        code: '',
+                        addr: '',
+                        plcaddr1: '',
+                        plcaddr2: ''
+                    };
                     console.log("add  address modal is up and running---");
+                    this.initUi();
                 }
                 Object.defineProperty(SettingsAddAddress.prototype, "users", {
                     get: function () { return this.data; },
                     set: function (data) {
                         this.data = data;
-                        switch (data.addresses.type.value) {
+                        switch (data.tanks.type.value) {
                             case 'CNG':
                                 this.currentTanks = this.cngTanks;
                                 break;
@@ -75,10 +90,79 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     enumerable: true,
                     configurable: true
                 });
-                SettingsAddAddress.prototype.initSelect = function () {
-                    setTimeout(function (_) {
-                        jQuery('select').material_select();
+                SettingsAddAddress.prototype.addNewTank = function () {
+                    var _this = this;
+                    console.log("posting ----", this.newTank);
+                    this.request.post('/plc/tank', this.newTank).subscribe(function (res) {
+                        console.log("sub comp tank added-----", res);
+                        if (res.pl && res.pl.tank) {
+                            _this.settingsSrvc.addTank(res.pl.tank);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
                     });
+                };
+                SettingsAddAddress.prototype.updateTank = function () {
+                    var _this = this;
+                    console.log("posting ----", this.editTarget);
+                    this.request.put('/plc/tank', this.editTarget).subscribe(function (res) {
+                        console.log("sub comp tank updated-----", res);
+                        if (res.pl && res.pl.tank) {
+                            _this.settingsSrvc.updateTank(res.pl.tank);
+                            jQuery("#" + _this.data.id).closeModal();
+                        }
+                    });
+                };
+                SettingsAddAddress.prototype.veSelectedTank = function (event, compRef) {
+                    if (event && event.target && event.target.value) {
+                        if (!compRef.editTarget) {
+                            compRef.newTank.code = event.target.value;
+                        }
+                        else {
+                            compRef.editTarget.code = event.target.value;
+                        }
+                        compRef.initSelect();
+                    }
+                    console.log("tank selected----");
+                };
+                SettingsAddAddress.prototype.veSelecedPlcAddr1 = function (event, compRef) {
+                    if (event && event.target && event.target.value) {
+                        if (!compRef.editTarget) {
+                            compRef.newTank.plcaddr1 = event.target.value;
+                        }
+                        else {
+                            compRef.editTarget.plcaddr1 = event.target.value;
+                        }
+                    }
+                    compRef.initSelect();
+                };
+                SettingsAddAddress.prototype.veSelecedPlcAddr2 = function (event, compRef) {
+                    if (event && event.target && event.target.value) {
+                        if (!compRef.editTarget) {
+                            compRef.newTank.plcaddr2 = event.target.value;
+                        }
+                        else {
+                            compRef.editTarget.plcaddr2 = event.target.value;
+                        }
+                        compRef.initSelect();
+                    }
+                };
+                SettingsAddAddress.prototype.initUi = function () {
+                    var _this = this;
+                    setTimeout(function (_) {
+                        _this.initSelect();
+                        jQuery('select#tankCode').on('change', function (event) {
+                            _this.veSelectedTank(event, _this);
+                        });
+                        jQuery('select#plcAddr1').on('change', function (event) {
+                            _this.veSelecedPlcAddr1(event, _this);
+                        });
+                        jQuery('select#plcAddr2').on('change', function (event) {
+                            _this.veSelecedPlcAddr2(event, _this);
+                        });
+                    });
+                };
+                SettingsAddAddress.prototype.initSelect = function () {
+                    jQuery('select').material_select();
                 };
                 __decorate([
                     core_1.Input('data'), 
@@ -90,7 +174,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                         selector: 'settings-add-address',
                         templateUrl: config_1.config.prefix + '/components/settings/address/partials/settings-add-address.component.html'
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [settings_service_1.SettingsService, request_service_1.RequestService])
                 ], SettingsAddAddress);
                 return SettingsAddAddress;
             }());

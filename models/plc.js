@@ -12,7 +12,8 @@ var plcSchema = mongoose.Schema({
                       tn:String,
                       ti:String
                     },
-                    addr:String, //tank address
+                    // addr:String, //tank address
+                    tank:{type:String,required:true, unique:true},
                     ra:String, //remaining amount(余量报警)
                     rt:String, //remaining time(余量报警)
                     status:{
@@ -24,3 +25,6 @@ var plcSchema = mongoose.Schema({
               });
 //
 module.exports = mongoose.model('plc',plcSchema);
+
+
+ // stories : [{ type: Schema.Types.ObjectId, ref: 'Story' }]

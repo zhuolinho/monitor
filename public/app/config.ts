@@ -6,7 +6,8 @@ export interface ConfigType {
   logo:string,
   color:string,
   bdmkey:string,
-  usersPrivileges:any
+  usersPrivileges:any,
+  tanks:any[]
 }
 
 export const config:ConfigType = {
@@ -23,5 +24,6 @@ export const config:ConfigType = {
     '4':'客户',
     '6':'司机',
     '8':'押运员'
-  }
+  },
+  tanks:['CNG','LNG','集格','杜瓦瓶','官网','中转站']
 };

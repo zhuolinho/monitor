@@ -28,11 +28,72 @@ module.exports = function (handler)
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {
-              console.log(r.er);
-              var r = {pl: null, er: {ec: 404, em: "could not find comment"}};
               helpers.sendResponse(res, 404, r);
             });
   });
+
+  router.get('/tanks/all', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'getTanks',
+          pl:{
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
+
+
+  router.post('/tank', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'addNewTank',
+          pl:{tank:req.body}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
+
+  router.put('/tank', function(req, res, next) {
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'updateTank',
+          pl:{tank:req.body}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
 
   //plc Connection
   _tcpSerever(handler);

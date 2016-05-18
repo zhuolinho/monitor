@@ -19,7 +19,8 @@ System.register([], function(exports_1, context_1) {
                     '4': '客户',
                     '6': '司机',
                     '8': '押运员'
-                }
+                },
+                tanks: ['CNG', 'LNG', '集格', '杜瓦瓶', '官网', '中转站']
             });
         }
     }

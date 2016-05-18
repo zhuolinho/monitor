@@ -25,14 +25,24 @@ System.register(['angular2/core', 'rxjs/Subject'], function(exports_1, context_1
                 function SettingsService() {
                     this.newUserSource = new Subject_1.Subject();
                     this.updatedUserSource = new Subject_1.Subject();
+                    this.newTankSource = new Subject_1.Subject();
+                    this.updatedTankSource = new Subject_1.Subject();
                     this.newUserAdded$ = this.newUserSource.asObservable();
                     this.userUpdated$ = this.updatedUserSource.asObservable();
+                    this.newTankAdded$ = this.newTankSource.asObservable();
+                    this.tankUpdated$ = this.updatedTankSource.asObservable();
                 }
                 SettingsService.prototype.addUser = function (user) {
                     this.newUserSource.next(user);
                 };
                 SettingsService.prototype.updateUser = function (user) {
                     this.updatedUserSource.next(user);
+                };
+                SettingsService.prototype.addTank = function (tank) {
+                    this.newTankSource.next(tank);
+                };
+                SettingsService.prototype.updateTank = function (tank) {
+                    this.updatedTankSource.next(tank);
                 };
                 SettingsService = __decorate([
                     core_1.Injectable(), 
