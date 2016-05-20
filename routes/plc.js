@@ -32,6 +32,48 @@ module.exports = function (handler)
             });
   });
 
+  router.get('/alerts/:which', function(req, res, next) {
+
+
+      //which = all, processed, unprocessed.
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'getPlcAlerts',
+          pl:{which:req.params.which}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+  router.put('/alert', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'updatePlcAlert',
+          pl:{
+            alert:req.body
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   router.get('/tanks/all', function(req, res, next) {
 
         var param = {

@@ -7,30 +7,143 @@ var plc = {};
 
 
 var q = require('q');
-var Plc = require('../../models/plc');
+var PlcAlert = require('../../models/plc-alert');
 var Tank = require('../../models/tank');
+
+
+
+var alertsList =[
+              {
+                name:'C002-闸北区大宁路335号XX站',
+                id:'6112',
+                type:'余量报警',
+                remainingTime:'2小时02分',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'6%/12kg/hps',
+                processedAgent:'234'
+              },
+              {
+                name:'C003-闸北区大宁路335号XX站',
+                id:'8620',
+                type:'余量报警',
+                remainingTime:'2小时02分',
+                upTime:'15.5.3-13:02/----',
+                processed:true,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'6%/12kg/hps'
+              },
+              {
+                name:'C004-闸北区大宁路335号XX站',
+                id:'5467',
+                type:'信号中断',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'信号中断'
+              }
+              ,{
+                  name:'C005-闸北区大宁路335号XX站',
+                  id:'5555',
+                  type:'信号中断',
+                  remainingTime:'',
+                  upTime:'15.5.3-13:02/----',
+                  processed:true,
+                  alertTime:'5.5.3-13:02',
+                  alertMessage:'信号中断'
+              },
+              {
+                name:'C006-闸北区大宁路335号XX站',
+                id:'1839',
+                type:'信号中断',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'信号中断'
+              },
+              {
+                name:'C007-闸北区大宁路335号XX站',
+                id:'8880',
+                type:'信号中断',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'信号中断'
+              },
+              {
+                name:'C008-闸北区大宁路335号XX站',
+                id:'5832',
+                type:'泄漏报警',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'泄漏报警'
+              },
+              {
+                name:'C009-闸北区大宁路335号XX站',
+                id:'8832',
+                type:'泄漏报警',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'泄漏报警'
+              },
+              {
+                name:'C010-闸北区大宁路335号XX站',
+                id:'6842',
+                type:'压力报警',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:false,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'压力报警'
+              },
+              {
+                name:'C011-闸北区大宁路335号XX站',
+                id:'6838',
+                type:'压力报警',
+                remainingTime:'',
+                upTime:'15.5.3-13:02/----',
+                processed:true,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'压力报警'
+              }
+    ];
 
 plc.init = function(m) {
     var r = {pl: {status:true} , er:''};
-     return q(r);
-    // if(!(m.pl.fn instanceof Function)) {
-    //     r.er = {ec:null , em: 'Payload pl is not a function'};
-    //     return q.fail(r);
-    // }
 
-    // message = m.pl.fn;
-    // // the promise for this init is completed once we get mongoose
-    // var p1 = message({
-    //     op: 'dependency',
-    //     pl: {dn:'mongoose'}
-    // }).then(function(r1){
-    //     //console.log(r);
-    //     mongoose = r1.pl.fn;
-    //     console.log('\n ivm: ivm has received mongodb dependency: ' + mongoose.connection.name + ' with readyState: ' + mongoose.connection.readyState);
-    //       var r = {pl: {pm: 'ivm initialization done! '}, er: null};
-    //      return q(r);
-    // });
-    // return p1;
+
+    PlcAlert.find({},function(error, doc){
+      if(doc&&doc.length){
+          return;
+     }else {
+
+
+
+          // save sample to init it of not there.
+          var pchain = [];
+          for (var i = 0; i < alertsList.length; i++) {
+                 var message = {pl:{}};
+                 message.pl.alert =  alertsList[i];
+                 pchain.push(plc.addNewAlert(message));
+          }
+
+          var result =  q();
+          pchain.forEach(function (f) {
+              result = result.then(f);
+          });
+          console.log('result----',result);
+
+     }
+    });
+     return q(r);
 }
 
 plc.handleIncommingData =  function(m) {
@@ -44,11 +157,12 @@ var incommingData = m.pl;
 
     var dateInfo =  _extractDateInfo(incommingData);
 
-      var plcData = new Plc({
+      var plcData = new PlcAlert({
                                 rawd:incommingData.toString('hex'),
-                                stdd:dateInfo.stdDate, //standard date.
+                                at:dateInfo.stdDate, //standard date.
                                 wd:dateInfo.weekday, //weekday
-                                ns:dateInfo.nanosecond
+                                ns:dateInfo.nanosecond,
+                                tank:'C001'
                         })
 
         plcData.save(function (err, plc) {
@@ -208,8 +322,6 @@ plc.addNewTank =  function(m) {
     return deferred.promise;
 }
 
-
-
 plc.updateTank =  function(m) {
 
     console.log(" update tank----");
@@ -237,6 +349,115 @@ plc.updateTank =  function(m) {
       }
     return deferred.promise;
 }
+
+plc.addNewAlert = function(m){
+
+  console.log("add new alert----",m.pl.alert);
+
+  var r = {pl: {}, er:'',em:''};
+  var deferred = q.defer();
+
+
+  if(m.pl && m.pl.alert){
+      var newAlert = new PlcAlert({
+                          atime:m.pl.alert.alertTime,
+                          atype:m.pl.alert.type,
+                          tank:m.pl.alert.name,
+                          pt:m.pl.alert.processedAgent,
+                          am:m.pl.alert.alertMessage,
+                          rt:m.pl.alert.remainingTime,
+                          code:m.pl.alert.name.substring(0,4)
+                        });
+
+             newAlert.save(function (error, alert){
+               console.log("new alert saved----",alert);
+                 if (!error){
+                   r.pl.alert = alert;
+                   deferred.resolve(r);
+                 }
+                 else{
+                   r.er = error;
+                   r.em = 'invalid alert. already exist?';
+                   deferred.reject(r);
+                 }
+             });
+    }
+    else {
+      r.er =  "no alert or alert code provided";
+      deferred.reject(r);
+    }
+  return deferred.promise;
+
+}
+
+
+plc.getPlcAlerts =  function(m) {
+  console.log("plc module: getPlcAlerts FUNCTION",m.pl.which);
+ var r = {pl: {}, status:false , er:''};
+ var deferred = q.defer();
+ var query = {};
+
+ if(m.pl && m.pl.which){
+   if(m.pl.which == "processed"){
+     query.status = 1;
+   }
+   else  if(m.pl.which == "unprocessed"){
+      query.status = 0;
+  }
+ }
+
+  PlcAlert.find(query,function (err, resp) {
+      if (err){
+        r.er = err;
+        r.status = false;
+        deferred.reject(r);
+      }
+      else{
+        r.pl.alerts = resp;
+        r.status = true;
+        deferred.resolve(r);
+      }
+  })
+  return deferred.promise;
+}
+
+plc.updatePlcAlert =  function(m) {
+
+    console.log(" update updatePlcAlert----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+    if(m.pl && m.pl.alert && m.pl.alert.tank){
+
+      PlcAlert.findOneAndUpdate({tank:m.pl.alert.tank}, m.pl.alert, { new: true }, function(err, resp) {
+                if (err){
+                  r.er = err;
+                  r.em = 'problem finding alert';
+                  deferred.reject(r);
+                }
+                else{
+                  if(resp){
+                    r.pl.alert = resp;
+                    deferred.resolve(r);
+                  }else {
+                    r.er =  "alert not found!..";
+                    deferred.reject(r);
+                  }
+                }
+      });
+      }
+      else {
+        r.er =  "no alert or alert tank provided";
+        deferred.reject(r);
+      }
+    return deferred.promise;
+}
+
+
+
+
+
 
 
 module.exports = plc;

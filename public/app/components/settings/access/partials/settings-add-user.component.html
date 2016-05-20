@@ -20,7 +20,7 @@
                    <div class="row">
                         <div class="input-field col s12">
                           <input *ngIf="editTarget" id="name" type="text" class="validate" [(ngModel)]="editTarget.name">
-                          <input *ngIf="!editTarget" id="name" type="text" class="validate" [(ngModel)]="newUser.name" >
+                          <input *ngIf="!editTarget" id="name" type="text" class="validate" required  data-error="必须填" data-success="好" [(ngModel)]="newUser.name" >
                           <label for="name" class="active">姓名:</label>
                         </div>
 
@@ -45,7 +45,7 @@
 
                       <div class="input-field col s12">
                         <input *ngIf="editTarget" id="phone" type="text" class="validate" [(ngModel)]="editTarget.phone">
-                        <input *ngIf="!editTarget" id="phone" type="text" class="validate"  [(ngModel)]="newUser.phone" >
+                        <input *ngIf="!editTarget" id="phone" type="text" class="validate"  required  data-error="必须填" data-success="好"  [(ngModel)]="newUser.phone" >
                         <label for="phone" class="active">手机:</label>
                       </div>
 

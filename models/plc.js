@@ -4,6 +4,7 @@ var plcSchema = mongoose.Schema({
                     rawd:String,  //raw data
                     stdd:String, //standard date.
                     wd:String, //weekday
+                    ns:String,  //nanosecond
                     code:String, //C002-6328
                     at:String,//alert time
                     pt:String,// processed time
@@ -17,11 +18,10 @@ var plcSchema = mongoose.Schema({
                     ra:String, //remaining amount(余量报警)
                     rt:String, //remaining time(余量报警)
                     status:{
-                      type:String,
-                      default:'pending'
-                    }, //processed, pending
-                    st:[{ti:String}],  //selected tanks : ti -- tank id (拉回报警)
-                    ns:String  //nanosecond
+                      type:Number,
+                      default:0
+                    }, //processed 1, pending 0
+                    st:[{ti:String}] //selected tanks : ti -- tank id (拉回报警)
               });
 //
 module.exports = mongoose.model('plc',plcSchema);

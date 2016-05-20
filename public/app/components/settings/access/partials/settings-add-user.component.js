@@ -81,37 +81,43 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                     console.log("value-----", event);
                 };
                 SettingsAddUser.prototype.validateForm = function () {
-                    jQuery("#addNewUserModal").validate({
-                        rules: {
-                            name: "required",
-                            phone: {
-                                required: true,
-                                minlength: 11
+                    setTimeout(function (_) {
+                        console.log("validating----");
+                        jQuery("#addNewUserModal").validate({
+                            rules: {
+                                name: "required",
+                                phone: {
+                                    required: true,
+                                    minlength: 11
+                                },
+                                password: {
+                                    required: true,
+                                    minlength: 6
+                                }
                             },
-                            password: {
-                                required: true,
-                                minlength: 6
+                            //For custom messages
+                            messages: {
+                                name: "safort",
+                                phone: {
+                                    required: "safort",
+                                    minlength: "too short"
+                                }
+                            },
+                            errorElement: 'div',
+                            errorPlacement: function (error, element) {
+                                var placement = jQuery(element).data('error');
+                                if (placement) {
+                                    jQuery(placement).append(error);
+                                }
+                                else {
+                                    error.insertAfter(element);
+                                }
                             }
-                        },
-                        //For custom messages
-                        messages: {
-                            name: "safort",
-                            phone: {
-                                required: "safort",
-                                minlength: "too short"
-                            }
-                        },
-                        errorElement: 'div',
-                        errorPlacement: function (error, element) {
-                            var placement = jQuery(element).data('error');
-                            if (placement) {
-                                jQuery(placement).append(error);
-                            }
-                            else {
-                                error.insertAfter(element);
-                            }
-                        }
-                    });
+                        });
+                        jQuery.validator.setDefaults({
+                            ignore: []
+                        });
+                    }, 1000);
                 };
                 SettingsAddUser.prototype.initUi = function () {
                     var _this = this;

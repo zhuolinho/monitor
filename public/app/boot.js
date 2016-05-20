@@ -1,7 +1,7 @@
-System.register(['angular2/platform/browser', './components/main.component', 'angular2/core', './services/app-injector', './services/user.service', './services/request.service', './services/settings.service', 'angular2/http', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/platform/browser', './components/main.component', 'angular2/core', './services/app-injector', './services/user.service', './services/request.service', './services/settings.service', './services/lib.service', 'angular2/http', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var browser_1, main_component_1, core_1, app_injector_1, user_service_1, request_service_1, settings_service_1, http_1, router_1;
+    var browser_1, main_component_1, core_1, app_injector_1, user_service_1, request_service_1, settings_service_1, lib_service_1, http_1, router_1;
     return {
         setters:[
             function (browser_1_1) {
@@ -25,6 +25,9 @@ System.register(['angular2/platform/browser', './components/main.component', 'an
             function (settings_service_1_1) {
                 settings_service_1 = settings_service_1_1;
             },
+            function (lib_service_1_1) {
+                lib_service_1 = lib_service_1_1;
+            },
             function (http_1_1) {
                 http_1 = http_1_1;
             },
@@ -39,7 +42,8 @@ System.register(['angular2/platform/browser', './components/main.component', 'an
                 core_1.provide(router_1.LocationStrategy, { useClass: router_1.HashLocationStrategy }),
                 request_service_1.RequestService,
                 user_service_1.UserService,
-                settings_service_1.SettingsService
+                settings_service_1.SettingsService,
+                lib_service_1.LibService
             ]).then(function (appRef) {
                 // store a reference to the injector
                 app_injector_1.appInjector(appRef.injector);

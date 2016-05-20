@@ -7,7 +7,8 @@ export interface ConfigType {
   color:string,
   bdmkey:string,
   usersPrivileges:any,
-  tanks:any[]
+  tanks:any[],
+  alertTypes:any[]
 }
 
 export const config:ConfigType = {
@@ -25,5 +26,6 @@ export const config:ConfigType = {
     '6':'司机',
     '8':'押运员'
   },
-  tanks:['CNG','LNG','集格','杜瓦瓶','官网','中转站']
+  tanks:['CNG','LNG','集格','杜瓦瓶','官网','中转站'],
+  alertTypes:['余量报警','压力报警','信号中断','泄漏报警','拉回报警','进场报警']
 };

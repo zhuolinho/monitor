@@ -65,6 +65,7 @@
     "app/services/app-injector.ts",
     "app/services/has-settings-access.ts",
     "app/services/is-logged-in.ts",
+    "app/services/lib.service.ts",
     "app/services/request.service.ts",
     "app/services/settings.service.ts",
     "app/services/user.service.ts",

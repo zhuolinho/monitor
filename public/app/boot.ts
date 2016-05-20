@@ -6,6 +6,7 @@ import {appInjector} from './services/app-injector';
 import {UserService} from './services/user.service';
 import {RequestService} from './services/request.service';
 import {SettingsService} from './services/settings.service';
+import {LibService} from './services/lib.service';
 import {HTTP_PROVIDERS } from 'angular2/http';
 import {ROUTER_PROVIDERS,LocationStrategy, HashLocationStrategy,} from 'angular2/router';
 
@@ -17,7 +18,8 @@ bootstrap(MainComponent,[
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
   RequestService,
   UserService,
-  SettingsService
+  SettingsService,
+  LibService
 ]).then((appRef) => {
   // store a reference to the injector
   appInjector(appRef.injector);

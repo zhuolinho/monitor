@@ -39,16 +39,16 @@
 
     <div class="col m4  s12 helper-padding-top-30">
       <div class="row helper-padding-top-10">
-        <form class="helper-white-bg helper-padding-15" style="width:85%; margin:auto;">
+        <form class="helper-white-bg helper-padding-15" style="width:85%; margin:auto;" id="loginForm">
           <div class="row">
             <div class="input-field col s12">
               <i class="material-icons prefix helper-gray">person</i>
-              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username">
+              <input id="icon_prefix" name="username" type="text" class="helper-black" [(ngModel)]="user.username">
               <label for="icon_prefix">账号/手机号码</label>
             </div>
             <div class="input-field col s12">
               <i class="material-icons prefix helper-gray">lock</i>
-              <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
+              <input id="icon_phone" type="password"  name="password"  class="helper-black"  [(ngModel)]="user.password">
               <label for="icon_telephone">密码</label>
             </div>
           </div>

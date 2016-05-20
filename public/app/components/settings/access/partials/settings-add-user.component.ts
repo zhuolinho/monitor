@@ -35,11 +35,10 @@ export class SettingsAddUser{
     editTarget:any;
 
 
-    constructor(
-      private request:RequestService, private settingsSrvc:SettingsService
-    ){
-      console.log("add user modal is up and running>>---");
-      this.initUi();
+    constructor(private request:RequestService,
+                private settingsSrvc:SettingsService){
+            console.log("add user modal is up and running>>---");
+            this.initUi();
     }
 
     addNewUser(){
@@ -78,46 +77,54 @@ export class SettingsAddUser{
 
     validateForm(){
 
-      jQuery("#addNewUserModal").validate({
-                    rules: {
-                        name:"required",
-                        phone: {
+      setTimeout(_=>{
+        console.log("validating----")
+        jQuery("#addNewUserModal").validate({
+                      rules: {
+                          name:"required",
+                          phone: {
+                              required: true,
+                              minlength: 11
+                          },
+                          password: {
                             required: true,
-                            minlength: 11
+                            minlength: 6
+                          }
                         },
-                        password: {
-                          required: true,
-                          minlength: 6
-                        }
+
+                      //For custom messages
+                      messages: {
+                          name:"safort",
+
+                          phone:{
+                              required: "safort",
+                              minlength:"too short"
+                          }
+                          // phone:{
+                          //     required: "必填",
+                          //     minlength:"太短了"
+                          // },
+                          // password: {
+                          //   required: "必填",
+                          //   minlength: "请输入6个字以上"
+                          // }
                       },
-
-                    //For custom messages
-                    messages: {
-                        name:"safort",
-
-                        phone:{
-                            required: "safort",
-                            minlength:"too short"
+                      errorElement : 'div',
+                      errorPlacement: function(error, element) {
+                        var placement = jQuery(element).data('error');
+                        if (placement) {
+                          jQuery(placement).append(error)
+                        } else {
+                          error.insertAfter(element);
                         }
-                        // phone:{
-                        //     required: "必填",
-                        //     minlength:"太短了"
-                        // },
-                        // password: {
-                        //   required: "必填",
-                        //   minlength: "请输入6个字以上"
-                        // }
-                    },
-                    errorElement : 'div',
-                    errorPlacement: function(error, element) {
-                      var placement = jQuery(element).data('error');
-                      if (placement) {
-                        jQuery(placement).append(error)
-                      } else {
-                        error.insertAfter(element);
                       }
-                    }
-             });
+               });
+
+               jQuery.validator.setDefaults({
+                      ignore: []
+                });
+
+      },1000);
     }
 
 
