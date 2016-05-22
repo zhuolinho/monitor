@@ -79,12 +79,12 @@ var _tcpCLient = function(handler){
               var delay = gpsConf.timer;
               var user = "4872";
               var initquery = queryGps(user)[0];
-              console.log("initquery1--",initquery);
+              // console.log("initquery1--",initquery);
 
               client1.write(initquery, function(){
                         var timer = setInterval(function(){
                             var query = queryGps(user)[1]
-                              console.log("making request1",query)
+                              // console.log("making request1",query)
                            client1.write(query);    // todo this part is failling ?
                         },delay);
               });
@@ -109,12 +109,12 @@ var _tcpCLient = function(handler){
               var delay = 2*gpsConf.timer;
               var user = "8932";
               var initquery = queryGps(user)[0];
-              console.log("initquery2--",initquery);
+              // console.log("initquery2--",initquery);
 
               client2.write(initquery, function(){
                         var timer = setInterval(function(){
                             var query = queryGps(user)[1]
-                              console.log("making request2",query)
+                              // console.log("making request2",query)
                            client2.write(query);
                         },delay);
               });

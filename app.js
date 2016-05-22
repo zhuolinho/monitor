@@ -50,7 +50,7 @@ console.log('\nAPP: Loading APP ...');
                   mongoose.createConnection('mongodb://localhost:27017/test_db', function(err){
                     if(err) throw err;
                     else {
-                        console.log("test_db nonnection is up");
+                        // console.log("test_db nonnection is up");
                     }
 
                   });
