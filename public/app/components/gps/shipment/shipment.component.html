@@ -32,15 +32,15 @@
                   <div class="table-cell"> 时间/工号 </div>
                   <div class="table-cell">{{shipment.alertTime}} </div>
                 </div>
+                <div class="clearfix"></div>
               </div>
             </div>
           </div>
 
         </div>
         <div class="col s3 valign">
-          <a (click)="veConfirm(shipment)" *ngIf="!shipment.processed" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 配送 </a>
+          <a (click)="veSubmitForShipment(shipment)" *ngIf="!shipment.processed" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 配送 </a>
         </div>
       </div>
     </div>
-
 </div>

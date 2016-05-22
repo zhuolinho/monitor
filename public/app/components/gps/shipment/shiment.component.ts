@@ -1,6 +1,7 @@
 
 import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
+import {Router} from 'angular2/router'
 import {CORE_DIRECTIVES} from 'angular2/common';
 declare var jQuery:any;
 
@@ -53,15 +54,15 @@ export class Shipment{
 
   ];  //todo user flag and ng if to hide when filtering;
 
-    constructor(){
+    constructor(private router:Router){
     console.log("Shipment is up and running");
     // this.initUi();
 
     }
 
 
-    veConfirm(alert){
-      alert.processed = !alert.processed;
-
+    veSubmitForShipment(alert){
+      // alert.processed = !alert.processed;
+      this.router.navigate(['ShipmentMap']);
     }
  }

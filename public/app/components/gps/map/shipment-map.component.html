@@ -13,7 +13,7 @@
       </span>
       <div class=" helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-            <select class="helper-select-font-bigger">
+            <select class="helper-select-font-bigger select-address">
               <option value="C002-闸北区大宁路355号XX站" > C002-闸北区大宁路355号XX站 </option>
               <option  value="L002-闸北区大宁路311号XX站"> L002-闸北区大宁路311号XX站 </option>
             </select>
@@ -31,10 +31,31 @@
       </span>
       <div class="helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-            <select class="helper-select-font-bigger">
-              <option value="0" > 沪D C92632</option>
-              <option  value="1"> 沪D C922632</option>
-              <option  value="2"> 沪D C86634</option>
+            <select class="helper-select-font-bigger select-licence-plate">
+
+                <option value="13764539180"> 沪C5M556</option>
+                <option value="13764639247"> 沪C803L2</option>
+                <option value="13764639048"> 沪AHM577</option>
+                <option value="13764639052"> 沪BZ3255</option>
+                <option value="13764639117"> 沪ADQ788</option>
+                <option value="13764639134"> 沪DF0870</option>
+                <option value="13764639140"> 沪BZ0383</option>
+                <option value="13764639296"> 沪AQP206</option>
+                <option value="13764639325"> 沪BZ3091</option>
+                <option value="13472488407"> 沪D75208</option>
+                <option value="14721922447"> 沪D24801</option>
+                <option value="14721115321"> 沪BS8267</option>
+                <option value="18217578247"> 沪DG7386</option>
+                <option value="18217578452"> 沪DG7355</option>
+                <option value="14721115319"> 沪BR8728</option>
+                <option value="14721114272"> 沪BS7773</option>
+                <option value="14721114287"> 沪BG9861</option>
+                <option value="14721114470"> 沪B84488</option>
+                <option value="14721115324"> 沪B65312</option>
+                <option value="13482489401"> 沪BR7101</option>
+                <option value="13761974728"> 沪DE1966</option>
+                <option value="13681905543"> 沪D37590</option>
+
             </select>
             <!-- <label>选在时间</label> -->
           </div>
@@ -72,7 +93,7 @@
         </span>
         <div class=" helper-margin-bottom-20">
           <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-              <select class="helper-select-font-bigger returnToRefill">
+              <select class="helper-select-font-bigger return-to-refill">
                 <option value="是" > 是 </option>
                 <option  value="否"> 否 </option>
               </select>
@@ -168,7 +189,7 @@
             </div>
 
             <div class="col s4">
-                <a  (click)="selectedtab=2; delevered=!delevered;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align">
+                <a  (click)="selectedtab=2; veConfirmShipment()" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align">
                         确认配送
                  </a>
             </div>

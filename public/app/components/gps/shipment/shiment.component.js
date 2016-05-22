@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', 'angular2/common'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', 'angular2/router', 'angular2/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', 'angular2/common'], functio
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, common_1;
+    var core_1, config_1, router_1, common_1;
     var Shipment;
     return {
         setters:[
@@ -20,12 +20,16 @@ System.register(['angular2/core', '../../../config', 'angular2/common'], functio
             function (config_1_1) {
                 config_1 = config_1_1;
             },
+            function (router_1_1) {
+                router_1 = router_1_1;
+            },
             function (common_1_1) {
                 common_1 = common_1_1;
             }],
         execute: function() {
             Shipment = (function () {
-                function Shipment() {
+                function Shipment(router) {
+                    this.router = router;
                     this.shipmentList = [
                         {
                             name: 'C002-闸北区大宁路335号XX站',
@@ -67,8 +71,9 @@ System.register(['angular2/core', '../../../config', 'angular2/common'], functio
                     console.log("Shipment is up and running");
                     // this.initUi();
                 }
-                Shipment.prototype.veConfirm = function (alert) {
-                    alert.processed = !alert.processed;
+                Shipment.prototype.veSubmitForShipment = function (alert) {
+                    // alert.processed = !alert.processed;
+                    this.router.navigate(['ShipmentMap']);
                 };
                 Shipment = __decorate([
                     core_1.Component({
@@ -76,7 +81,7 @@ System.register(['angular2/core', '../../../config', 'angular2/common'], functio
                         templateUrl: config_1.config.prefix + '/components/gps/shipment/shipment.component.html',
                         directives: [common_1.CORE_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [router_1.Router])
                 ], Shipment);
                 return Shipment;
             }());
