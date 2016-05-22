@@ -9,6 +9,7 @@ var gps = {};
 
 var q = require('q');
 var gpsModel = require('../../models/gps');
+var gpsConfig = require('../../configs/gps');
 
 gps.init = function(m) {
     var r = {pl: {status:true} , er:''};
@@ -35,45 +36,55 @@ gps.init = function(m) {
 }
 
 gps.handleIncommingData =  function(m) {
-  //console.log("handleIncommingData");
+  console.log("handleIncommingData");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-var stream = m.pl;
+var stream = m.pl.stream;
+var port =  m.pl.port;
 
-  if(stream){
-
+  if(stream && port){
       var data  = stream.split(',');
       var sim = stream.split('|')[3];
       var loc = data[0].split('|').pop();
-      var gpsData = new gpsModel({
-                                sim:sim,
-                                loc:parseInt(loc,10),
-                                lng:data[1],
-                                lat:data[2],
-                                speed:data[3],
-                                course:data[4],
-                                time:data[5],
-                                alarm:data[6],
-                                addr:"",
-                                rawd:stream
-                        })
+      var lp = gpsConfig.port[port].simPlate[sim];
+
+      if(lp){
+        var gpsData = new gpsModel({
+                                  sim:sim,
+                                  loc:parseInt(loc,10),
+                                  lng:data[1],
+                                  lat:data[2],
+                                  speed:data[3],
+                                  course:data[4],
+                                  time:data[5],
+                                  alarm:data[6],
+                                  addr:"",
+                                  rawd:stream,
+                                  lp:lp
+                          })
 
 
-        allCars[sim] = gpsData;  //save latest position of each car;
+          allCars[sim] = gpsData;  //save latest position of each car;
 
-        gpsData.save(function (err, gps) {
-            if (err){
-              r.er = err;
-              r.status = false;
-              deferred.reject(r);
-            }
-            else{
-              r.pl.gps = gps;
-              r.status = true;
-              deferred.resolve(r);
-            }
-        })
+          gpsData.save(function (err, gps) {
+              if (err){
+                r.er = err;
+                r.status = false;
+                deferred.reject(r);
+              }
+              else{
+                r.pl.gps = gps;
+                r.status = true;
+                deferred.resolve(r);
+              }
+          })
+      }
+      else{
+        r.er =  "no macthing licence plate found for sim number";
+        r.status = false
+        deferred.reject(r);
+      }
     }
     else {
       r.er =  "empty data";

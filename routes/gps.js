@@ -74,10 +74,12 @@ module.exports = function (handler)
 
 
 var _tcpCLient = function(handler){
-            client1.connect(5553,"222.66.200.66", function(){
+
+              var ports = Object.keys(gpsConf.port);
+            client1.connect(ports[0],gpsConf.ip, function(){
 
               var delay = gpsConf.timer;
-              var user = "4872";
+              var user = gpsConf.port[ports[0]].user;
               var initquery = queryGps(user)[0];
               // console.log("initquery1--",initquery);
 
@@ -96,7 +98,7 @@ var _tcpCLient = function(handler){
             client1.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                  saveData(handler, stream,1);
+                  saveData(handler, stream,ports[0]);
                 }
             });
 
@@ -104,10 +106,10 @@ var _tcpCLient = function(handler){
                 console.log('Connection1 closed');
             });
 
-            client2.connect(5557,"222.66.200.66", function(){
+            client2.connect(ports[1],gpsConf.ip, function(){
 
               var delay = 2*gpsConf.timer;
-              var user = "8932";
+              var user = gpsConf.port[ports[1]].user;
               var initquery = queryGps(user)[0];
               // console.log("initquery2--",initquery);
 
@@ -127,7 +129,7 @@ var _tcpCLient = function(handler){
             client2.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                    saveData(handler, stream,2);
+                    saveData(handler, stream, ports[1]);
                 }
             });
 
@@ -138,22 +140,22 @@ var _tcpCLient = function(handler){
 }
 
 
-function saveData(handler,data,which){
+function saveData(handler,data,port){
 
   var param = {
         ns: 'gps',
         vs: '1.0',
         op: 'handleIncommingData',
-        pl:data
+        pl:{stream:data,port:port}
   }
 
   handler(param)
       .then(function (r) {
-        // console.log("save"+which+" data successful");
+        // console.log("save"+port+" data successful",r);
         io.emit("carMove",r);
       })
       .fail(function (r) {
-          console.log("save1 data fail");
+          console.log("gps route save data fail");
       });
 }
 

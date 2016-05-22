@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var gpsSchema = mongoose.Schema({
-                    sim:String,  //sim card
+                    sim:{type:String,require:true},  //sim card
                     rd:String,  //received date
                     rt:String, //received time
                     time:String, //yyyy-mm-dd hh:mm:ss
@@ -11,6 +11,7 @@ var gpsSchema = mongoose.Schema({
                     course:String,  //angle
                     alarm:String,
                     loc:Number,   //0 reliable, 1 unreliable
+                    lp:{type:String,require:true}, //licence plate
                     rawd:String  //raw data
               });
 //
