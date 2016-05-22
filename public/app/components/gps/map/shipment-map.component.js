@@ -72,6 +72,16 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     // var map = new BMap.Map("allmap");
                     var point = new BMap.Point(118.273, 33.779);
                     ShipmentMap.gpsmap.centerAndZoom(point, 7);
+                    // 添加带有定位的导航控件
+                    var navigationControl = new BMap.NavigationControl({
+                        // 靠左上角位置
+                        anchor: BMAP_ANCHOR_TOP_LEFT,
+                        // LARGE类型
+                        type: BMAP_NAVIGATION_CONTROL_LARGE,
+                        // 启用显示定位
+                        enableGeolocation: true
+                    });
+                    ShipmentMap.gpsmap.addControl(navigationControl);
                 };
                 //old one
                 // mapLoadedCb(){
