@@ -67,7 +67,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                 };
                 ShipmentMap.prototype.veSelectedLicensePlate = function (event, compRef) {
                     if (event) {
-                        compRef.selectCarId = event.target.value;
+                        compRef.selectedCarId = event.target.value;
                     }
                     compRef.initUi();
                 };
@@ -142,6 +142,18 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                             _this.updatePosition(cardata);
                         }
                     });
+                };
+                ShipmentMap.prototype.veConfirmShipment = function () {
+                    var that = this;
+                    if (ShipmentMap.mapLoaded) {
+                        this.request.get('/gps/cars/all').subscribe(function (res) {
+                            var cars = res.pl.cars;
+                            var c = cars[that.selectedCarId];
+                            if (c) {
+                                that.updatePosition(c);
+                            }
+                        });
+                    }
                 };
                 ShipmentMap.prototype.showAllCars = function () {
                     var _this = this;

@@ -25,7 +25,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   selectedtab:number=1;
   delevered:boolean=false;
   targetCar:any;
-  selectCarId:string;
+  selectedCarId:string;
   targetMarker:any;
   returnToRefill:boolean = true;
   static gpsmap:any;
@@ -75,7 +75,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
   veSelectedLicensePlate(event, compRef){
         if(event){
-            compRef.selectCarId = event.target.value;
+            compRef.selectedCarId = event.target.value;
         }
         compRef.initUi();
   }
@@ -171,6 +171,21 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
               _this.updatePosition(cardata);
            }
        });
+    }
+
+    veConfirmShipment(){
+      var that  = this;
+        if (ShipmentMap.mapLoaded){
+          this.request.get('/gps/cars/all').subscribe(res => {
+                var cars = res.pl.cars;
+                var c = cars[that.selectedCarId];
+                if(c){
+                  that.updatePosition(c);
+                }
+
+          });
+        }
+
     }
 
     showAllCars(){
