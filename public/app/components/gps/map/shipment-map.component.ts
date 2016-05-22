@@ -180,12 +180,31 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                 var cars = res.pl.cars;
                 var c = cars[that.selectedCarId];
                 if(c){
-                  that.updatePosition(c);
-                }
 
+                  var geocoder = new BMap.Geocoder();
+                  geocoder.getPoint('闸北区大宁路355号', function(dest){
+                        that.showShipmentRoute(c,dest);
+                  },'上海市');
+                }
           });
         }
 
+    }
+
+    showShipmentRoute(car,dest){
+
+      var myP1 = new BMap.Point(car.lng, car.lat);    //起点
+      var myP2 = new BMap.Point(dest.lng, dest.lat);    //终点
+
+      var iconImage = 'dist/images/truck.png';
+      var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+      var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {    //小车图片
+        // offset: new BMap.Size(0, -5),    //相当于CSS精灵
+        imageOffset: new BMap.Size(0, 10)    //图片的偏移量。为了是图片底部中心对准坐标点。
+        });
+      var route = new BMap.DrivingRoute(ShipmentMap.gpsmap, {renderOptions:{map: ShipmentMap.gpsmap, autoViewport: true}});    //驾车实例
+      route.search(myP1, myP2);    //显示一条公交线路
+      this.updatePosition(car);
     }
 
     showAllCars(){
