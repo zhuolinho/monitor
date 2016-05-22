@@ -149,7 +149,7 @@ function saveData(handler,data,which){
 
   handler(param)
       .then(function (r) {
-        console.log("save"+which+" data successful");
+        // console.log("save"+which+" data successful");
         io.emit("carMove",r);
       })
       .fail(function (r) {
