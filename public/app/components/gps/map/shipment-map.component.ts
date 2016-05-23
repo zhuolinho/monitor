@@ -239,7 +239,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   }
 
 
-  updatePosition(cardata){
+  updatePosition(cardata,dest){
 
     var _this = this;
 
@@ -256,8 +256,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
                     this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
 
-                    var currentPosition = {};
-                    var destination = {};
+                    var currentPosition = cardata;
+                    var destination = dest;
 
                    _this.calculateDistance(currentPosition, destination).then(function(data){
                      var patern  = /[0,9]{1,3}['米']{1}/;
@@ -267,10 +267,16 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                            if(distance <= 100){
                              console.log('已配送');
                              _this.targetCar = null;
+                             _this.completeShipment();
                            }
                        }
                    });
         }
+
+    }
+
+
+    completeShipment(){
 
     }
 
@@ -295,81 +301,47 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     veConfirmShipment(){
       var that  = this;
         // if (ShipmentMap.mapLoaded && this.selectedCarId){
-          // this.request.get('/gps/cars/all').subscribe(res => {
-          //       var cars = res.pl.cars;
-          //       var c = cars[that.selectedCarId];
-          //       if(c){
-          //
-          //         var geocoder = new BMap.Geocoder();
-          //         geocoder.getPoint('闸北区大宁路355号', function(dest){
-          //               that.showShipmentRoute(c,dest);
-          //         },'上海市');
-          //
-          //         geocoder.getLocation(c, function(origin){
-          //           console.log("origin-----",origin);
-          //           that.newShipment.origin = origin;
-          //         });
-          //       }
-          // });
-          // }
+        //   this.request.get('/gps/cars/all').subscribe(res => {
+        //         var cars = res.pl.cars;
+        //         var c = cars[that.selectedCarId];
+        //         if(c){
+        //
+        //           var geocoder = new BMap.Geocoder();
+        //           geocoder.getPoint('闸北区大宁路355号', function(dest){
+        //                 that.showShipmentRoute(c,dest);
+        //           },'上海市');
+        //
+        //           geocoder.getLocation(c, function(origin){
+        //             console.log("origin-----",origin);
+        //             that.newShipment.origin = origin;
+        //           });
+        //         }
+        //   });
+        //   }
+
+
 
 
           var myP1 = new BMap.Point(116.380967,39.913285);    //起点
           var myP2 = new BMap.Point(116.424374,39.914668);    //终点
-          var driving = new BMap.DrivingRoute(ShipmentMap.gpsmap);    //驾车实例
-              driving.search(myP1, myP2);
 
-            driving.setSearchCompleteCallback(function(){  //after route has been set
-
-                var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
-                var paths = pts.length;    //获得有几个点
-
-                //get distance and duration
-                var routeData = {
-                        distance:driving.getResults().getPlan(0).getDistance(true),
-                        duration:driving.getResults().getPlan(0).getDuration(true)
-                };
-
-                console.log("distance and time-----",routeData);
-                var samplePoint  = pts[0];
-
-                // var carMk = new BMap.Marker(samplePoint, {icon:myIcon});
-                that.addMarker(samplePoint);
-                var i = 0;
-
-                function resetMkPoint(){
-                  // samplePoint.lng += 0.0001;
-                  // samplePoint.lat += 0.0001;
-                  // samplePoint = pts[i]
-                  // carMk.setPosition(samplePoint);
-
-
-                  if(i < paths){
-
-                    that.updatePosition(pts[i]);
-                     console.log('updating----',samplePoint);
-
-                      // calculateDistance(map,pts[i],pts[paths-1]).then(function(data){
-                      //   var patern  = /[0,9]{1,3}['米']{1}/;
-                      //     if(patern.test(data)){  //within metters
-                      //         var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
-                      //         // console.log('distance>>>>',distance);
-                      //         if(distance <= 100){
-                      //           console.log('已配送');
-                      //         }
-                      //     }
-                      // });
-
-                      i++;
-
-                    setTimeout(function(){
-                      resetMkPoint();
-                    },1000);
-                  }
-                }
-
-            resetMkPoint();
-          });
+          that.showShipmentRoute(myP1,myP2);
+          // var driving = new BMap.DrivingRoute(ShipmentMap.gpsmap);    //驾车实例
+          //     driving.search(myP1, myP2);
+          //
+          //   driving.setSearchCompleteCallback(function(){  //after route has been set
+          //
+          //       var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+          //       var paths = pts.length;    //获得有几个点
+          //
+          //       var samplePoint  = pts[0];
+          //
+          //       // var carMk = new BMap.Marker(samplePoint, {icon:myIcon});
+          //       that.addMarker(samplePoint);
+          //       var i = 0;
+          //
+          //
+          // });
     }
 
     showShipmentRoute(car,dest){
@@ -399,10 +371,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
       route.setSearchCompleteCallback(function(){
 
-        that.updatePosition(car);
+        that.updatePosition(car,dest);
         ShipmentMap.gpsmap.centerAndZoom(middle, 12);
 
-        var   distance = route.getResults().getPlan(0).getDistance(true);
+        var  distance = route.getResults().getPlan(0).getDistance(true);
         var duration  = route.getResults().getPlan(0).getDuration(true);
         that.newShipment.dist = distance;
         that.newShipment.ed = duration;
@@ -410,6 +382,35 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
       console.log("  route.getDistance()",  distance);
       console.log("  route.duration()",  duration);
+
+
+        var pts = route.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+        var paths = pts.length;
+
+        var i = 0;
+
+          function resetMkPoint(){
+
+
+
+            if(i < paths){
+
+              that.updatePosition(pts[i],dest);
+               console.log('updating----',paths,pts[i]);
+
+                i++;
+
+              setTimeout(function(){
+                resetMkPoint();
+              },1000);
+            }
+          }
+
+            resetMkPoint();
+
+
+
+
 
         // this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
         //   console.log("new shipment saved-----", res);
@@ -445,8 +446,6 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
               var p1 = new BMap.Point(scrPoint.lng,scrPoint.lat);    //起点
               var p2 = new BMap.Point(desPoint.lng,desPoint.lat);    //终点
-              // var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat);    //起点
-              // var p2 = new BMap.Point(scrPoint.lng+0.0001, scrPoint.lat+0.0001);    //终点
 
               var tempDriving = new BMap.DrivingRoute(ShipmentMap.gpsmap);    //驾车实例
               tempDriving.search(p1, p2);
@@ -457,7 +456,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
               tempDriving.setSearchCompleteCallback(function(){  //after route has been set
                   distance = tempDriving.getResults().getPlan(0).getDistance(true);
-                  // console.log("new distance-----",distance);
+                  console.log("new distance-----",distance);
                   deferred.resolve(distance);
               });
 

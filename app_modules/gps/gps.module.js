@@ -225,6 +225,8 @@ gps.newShipment =  function(m) {
                                 origin:m.pl.origin,
                                 oti:m.pl.oti,
                                 nti:m.pl.nti,
+                                ntt:m.pl.ntt,
+                                ed:m.pl.ed,
                                 rs:m.pl.rs
                             });
 
@@ -248,6 +250,62 @@ gps.newShipment =  function(m) {
       }
     else {
       r.er =  "no data or sim card provided";
+      deferred.reject(r);
+    }
+  return deferred.promise;
+}
+
+
+
+gps.shipmentComplete = function(m){
+
+  console.log("update user----");
+
+  var r = {pl: null, er:'',em:''};
+  var deferred = q.defer();
+
+  var shiment = m.pl.shipment;
+
+  if(shiment && shipment.sim ){
+
+
+    sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
+    dest:String,
+    origin:String,
+    s:String, //Supercargo 押运员
+    dist:String, //distance
+    lp:{type:String,required:true},//license plate
+    driver:String,
+    rs:{type:String,default:""}, //refill station 加气站
+    oti:String, //original tank id(原罐号)
+    nti:String, //new tank id (换罐号)
+    ntt:String, //new tank type;
+    ed:String,  //estimated duration
+
+    shiment.at = new Date();
+    
+
+    User.findOneAndUpdate({ _id: shiment._id }, shiment, { new: true }, function(err, resp) {
+              if (err){
+                r.er = err;
+                r.em = 'problem finding shipment';
+                deferred.reject(r);
+              }
+              else{
+                if(resp){
+                  r.pl = {shipment:resp};
+                  deferred.resolve(r);
+                }
+                else {
+                  r.em = 'problem shiment not found';
+                  deferred.reject(r);
+                }
+
+              }
+    });
+    }
+    else {
+      r.er =  "no shiment info or sim provided";
       deferred.reject(r);
     }
   return deferred.promise;
