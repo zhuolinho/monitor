@@ -39,7 +39,9 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       driver:'',
       rs:'', //加气站
       oti:'', //original tank id(原罐号)
-      nti:'' //new tank id (换罐号)
+      nti:'', //new tank id (换罐号)
+      ntt:'',// new tank type
+      ed:''//estimated duration
   };
   constructor(public request:RequestService){
   console.log("ShipmentMap is up and running");
@@ -69,6 +71,35 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
          jQuery('select.select-license-plate').on('change',function(event){
            _this.veSelectedLicensePlate(event, _this)
          });
+
+         jQuery('select.select-tank-type').on('change',function(event){
+           _this.veSelectedTankType(event, _this)
+         });
+
+         jQuery('select.select-address').on('change',function(event){
+           _this.veSelectedAddress(event, _this)
+         });
+
+         jQuery('select.select-license-plate').on('change',function(event){
+           _this.veSelectedLicensePlate(event, _this)
+         });
+
+         jQuery('select.select-tank').on('change',function(event){
+           _this.veSelectedTank(event, _this)
+         });
+
+         jQuery('select.select-refill-station').on('change',function(event){
+           _this.veSelectedRefillStation(event, _this)
+         });
+
+         jQuery('select.select-supercargo').on('change',function(event){
+           _this.veSelectedSupercargo(event, _this)
+         });
+
+         jQuery('select.select-driver').on('change',function(event){
+           _this.veSelectedDriver(event, _this)
+         });
+
     });
   }
 
@@ -85,12 +116,72 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         compRef.initUi();
   }
 
+
   veSelectedLicensePlate(event, compRef){
         if(event){
             compRef.selectedCarId = event.target.value;
+            compRef.newShipment.sim = compRef.selectedCarId;
         }
         compRef.initUi();
   }
+
+  // newShipment:any = {
+  //     sim:'',
+  //     dest:'',
+  //     origin:'',
+  //     s:'', //Supercargo 押运员
+  //     dist:'', //distance
+  //     lp:'',//license plate
+  //     driver:'',
+  //     rs:'', //加气站
+  //     oti:'', //original tank id(原罐号)
+  //     nti:'' //new tank id (换罐号)
+  // };
+
+  veSelectedTankType(event, compRef){
+        if(event){
+            compRef.newShipment.ntt = event.target.value;
+        }
+        compRef.initUi();
+  }
+
+
+  veSelectedTank(event, compRef){
+        if(event){
+            compRef.newShipment.nti = event.target.value;
+        }
+        compRef.initUi();
+  }
+
+  veSelectedDriver(event, compRef){
+        if(event){
+            compRef.newShipment.driver = event.target.value;
+        }
+        compRef.initUi();
+  }
+
+
+  veSelectedSupercargo(event, compRef){
+        if(event){
+            compRef.newShipment.s = event.target.value;
+        }
+        compRef.initUi();
+  }
+
+  veSelectedAddress(event, compRef){
+        if(event){
+            compRef.newShipment.dest = event.target.value;
+        }
+        compRef.initUi();
+  }
+
+  veSelectedRefillStation(event, compRef){
+        if(event){
+            compRef.newShipment.rs = event.target.value;
+        }
+        compRef.initUi();
+  }
+
 
 
  loadJScript() {
@@ -161,9 +252,24 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
               this.addCustomMarker(cardata);
         }
         else if(cardata.sim == this.targetCar.sim){
-            console.log('same car on the move-----');
-            this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat))
-            // this.addCustomMarker(cardata)
+                    console.log('same car on the move-----');
+
+                    this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
+
+                    var currentPosition = {};
+                    var destination = {};
+
+                   _this.calculateDistance(currentPosition, destination).then(function(data){
+                     var patern  = /[0,9]{1,3}['米']{1}/;
+                       if(patern.test(data)){  //within metters
+                           var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
+                           // console.log('distance>>>>',distance);
+                           if(distance <= 100){
+                             console.log('已配送');
+                             _this.targetCar = null;
+                           }
+                       }
+                   });
         }
 
     }
@@ -198,6 +304,11 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                   geocoder.getPoint('闸北区大宁路355号', function(dest){
                         that.showShipmentRoute(c,dest);
                   },'上海市');
+
+                  geocoder.getLocation(c, function(origin){
+                    console.log("origin-----",origin);
+                    that.newShipment.origin = origin;
+                  });
                 }
           });
         }
@@ -205,6 +316,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     }
 
     showShipmentRoute(car,dest){
+
+      var that = this;
 
 
       var myP1 = new BMap.Point(car.lng, car.lat);    //起点
@@ -225,15 +338,27 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         });
       var route = new BMap.DrivingRoute(ShipmentMap.gpsmap, {renderOptions:{map: ShipmentMap.gpsmap, autoViewport: true}});    //驾车实例
       route.search(myP1, myP2);    //显示一条公交线路
-      this.updatePosition(car);
-      setTimeout(_=>{
-              ShipmentMap.gpsmap.centerAndZoom(middle, 12);
-      },500);
 
-      this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
-        console.log("new shipment saved-----", res);
+
+      route.setSearchCompleteCallback(function(){
+
+        that.updatePosition(car);
+        ShipmentMap.gpsmap.centerAndZoom(middle, 12);
+
+        var   distance = route.getResults().getPlan(0).getDistance(true);
+        var duration  = route.getResults().getPlan(0).getDuration(true);
+        that.newShipment.dist = distance;
+        that.newShipment.ed = duration;
+
+
+      console.log("  route.getDistance()",  distance);
+      console.log("  route.duration()",  duration);
+
+        // this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
+        //   console.log("new shipment saved-----", res);
+        // });
+
       });
-
     }
 
     showAllCars(){
@@ -256,6 +381,31 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
             }
       });
     }
+
+
+
+    calculateDistance(scrPoint,desPoint){
+
+              var p1 = new BMap.Point(scrPoint.lng,scrPoint.lat);    //起点
+              var p2 = new BMap.Point(desPoint.lng,desPoint.lat);    //终点
+              // var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat);    //起点
+              // var p2 = new BMap.Point(scrPoint.lng+0.0001, scrPoint.lat+0.0001);    //终点
+
+              var tempDriving = new BMap.DrivingRoute(ShipmentMap.gpsmap);    //驾车实例
+              tempDriving.search(p1, p2);
+
+              var distance = null;
+
+              var deferred = jQuery.Deferred();
+
+              tempDriving.setSearchCompleteCallback(function(){  //after route has been set
+                  distance = tempDriving.getResults().getPlan(0).getDistance(true);
+                  // console.log("new distance-----",distance);
+                  deferred.resolve(distance);
+              });
+
+              return deferred.promise();
+        }
 
 
 
