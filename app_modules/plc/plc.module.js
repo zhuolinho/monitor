@@ -124,9 +124,6 @@ plc.init = function(m) {
       if(doc&&doc.length){
           return;
      }else {
-
-
-
           // save sample to init it of not there.
           var pchain = [];
           for (var i = 0; i < alertsList.length; i++) {
@@ -143,7 +140,7 @@ plc.init = function(m) {
 
      }
     });
-     return q(r);
+    return q(r);
 }
 
 plc.handleIncommingData =  function(m) {

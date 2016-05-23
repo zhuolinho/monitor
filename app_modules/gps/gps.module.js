@@ -35,65 +35,65 @@ gps.init = function(m) {
 
 }
 
-gps.saveIncommingData =  function(m) {
-  console.log("saveIncommingData");
-  var r = {pl: {}, status:false , er:''};
-  var deferred = q.defer();
-
-// var stream = m.pl.stream;
-// var port =  m.pl.port;
-
-  if(m.pl){
-      // var data  = stream.split(',');
-      // var sim = stream.split('|')[3];
-      // var loc = data[0].split('|').pop();
-      // var lp = gpsConfig.port[port].simPlate[sim];
-
-      if(m.pl.lp){
-        var gpsData = new gpsModel({
-                                  sim:m.pl.sim,
-                                  loc:m.pl.loc,
-                                  lng:m.pl.lng,
-                                  lat:m.pl.lat,
-                                  speed:m.pl.speed,
-                                  course:m.pl.course,
-                                  time:m.pl.time,
-                                  alarm:m.pl.alarm,
-                                  addr:m.pl.addr,
-                                  rawd:m.pl.rawd,
-                                  lp:m.pl.lp
-                          })
-
-
-          allCars[sim] = gpsData;  //save latest position of each car;
-
-          gpsData.save(function (err, gps) {
-              if (err){
-                r.er = err;
-                r.status = false;
-                deferred.reject(r);
-              }
-              else{
-                r.pl.gps = gps;
-                r.status = true;
-                deferred.resolve(r);
-              }
-          })
-      }
-      else{
-        r.er =  "no macthing licence plate found for sim number "+sim;
-        r.status = false
-        deferred.reject(r);
-      }
-    }
-    else {
-      r.er =  "empty data";
-      r.status = false
-      deferred.reject(r);
-    }
-  return deferred.promise;
-
-}
+// gps.saveIncommingData =  function(m) {
+//   console.log("saveIncommingData");
+//   var r = {pl: {}, status:false , er:''};
+//   var deferred = q.defer();
+//
+// // var stream = m.pl.stream;
+// // var port =  m.pl.port;
+//
+//   if(m.pl){
+//       // var data  = stream.split(',');
+//       // var sim = stream.split('|')[3];
+//       // var loc = data[0].split('|').pop();
+//       // var lp = gpsConfig.port[port].simPlate[sim];
+//
+//       if(m.pl.lp){
+//         var gpsData = new gpsModel({
+//                                   sim:m.pl.sim,
+//                                   loc:m.pl.loc,
+//                                   lng:m.pl.lng,
+//                                   lat:m.pl.lat,
+//                                   speed:m.pl.speed,
+//                                   course:m.pl.course,
+//                                   time:m.pl.time,
+//                                   alarm:m.pl.alarm,
+//                                   addr:m.pl.addr,
+//                                   rawd:m.pl.rawd,
+//                                   lp:m.pl.lp
+//                           })
+//
+//
+//           allCars[sim] = gpsData;  //save latest position of each car;
+//
+//           gpsData.save(function (err, gps) {
+//               if (err){
+//                 r.er = err;
+//                 r.status = false;
+//                 deferred.reject(r);
+//               }
+//               else{
+//                 r.pl.gps = gps;
+//                 r.status = true;
+//                 deferred.resolve(r);
+//               }
+//           })
+//       }
+//       else{
+//         r.er =  "no macthing licence plate found for sim number "+sim;
+//         r.status = false
+//         deferred.reject(r);
+//       }
+//     }
+//     else {
+//       r.er =  "empty data";
+//       r.status = false
+//       deferred.reject(r);
+//     }
+//   return deferred.promise;
+//
+// }
 
 
 gps.getData =  function(m) {
@@ -164,7 +164,26 @@ gps.processIncommingData = function(m){
       deferred.reject(r);
     }
     else {
-        r.pl = {pl:{port:port,sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp}};
+
+      var toSave = {sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp};
+
+      // var gpsData = new gpsModel({
+      //                           sim:m.pl.sim,
+      //                           loc:m.pl.loc,
+      //                           lng:m.pl.lng,
+      //                           lat:m.pl.lat,
+      //                           speed:m.pl.speed,
+      //                           course:m.pl.course,
+      //                           time:m.pl.time,
+      //                           alarm:m.pl.alarm,
+      //                           addr:m.pl.addr,
+      //                           rawd:m.pl.rawd,
+      //                           lp:m.pl.lp
+      //                   })
+
+      var gpsData = new gpsModel(toSave);
+        allCars[sim] = gpsData;  //save latest position of each car;
+        r.pl = {pl:gpsData};
         deferred.resolve(r);
     }
   }
@@ -176,5 +195,51 @@ gps.processIncommingData = function(m){
  return deferred.promise;
 
 }
+
+
+gps.saveIncommingData =  function(m) {
+  console.log("saveIncommingData");
+  var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+
+  if(m & m.pl){
+          gpsData.save(function (err, gps) {
+              if (err){
+                r.er = err;
+                deferred.reject(r);
+              }
+              else{
+                r.pl.gps = gps;
+                r.status = true;
+                deferred.resolve(r);
+              }
+          })
+      }
+    else {
+      r.er =  "empty data";
+      deferred.reject(r);
+    }
+  return deferred.promise;
+
+}
+
+
+//save gps data periodically
+var timer = setInterval(function(){
+        var cars = Object.keys(allCars);
+        var pchain = [];
+
+        for (var i = 0; i < cars.length; i++) {
+               var message =  allCars[cars[i]];
+               console.log("message----",message);
+               pchain.push(gps.saveIncommingData(message));
+        }
+
+        var result =  q();
+        pchain.forEach(function (f) {
+            result = result.then(f);
+        });
+        console.log('latest gps data saved----',result);
+},gpsConfig.stimer);
 
 module.exports = gps;

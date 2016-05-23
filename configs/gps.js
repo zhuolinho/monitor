@@ -2,7 +2,7 @@
 
 var gps = {
       timer:20000,  //20 sec min
-      stimer:60000,//1 min
+      stimer:90000,//1.5 min
       ip:'222.66.200.66',
       port:{'5553':{
         user:'4872',
