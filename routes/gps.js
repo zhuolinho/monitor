@@ -150,11 +150,11 @@ function processIncommingData(handler,stream,port){
 
   handler(param)
       .then(function (r) {
-        console.log("processed"+port+" data successful",r);
+        console.log("route: processed "+port+" data successful");
         io.emit("carMove",r);
       })
       .fail(function (r) {
-          console.log("gps route save data fail");
+          // console.log("route: gps processed  fail");
       });
 }
 

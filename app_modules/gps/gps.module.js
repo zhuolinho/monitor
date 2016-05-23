@@ -147,7 +147,7 @@ gps.processIncommingData = function(m){
     var loc = data[0].split('|').pop();
     loc = parseInt(loc,10);
     var lat = data[2];
-    var lp = gpsConf.port[port].simPlate[sim];
+    var lp = gpsConfig.port[port].simPlate[sim];
     var lng = data[1];
     var lat = data[2];
     var speed = data[3];
@@ -183,7 +183,7 @@ gps.processIncommingData = function(m){
 
       var gpsData = new gpsModel(toSave);
         allCars[sim] = gpsData;  //save latest position of each car;
-        r.pl = {pl:gpsData};
+        r.pl =  {gps:gpsData};
         deferred.resolve(r);
     }
   }
@@ -198,12 +198,12 @@ gps.processIncommingData = function(m){
 
 
 gps.saveIncommingData =  function(m) {
-  console.log("saveIncommingData");
+  console.log("saveIncommingData",m);
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  if(m & m.pl){
-          gpsData.save(function (err, gps) {
+  if(m){
+          m.save(function (err, gps) {
               if (err){
                 r.er = err;
                 deferred.reject(r);
