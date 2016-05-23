@@ -98,8 +98,8 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     });
                     ShipmentMap.gpsmap.addControl(navigationControl);
                 };
-                ShipmentMap.prototype.addMarker = function (cardata) {
-                    var point = new BMap.Point(cardata.lng, cardata.lat);
+                ShipmentMap.prototype.addMarker = function (data) {
+                    var point = new BMap.Point(data.lng, data.lat);
                     var marker = new BMap.Marker(point);
                     ShipmentMap.gpsmap.addOverlay(marker);
                 };
@@ -146,7 +146,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                 };
                 ShipmentMap.prototype.veConfirmShipment = function () {
                     var that = this;
-                    if (ShipmentMap.mapLoaded) {
+                    if (ShipmentMap.mapLoaded && this.selectedCarId) {
                         this.request.get('/gps/cars/all').subscribe(function (res) {
                             var cars = res.pl.cars;
                             var c = cars[that.selectedCarId];
@@ -162,6 +162,12 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                 ShipmentMap.prototype.showShipmentRoute = function (car, dest) {
                     var myP1 = new BMap.Point(car.lng, car.lat); //起点
                     var myP2 = new BMap.Point(dest.lng, dest.lat); //终点
+                    // toFixed(2)
+                    var midLng = (parseFloat(car.lng) + parseFloat(dest.lng)) / 2;
+                    var midLat = (parseFloat(car.lat) + parseFloat(dest.lat)) / 2;
+                    var middle = new BMap.Point(midLng.toFixed(3), midLat.toFixed(3));
+                    console.log("middle point----", middle);
+                    console.log("car,dest", car, dest);
                     var iconImage = 'dist/images/truck.png';
                     var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
                     var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
@@ -171,6 +177,9 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     var route = new BMap.DrivingRoute(ShipmentMap.gpsmap, { renderOptions: { map: ShipmentMap.gpsmap, autoViewport: true } }); //驾车实例
                     route.search(myP1, myP2); //显示一条公交线路
                     this.updatePosition(car);
+                    setTimeout(function (_) {
+                        ShipmentMap.gpsmap.centerAndZoom(middle, 12);
+                    }, 500);
                 };
                 ShipmentMap.prototype.showAllCars = function () {
                     //shandong shanghai: 118.273, 33.779  //7
