@@ -30,6 +30,18 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     this.selectedtab = 1;
                     this.delevered = false;
                     this.returnToRefill = true;
+                    this.newShipment = {
+                        sim: '',
+                        dest: '',
+                        origin: '',
+                        s: '',
+                        dist: '',
+                        lp: '',
+                        driver: '',
+                        rs: '',
+                        oti: '',
+                        nti: '' //new tank id (换罐号)
+                    };
                     console.log("ShipmentMap is up and running");
                 }
                 ShipmentMap.prototype.ngAfterViewInit = function () {
@@ -180,6 +192,9 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     setTimeout(function (_) {
                         ShipmentMap.gpsmap.centerAndZoom(middle, 12);
                     }, 500);
+                    this.request.post('/gps/shipment', this.newShipment).subscribe(function (res) {
+                        console.log("new shipment saved-----", res);
+                    });
                 };
                 ShipmentMap.prototype.showAllCars = function () {
                     //shandong shanghai: 118.273, 33.779  //7

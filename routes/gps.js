@@ -36,9 +36,7 @@ module.exports = function (handler)
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {
-
               console.log(r.er);
-              var r = {pl: null, er: {ec: 404, em: "could not find comment"}};
               helpers.sendResponse(res, 404, r);
             });
   });
@@ -60,7 +58,27 @@ module.exports = function (handler)
             })
             .fail(function (r) {
               console.log(r.er);
-              var r = {pl: null, er: {ec: 404, em: "could not find comment"}};
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
+  router.post('/shipment', function(req, res, next) {
+
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'newShipment',
+          pl:req.body
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
               helpers.sendResponse(res, 404, r);
             });
   });

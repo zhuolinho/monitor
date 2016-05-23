@@ -9,6 +9,7 @@ var gps = {};
 
 var q = require('q');
 var gpsModel = require('../../models/gps');
+var Shiment = require('../../models/shipment');
 var gpsConfig = require('../../configs/gps');
 
 gps.init = function(m) {
@@ -194,6 +195,62 @@ gps.processIncommingData = function(m){
 
  return deferred.promise;
 
+}
+
+
+
+gps.newShipment =  function(m) {
+  console.log("newShipment",m);
+  var r = {pl: null status:false , er:''};
+  var deferred = q.defer();
+
+  if(m && m.pl && m.pl.sim){
+
+          var sim = m.pl.sim;
+          var ports = Object.keys(gpsConfig.port);
+          var lp =  gpsConfig.port[ports[0]].simPlate[sim]? gpsConfig.port[ports[0]].simPlate[sim]: gpsConfig.port[ports[1]].simPlate[sim];
+
+
+          if(lp){
+
+
+            var shipment = new Shiment({
+                                sim:sim,
+                                addr:m.pl.addr,
+                                s:m.pl.supercargo,
+                                driver:m.pl.driver,
+                                dist:m.pl.dist,
+                                lp:lp,
+                                dest:m.pl.dest,
+                                origin:m.pl.origin,
+                                oti:m.pl.oti,
+                                nti:m.pl.nti,
+                                rs:m.pl.rs
+                            });
+
+
+            shipment.save(function (err, resp) {
+                if (err){
+                  r.er = err;
+                  deferred.reject(r);
+                }
+                else{
+                  r.pl = {shipment:resp};
+                  r.status = true;
+                  deferred.resolve(r);
+                }
+            })
+          }
+          else {
+            r.er =  "no matching license plate for provided sim";
+            deferred.reject(r);
+          }
+      }
+    else {
+      r.er =  "no data or sim card provided";
+      deferred.reject(r);
+    }
+  return deferred.promise;
 }
 
 

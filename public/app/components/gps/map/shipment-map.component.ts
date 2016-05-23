@@ -29,6 +29,18 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   targetMarker:any;
   returnToRefill:boolean = true;
   static gpsmap:any;
+  newShipment:any = {
+      sim:'',
+      dest:'',
+      origin:'',
+      s:'', //Supercargo 押运员
+      dist:'', //distance
+      lp:'',//license plate
+      driver:'',
+      rs:'', //加气站
+      oti:'', //original tank id(原罐号)
+      nti:'' //new tank id (换罐号)
+  };
   constructor(public request:RequestService){
   console.log("ShipmentMap is up and running");
 
@@ -216,7 +228,11 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       this.updatePosition(car);
       setTimeout(_=>{
               ShipmentMap.gpsmap.centerAndZoom(middle, 12);
-      },500)
+      },500);
+
+      this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
+        console.log("new shipment saved-----", res);
+      });
 
     }
 
