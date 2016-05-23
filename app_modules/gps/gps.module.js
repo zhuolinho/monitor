@@ -202,7 +202,7 @@ gps.processIncommingData = function(m){
 
 gps.newShipment =  function(m) {
   console.log("newShipment",m);
-  var r = {pl: null status:false , er:''};
+  var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
   if(m && m.pl && m.pl.sim){
