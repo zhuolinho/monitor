@@ -228,6 +228,9 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     }
                 };
                 ShipmentMap.prototype.completeShipment = function () {
+                    this.request.put('/gps/shipment/done', this.newShipment).subscribe(function (res) {
+                        console.log("res shipment done-----", res);
+                    });
                 };
                 ShipmentMap.prototype.iniSocket = function () {
                     var _this = this;
@@ -327,6 +330,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         resetMkPoint();
                         // this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
                         //   console.log("new shipment saved-----", res);
+                        //      that.newShipment = res.pl.shipment;   //update shiment with _id; used on the shipment completion
                         // });
                     });
                 };

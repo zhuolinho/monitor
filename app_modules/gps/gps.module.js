@@ -11,6 +11,7 @@ var q = require('q');
 var gpsModel = require('../../models/gps');
 var Shiment = require('../../models/shipment');
 var gpsConfig = require('../../configs/gps');
+var lib = require('../../lib/lib');
 
 gps.init = function(m) {
     var r = {pl: {status:true} , er:''};
@@ -264,28 +265,14 @@ gps.shipmentComplete = function(m){
   var r = {pl: null, er:'',em:''};
   var deferred = q.defer();
 
-  var shiment = m.pl.shipment;
+  var shipment = m.pl.shipment;
 
-  if(shiment && shipment.sim ){
+  if(shipment && shipment.sim ){
 
+    shipment.at = lib.dateTime();
+    shipment.status = 1;
 
-    sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
-    dest:String,
-    origin:String,
-    s:String, //Supercargo 押运员
-    dist:String, //distance
-    lp:{type:String,required:true},//license plate
-    driver:String,
-    rs:{type:String,default:""}, //refill station 加气站
-    oti:String, //original tank id(原罐号)
-    nti:String, //new tank id (换罐号)
-    ntt:String, //new tank type;
-    ed:String,  //estimated duration
-
-    shiment.at = new Date();
-    
-
-    User.findOneAndUpdate({ _id: shiment._id }, shiment, { new: true }, function(err, resp) {
+    User.findOneAndUpdate({ _id: shipment._id }, shipment, { new: true }, function(err, resp) {
               if (err){
                 r.er = err;
                 r.em = 'problem finding shipment';

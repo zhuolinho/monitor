@@ -84,6 +84,26 @@ module.exports = function (handler)
   });
 
 
+  router.put('/shipment/done', function(req, res, next) {
+
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'shipmentComplete',
+          pl:req.body
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   //gps Connection
   _tcpCLient(handler);
 

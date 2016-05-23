@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var shipmentSchema = mongoose.Schema({
                     sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
                     dest:String,
-                    dt:{type:Date, default: Date.now()}, //departure time
+                    dt:{type:Date, default: Date.now}, //departure time
                     at:String, //arrival time
                     origin:String,
                     s:String, //Supercargo 押运员
@@ -15,6 +15,7 @@ var shipmentSchema = mongoose.Schema({
                     nti:String, //new tank id (换罐号)
                     ntt:String, //new tank type;
                     ed:String,  //estimated duration
+                    status:{type:number,default:0} //0 ongoing , 1 done
               });
 //
 module.exports = mongoose.model('shipment',shipmentSchema);

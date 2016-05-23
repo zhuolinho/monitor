@@ -278,6 +278,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
     completeShipment(){
 
+      this.request.put('/gps/shipment/done', this.newShipment).subscribe(res => {
+        console.log("res shipment done-----", res);
+
+      });
     }
 
 
@@ -414,6 +418,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
         // this.request.post('/gps/shipment',this.newShipment).subscribe(res => {
         //   console.log("new shipment saved-----", res);
+      //      that.newShipment = res.pl.shipment;   //update shiment with _id; used on the shipment completion
         // });
 
       });
