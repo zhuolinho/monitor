@@ -98,7 +98,7 @@ var _tcpCLient = function(handler){
             client1.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                  saveData(handler, stream,ports[0]);
+                    processIncommingData(handler,stream, ports[0]);
                 }
             });
 
@@ -129,10 +129,9 @@ var _tcpCLient = function(handler){
             client2.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                    saveData(handler, stream, ports[1]);
+                    processIncommingData(handler,stream, ports[1]);
                 }
             });
-
             client2.once('close', function () {
                 console.log('Connection2 closed');
             });
@@ -140,18 +139,18 @@ var _tcpCLient = function(handler){
 }
 
 
-function saveData(handler,data,port){
+function processIncommingData(handler,stream,port){
 
   var param = {
         ns: 'gps',
         vs: '1.0',
-        op: 'handleIncommingData',
-        pl:{stream:data,port:port}
+        op: 'processIncommingData',
+        pl:{stream:stream,port:port}
   }
 
   handler(param)
       .then(function (r) {
-        // console.log("save"+port+" data successful",r);
+        console.log("processed"+port+" data successful",r);
         io.emit("carMove",r);
       })
       .fail(function (r) {

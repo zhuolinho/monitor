@@ -166,7 +166,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         }
         var socket = io(url);
        socket.on('carMove', function(data){
-           if(data.pl&&data.pl.gps){
+         console.log("socket got data-----",data);
+           if(_this.targetCar && data.pl&&data.pl.gps){
               var cardata = data.pl.gps;
               _this.updatePosition(cardata);
            }
@@ -210,10 +211,14 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     showAllCars(){
       //shandong shanghai: 118.273, 33.779  //7
       //shanghai 121.454,31.153   //10
+
+      this.targetCar = null;// stop car moves.
+
       var point = new BMap.Point(121.454,31.153 );
       ShipmentMap.gpsmap.centerAndZoom(point, 10);
       this.request.get('/gps/cars/all').subscribe(res => {
             var cars = res.pl.cars;
+            console.log("cars----",cars);
             var allcars = Object.keys(cars).map(function (key) {
                   return cars[key];
               });

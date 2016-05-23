@@ -35,33 +35,33 @@ gps.init = function(m) {
 
 }
 
-gps.handleIncommingData =  function(m) {
-  console.log("handleIncommingData");
+gps.saveIncommingData =  function(m) {
+  console.log("saveIncommingData");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-var stream = m.pl.stream;
-var port =  m.pl.port;
+// var stream = m.pl.stream;
+// var port =  m.pl.port;
 
-  if(stream && port){
-      var data  = stream.split(',');
-      var sim = stream.split('|')[3];
-      var loc = data[0].split('|').pop();
-      var lp = gpsConfig.port[port].simPlate[sim];
+  if(m.pl){
+      // var data  = stream.split(',');
+      // var sim = stream.split('|')[3];
+      // var loc = data[0].split('|').pop();
+      // var lp = gpsConfig.port[port].simPlate[sim];
 
-      if(lp){
+      if(m.pl.lp){
         var gpsData = new gpsModel({
-                                  sim:sim,
-                                  loc:parseInt(loc,10),
-                                  lng:data[1],
-                                  lat:data[2],
-                                  speed:data[3],
-                                  course:data[4],
-                                  time:data[5],
-                                  alarm:data[6],
-                                  addr:"",
-                                  rawd:stream,
-                                  lp:lp
+                                  sim:m.pl.sim,
+                                  loc:m.pl.loc,
+                                  lng:m.pl.lng,
+                                  lat:m.pl.lat,
+                                  speed:m.pl.speed,
+                                  course:m.pl.course,
+                                  time:m.pl.time,
+                                  alarm:m.pl.alarm,
+                                  addr:m.pl.addr,
+                                  rawd:m.pl.rawd,
+                                  lp:m.pl.lp
                           })
 
 
@@ -81,7 +81,7 @@ var port =  m.pl.port;
           })
       }
       else{
-        r.er =  "no macthing licence plate found for sim number";
+        r.er =  "no macthing licence plate found for sim number "+sim;
         r.status = false
         deferred.reject(r);
       }
@@ -121,11 +121,59 @@ gps.getData =  function(m) {
 
 gps.getAllCars =  function(m) {
   console.log("getAllCars FUNCTION");
- var r = {pl: {}, status:false , er:''};
+ var r = {pl: {}, er:''};
   var deferred = q.defer();
   r.pl.cars = allCars;
   deferred.resolve(r);
   return deferred.promise;
+
+}
+
+
+
+gps.processIncommingData = function(m){
+
+  console.log("processIncommingData FUNCTION");
+ var r = {pl: null, er:''};
+  var deferred = q.defer();
+
+  var stream = m.pl.stream;
+  var port = m.pl.port;
+
+
+  if(stream && port){
+    var data  = stream.split(',');
+    var sim = stream.split('|')[3];
+    var loc = data[0].split('|').pop();
+    loc = parseInt(loc,10);
+    var lat = data[2];
+    var lp = gpsConf.port[port].simPlate[sim];
+    var lng = data[1];
+    var lat = data[2];
+    var speed = data[3];
+    var course = data[4];
+    var time = data[5];
+    var alarm = data[6];
+    var addr = "";
+    var rawd = stream;
+
+    if(!lp){
+      console.log("no macthing licence plate found for sim number ",sim);
+
+      r.er = "no macthing licence plate found for sim number "+sim;
+      deferred.reject(r);
+    }
+    else {
+        r.pl = {pl:{port:port,sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp}};
+        deferred.resolve(r);
+    }
+  }
+  else{
+      r.er = "no port or stream provided";
+      deferred.reject(r);
+  }
+
+ return deferred.promise;
 
 }
 
