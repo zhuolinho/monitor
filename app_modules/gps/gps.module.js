@@ -134,8 +134,7 @@ gps.getAllCars =  function(m) {
 
 
 gps.processIncommingData = function(m){
-
-  console.log("processIncommingData FUNCTION");
+  // console.log("processIncommingData FUNCTION");
  var r = {pl: null, er:''};
   var deferred = q.defer();
 
@@ -261,12 +260,12 @@ gps.newShipment =  function(m) {
 
 gps.shipmentComplete = function(m){
 
-  console.log("update user----");
+  console.log("shipmentComplete ----");
 
   var r = {pl: null, er:'',em:''};
   var deferred = q.defer();
 
-  var shipment = m.pl.shipment;
+  var shipment = m.pl;
 
   if(shipment && shipment.sim ){
 
@@ -301,7 +300,7 @@ gps.shipmentComplete = function(m){
 
 
 gps.saveIncommingData =  function(m) {
-  console.log("saveIncommingData",m);
+  // console.log("saveIncommingData");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
@@ -334,7 +333,7 @@ var timer = setInterval(function(){
 
         for (var i = 0; i < cars.length; i++) {
                var message =  allCars[cars[i]];
-               console.log("message----",message);
+              //  console.log("message----",message);
                pchain.push(gps.saveIncommingData(message));
         }
 
@@ -342,7 +341,7 @@ var timer = setInterval(function(){
         pchain.forEach(function (f) {
             result = result.then(f);
         });
-        console.log('latest gps data saved----',result);
+        // console.log('latest gps data saved----',result);
 },gpsConfig.stimer);
 
 module.exports = gps;

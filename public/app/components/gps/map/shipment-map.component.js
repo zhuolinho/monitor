@@ -30,6 +30,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     this.selectedtab = 1;
                     this.delevered = false;
                     this.returnToRefill = true;
+                    this.isShiping = false;
                     this.newShipment = {
                         sim: '',
                         dest: '',
@@ -105,43 +106,36 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         compRef.selectedCarId = event.target.value;
                         compRef.newShipment.sim = compRef.selectedCarId;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedTankType = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.ntt = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedTank = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.nti = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedDriver = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.driver = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedSupercargo = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.s = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedAddress = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.dest = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.veSelectedRefillStation = function (event, compRef) {
                     if (event) {
                         compRef.newShipment.rs = event.target.value;
                     }
-                    // compRef.initUi();
                 };
                 ShipmentMap.prototype.loadJScript = function () {
                     var script = document.createElement("script");
@@ -206,7 +200,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                             if (patern.test(data)) {
                                 var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
                                 // console.log('distance>>>>',distance);
-                                if (distance <= 100) {
+                                if (distance <= 900) {
                                     console.log('已配送');
                                     _this.targetCar = null;
                                     _this.completeShipment();
@@ -216,8 +210,11 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     }
                 };
                 ShipmentMap.prototype.completeShipment = function () {
+                    var that = this;
+                    console.log("posting end of shipment----", this.newShipment);
                     this.request.put('/gps/shipment/done', this.newShipment).subscribe(function (res) {
                         console.log("res shipment done-----", res);
+                        that.isShiping = false;
                     });
                 };
                 ShipmentMap.prototype.iniSocket = function () {
@@ -237,23 +234,30 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                 };
                 ShipmentMap.prototype.veConfirmShipment = function () {
                     var that = this;
-                    if (ShipmentMap.mapLoaded && this.selectedCarId) {
+                    console.log("confirm-----", ShipmentMap.mapLoaded, this.selectedCarId);
+                    if (ShipmentMap.mapLoaded && this.selectedCarId && !this.isShiping) {
                         this.request.get('/gps/cars/all').subscribe(function (res) {
+                            console.log("got cars----", res);
                             var cars = res.pl.cars;
                             var c = cars[that.selectedCarId];
                             if (c) {
+                                var origin = new BMap.Point(c.lng, c.lat);
                                 var geocoder = new BMap.Geocoder();
                                 geocoder.getPoint('闸北区大宁路355号', function (dest) {
                                     var myP1 = new BMap.Point(116.380967, 39.913285); //起点
                                     var myP2 = new BMap.Point(116.424374, 39.914668); //终点
-                                    // that.showShipmentRoute(c,dest);
+                                    // that.showShipmentRoute(origin,dest);
                                     that.showShipmentRoute(myP1, myP2);
                                 }, '上海市');
-                                console.log("c-----", c);
-                                geocoder.getLocation(c, function (origin) {
-                                    console.log("origin-----", origin);
-                                    that.newShipment.origin = origin;
+                                geocoder.getLocation(origin, function (originAddr) {
+                                    console.log("originAddr-----", originAddr);
+                                    if (originAddr) {
+                                        that.newShipment.origin = originAddr.address;
+                                    }
                                 });
+                            }
+                            else {
+                                alert("此车辆未发送gps信号, 请启动车后再试!");
                             }
                         });
                     }
@@ -302,6 +306,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         console.log("this.newShipment----", that.newShipment);
                         that.request.post('/gps/shipment', that.newShipment).subscribe(function (res) {
                             console.log("new shipment saved-----", res);
+                            that.isShiping = true;
                             that.newShipment = res.pl.shipment; //update shiment with _id; used on the shipment completion
                         });
                     });
