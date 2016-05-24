@@ -198,10 +198,10 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     }
                     else if (cardata.sim == this.targetCar.sim) {
                         console.log('same car on the move-----');
-                        this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
-                        var currentPosition = cardata;
-                        var destination = dest;
                         if (this.isShiping) {
+                            this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
+                            var currentPosition = cardata;
+                            var destination = dest;
                             _this.calculateDistance(currentPosition, destination).then(function (data) {
                                 var patern = /[0,9]{1,3}['米']{1}/;
                                 if (patern.test(data)) {

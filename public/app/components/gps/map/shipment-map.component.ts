@@ -237,14 +237,13 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
               this.addCustomMarker(cardata);
         }
         else if(cardata.sim == this.targetCar.sim){
-                    console.log('same car on the move-----');
-
-                    this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
-
-                    var currentPosition = cardata;
-                    var destination = dest;
+          console.log('same car on the move-----');
 
               if(this.isShiping){   //to make sure the completeShipment func is only called once.
+
+                this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
+                var currentPosition = cardata;
+                var destination = dest;
                 _this.calculateDistance(currentPosition, destination).then(function(data){
                   var patern  = /[0,9]{1,3}['米']{1}/;
                     if(patern.test(data)){  //within metters
