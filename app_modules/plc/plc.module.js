@@ -9,7 +9,7 @@ var plc = {};
 var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
 var Tank = require('../../models/tank');
-
+var plcConfig = require('../../configs/plc');
 
 
 var alertsList =[
@@ -25,8 +25,8 @@ var alertsList =[
                 processedAgent:'234'
               },
               {
-                name:'C003-闸北区大宁路335号XX站',
-                id:'8620',
+                name:'C014-闸北区大宁路335号XX站',
+                id:'8000',
                 type:'余量报警',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
@@ -35,7 +35,27 @@ var alertsList =[
                 alertMessage:'6%/12kg/hps'
               },
               {
-                name:'C004-闸北区大宁路335号XX站',
+                name:'C023-闸北区大宁路335号XX站',
+                id:'8001',
+                type:'余量报警',
+                remainingTime:'2小时02分',
+                upTime:'15.5.3-13:02/----',
+                processed:true,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'6%/12kg/hps'
+              },
+              {
+                name:'C333-闸北区大宁路335号XX站',
+                id:'8007',
+                type:'余量报警',
+                remainingTime:'2小时02分',
+                upTime:'15.5.3-13:02/----',
+                processed:true,
+                alertTime:'5.5.3-13:02',
+                alertMessage:'6%/12kg/hps'
+              },
+              {
+                name:'C214-闸北区大宁路335号XX站',
                 id:'5467',
                 type:'信号中断',
                 remainingTime:'',
@@ -86,7 +106,7 @@ var alertsList =[
               },
               {
                 name:'C009-闸北区大宁路335号XX站',
-                id:'8832',
+                id:'9832',
                 type:'泄漏报警',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
@@ -415,6 +435,29 @@ plc.getPlcAlerts =  function(m) {
         deferred.resolve(r);
       }
   })
+  return deferred.promise;
+}
+
+
+
+
+plc.getShipmentList =  function(m) {
+  console.log("plc module: getShipmentList FUNCTION");
+ var r = {pl: null, status:false , er:''};
+ var deferred = q.defer();
+
+ PlcAlert.find().$where('(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))').exec(
+   function (err, resp) {
+       if (err){
+         r.er = err;
+         deferred.reject(r);
+       }
+       else{
+         r.pl = {shipmentList:resp};
+         r.status = true;
+         deferred.resolve(r);
+       }
+   });
   return deferred.promise;
 }
 

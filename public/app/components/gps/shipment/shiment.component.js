@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', 'angular2/router', 'angular2/common'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', 'angular2/router', 'angular2/common', '../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, router_1, common_1;
+    var core_1, config_1, router_1, common_1, request_service_1;
     var Shipment;
     return {
         setters:[
@@ -25,11 +25,15 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
             },
             function (common_1_1) {
                 common_1 = common_1_1;
+            },
+            function (request_service_1_1) {
+                request_service_1 = request_service_1_1;
             }],
         execute: function() {
             Shipment = (function () {
-                function Shipment(router) {
+                function Shipment(router, request) {
                     this.router = router;
+                    this.request = request;
                     this.shipmentList = [
                         {
                             name: 'C002-闸北区大宁路335号XX站',
@@ -69,6 +73,9 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
                         }
                     ]; //todo user flag and ng if to hide when filtering;
                     console.log("Shipment is up and running");
+                    this.request.get("/plc/shipments").subscribe(function (res) {
+                        console.log("res------", res);
+                    });
                     // this.initUi();
                 }
                 Shipment.prototype.veSubmitForShipment = function (alert) {
@@ -81,7 +88,7 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
                         templateUrl: config_1.config.prefix + '/components/gps/shipment/shipment.component.html',
                         directives: [common_1.CORE_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router])
+                    __metadata('design:paramtypes', [router_1.Router, request_service_1.RequestService])
                 ], Shipment);
                 return Shipment;
             }());

@@ -3,6 +3,7 @@ import {Component, provide} from 'angular2/core';
 import {config} from '../../../config';
 import {Router} from 'angular2/router'
 import {CORE_DIRECTIVES} from 'angular2/common';
+import {RequestService} from '../../../services/request.service';
 declare var jQuery:any;
 
 @Component({
@@ -54,8 +55,14 @@ export class Shipment{
 
   ];  //todo user flag and ng if to hide when filtering;
 
-    constructor(private router:Router){
+    constructor(private router:Router,
+       private request:RequestService){
     console.log("Shipment is up and running");
+
+    this.request.get("/plc/shipments").subscribe(res => {
+          console.log("res------", res);
+    })
+
     // this.initUi();
 
     }

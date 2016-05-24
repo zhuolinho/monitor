@@ -74,6 +74,26 @@ module.exports = function (handler)
   });
 
 
+
+  router.get('/shipments', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'getShipmentList',
+          pl:{}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   router.get('/tanks/all', function(req, res, next) {
 
         var param = {
