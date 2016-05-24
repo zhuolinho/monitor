@@ -240,18 +240,20 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                     var currentPosition = cardata;
                     var destination = dest;
 
-                   _this.calculateDistance(currentPosition, destination).then(function(data){
-                     var patern  = /[0,9]{1,3}['米']{1}/;
-                       if(patern.test(data)){  //within metters
-                           var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
-                           // console.log('distance>>>>',distance);
-                           if(distance <= 900){
-                             console.log('已配送');
-                             _this.targetCar = null;
-                             _this.completeShipment();
-                           }
-                       }
-                   });
+              if(this.isShiping){   //to make sure the completeShipment func is only called once.
+                _this.calculateDistance(currentPosition, destination).then(function(data){
+                  var patern  = /[0,9]{1,3}['米']{1}/;
+                    if(patern.test(data)){  //within metters
+                        var distance = parseInt(data,10);  //parseInt asuming there is no decimal part. otherwise parseFloat
+                        // console.log('distance>>>>',distance);
+                        if(distance <= 900){
+                          console.log('已配送');
+                          _this.targetCar = null;
+                          _this.completeShipment();
+                        }
+                    }
+                });
+              }
         }
 
     }
@@ -260,9 +262,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     completeShipment(){
       var that = this;
         console.log("posting end of shipment----", this.newShipment);
+
+        this.isShiping  = false;
       this.request.put('/gps/shipment/done', this.newShipment).subscribe(res => {
         console.log("res shipment done-----", res);
-        that.isShiping  = false;
       });
     }
 

@@ -64,6 +64,26 @@ module.exports = function (handler)
 
 
 
+  router.get('/shipments/done', function(req, res, next) {
+
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'getCompletedShipments',
+          pl:{}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   router.post('/shipment', function(req, res, next) {
 
         var param = {

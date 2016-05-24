@@ -195,26 +195,28 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
                         var currentPosition = cardata;
                         var destination = dest;
-                        _this.calculateDistance(currentPosition, destination).then(function (data) {
-                            var patern = /[0,9]{1,3}['米']{1}/;
-                            if (patern.test(data)) {
-                                var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
-                                // console.log('distance>>>>',distance);
-                                if (distance <= 900) {
-                                    console.log('已配送');
-                                    _this.targetCar = null;
-                                    _this.completeShipment();
+                        if (this.isShiping) {
+                            _this.calculateDistance(currentPosition, destination).then(function (data) {
+                                var patern = /[0,9]{1,3}['米']{1}/;
+                                if (patern.test(data)) {
+                                    var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
+                                    // console.log('distance>>>>',distance);
+                                    if (distance <= 900) {
+                                        console.log('已配送');
+                                        _this.targetCar = null;
+                                        _this.completeShipment();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 };
                 ShipmentMap.prototype.completeShipment = function () {
                     var that = this;
                     console.log("posting end of shipment----", this.newShipment);
+                    this.isShiping = false;
                     this.request.put('/gps/shipment/done', this.newShipment).subscribe(function (res) {
                         console.log("res shipment done-----", res);
-                        that.isShiping = false;
                     });
                 };
                 ShipmentMap.prototype.iniSocket = function () {

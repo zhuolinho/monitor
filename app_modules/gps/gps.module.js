@@ -121,6 +121,51 @@ gps.getData =  function(m) {
 
 
 
+gps.getAllShipments =  function(m) {
+  console.log("getAllShipments FUNCTION");
+ var r = {pl: null, status:false , er:''};
+  var deferred = q.defer();
+
+  Shiment.find(function (err, resp) {
+      if (err){
+        r.er = JSON.stringify(err);
+        deferred.reject(r);
+      }
+      else{
+        r.pl = {shipments:resp};
+        r.status = true;
+        deferred.resolve(r);
+      }
+  })
+  return deferred.promise;
+
+}
+
+
+
+
+gps.getCompletedShipments =  function(m) {
+  console.log("getCompletedShipments FUNCTION");
+ var r = {pl: null, status:false , er:''};
+  var deferred = q.defer();
+
+  Shiment.find({status:1},function (err, resp) {
+      if (err){
+        r.er = JSON.stringify(err);
+        deferred.reject(r);
+      }
+      else{
+        r.pl = {shipments:resp};
+        r.status = true;
+        deferred.resolve(r);
+      }
+  })
+  return deferred.promise;
+
+}
+
+
+
 gps.getAllCars =  function(m) {
   console.log("getAllCars FUNCTION");
  var r = {pl: {}, er:''};
