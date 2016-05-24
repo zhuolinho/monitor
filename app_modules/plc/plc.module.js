@@ -378,7 +378,7 @@ plc.addNewAlert = function(m){
   if(m.pl && m.pl.alert){
       var newAlert = new PlcAlert({
                           atime:m.pl.alert.atime,
-                          atype:m.pl.alert.type,
+                          atype:m.pl.alert.atype,
                           tank:m.pl.alert.addr,
                           pa:m.pl.alert.processedAgent,
                           am:m.pl.alert.am,

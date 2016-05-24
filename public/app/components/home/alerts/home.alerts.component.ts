@@ -186,7 +186,7 @@ export class HomeAlerts{
     }
 
     veSortBy(wich){
-      if(this.currentSort!=wich){
+      if(this.currentSort != wich){
         this.currentSort = null; //clear view to reinit; otherwise modal won't open properly on firs sort; ng if (will reinit on show).
         setTimeout(_=>{
           this.currentSort = wich;
