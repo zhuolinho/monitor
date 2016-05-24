@@ -211,6 +211,7 @@ gps.newShipment =  function(m) {
           var ports = Object.keys(gpsConfig.port);
           var lp =  gpsConfig.port[ports[0]].simPlate[sim]? gpsConfig.port[ports[0]].simPlate[sim]: gpsConfig.port[ports[1]].simPlate[sim];
 
+            console.log("lp---",ports,lp)
 
           if(lp){
 
