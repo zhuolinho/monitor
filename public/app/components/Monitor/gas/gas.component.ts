@@ -82,7 +82,7 @@ export class Gas{
         this.newAlert.am = type;
         this.newAlert.atype = type;
         this.newAlert.atime = this.lib.dateTime();
-        this.newAlert.addr = "C003-闸北区大宁路3325号XX站";
+        this.newAlert.addr = "C003-闸北区大宁路3325号";
 
           console.log("posting--",  this.newAlert);
         this.request.post('/plc/alert',this.newAlert).subscribe(res => {

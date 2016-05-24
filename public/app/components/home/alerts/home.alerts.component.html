@@ -104,14 +104,14 @@
                     <div class="table-cell">
 
                       <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
-                          <span *ngFor="#n of alert.selectedTanks"> {{n}}, </span>
+                          <span *ngFor="#n of alert.st"> {{n.ti}}, </span>
                       </div>
 
                       <div class="monitor-alert" *ngIf="!alert.status">
                              拉回报警
                       </div>
 
-                      <div class="monitor-alert-action monitor-gray-button" *ngIf="alert.status">
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">
                         <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
                       </div>
                     </div>
@@ -123,14 +123,14 @@
                     <div class="table-cell">
 
                       <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
-                          <span *ngFor="#n of alert.selectedTanks"> {{n}}, </span>
+                          <span *ngFor="#n of alert.st"> {{n.ti}}, </span>
                       </div>
 
                       <div class="monitor-alert" *ngIf="!alert.status">
                              进场报警
                       </div>
 
-                      <div class="monitor-alert-action monitor-gray-button" *ngIf="alert.status">
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">
                         <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
                       </div>
                     </div>
@@ -139,7 +139,7 @@
                  <div class="table-row" *ngIf ='(alert.atype == "拉回报警") || (alert.atype == "进场报警")'>
                     <div class="table-cell"> 拉回数量 </div>
                     <div class="table-cell">
-                      {{alert.selectedTanks.length}} 个
+                      {{alert.st.length}} 个
                     </div>
                   </div>
 
