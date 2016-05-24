@@ -2,7 +2,7 @@
 import {Component, provide, AfterViewInit, OnDestroy} from 'angular2/core';
 import {config} from '../../../config';
 import {RequestService} from '../../../services/request.service';
-
+import {UserService} from '../../../services/user.service';
 declare var BMAP_ANCHOR_TOP_LEFT:any;
 declare var BMAP_NAVIGATION_CONTROL_LARGE:any;
 
@@ -30,6 +30,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   returnToRefill:boolean = true;
   static gpsmap:any;
   isShiping:boolean = false;
+  user:any;
   newShipment:any = {
       sim:'',
       dest:'',
@@ -42,9 +43,12 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       oti:'', //original tank id(原罐号)
       nti:'', //new tank id (换罐号)
       ntt:'',// new tank type
+      pa:'',
       ed:''//estimated duration
   };
-  constructor(public request:RequestService){
+  constructor(private request:RequestService,
+              private userSrvc:UserService){
+        this.user = this.userSrvc.getUser();
   console.log("ShipmentMap is up and running");
 
   }
@@ -301,6 +305,14 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                 if(c){
                   var origin = new BMap.Point(c.lng, c.lat);
                   var geocoder = new BMap.Geocoder();
+
+                  geocoder.getLocation(origin, function(originAddr){
+                    console.log("originAddr-----",originAddr);
+                    if(originAddr){
+                        that.newShipment.origin = originAddr.address;
+                    }
+                  });
+
                   geocoder.getPoint('闸北区大宁路355号', function(dest){
 
                     var myP1 = new BMap.Point(116.380967,39.913285);    //起点
@@ -311,13 +323,6 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                           that.showShipmentRoute(myP1,myP2);
                   },'上海市');
 
-
-                  geocoder.getLocation(origin, function(originAddr){
-                    console.log("originAddr-----",originAddr);
-                    if(originAddr){
-                        that.newShipment.origin = originAddr.address;
-                    }
-                  });
                 }
                 else{
                   alert("此车辆未发送gps信号, 请启动车后再试!");
@@ -360,6 +365,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         var duration  = route.getResults().getPlan(0).getDuration(true);
         that.newShipment.dist = distance;
         that.newShipment.ed = duration;
+        that.newShipment.pa = that.user.an;
 
 
       console.log("  route.getDistance()",  distance);
@@ -392,7 +398,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
 
 
-            console.log("this.newShipment----",that.newShipment);
+        console.log("this.newShipment----",that.newShipment);
 
         that.request.post('/gps/shipment',that.newShipment).subscribe(res => {
           console.log("new shipment saved-----", res);

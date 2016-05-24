@@ -15,6 +15,7 @@ var shipmentSchema = mongoose.Schema({
                     nti:String, //new tank id (换罐号)
                     ntt:String, //new tank type;
                     ed:String,  //estimated duration
+                    pa:String, //processing agent
                     status:{type:Number,default:0} //0 ongoing , 1 done
               });
 //

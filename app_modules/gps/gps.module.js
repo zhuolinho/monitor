@@ -151,7 +151,7 @@ gps.getCompletedShipments =  function(m) {
 
   Shiment.find({status:1},function (err, resp) {
       if (err){
-        r.er = JSON.stringify(err);
+        r.er = err;
         deferred.reject(r);
       }
       else{
@@ -273,6 +273,7 @@ gps.newShipment =  function(m) {
                                 nti:m.pl.nti,
                                 ntt:m.pl.ntt,
                                 ed:m.pl.ed,
+                                pa:m.pl.pa,
                                 rs:m.pl.rs
                             });
 
@@ -305,7 +306,7 @@ gps.newShipment =  function(m) {
 
 gps.shipmentComplete = function(m){
 
-  console.log("shipmentComplete ----");
+  console.log("shipmentComplete ----",m);
 
   var r = {pl: null, er:'',em:''};
   var deferred = q.defer();
@@ -321,9 +322,11 @@ gps.shipmentComplete = function(m){
               if (err){
                 r.er = err;
                 r.em = 'problem finding shipment';
+                console.log("err---",err);
                 deferred.reject(r);
               }
               else{
+                console.log("resp----",resp);
                 if(resp){
                   r.pl = {shipment:resp};
                   deferred.resolve(r);
@@ -332,7 +335,6 @@ gps.shipmentComplete = function(m){
                   r.em = 'problem shiment not found';
                   deferred.reject(r);
                 }
-
               }
     });
     }

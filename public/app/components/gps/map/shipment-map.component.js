@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', '../../../services/request.service', '../../../services/user.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1;
+    var core_1, config_1, request_service_1, user_service_1;
     var ShipmentMap;
     return {
         setters:[
@@ -22,11 +22,15 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
+            },
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
             }],
         execute: function() {
             ShipmentMap = (function () {
-                function ShipmentMap(request) {
+                function ShipmentMap(request, userSrvc) {
                     this.request = request;
+                    this.userSrvc = userSrvc;
                     this.selectedtab = 1;
                     this.delevered = false;
                     this.returnToRefill = true;
@@ -43,8 +47,10 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         oti: '',
                         nti: '',
                         ntt: '',
+                        pa: '',
                         ed: '' //estimated duration
                     };
+                    this.user = this.userSrvc.getUser();
                     console.log("ShipmentMap is up and running");
                 }
                 ShipmentMap.prototype.ngAfterViewInit = function () {
@@ -245,18 +251,18 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                             if (c) {
                                 var origin = new BMap.Point(c.lng, c.lat);
                                 var geocoder = new BMap.Geocoder();
-                                geocoder.getPoint('闸北区大宁路355号', function (dest) {
-                                    var myP1 = new BMap.Point(116.380967, 39.913285); //起点
-                                    var myP2 = new BMap.Point(116.424374, 39.914668); //终点
-                                    // that.showShipmentRoute(origin,dest);
-                                    that.showShipmentRoute(myP1, myP2);
-                                }, '上海市');
                                 geocoder.getLocation(origin, function (originAddr) {
                                     console.log("originAddr-----", originAddr);
                                     if (originAddr) {
                                         that.newShipment.origin = originAddr.address;
                                     }
                                 });
+                                geocoder.getPoint('闸北区大宁路355号', function (dest) {
+                                    var myP1 = new BMap.Point(116.380967, 39.913285); //起点
+                                    var myP2 = new BMap.Point(116.424374, 39.914668); //终点
+                                    // that.showShipmentRoute(origin,dest);
+                                    that.showShipmentRoute(myP1, myP2);
+                                }, '上海市');
                             }
                             else {
                                 alert("此车辆未发送gps信号, 请启动车后再试!");
@@ -289,6 +295,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         var duration = route.getResults().getPlan(0).getDuration(true);
                         that.newShipment.dist = distance;
                         that.newShipment.ed = duration;
+                        that.newShipment.pa = that.user.an;
                         console.log("  route.getDistance()", distance);
                         console.log("  route.duration()", duration);
                         var pts = route.getResults().getPlan(0).getRoute(0).getPath(); //通过驾车实例，获得一系列点的数组
@@ -353,7 +360,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
                         styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService])
                 ], ShipmentMap);
                 return ShipmentMap;
             }());
