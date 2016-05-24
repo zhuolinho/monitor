@@ -75,6 +75,28 @@ module.exports = function (handler)
 
 
 
+  router.post('/alert', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'addNewAlert',
+          pl:{
+            alert:req.body
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
   router.get('/shipments', function(req, res, next) {
 
         var param = {

@@ -1,7 +1,10 @@
 
 import {Component, provide} from 'angular2/core';
+import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 import {GasDetail} from './details/gas.detail.component';
+import {RequestService} from '../../../services/request.service';
+
 declare var jQuery:any;
 declare var _:any;
 
@@ -38,7 +41,15 @@ export class Gas{
 
     allTankSelected:boolean = false;
     selectedTanks:any[] = [];
-    constructor(){
+    newAlert:any = {
+      st:[],
+      atime:'',
+      am:'',
+      atype:'',
+      addr:''
+    };
+    constructor(private request:RequestService,
+        private lib:LibService){
       console.log("gas is up and running");
       this.initSelect();
       this.initModal();
@@ -51,17 +62,37 @@ export class Gas{
       });
     }
 
+
     veReturnSelectedTanks(){
-      if(this.selectedTanks.length){
-           console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
-      }
+          this.createNewAlert("拉回报警");
     }
 
     veAddSelectedTanks(){
-      if(this.selectedTanks.length){
-           console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
-      }
+        this.createNewAlert("进场报警");
     }
+
+    createNewAlert(type){
+
+      console.log("selectedTanks--",this.selectedTanks.length,this.selectedTanks);
+
+      if(this.selectedTanks.length){
+        for (let i = 0; i < this.selectedTanks.length; i++) {
+          this.newAlert.st.push({ti:this.selectedTanks[i].id});
+        }
+        this.newAlert.am = type;
+        this.newAlert.atype = type;
+        this.newAlert.atime = this.lib.dateTime();
+        this.newAlert.addr = "C003-闸北区大宁路3325号XX站";
+
+          console.log("posting--",  this.newAlert);
+        this.request.post('/plc/alert',this.newAlert).subscribe(res => {
+          console.log("alert created----",res);
+        });
+      }
+
+    }
+
+
    veToggleSelectAllTanks(){
       this.selectedTanks = [];
      if(!this.allTankSelected){

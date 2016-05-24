@@ -14,125 +14,125 @@ var plcConfig = require('../../configs/plc');
 
 var alertsList =[
               {
-                name:'C002-闸北区大宁路335号XX站',
+                addr:'C002-闸北区大宁路335号XX站',
                 id:'6112',
-                type:'余量报警',
+                atype:'余量报警',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'6%/12kg/hps',
+                atime:'5.5.3-13:02',
+                am:'6%/12kg/hps',
                 processedAgent:'234'
               },
               {
-                name:'C014-闸北区大宁路335号XX站',
+                addr:'C014-闸北区大宁路335号XX站',
                 id:'8000',
-                type:'余量报警',
+                atype:'余量报警',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'6%/12kg/hps'
+                atime:'5.5.3-13:02',
+                am:'6%/12kg/hps'
               },
               {
-                name:'C023-闸北区大宁路335号XX站',
+                addr:'C023-闸北区大宁路335号XX站',
                 id:'8001',
-                type:'余量报警',
+                atype:'余量报警',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'6%/12kg/hps'
+                atime:'5.5.3-13:02',
+                am:'6%/12kg/hps'
               },
               {
-                name:'C333-闸北区大宁路335号XX站',
+                addr:'C333-闸北区大宁路335号XX站',
                 id:'8007',
-                type:'余量报警',
+                atype:'余量报警',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'6%/12kg/hps'
+                atime:'5.5.3-13:02',
+                am:'6%/12kg/hps'
               },
               {
-                name:'C214-闸北区大宁路335号XX站',
+                addr:'C214-闸北区大宁路335号XX站',
                 id:'5467',
-                type:'信号中断',
+                atype:'信号中断',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'信号中断'
+                atime:'5.5.3-13:02',
+                am:'信号中断'
               }
               ,{
-                  name:'C005-闸北区大宁路335号XX站',
+                  addr:'C005-闸北区大宁路335号XX站',
                   id:'5555',
-                  type:'信号中断',
+                  atype:'信号中断',
                   remainingTime:'',
                   upTime:'15.5.3-13:02/----',
                   processed:true,
-                  alertTime:'5.5.3-13:02',
-                  alertMessage:'信号中断'
+                  atime:'5.5.3-13:02',
+                  am:'信号中断'
               },
               {
-                name:'C006-闸北区大宁路335号XX站',
+                addr:'C006-闸北区大宁路335号XX站',
                 id:'1839',
-                type:'信号中断',
+                atype:'信号中断',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'信号中断'
+                atime:'5.5.3-13:02',
+                am:'信号中断'
               },
               {
-                name:'C007-闸北区大宁路335号XX站',
+                addr:'C007-闸北区大宁路335号XX站',
                 id:'8880',
-                type:'信号中断',
+                atype:'信号中断',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'信号中断'
+                atime:'5.5.3-13:02',
+                am:'信号中断'
               },
               {
-                name:'C008-闸北区大宁路335号XX站',
+                addr:'C008-闸北区大宁路335号XX站',
                 id:'5832',
-                type:'泄漏报警',
+                atype:'泄漏报警',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'泄漏报警'
+                atime:'5.5.3-13:02',
+                am:'泄漏报警'
               },
               {
-                name:'C009-闸北区大宁路335号XX站',
+                addr:'C009-闸北区大宁路335号XX站',
                 id:'9832',
-                type:'泄漏报警',
+                atype:'泄漏报警',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'泄漏报警'
+                atime:'5.5.3-13:02',
+                am:'泄漏报警'
               },
               {
-                name:'C010-闸北区大宁路335号XX站',
+                addr:'C010-闸北区大宁路335号XX站',
                 id:'6842',
-                type:'压力报警',
+                atype:'压力报警',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'压力报警'
+                atime:'5.5.3-13:02',
+                am:'压力报警'
               },
               {
-                name:'C011-闸北区大宁路335号XX站',
+                addr:'C011-闸北区大宁路335号XX站',
                 id:'6838',
-                type:'压力报警',
+                atype:'压力报警',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
-                alertTime:'5.5.3-13:02',
-                alertMessage:'压力报警'
+                atime:'5.5.3-13:02',
+                am:'压力报警'
               }
     ];
 
@@ -377,13 +377,14 @@ plc.addNewAlert = function(m){
 
   if(m.pl && m.pl.alert){
       var newAlert = new PlcAlert({
-                          atime:m.pl.alert.alertTime,
+                          atime:m.pl.alert.atime,
                           atype:m.pl.alert.type,
-                          tank:m.pl.alert.name,
-                          pt:m.pl.alert.processedAgent,
-                          am:m.pl.alert.alertMessage,
+                          tank:m.pl.alert.addr,
+                          pa:m.pl.alert.processedAgent,
+                          am:m.pl.alert.am,
                           rt:m.pl.alert.remainingTime,
-                          code:m.pl.alert.name.substring(0,4)
+                          st:m.pl.alert.st,
+                          code:m.pl.alert.addr.substring(0,4)
                         });
 
              newAlert.save(function (error, alert){
