@@ -45,6 +45,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     // ntt:String, //new tank type;
                     // ed:String,  //estimated duration
                     // status:{type:Number,default:0} //0 ongoing , 1 done
+                    this.months = ['1月', '2月', '3月', '4月'];
                     this.shipments = [{
                             groupId: 1,
                             groupName: "CNG",

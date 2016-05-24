@@ -36,6 +36,8 @@ export class ProcessedShipment{
 // ed:String,  //estimated duration
 // status:{type:Number,default:0} //0 ongoing , 1 done
 
+  months:string[] = ['1月','2月','3月','4月'];
+
     shipments:any[]=[{
       groupId:1,
       groupName:"CNG",
