@@ -1,5 +1,4 @@
 
-
 <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
     <div *ngFor="#shipment of shipmentList; #i = index;">
 
@@ -10,27 +9,27 @@
               <div class="col s4 push-s8">
               </div>
               <div class="col s8 pull-s4 valign helper-font-bigger helper-padding-left-30">
-                {{shipment.name}}
+                {{shipment.tank}}
               </div>
             </div>
             <div class="row" >
               <div class="monitor-table helper-font-bigger" >
                 <div class="table-row">
                   <div class="table-cell"> 罐号 </div>
-                  <div class="table-cell">{{shipment.id}}  </div>
+                  <div class="table-cell">{{shipment.code}}  </div>
                 </div>
                 <div class="table-row">
                     <div class="table-cell"> 余量/压力 </div>
-                    <div class="table-cell">{{shipment.alertValue}}</div>
+                    <div class="table-cell">{{shipment.am}}</div>
                 </div>
 
                 <div class="table-row">
                   <div class="table-cell"> 剩余时间 </div>
-                  <div class="table-cell">{{shipment.remainingTime}} </div>
+                  <div class="table-cell">{{shipment.rt}} </div>
                 </div>
                 <div class="table-row">
                   <div class="table-cell"> 时间/工号 </div>
-                  <div class="table-cell">{{shipment.alertTime}} </div>
+                  <div class="table-cell">{{shipment.atime}}/{{shipment.pa}} </div>
                 </div>
                 <div class="clearfix"></div>
               </div>

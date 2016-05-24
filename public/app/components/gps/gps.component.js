@@ -50,7 +50,7 @@ System.register(['angular2/core', '../../config', 'angular2/router', '../../serv
                     }),
                     router_1.RouteConfig([
                         { path: '/shipment', component: shiment_component_1.Shipment, name: 'Shipment', useAsDefault: true },
-                        { path: '/map', component: shipment_map_component_1.ShipmentMap, name: 'ShipmentMap' },
+                        { path: '/map/:tank', component: shipment_map_component_1.ShipmentMap, name: 'ShipmentMap' },
                         { path: '/processed', component: processed_shipment_component_1.ProcessedShipment, name: 'ProcessedShipment' }
                     ]), 
                     __metadata('design:paramtypes', [request_service_1.RequestService])

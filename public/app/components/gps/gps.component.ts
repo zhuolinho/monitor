@@ -18,7 +18,7 @@ import {Shipment} from './shipment/shiment.component';
 
  @RouteConfig([
    {path:'/shipment', component:Shipment, name:'Shipment',useAsDefault:true},
-   {path:'/map', component:ShipmentMap, name:'ShipmentMap'},
+   {path:'/map/:tank', component:ShipmentMap, name:'ShipmentMap'},
    {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'}
  ])
 

@@ -32,55 +32,69 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
         execute: function() {
             Shipment = (function () {
                 function Shipment(router, request) {
+                    var _this = this;
                     this.router = router;
                     this.request = request;
-                    this.shipmentList = [
-                        {
-                            name: 'C002-闸北区大宁路335号XX站',
-                            id: '6848',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
-                        },
-                        {
-                            name: 'L002-闸北区大宁路335号XX站',
-                            id: '2848',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
-                        },
-                        {
-                            name: 'C002-闸北区大宁路335号XX站',
-                            id: '4845',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: true,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
-                        },
-                        {
-                            name: 'C002-闸北区大宁路335号XX站',
-                            id: '4845',
-                            remainingTime: '2小时02分',
-                            upTime: '15.5.3-13:02/----',
-                            processed: false,
-                            alertTime: '5.5.3-13:02',
-                            alertValue: '6%/12kg/hps'
-                        }
-                    ]; //todo user flag and ng if to hide when filtering;
+                    // shipmentList:any[]=[
+                    //
+                    //     {
+                    //       name:'C002-闸北区大宁路335号XX站',
+                    //       id:'6848',
+                    //       remainingTime:'2小时02分',
+                    //       upTime:'15.5.3-13:02/----',
+                    //       processed:false,
+                    //       alertTime:'5.5.3-13:02',
+                    //       alertValue:'6%/12kg/hps'
+                    //     },
+                    //     {
+                    //       name:'L002-闸北区大宁路335号XX站',
+                    //       id:'2848',
+                    //       remainingTime:'2小时02分',
+                    //       upTime:'15.5.3-13:02/----',
+                    //       processed:false,
+                    //       alertTime:'5.5.3-13:02',
+                    //       alertValue:'6%/12kg/hps'
+                    //     },
+                    //     {
+                    //       name:'C002-闸北区大宁路335号XX站',
+                    //       id:'4845',
+                    //       remainingTime:'2小时02分',
+                    //       upTime:'15.5.3-13:02/----',
+                    //       processed:true,
+                    //       alertTime:'5.5.3-13:02',
+                    //       alertValue:'6%/12kg/hps'
+                    //     },
+                    //     {
+                    //       name:'C002-闸北区大宁路335号XX站',
+                    //       id:'4845',
+                    //       remainingTime:'2小时02分',
+                    //       upTime:'15.5.3-13:02/----',
+                    //       processed:false,
+                    //       alertTime:'5.5.3-13:02',
+                    //       alertValue:'6%/12kg/hps'
+                    //     }
+                    //];  //todo user flag and ng if to hide when filtering;
+                    this.shipmentList = [];
                     console.log("Shipment is up and running");
                     this.request.get("/plc/shipments").subscribe(function (res) {
-                        console.log("res------", res);
+                        // console.log("res------", res);
+                        if (res.pl && res.pl.shipmentList) {
+                            _this.shipmentList = res.pl.shipmentList;
+                        }
                     });
                     // this.initUi();
                 }
                 Shipment.prototype.veSubmitForShipment = function (alert) {
                     // alert.processed = !alert.processed;
-                    this.router.navigate(['ShipmentMap']);
+                    var _this = this;
+                    alert.status = 2;
+                    console.log("alert-----", alert);
+                    this.request.put("/plc/alert", alert).subscribe(function (res) {
+                        console.log("res----", res);
+                        if (res.pl && res.pl.alert && res.pl.alert.code) {
+                            _this.router.navigate(['ShipmentMap', { tank: res.pl.alert.code }]);
+                        }
+                    });
                 };
                 Shipment = __decorate([
                     core_1.Component({

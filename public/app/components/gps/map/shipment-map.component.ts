@@ -1,8 +1,10 @@
 
 import {Component, provide, AfterViewInit, OnDestroy} from 'angular2/core';
+import {RouteParams} from 'angular2/router';
 import {config} from '../../../config';
 import {RequestService} from '../../../services/request.service';
 import {UserService} from '../../../services/user.service';
+
 declare var BMAP_ANCHOR_TOP_LEFT:any;
 declare var BMAP_NAVIGATION_CONTROL_LARGE:any;
 
@@ -47,7 +49,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       ed:''//estimated duration
   };
   constructor(private request:RequestService,
-              private userSrvc:UserService){
+              private userSrvc:UserService,
+              private routeParams:RouteParams){
         this.user = this.userSrvc.getUser();
   console.log("ShipmentMap is up and running");
 
@@ -362,13 +365,12 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
         var  distance = route.getResults().getPlan(0).getDistance(true);
         var duration  = route.getResults().getPlan(0).getDuration(true);
+
         that.newShipment.dist = distance;
         that.newShipment.ed = duration;
         that.newShipment.pa = that.user.an;
+        that.newShipment.oti = that.routeParams.get('tank');
 
-
-      console.log("  route.getDistance()",  distance);
-      console.log("  route.duration()",  duration);
 
 
         var pts = route.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
@@ -377,8 +379,6 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         var i = 0;
 
           function resetMkPoint(){
-
-
 
             if(i < paths){
 
