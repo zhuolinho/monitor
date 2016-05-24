@@ -245,7 +245,7 @@ gps.processIncommingData = function(m){
 
 
 gps.newShipment =  function(m) {
-  console.log("newShipment",m);
+  // console.log("newShipment");
   var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
@@ -255,7 +255,7 @@ gps.newShipment =  function(m) {
           var ports = Object.keys(gpsConfig.port);
           var lp =  gpsConfig.port[ports[0]].simPlate[sim]? gpsConfig.port[ports[0]].simPlate[sim]: gpsConfig.port[ports[1]].simPlate[sim];
 
-            console.log("lp---",ports,lp)
+            // console.log("lp---",ports,lp)
 
           if(lp){
 
@@ -306,7 +306,7 @@ gps.newShipment =  function(m) {
 
 gps.shipmentComplete = function(m){
 
-  console.log("shipmentComplete ----",m);
+  // console.log("shipmentComplete ----");
 
   var r = {pl: null, er:'',em:''};
   var deferred = q.defer();
@@ -318,15 +318,16 @@ gps.shipmentComplete = function(m){
     shipment.at = lib.dateTime();
     shipment.status = 1;
 
-    User.findOneAndUpdate({ _id: shipment._id }, shipment, { new: true }, function(err, resp) {
+    // console.log("shipment to update----",shipment);
+
+    Shiment.findOneAndUpdate({ _id: shipment._id }, shipment, { new: true }, function(err, resp) {
               if (err){
                 r.er = err;
                 r.em = 'problem finding shipment';
-                console.log("err---",err);
+                // console.log("err---",err);
                 deferred.reject(r);
               }
               else{
-                console.log("resp----",resp);
                 if(resp){
                   r.pl = {shipment:resp};
                   deferred.resolve(r);
@@ -340,6 +341,7 @@ gps.shipmentComplete = function(m){
     }
     else {
       r.er =  "no shiment info or sim provided";
+      // console.log(r.er);
       deferred.reject(r);
     }
   return deferred.promise;

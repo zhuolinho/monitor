@@ -390,7 +390,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
               setTimeout(function(){
                 resetMkPoint();
-              },1000);
+              },100);
             }
           }
 

@@ -308,7 +308,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                                 i++;
                                 setTimeout(function () {
                                     resetMkPoint();
-                                }, 1000);
+                                }, 100);
                             }
                         }
                         resetMkPoint();
