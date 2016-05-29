@@ -12,3 +12,16 @@
   height: 150px;
   margin: auto;
 }
+
+.padding-top-30{
+    padding-top: 30px;
+}
+
+@media only screen and (max-width:600px){
+	#loginWrapper{
+		padding-top: 0vh;
+	}
+	.padding-top-30{
+		padding-top: 0px;
+	}
+}
