@@ -177,6 +177,24 @@ module.exports = function (handler)
             });
   });
 
+  router.post('/download', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'downloadData',
+          pl:{}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
 
 
   //plc Connection

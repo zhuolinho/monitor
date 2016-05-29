@@ -212,4 +212,11 @@ alertsList:any[] = [];
            });
       });
     }
+
+    download(){
+      this.request.post('/plc/download',{}).subscribe(res => {
+        console.log("res-----",res);
+        window.location = res.pl.file;
+      });
+    }
  }

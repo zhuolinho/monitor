@@ -10,6 +10,7 @@ var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
 var Tank = require('../../models/tank');
 var plcConfig = require('../../configs/plc');
+var lib = require('../../lib/lib');
 
 
 var alertsList =[
@@ -492,6 +493,22 @@ plc.updatePlcAlert =  function(m) {
         r.er =  "no alert or alert tank provided";
         deferred.reject(r);
       }
+    return deferred.promise;
+}
+
+plc.downloadData = function(m){
+  console.log(" downloadData----");
+
+  var r = {pl:null , er:'',em:''};
+  var deferred = q.defer();
+
+    lib.procesDownload().then(function(res){
+      console.log("file res----",res);
+      r.pl = {file:res.path};
+      deferred.resolve(r);
+    });
+
+
     return deferred.promise;
 }
 

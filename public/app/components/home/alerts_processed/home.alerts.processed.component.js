@@ -218,6 +218,12 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                         });
                     });
                 };
+                HomeProcssedAlerts.prototype.download = function () {
+                    this.request.post('/plc/download', {}).subscribe(function (res) {
+                        console.log("res-----", res);
+                        window.location = res.pl.file;
+                    });
+                };
                 HomeProcssedAlerts = __decorate([
                     core_1.Component({
                         selector: 'home-processed-alerts',
