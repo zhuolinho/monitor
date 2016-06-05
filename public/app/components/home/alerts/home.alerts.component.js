@@ -193,12 +193,15 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     this.currentSort = 'all';
                     this.alertsList = [];
                     console.log("Home alerts is up and running");
+                    var self = this;
                     this.user = this.userSrvc.getUser();
                     console.log("this.user----", this.user);
                     this.request.get('/plc/alerts/unprocessed').subscribe(function (res) {
                         if (res.pl && res.pl.alerts) {
                             _this.alertsList = res.pl.alerts;
                             console.log("this.alertsList---", _this.alertsList);
+                            _this.alertGroups = _.groupBy(_this.alertsList, 'atype');
+                            console.log("this.alertGroups----", _this.alertGroups['余量报警']);
                         }
                         _this.initUi();
                     });

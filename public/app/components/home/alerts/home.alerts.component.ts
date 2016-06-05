@@ -9,6 +9,7 @@ import {UserService} from '../../../services/user.service';
 import {CORE_DIRECTIVES} from 'angular2/common';
 import {LibService} from '../../../services/lib.service';
 declare var jQuery:any;
+declare var _:any;
 
 @Component({
   selector:'home-alerts',
@@ -167,17 +168,29 @@ export class HomeAlerts{
     currentSort:string = 'all';
 
     alertsList:any[] = [];
+    alertGroups:any;
 
     user:any;
 
     constructor(private request:RequestService, private userSrvc:UserService, private libSrvc:LibService){
     console.log("Home alerts is up and running");
+      var self = this;
       this.user = this.userSrvc.getUser();
       console.log("this.user----",this.user);
       this.request.get('/plc/alerts/unprocessed').subscribe(res => {
         if(res.pl && res.pl.alerts){
             this.alertsList = res.pl.alerts;
             console.log("this.alertsList---",this.alertsList);
+
+
+            this.alertGroups =  _.groupBy(this.alertsList,'atype');
+
+            console.log("this.alertGroups----",this.alertGroups['余量报警']);
+              //
+              // config.alertTypes.forEach(function(key,index){
+              //   var group = {groupName:key,groupId:index+1,data:groupObj[key]||[]};
+              //   self.alertsList.push(group);
+              // });
         }
         this.initUi();
       });
