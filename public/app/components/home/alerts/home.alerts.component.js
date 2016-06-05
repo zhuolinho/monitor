@@ -217,22 +217,28 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     }
                 };
                 HomeAlerts.prototype.veProcessed = function (alert) {
+                    var _this = this;
+                    var self = this;
                     alert.pt = this.libSrvc.dateTime();
                     alert.status = 1;
                     alert.pa = this.user.an;
+                    console.log("alert------", alert);
                     this.request.put('/plc/alert', alert).subscribe(function (res) {
                         console.log("alert updated", res);
+                        var newArray = _.remove(_this.alertGroups[alert.atype], function (o) {
+                            return o._id == alert._id;
+                        });
                     });
                 };
                 HomeAlerts.prototype.initUi = function () {
-                    var _this = this;
+                    var self = this;
                     setTimeout(function (_) {
                         jQuery('.modal-trigger').leanModal({
                             dismissible: true,
                             opacity: .5,
                             in_duration: 300,
                             out_duration: 200,
-                            ready: function () { console.log('Ready'); _this.initSelect(); },
+                            ready: function () { console.log('Ready'); self.initSelect(); },
                             complete: function () { console.log('Closed'); } // Callback for Modal close
                         });
                         //  alert('getting models up');

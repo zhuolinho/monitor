@@ -34,7 +34,6 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                     this.loginError = false;
                     this.router = router;
                     console.log("login is up and running");
-                    this.validateForm();
                 }
                 LoginComponent.prototype.login = function () {
                     var _this = this;
@@ -49,42 +48,6 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                             _this.loginError = true;
                         }
                     });
-                };
-                LoginComponent.prototype.validateForm = function () {
-                    setTimeout(function (_) {
-                        console.log("validating----");
-                        jQuery("#loginForm").validate({
-                            rules: {
-                                username: "required",
-                                password: {
-                                    required: true,
-                                    minlength: 6
-                                }
-                            },
-                            //For custom messages
-                            messages: {
-                                username: "safort",
-                                password: {
-                                    required: "safort",
-                                    minlength: "too short"
-                                }
-                            },
-                            errorElement: 'div',
-                            errorPlacement: function (error, element) {
-                                console.log("error, element----", error, element);
-                                var placement = jQuery(element).data('error');
-                                if (placement) {
-                                    jQuery(placement).append(error);
-                                }
-                                else {
-                                    error.insertAfter(element);
-                                }
-                            }
-                        });
-                        //  jQuery.validator.setDefaults({
-                        //         ignore: []
-                        //   });
-                    }, 1000);
                 };
                 LoginComponent = __decorate([
                     core_1.Component({

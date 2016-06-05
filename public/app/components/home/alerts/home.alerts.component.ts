@@ -200,23 +200,30 @@ export class HomeAlerts{
     }
 
     veProcessed(alert){
+      var self = this;
       alert.pt = this.libSrvc.dateTime();
       alert.status = 1;
       alert.pa = this.user.an;
 
+     console.log("alert------",alert);
+
       this.request.put('/plc/alert', alert).subscribe(res => {
           console.log("alert updated",res);
+        var newArray = _.remove(this.alertGroups[alert.atype],function(o){
+              return o._id == alert._id;
+        });
       });
     }
+
     initUi(){
-      var _this = this;
+      var self = this;
         setTimeout(_=>{
             jQuery('.modal-trigger').leanModal({
                  dismissible: true, // Modal can be dismissed by clicking outside of the modal
                  opacity: .5, // Opacity of modal background
                  in_duration: 300, // Transition in duration
                  out_duration: 200, // Transition out duration
-                 ready: function() { console.log('Ready');  _this.initSelect()}, // Callback for Modal open
+                 ready: function() { console.log('Ready');  self.initSelect()}, // Callback for Modal open
                  complete: function() { console.log('Closed'); } // Callback for Modal close
            });
           //  alert('getting models up');

@@ -470,9 +470,9 @@ plc.updatePlcAlert =  function(m) {
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.alert && m.pl.alert.tank){
+    if(m.pl && m.pl.alert && m.pl.alert._id){
 
-      PlcAlert.findOneAndUpdate({tank:m.pl.alert.tank}, m.pl.alert, { new: true }, function(err, resp) {
+      PlcAlert.findOneAndUpdate({_id:m.pl.alert._id}, m.pl.alert, { new: true }, function(err, resp) {
                 if (err){
                   r.er = err;
                   r.em = 'problem finding alert';
@@ -490,7 +490,7 @@ plc.updatePlcAlert =  function(m) {
       });
       }
       else {
-        r.er =  "no alert or alert tank provided";
+        r.er =  "no alert or alert _id provided";
         deferred.reject(r);
       }
     return deferred.promise;
