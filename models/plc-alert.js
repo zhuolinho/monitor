@@ -15,8 +15,7 @@ var plcAlertSchema = mongoose.Schema({
                     // addr:String, //tank address
                     tank:{
                       type:String,
-                      required:true,
-                      unique:true
+                      required:true
                     },
                     rt:String, //remaining time(余量报警)
                     status:{
