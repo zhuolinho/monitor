@@ -15,6 +15,7 @@ export class LoginComponent{
 
     user:any = {username:'', password:''};
     router:Router;
+    loginError:boolean = false;
     constructor(public localUserService:UserService,router:Router){
         this.router = router;
         console.log("login is up and running");
@@ -24,10 +25,15 @@ export class LoginComponent{
     login(){
       var _this = this;
       console.log("this.user.password---",this.user);
+      _this.loginError = false;
       this.localUserService.login({username:this.user.username, password:this.user.password}).subscribe(res => {
+
         if(!res.er){
             _this.localUserService.saveUser(res.pl);
-          _this.router.navigate(['Admin']);
+            _this.router.navigate(['Admin']);
+        }
+        else{
+          _this.loginError = true;
         }
       });
     }

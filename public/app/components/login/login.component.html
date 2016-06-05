@@ -37,10 +37,21 @@
 
     </div>
 
-    <div class="col m4  s12 helper-padding-top-30">
+    <div class="col m4  s12 helper-padding-top-30 helper-relative">
+
+      <div class="row" *ngIf="loginError" style=" position:absolute; width:90%; left:7.5%; top:-20px;">
+        <div class="col s12">
+          <p class="center-align helper-padding-5" style="background:#ee6e73;">
+            用户名或密码错误, 请重试!
+          </p>
+        </div>
+      </div>
+
       <div class="row helper-padding-top-10">
+
         <form class="helper-white-bg helper-padding-15" style="width:85%; margin:auto;" id="loginForm">
           <div class="row">
+
             <div class="input-field col s12">
               <i class="material-icons prefix helper-gray">person</i>
               <input id="icon_prefix" name="username" type="text" class="helper-black" [(ngModel)]="user.username">
@@ -57,7 +68,6 @@
       <div class="helper-hpadding-25 helper-vpadding-10">
         <a (click)="login()"   class="btn monitor-gray-button btn-dark waves-effect  waves-light helper-font-bigger "   style="width:160px; height:50px; margin:auto; display:block; line-height:50px;">登录</a>
       </div>
-
     </div>
 
   </div>

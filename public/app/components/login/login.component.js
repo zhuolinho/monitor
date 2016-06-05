@@ -31,6 +31,7 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                 function LoginComponent(localUserService, router) {
                     this.localUserService = localUserService;
                     this.user = { username: '', password: '' };
+                    this.loginError = false;
                     this.router = router;
                     console.log("login is up and running");
                     this.validateForm();
@@ -38,10 +39,14 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                 LoginComponent.prototype.login = function () {
                     var _this = this;
                     console.log("this.user.password---", this.user);
+                    _this.loginError = false;
                     this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (res) {
                         if (!res.er) {
                             _this.localUserService.saveUser(res.pl);
                             _this.router.navigate(['Admin']);
+                        }
+                        else {
+                            _this.loginError = true;
                         }
                     });
                 };

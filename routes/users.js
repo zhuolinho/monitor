@@ -78,7 +78,7 @@ router.post('/login', function(req, res) {
       .fail(function (r) {
         console.log(r.er);
         var r = {pl: null, er: r.er};
-        helpers.sendResponse(res, 501, r);
+        helpers.sendResponse(res, 200, r);
       });
 });
 
