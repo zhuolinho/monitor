@@ -311,7 +311,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                                 i++;
                                 setTimeout(function () {
                                     resetMkPoint();
-                                }, 100);
+                                }, 1000);
                             }
                         }
                         resetMkPoint();

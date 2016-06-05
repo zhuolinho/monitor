@@ -14,7 +14,7 @@ var plcSchema = mongoose.Schema({
                       ti:String
                     },
                     // addr:String, //tank address
-                    tank:{type:String,required:true, unique:true},
+                    tank:{type:String,required:true},
                     ra:String, //remaining amount(余量报警)
                     rt:String, //remaining time(余量报警)
                     status:{

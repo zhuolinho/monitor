@@ -389,15 +389,13 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
               setTimeout(function(){
                 resetMkPoint();
-              },100);
+              },1000);
             }
           }
+          
+       resetMkPoint();
 
-            resetMkPoint();
-
-
-
-        console.log("this.newShipment----",that.newShipment);
+       console.log("this.newShipment----",that.newShipment);
 
         that.request.post('/gps/shipment',that.newShipment).subscribe(res => {
           console.log("new shipment saved-----", res);
