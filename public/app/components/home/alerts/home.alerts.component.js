@@ -201,7 +201,6 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                             _this.alertsList = res.pl.alerts;
                             console.log("this.alertsList---", _this.alertsList);
                             _this.alertGroups = _.groupBy(_this.alertsList, 'atype');
-                            console.log("this.alertGroups----", _this.alertGroups['余量报警']);
                         }
                         _this.initUi();
                     });

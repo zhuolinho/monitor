@@ -181,16 +181,7 @@ export class HomeAlerts{
         if(res.pl && res.pl.alerts){
             this.alertsList = res.pl.alerts;
             console.log("this.alertsList---",this.alertsList);
-
-
             this.alertGroups =  _.groupBy(this.alertsList,'atype');
-
-            console.log("this.alertGroups----",this.alertGroups['余量报警']);
-              //
-              // config.alertTypes.forEach(function(key,index){
-              //   var group = {groupName:key,groupId:index+1,data:groupObj[key]||[]};
-              //   self.alertsList.push(group);
-              // });
         }
         this.initUi();
       });

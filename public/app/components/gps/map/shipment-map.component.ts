@@ -211,12 +211,12 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   }
 
   addCustomMarker(cardata){
-      var iconImage = 'dist/images/truck.png';
+      var iconImage = 'dist/images/truck.new.gif';
       var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
 
       var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {    //小车图片
           // offset: new BMap.Size(0, -5),    //相当于CSS精灵
-          imageOffset: new BMap.Size(0, 10)    //图片的偏移量。为了是图片底部中心对准坐标点。
+          imageOffset: new BMap.Size(0, 15)    //图片的偏移量。为了是图片底部中心对准坐标点。
           });
 
         var point = new BMap.Point(cardata.lng, cardata.lat);
@@ -392,7 +392,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
               },1000);
             }
           }
-          
+
        resetMkPoint();
 
        console.log("this.newShipment----",that.newShipment);
