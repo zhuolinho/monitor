@@ -1,0 +1,112 @@
+
+        <!-- modal -->
+
+        <div id="{{data.id}}" class="modal" style="overflow:auto;" >
+          <div class="modal-content">
+            <i class="modal-close material-icons right">clear</i>
+            <h4 *ngIf="!editMode">  添加到 "{{data.users.type.value}}"</h4>
+            <h4 *ngIf="editMode">  编辑 "{{data.users.type.value}}"</h4>
+
+            <form class="" id="addNewUserModal">
+
+                    <!-- <div class="row">
+                      <div class="col s12 helper-font-bigger center-align">
+                          <span class="helper-border-bottom helper-padding-10">
+                            基本信息
+                          </span>
+                      </div>
+                    </div> -->
+
+                   <div class="row">
+                        <div class="input-field col s12">
+                          <input *ngIf="editTarget" id="name" type="text" class="validate" [(ngModel)]="editTarget.name">
+                          <input *ngIf="!editTarget" id="name" type="text" class="validate" [(ngModel)]="newUser.name" >
+                          <label for="name" class="active">姓名:</label>
+                        </div>
+
+
+                        <form  class="col s12">
+                          <div class="helper-margin-top-15" >性别:
+
+                            <a class="helper-inline-block helper-margin-right-20">
+                              <input *ngIf="!editTarget" name="gender" type="radio" id="male"  (click)="newUser.sex = 0;" />
+                              <input *ngIf="editTarget" name="gender" type="radio" id="male" [attr.checked]="editTarget.sex == 0 ? 'checked':null"  (click)="editTarget.sex = 0;" />
+                              <label  for="male">男</label>
+                            </a>
+                            <a class="helper-inline-block">
+                              <input *ngIf="!editTarget" name="gender" type="radio" id="female"  (click)="newUser.sex = 1;"  />
+                              <input *ngIf="editTarget" name="gender" type="radio" id="female" [attr.checked]="editTarget.sex == 1 ? 'checked':null" (click)="editTarget.sex = 1;"  />
+                              <label for="female" class="active">女</label>
+                            </a>
+
+                        </div>
+
+                      </form>
+
+                      <div class="input-field col s12">
+                        <input *ngIf="editTarget" id="phone" type="text" class="validate" [(ngModel)]="editTarget.phone">
+                        <input *ngIf="!editTarget" id="phone" type="text" class="validate"  [(ngModel)]="newUser.phone" >
+                        <label for="phone" class="active">手机:</label>
+                      </div>
+
+
+                    </div>
+
+
+
+                    <!-- <div class="row">
+                      <div class="col s12 helper-font-bigger center-align">
+                          <span class="helper-border-bottom helper-padding-10">
+                            账号信息
+                          </span>
+                      </div>
+                    </div>
+
+                   <div class="row">
+                        <div *ngIf="editTarget" class="input-field col s12">
+                          <input id="account" type="text" class="validate" [value]="editTarget.an" disabled>
+                          <label  class="active" for="account">账号:</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                          <input *ngIf="editTarget" id="password" type="text" class="validate" value="******" disabled>
+                          <input *ngIf="!editTarget" id="password" type="text" class="validate" [(ngModel)]="newUser.pw" >
+                          <label for="password" class="active">密码:</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                          <select class="privilege">
+                            <option value="" disabled >请选择级别</option>
+                            <option value="1" [attr.selected]="editTarget?.ap == 1">1</option>
+                            <option value="2" [attr.selected]="editTarget?.ap == 2">2</option>
+                            <option value="3" [attr.selected]="editTarget?.ap == 3">3</option>
+                            <option value="4" [attr.selected]="editTarget?.ap == 4">4</option>
+                            <option value="5" [attr.selected]="editTarget?.ap == 5">5</option>
+                            <option value="6" [attr.selected]="editTarget?.ap == 6">6</option>
+                            <option value="7" [attr.selected]="editTarget?.ap == 7">7</option>
+                            <option value="8" [attr.selected]="editTarget?.ap == 8">8</option>
+                          </select>
+                          <label >级别</label>
+                        </div>
+
+
+                        <div class="input-field col s12">
+                          <input  *ngIf="!editTarget"  id="address" type="text" class="validate" [(ngModel)]="newUser.addr">
+                          <input  *ngIf="editTarget"  id="address" type="text" class="validate" [(ngModel)]="editTarget.addr">
+                          <label class="active" for="address">地址:</label>
+                        </div>
+
+                    </div> -->
+
+            </form>
+
+          </div>
+
+          <div class="modal-footer">
+           <a *ngIf="!editTarget" (click)="addNewUser()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+           <a *ngIf="editTarget" (click)="updateUser()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+         </div>
+
+          <!-- for the select -->
+         <div style="padding-bottom:60px;"></div>
+      </div>

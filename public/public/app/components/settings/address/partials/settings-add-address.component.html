@@ -1,0 +1,108 @@
+
+        <!-- modal -->
+
+        <div id="{{data.id}}" class="modal " style="overflow:auto;">
+          <div class="modal-content">
+            <i class="modal-close material-icons right">clear</i>
+            <h4 *ngIf="!editMode">  添加到 "{{data.tanks.type.value}}"</h4>
+            <h4 *ngIf="editMode">  编辑 "{{data.tanks.type.value}}"</h4>
+
+
+            <div class="col s12 m12 helper-margin-bottom-20  helper-margin-top-30">
+              <div *ngIf="editMode" class="input-field" >
+                <select id="tankCode" disabled>
+
+                    <option *ngFor="#tank of currentTanks" [attr.selected]="(tank == editTarget?.code)?true:null">
+                      {{tank}}
+                    </option>
+
+                </select>
+
+                <label for="tankCode">
+                  罐号
+                </label>
+              </div>
+
+
+              <div *ngIf="!editMode" class="input-field" >
+                <select id="tankCode" >
+
+                    <option *ngFor="#tank of currentTanks" [attr.selected]="(tank == editTarget?.code)?true:null">
+                      {{tank}}
+                    </option>
+
+                </select>
+
+                <label for="tankCode">
+                  选择罐号
+                </label>
+              </div>
+
+
+
+
+            </div>
+
+           <div class="col s12 m12 helper-margin-bottom-20">
+             <div class="input-field">
+               <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.addr">
+              <input type="text" id="addrInput" *ngIf ="!editTarget" [(ngModel)]="newTank.addr" >
+               <label class="active" for="addrInput">请输入地址</label>
+             </div>
+           </div>
+
+
+          <div class="col s12 m12 helper-margin-bottom-20">
+                <div class="input-field">
+                  <select id="plcAddr1" >
+                      <option value="192.167.0.1">
+                      192.167.0.1
+                      </option>
+                      <option value="192.167.0.2">
+                          192.167.0.2
+                      </option>
+
+                      <option value="192.167.0.3">
+                        192.167.0.3
+                      </option>
+
+                  </select>
+                  <label for="plcAddr1">
+                  选择 PLC 地址1。
+                  </label>
+                </div>
+            </div>
+
+            <div class="col s12 m12 helper-margin-bottom-20">
+                  <div class="input-field">
+                    <select id="plcAddr2" >
+                        <option value="192.167.0.5">
+                        192.167.0.5
+                        </option>
+                        <option value="192.167.0.6">
+                            192.167.0.6
+                        </option>
+
+                        <option value="192.167.0.7">
+                          192.167.0.7
+                        </option>
+
+                    </select>
+                    <label for="plcAddr2">
+                    选择 PLC 地址2。
+                    </label>
+                  </div>
+              </div>
+
+
+
+          </div>
+
+          <div class="modal-footer">
+           <a *ngIf="!editTarget" (click)="addNewTank()" class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+           <a *ngIf="editTarget" (click)="updateTank()" class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+         </div>
+
+          <!-- for the select -->
+         <div class="clearfix" style="height:80px;"> </div>
+      </div>

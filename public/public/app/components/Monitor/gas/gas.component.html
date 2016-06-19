@@ -1,0 +1,161 @@
+<div class="" style="overflow-x:hidden">
+
+
+  <div class="row helper-margin-bottom-5 valign-wrapper">
+    <div class="col s7  helper-white-bg">
+      <div class="input-field">
+          <select class="helper-select-font-bigger">
+            <option value="0"  selected> 母站</option>
+            <option  value="中转站1号">中转站1号</option>
+           <option  value="中转站2号">中转站2号</option>
+           <option  value="中转站3号">中转站3号</option>
+          <option  value="">C001-闸北区天目中路111号XXX站</option>
+          <option  value="">C002-闸北区大宁路355号XXXXX站 </option>
+          <option  value=""> C003-闸北区万荣路23号XXX站</option>
+          <option  value=""> L001-闸北区沪太路1500号XX基地</option>
+          <option  value=""> L002-闸北区共和新路555号XXX基地</option>
+          <option  value=""> L003-闸北区红星公路220号XXX基地</option>
+          <option  value="">X001-黄浦区新闸路333号XXXXXX站</option>
+          <option  value="">X002-静安区海防路111号XX站</option>
+          <option  value="">X003-虹口区四川北路222号XX站</option>
+
+          </select>
+          <label >选择地址</label>
+        </div>
+    </div>
+    <div class="col s5">
+    </div>
+  </div>
+
+
+  <div class="row helper-vmargin-15">
+      <div class="col s7">
+        <div class="row modal-nav monitor-tabs">
+          <div class="col s3">
+              <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; detailmodal.showByDay();" data-target="detailModal" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button modal-trigger helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+          </div>
+
+          <div class="col s3">
+              <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  detailmodal.showByMonth();" data-target="detailModal"[class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align modal-trigger"> 月均用量</a>
+          </div>
+          <div class="col s3">
+
+              <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+          </div>
+          <div class="col s3">
+              <a (click)="selectedtab=4; detailmodal.selectedtab = selectedtab;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
+          </div>
+
+        </div>
+
+      </div>
+  </div>
+
+  <div class="divider">
+  </div>
+
+
+
+
+  <div class="helper-vscrolling" style="height:60vh; padding-bottom:30px; padding-top:10px;">
+        <div class="helper-margin-bottom-20 valign-wrapper row">
+          <div class="col s9">
+            <div class="helper-white-bg ">
+              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block center-align">
+
+                C003-闸北区大宁路335号XX站
+              </div>
+
+              <div class="monitor-table helper-font-bigger">
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 使用情况</div>
+                  <div class="table-cell"> 正在使用</div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell"> 余量/压力</div>
+                  <div class="table-cell"> 89%/16kg/hps</div>
+                </div>
+
+
+                <div class="table-row">
+                  <div class="table-cell"> 信号/异常</div>
+                  <div class="table-cell"> 信号良好/无泄漏</div>
+                </div>
+
+                    <div class="clearfix"></div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col s3 valign">
+            <!-- <a (click)="veProcessed(alert)" *ngIf="!alert.processed" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a> -->
+          </div>
+
+          <!-- modal goes here -->
+            <gas-detail [data]="{id:'detailModal',alert:{name:'C003-闸北区大宁路335号XX站'}}" #detailmodal> </gas-detail>
+
+        </div>
+
+
+
+        <div class="helper-margin-bottom-20 valign-wrapper row">
+          <div class="col s9">
+            <div class="helper-white-bg" style="overflow-x:hidden;">
+              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block">
+
+                C003-闸北区大宁路335号XX站 ({{availableTanks.length}}个储罐)
+
+                <a  class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veToggleSelectAllTanks()">
+                  <span *ngIf="!allTankSelected">
+                    全选
+                  </span>
+
+                  <!-- this.selectedTanks.length -->
+                  <span *ngIf="allTankSelected">
+                    反选
+                  </span>
+                </a>
+                <a [class.disabled]="!selectedTanks.length" class="monitor-gray-button  right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veReturnSelectedTanks()">拉回</a>
+                <a [class.disabled]="!selectedTanks.length" class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15 helper-margin-right-15" (click)="veAddSelectedTanks()">进场</a>
+              </div>
+
+              <div class="row  helper-gray-border-light">
+                <div class="col s4 helper-font-bigger center-align">
+                  现有储罐
+                </div>
+
+                <div class="col s8">
+                    <div class="monitor-table vstrip helper-font-bigger" style="border-top:hidden; border-bottom:hidden;">
+                          <div class="table-row" *ngFor="#tank of availableTanks; #i=index;">
+                            <div class="table-cell" style="">
+                            <span class="left" style="margin-top:6px;">{{tank.id}}</span>
+                              <a class="right" style="margin-top:8px;"  >
+                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
+                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
+                                <label attr.for="{{tank.id+i}}"></label>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="col s3 valign">
+          </div>
+
+        </div>
+
+  </div>
+
+
+</div>

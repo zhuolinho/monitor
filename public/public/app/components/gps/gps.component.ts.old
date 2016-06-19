@@ -1,0 +1,91 @@
+
+import {Component, provide} from 'angular2/core'
+import {config} from '../../config';
+import {Request} from '../../services/request';
+declare var BMap:any;
+declare var jQuery:any;
+declare var window:any;
+declare var io:any;
+@Component({
+  selector:'gps',
+  templateUrl:config.prefix + '/components/gps/gps.component.html'
+})
+
+export class Gps{
+
+  static points:any = {};
+  constructor(public request:Request){
+  console.log("Gps is up and running");
+      this.loadJScript();
+      this.iniSocket();
+  }
+
+
+
+ loadJScript() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = 'http://api.map.baidu.com/api?v=2.0&ak='+config.bdmkey+'&callback=initMap';
+    window.initMap = this.initGpsMap;  //set global reference for initMap callback;
+    document.body.appendChild(script);
+  }
+
+  initGpsMap(){
+
+            // 百度地图API功能
+          var map = new BMap.Map("allmap");
+          // var point = new BMap.Point(116.404, 39.915);
+          // map.centerAndZoom(point, 12);
+          // 编写自定义函数,创建标注
+          function addMarker(point){
+            var marker = new BMap.Marker(point);
+            var label = new BMap.Label("我是文字标注哦",{offset:new BMap.Size(20,-10)});
+            // marker.setLabel(label);
+               map.addOverlay(marker);
+          }
+
+
+
+          // var point = new BMap.Point(121.414079,31.421790);
+          // Gps.points['14721115321'] = point;
+
+           Gps.points['14721115321']  = new BMap.Point(121.414079,31.421790);
+          map.centerAndZoom(Gps.points['14721115321'] , 12);
+          addMarker(Gps.points['14721115321'] );
+          var timer = setInterval(_=>{
+            console.log('monving car');
+            Gps.points['14721115321'].lng += 0.5;
+            Gps.points['14721115321'].lat += 0.5;
+            Gps.points['14721115321']  = new BMap.Point(Gps.points['14721115321'].lng, Gps.points['14721115321'].lat);
+           addMarker(Gps.points['14721115321']);
+          },1000);
+
+          // 向地图添加标注
+          // var bounds = map.getBounds();
+          // var sw = bounds.getSouthWest();
+          // var ne = bounds.getNorthEast();
+          // var lngSpan = Math.abs(sw.lng - ne.lng);
+          // var latSpan = Math.abs(ne.lat - sw.lat);
+          // for (var i = 0; i < 25; i ++) {
+          //   var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+          //   addMarker(point);
+          // }
+    }
+
+
+    iniSocket(){
+        var socket = io('http://localhost:8080');
+      //  socket.on('carMove', function(data){
+      //   //  console.log('carMove',data);
+      //    if(data.pl&&data.pl.gps){
+      //      var car = data.pl.gps;
+      //      if(car.sim == "14721115321"){
+      //        console.log('same car',data);
+      //         Gps.points['14721115321'].lng = car.lon;
+      //         Gps.points['14721115321'].lat = car.lat;
+      //      }
+      //    }
+      //   //  socket.emit('carMove',{status:true});
+      //  });
+    }
+}

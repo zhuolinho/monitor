@@ -1,0 +1,172 @@
+<div class="helper-border-top helper-relative">
+    <div class="helper-padding-10  herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
+        <a (click)="veSortBy('余量报警');   selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span  *ngIf="alertGroups && alertGroups['余量报警'] && alertGroups['余量报警'].length " class="new-alert-badge">{{alertGroups['余量报警'].length}}</span></a>
+        <a  (click)="veSortBy('压力报警');  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警  <span  *ngIf="alertGroups && alertGroups['压力报警'] && alertGroups['压力报警'].length" class="new-alert-badge">{{alertGroups['压力报警'].length}}</span></a>
+        <a  (click)="veSortBy('信号中断');  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断  <span  *ngIf="alertGroups && alertGroups['信号中断'] && alertGroups['信号中断'].length" class="new-alert-badge">{{alertGroups['信号中断'].length}}</span></a>
+        <a   (click)="veSortBy('泄漏报警');  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 <span  *ngIf="alertGroups && alertGroups['泄漏报警'] && alertGroups['泄漏报警'].length" class="new-alert-badge">{{alertGroups['泄漏报警'].length}}</span></a>
+        <a   (click)="veSortBy('拉回报警');  selectedtab=5;" [class.monitor-tab-selected]="selectedtab==5"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 拉回报警 <span  *ngIf="alertGroups && alertGroups['拉回报警'] && alertGroups['拉回报警'].length" class="new-alert-badge">{{alertGroups['拉回报警'].length}}</span></a>
+        <a   (click)="veSortBy('进场报警');  selectedtab=6;" [class.monitor-tab-selected]="selectedtab==6"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 进场报警 <span *ngIf="alertGroups && alertGroups['进场报警'] && alertGroups['进场报警'].length" class="new-alert-badge">{{alertGroups['进场报警'].length}}</span></a>
+    </div>
+    <div class="space" style="padding-top:60px;">
+    </div>
+
+    <!-- toto add a back to top button -->
+
+    <div class="helper-vscrolling" style=" height:80vh;">
+        <div *ngFor="#alert of alertsList; #i = index;">
+          <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="(currentSort == alert.atype) || (currentSort == 'all')">
+            <div class="col s9">
+              <div class="helper-white-bg ">
+                <div class="row valign-wrapper helper-padding-5">
+                  <div class="col s4 push-s8">
+                    <div *ngIf="!alert.status && alert.atype != '拉回报警' && alert.atype != '进场报警'" class="right">
+                          <a  href="{{'#homealert'+i}}" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger modal-trigger">查看</a>
+                    </div>
+
+                    <div *ngIf="alert.status" class="right helper-font-bigger">
+                        已接报
+                    </div>
+
+                  </div>
+                  <div class="col s8 pull-s4 valign helper-font-bigger helper-padding-left-30">
+                    {{alert.tank}}
+                  </div>
+                </div>
+
+                <div class="monitor-table helper-font-bigger">
+                  <div class="table-row" *ngIf ='(alert.atype != "拉回报警") && (alert.atype != "进场报警")' >
+                    <!-- set first collum width on the common field to 40% to keep alignment  -->
+                    <div class="table-cell" style="width:40% !important;"> 罐号 </div>
+                    <div class="table-cell with-select">
+                      <!-- {{alert.id}} -->
+
+                        <select class="" name="">
+
+                          <option value="6348">J6348</option>
+                          <option value="6548">C6548</option>
+                          <option value="6898">D6898</option>
+
+                        </select>
+
+                    </div>
+                  </div>
+                  <div class="table-row" *ngIf="alert.atype == '余量报警'">
+                      <div class="table-cell"> 余量/压力 </div>
+                      <div class="table-cell">
+                        {{alert.am}}
+
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                          余量报警
+                        </div>
+                     </div>
+                  </div>
+
+
+                  <div class="table-row" *ngIf="alert.atype == '压力报警'">
+                      <div class="table-cell"> 压力/异常 </div>
+                      <div class="table-cell">
+                        {{alert.am}}
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                          压力报警
+                      </div>
+                     </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.atype == '信号中断'">
+                    <div class="table-cell"> 信号/异常 </div>
+                    <div class="table-cell">{{alert.am}}
+
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                             信号中断
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.atype == '泄漏报警'">
+                    <div class="table-cell"> 泄漏/异常 </div>
+                    <div class="table-cell">{{alert.am}}
+
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                             泄漏报警
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.atype == '余量报警'">
+                    <div class="table-cell"> 剩余时间 </div>
+                    <div class="table-cell">{{alert.rt}} </div>
+                  </div>
+
+
+                  <div class="table-row" *ngIf ='(alert.atype == "拉回报警")|| (alert.atype == "进场报警")'>
+                    <div class="table-cell" > 已选罐号 </div>
+                    <div class="table-cell">
+
+                      <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
+                          <span *ngFor="#n of alert.st"> {{n.ti}}, </span>
+                      </div>
+
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                             {{alert.am}}
+                      </div>
+
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">
+                        <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- <div class="table-row" *ngIf ='(alert.atype == "进场报警")'>
+                    <div class="table-cell" > 已选罐号 </div>
+                    <div class="table-cell">
+
+                      <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
+                          <span *ngFor="#n of alert.st"> {{n.ti}}, </span>
+                      </div>
+
+                      <div class="monitor-alert" *ngIf="!alert.status">
+                             进场报警
+                      </div>
+
+                      <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">
+                        <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
+                      </div>
+                    </div>
+                  </div> -->
+
+
+
+                 <div class="table-row" *ngIf ='(alert.atype == "拉回报警") || (alert.atype == "进场报警")'>
+                    <div class="table-cell"> 拉回数量 </div>
+                    <div class="table-cell">
+                      {{alert.st.length}} 个
+                    </div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 时间/工号 </div>
+                    <div class="table-cell">{{alert.atime}} / {{alert.pa}}</div>
+                  </div>
+
+
+                  <div class="clearfix"></div>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col s3 valign">
+              <a (click)="veProcessed(alert)" *ngIf="!alert.status" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a>
+            </div>
+
+            <!-- modal goes here -->
+            <home-alerts-detail *ngIf ='(alert.atype != "拉回报警") && (alert.atype != "进场报警") ' [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
+            <home-return-alerts-detail *ngIf ='(alert.atype == "拉回报警") || (alert.atype == "进场报警")' [data]="{id:'homereturnalert'+i,alert:alert}"> </home-return-alerts-detail>
+
+          </div>
+        </div>
+
+        <!-- scroll helper -->
+        <div style="height:100px;"></div>
+    </div>

@@ -1,0 +1,25 @@
+
+        <!-- modal -->
+
+        <div id="{{paramTable.id}}" class="modal  fixed helper-padding-bottom-20">
+          <div class="modal-content helper-overflow-hidden ">
+            <i class="modal-close material-icons right">clear</i>
+
+              <!-- <h4>Modal Header</h4> -->
+              <div class="helper-font-double center-align helper-padding-30">
+                    {{paramTable.alert.name}}
+              </div>
+
+              <div class="helper-vscrolling" style="height:50vh;">
+
+                <div class="center-align" *ngFor="#n of paramTable.alert.selectedTanks">
+                    {{n.ti}}
+                </div>
+
+                <!-- padding div -->
+                <div style="height:50px;"></div>
+
+              </div>
+
+            </div>
+      </div>

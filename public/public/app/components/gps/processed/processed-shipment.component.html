@@ -1,0 +1,61 @@
+
+
+<div class="helper-padding-10 helper-vscrolling" style="height:80vh;">
+
+  <ul class="collapsible row" data-collapsible="accordion">
+
+
+          <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="#shipment of shipments">
+            <div class="collapsible-header active"> <span class="left helper-font-bigger">{{shipment.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
+            <div class="collapsible-body helper-padding-10">
+
+                  <div class="row helper-margin-bottom-5 valign-wrapper">
+                    <div class="col s2 m2 ">
+                      <div class="input-field">
+                          <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth">
+                            <option *ngFor="#m of months; #i = index" [attr.selected]="i == 0">{{m}}</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="container valign">
+                      <a class="btn right monitor-gray-button helper-font-bigger waves-effect waves-light helper-margin-right-5" style="height:40px;">
+                        下载数据
+                      </a>
+                    </div>
+                  </div>
+                  <div class="monitor-table helper-font-bigger">
+                    <div class="table-row helper-gray-bg-dark">
+                      <div class="table-cell"> 原罐号 </div>
+                      <div class="table-cell">换罐号  </div>
+                      <div class="table-cell">配送时间  </div>
+                      <div class="table-cell">送达时间  </div>
+                      <div class="table-cell">车牌/司机/押运 </div>
+                      <div class="table-cell">调度员  </div>
+                       <!-- <div class="table-cell">公里数 </div> -->
+                         <div class="table-cell">距离 </div>
+                    </div>
+
+                    <div class="table-row" *ngFor="#data of shipment.data">
+                      <div class="table-cell"> {{data.oti}} </div>
+                      <div class="table-cell">{{data.nti}}  </div>
+                      <div class="table-cell">{{data.dt}} </div>
+                      <div class="table-cell">{{data.at}} </div>
+                      <div class="table-cell">{{data.lp}}/{{data.driver}}/{{data.s}}</div>
+                      <div class="table-cell">{{data.pa}} </div>
+                      <div class="table-cell">{{data.dist}} </div>
+
+                    </div>
+                  </div>
+
+            </div>
+          </li>
+    </ul>
+
+
+  <!-- padding div for scroll -->
+    <div style="height:80px;">
+
+    </div>
+
+
+</div>
