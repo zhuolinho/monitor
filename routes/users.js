@@ -7,7 +7,7 @@ var passport = require('passport');
 module.exports = function (handler)
 {
 
-  router.post('/signup', function(req, res, next) {
+  router.post('/signup.json', function(req, res, next) {
         var param = {
           ns: 'auth',
           vs: '1.0',
@@ -31,7 +31,7 @@ module.exports = function (handler)
 
 
 
-  router.put('/update', function(req, res, next) {
+  router.put('/update.json', function(req, res, next) {
         var param = {
           ns: 'auth',
           vs: '1.0',
@@ -59,7 +59,7 @@ module.exports = function (handler)
 
 
   // login
-router.post('/login', function(req, res) {
+router.post('/login.json', function(req, res) {
 
   var param = {
     ns: 'auth',
@@ -84,7 +84,7 @@ router.post('/login', function(req, res) {
 
 
 
-router.get('/all', function(req, res) {
+router.get('/all.json', function(req, res) {
 
 var param = {
   ns: 'auth',
@@ -106,7 +106,7 @@ handler(param)
 });
 
 
-router.get('/access', function(req, res) {
+router.get('/access.json', function(req, res) {
 
 var param = {
   ns: 'auth',
@@ -129,7 +129,7 @@ handler(param)
 
 
 
-router.get('/offline', function(req, res) {
+router.get('/offline.json', function(req, res) {
 
 var param = {
   ns: 'auth',
@@ -160,7 +160,7 @@ handler(param)
 
 
 // restricted routes
-router.get('/admin', passport.authenticate('jwt', { session: false}), function(req, res) {
+router.get('/admin.json', passport.authenticate('jwt', { session: false}), function(req, res) {
 
   var param = {
     ns: 'auth',

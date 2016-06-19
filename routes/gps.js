@@ -9,9 +9,21 @@ var router = express.Router();
 
 //socket-------
 var gpsApp = require('express')();
+// var port = 3001;
 var server = require('http').Server(gpsApp);
 var io = require('socket.io')(server);
-server.listen(3001);
+// var sticky = require('sticky-session'); //for sockect on multicores process
+// // server.listen(port);
+// if (!sticky.listen(server, 3001)) {
+//   // Master code
+//   server.once('listening', function() {
+//     console.log('server started on 3001 port');
+//   });
+// } else {
+//   // Worker code
+// }
+
+
 
 
 var q = require('q');
@@ -21,7 +33,7 @@ module.exports = function (handler)
 {
 
 
-  router.get('/all', function(req, res, next) {
+  router.get('/all.json', function(req, res, next) {
 
         var param = {
           ns: 'gps',
@@ -42,7 +54,7 @@ module.exports = function (handler)
   });
 
 
-  router.get('/cars/all', function(req, res, next) {
+  router.get('/cars/all.json', function(req, res, next) {
 
         var param = {
           ns: 'gps',
@@ -64,7 +76,7 @@ module.exports = function (handler)
 
 
 
-  router.get('/shipments/done', function(req, res, next) {
+  router.get('/shipments/done.json', function(req, res, next) {
 
         var param = {
           ns: 'gps',
@@ -84,7 +96,7 @@ module.exports = function (handler)
   });
 
 
-  router.post('/shipment', function(req, res, next) {
+  router.post('/shipment.json', function(req, res, next) {
 
         var param = {
           ns: 'gps',
@@ -104,7 +116,7 @@ module.exports = function (handler)
   });
 
 
-  router.put('/shipment/done', function(req, res, next) {
+  router.put('/shipment/done.json', function(req, res, next) {
 
         var param = {
           ns: 'gps',
@@ -125,7 +137,7 @@ module.exports = function (handler)
 
 
   //gps Connection
-  _tcpCLient(handler);
+  // _tcpCLient(handler);
 
   return router;
 };

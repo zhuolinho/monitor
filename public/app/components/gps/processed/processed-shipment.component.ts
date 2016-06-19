@@ -184,7 +184,7 @@ export class ProcessedShipment{
 
       var self = this;
     console.log("processed-shipment is up and running");
-    this.request.get('/gps/shipments/done').subscribe(res => {
+    this.request.get('/gps/shipments/done.json').subscribe(res => {
           console.log("res ---",res);
           if(res && res.pl && res.pl.shipments){
 

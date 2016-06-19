@@ -22,7 +22,7 @@ System.register(['angular2/core', './request.service', 'rxjs/add/operator/map'],
             },
             function (_1) {}],
         execute: function() {
-            loginApi = 'users/login';
+            loginApi = 'users/login.json';
             UserService = (function () {
                 function UserService(request) {
                     this.request = request;

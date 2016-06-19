@@ -154,7 +154,7 @@ export class SettingsAddress{
       console.log("SettingsAddress is up and running");
       var self = this;
 
-      this.request.get("/plc/tanks/all").subscribe(res => {
+      this.request.get("/plc/tanks/all.json").subscribe(res => {
           console.log("got response--",res);
           if(res.pl && res.pl.tanks){
               this.tanks = res.pl.tanks;

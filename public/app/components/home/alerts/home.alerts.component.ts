@@ -177,7 +177,7 @@ export class HomeAlerts{
       var self = this;
       this.user = this.userSrvc.getUser();
       console.log("this.user----",this.user);
-      this.request.get('/plc/alerts/unprocessed').subscribe(res => {
+      this.request.get('/plc/alerts/unprocessed.json').subscribe(res => {
         if(res.pl && res.pl.alerts){
             this.alertsList = res.pl.alerts;
             console.log("this.alertsList---",this.alertsList);
@@ -207,7 +207,7 @@ export class HomeAlerts{
 
      console.log("alert------",alert);
 
-      this.request.put('/plc/alert', alert).subscribe(res => {
+      this.request.put('/plc/alert.json', alert).subscribe(res => {
           console.log("alert updated",res);
         var newArray = _.remove(this.alertGroups[alert.atype],function(o){
               return o._id == alert._id;

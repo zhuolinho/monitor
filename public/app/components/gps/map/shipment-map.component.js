@@ -225,7 +225,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var that = this;
                     console.log("posting end of shipment----", this.newShipment);
                     this.isShiping = false;
-                    this.request.put('/gps/shipment/done', this.newShipment).subscribe(function (res) {
+                    this.request.put('/gps/shipment/done.json', this.newShipment).subscribe(function (res) {
                         console.log("res shipment done-----", res);
                     });
                 };
@@ -248,7 +248,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var that = this;
                     console.log("confirm-----", ShipmentMap.mapLoaded, this.selectedCarId);
                     if (ShipmentMap.mapLoaded && this.selectedCarId && !this.isShiping) {
-                        this.request.get('/gps/cars/all').subscribe(function (res) {
+                        this.request.get('/gps/cars/all.json').subscribe(function (res) {
                             console.log("got cars----", res);
                             var cars = res.pl.cars;
                             var c = cars[that.selectedCarId];
@@ -316,7 +316,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         }
                         resetMkPoint();
                         console.log("this.newShipment----", that.newShipment);
-                        that.request.post('/gps/shipment', that.newShipment).subscribe(function (res) {
+                        that.request.post('/gps/shipment.json', that.newShipment).subscribe(function (res) {
                             console.log("new shipment saved-----", res);
                             that.isShiping = true;
                             that.newShipment = res.pl.shipment; //update shiment with _id; used on the shipment completion
@@ -330,7 +330,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     this.targetCar = null; // stop car moves.
                     var point = new BMap.Point(121.454, 31.153);
                     ShipmentMap.gpsmap.centerAndZoom(point, 10);
-                    this.request.get('/gps/cars/all').subscribe(function (res) {
+                    this.request.get('/gps/cars/all.json').subscribe(function (res) {
                         var cars = res.pl.cars;
                         console.log("cars----", cars);
                         var allcars = Object.keys(cars).map(function (key) {

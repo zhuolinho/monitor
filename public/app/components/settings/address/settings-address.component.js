@@ -169,7 +169,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     this.tanksArray = [];
                     console.log("SettingsAddress is up and running");
                     var self = this;
-                    this.request.get("/plc/tanks/all").subscribe(function (res) {
+                    this.request.get("/plc/tanks/all.json").subscribe(function (res) {
                         console.log("got response--", res);
                         if (res.pl && res.pl.tanks) {
                             _this.tanks = res.pl.tanks;

@@ -192,7 +192,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     this.alertsList = [];
                     console.log("Home processed alerts is up and running");
                     var self = this;
-                    this.request.get('/plc/alerts/processed').subscribe(function (res) {
+                    this.request.get('/plc/alerts/processed.json').subscribe(function (res) {
                         if (res.pl && res.pl.alerts) {
                             console.log("res.pl.alerts", res.pl.alerts);
                             var groupObj = _.groupBy(res.pl.alerts, 'atype');
@@ -219,7 +219,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     });
                 };
                 HomeProcssedAlerts.prototype.download = function () {
-                    this.request.post('/plc/download', {}).subscribe(function (res) {
+                    this.request.post('/plc/download.json', {}).subscribe(function (res) {
                         console.log("res-----", res);
                         window.location = res.pl.file;
                     });

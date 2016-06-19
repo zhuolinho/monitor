@@ -60,7 +60,7 @@ export class Shipment{
        private request:RequestService){
     console.log("Shipment is up and running");
 
-    this.request.get("/plc/shipments").subscribe(res => {
+    this.request.get("/plc/shipments.json").subscribe(res => {
           // console.log("res------", res);
           if(res.pl && res.pl.shipmentList){
               this.shipmentList = res.pl.shipmentList;
@@ -80,7 +80,7 @@ export class Shipment{
 
       console.log("alert-----",alert);
 
-      this.request.put("/plc/alert",alert).subscribe(res => {
+      this.request.put("/plc/alert.json",alert).subscribe(res => {
 
         console.log("res----",res);
         if(res.pl && res.pl.alert && res.pl.alert.code){

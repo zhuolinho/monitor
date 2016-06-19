@@ -160,7 +160,7 @@ export class SettingsAccess{
     constructor(private request:RequestService, private settingsSrvc:SettingsService){
       var self = this;
       console.log("SettingsAccess is up and running");
-      this.request.get("/users/access").subscribe(res => {
+      this.request.get("/users/access.json").subscribe(res => {
           console.log("got response--",res);
           if(res.pl && res.pl.users){
               this.users = res.pl.users;

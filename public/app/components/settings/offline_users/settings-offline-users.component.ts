@@ -106,7 +106,7 @@ export class SettingsOfflineUsers{
     constructor(private request:RequestService, private settingsSrvc:SettingsService){
       console.log("Settings Offline users is up and running");
       var self = this;
-      this.request.get("/users/offline").subscribe(res => {
+      this.request.get("/users/offline.json").subscribe(res => {
           console.log("got response--",res);
           if(res.pl && res.pl.users){
               this.users = res.pl.users;

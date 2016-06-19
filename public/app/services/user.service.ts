@@ -3,7 +3,7 @@ import  {RequestService} from './request.service';
 
 import 'rxjs/add/operator/map';
 
-var loginApi = 'users/login';
+var loginApi = 'users/login.json';
 
 @Injectable()
 export class UserService {

@@ -196,7 +196,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     var self = this;
                     this.user = this.userSrvc.getUser();
                     console.log("this.user----", this.user);
-                    this.request.get('/plc/alerts/unprocessed').subscribe(function (res) {
+                    this.request.get('/plc/alerts/unprocessed.json').subscribe(function (res) {
                         if (res.pl && res.pl.alerts) {
                             _this.alertsList = res.pl.alerts;
                             console.log("this.alertsList---", _this.alertsList);
@@ -223,7 +223,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     alert.status = 1;
                     alert.pa = this.user.an;
                     console.log("alert------", alert);
-                    this.request.put('/plc/alert', alert).subscribe(function (res) {
+                    this.request.put('/plc/alert.json', alert).subscribe(function (res) {
                         console.log("alert updated", res);
                         var newArray = _.remove(_this.alertGroups[alert.atype], function (o) {
                             return o._id == alert._id;

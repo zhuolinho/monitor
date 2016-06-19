@@ -3,7 +3,7 @@
 
 var mongoose = null ; //mongoose object
 var message = null;   // message function
-var allCars = {};
+ global.allCars = {};
 var gps = {};
 
 
@@ -67,7 +67,7 @@ gps.init = function(m) {
 //                           })
 //
 //
-//           allCars[sim] = gpsData;  //save latest position of each car;
+//           global.allCars[sim] = gpsData;  //save latest position of each car;
 //
 //           gpsData.save(function (err, gps) {
 //               if (err){
@@ -170,7 +170,7 @@ gps.getAllCars =  function(m) {
   console.log("getAllCars FUNCTION");
  var r = {pl: {}, er:''};
   var deferred = q.defer();
-  r.pl.cars = allCars;
+  r.pl.cars = global.allCars;
   deferred.resolve(r);
   return deferred.promise;
 
@@ -228,7 +228,7 @@ gps.processIncommingData = function(m){
       //                   })
 
       var gpsData = new gpsModel(toSave);
-        allCars[sim] = gpsData;  //save latest position of each car;
+        global.allCars[sim] = gpsData;  //save latest position of each car;
         r.pl =  {gps:gpsData};
         deferred.resolve(r);
     }
@@ -377,11 +377,11 @@ gps.saveIncommingData =  function(m) {
 
 //save gps data periodically
 var timer = setInterval(function(){
-        var cars = Object.keys(allCars);
+        var cars = Object.keys(global.allCars);
         var pchain = [];
 
         for (var i = 0; i < cars.length; i++) {
-               var message =  allCars[cars[i]];
+               var message =  global.allCars[cars[i]];
               //  console.log("message----",message);
                pchain.push(gps.saveIncommingData(message));
         }

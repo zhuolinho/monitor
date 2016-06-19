@@ -85,7 +85,7 @@ export class Gas{
         this.newAlert.addr = "C003-闸北区大宁路3325号";
 
           console.log("posting--",  this.newAlert);
-        this.request.post('/plc/alert',this.newAlert).subscribe(res => {
+        this.request.post('/plc/alert.json',this.newAlert).subscribe(res => {
           console.log("alert created----",res);
         });
       }

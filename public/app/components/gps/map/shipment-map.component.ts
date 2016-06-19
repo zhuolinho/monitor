@@ -270,7 +270,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         console.log("posting end of shipment----", this.newShipment);
 
         this.isShiping  = false;
-      this.request.put('/gps/shipment/done', this.newShipment).subscribe(res => {
+      this.request.put('/gps/shipment/done.json', this.newShipment).subscribe(res => {
         console.log("res shipment done-----", res);
       });
     }
@@ -298,7 +298,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
         console.log("confirm-----",ShipmentMap.mapLoaded,this.selectedCarId);
         if (ShipmentMap.mapLoaded && this.selectedCarId && !this.isShiping){
-          this.request.get('/gps/cars/all').subscribe(res => {
+          this.request.get('/gps/cars/all.json').subscribe(res => {
 
                   console.log("got cars----",res);
                 var cars = res.pl.cars;
@@ -397,7 +397,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
        console.log("this.newShipment----",that.newShipment);
 
-        that.request.post('/gps/shipment',that.newShipment).subscribe(res => {
+        that.request.post('/gps/shipment.json',that.newShipment).subscribe(res => {
           console.log("new shipment saved-----", res);
            that.isShiping = true;
            that.newShipment = res.pl.shipment;   //update shiment with _id; used on the shipment completion
@@ -414,7 +414,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
       var point = new BMap.Point(121.454,31.153 );
       ShipmentMap.gpsmap.centerAndZoom(point, 10);
-      this.request.get('/gps/cars/all').subscribe(res => {
+      this.request.get('/gps/cars/all.json').subscribe(res => {
             var cars = res.pl.cars;
             console.log("cars----",cars);
             var allcars = Object.keys(cars).map(function (key) {

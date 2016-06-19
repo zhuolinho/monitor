@@ -195,7 +195,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     this.months = ['1月', '2月', '3月', '4月'];
                     var self = this;
                     console.log("processed-shipment is up and running");
-                    this.request.get('/gps/shipments/done').subscribe(function (res) {
+                    this.request.get('/gps/shipments/done.json').subscribe(function (res) {
                         console.log("res ---", res);
                         if (res && res.pl && res.pl.shipments) {
                             var groupObj = _.groupBy(res.pl.shipments, 'ntt');

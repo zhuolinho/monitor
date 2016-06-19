@@ -177,7 +177,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-us
                     this.selectedtab = 0;
                     var self = this;
                     console.log("SettingsAccess is up and running");
-                    this.request.get("/users/access").subscribe(function (res) {
+                    this.request.get("/users/access.json").subscribe(function (res) {
                         console.log("got response--", res);
                         if (res.pl && res.pl.users) {
                             _this.users = res.pl.users;

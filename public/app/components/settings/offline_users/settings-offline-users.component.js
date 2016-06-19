@@ -122,7 +122,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                     this.staffArray = [];
                     console.log("Settings Offline users is up and running");
                     var self = this;
-                    this.request.get("/users/offline").subscribe(function (res) {
+                    this.request.get("/users/offline.json").subscribe(function (res) {
                         console.log("got response--", res);
                         if (res.pl && res.pl.users) {
                             _this.users = res.pl.users;

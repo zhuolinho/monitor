@@ -13,7 +13,7 @@ module.exports = function (handler)
 {
 
 
-  router.get('/all', function(req, res, next) {
+  router.get('/all.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -32,7 +32,7 @@ module.exports = function (handler)
             });
   });
 
-  router.get('/alerts/:which', function(req, res, next) {
+  router.get('/alerts/:which.json', function(req, res, next) {
 
 
       //which = all, processed, unprocessed.
@@ -53,7 +53,7 @@ module.exports = function (handler)
   });
 
 
-  router.put('/alert', function(req, res, next) {
+  router.put('/alert.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -75,7 +75,7 @@ module.exports = function (handler)
 
 
 
-  router.post('/alert', function(req, res, next) {
+  router.post('/alert.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -97,7 +97,7 @@ module.exports = function (handler)
 
 
 
-  router.get('/shipments', function(req, res, next) {
+  router.get('/shipments.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -116,7 +116,7 @@ module.exports = function (handler)
   });
 
 
-  router.get('/tanks/all', function(req, res, next) {
+  router.get('/tanks/all.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -139,7 +139,7 @@ module.exports = function (handler)
 
 
 
-  router.post('/tank', function(req, res, next) {
+  router.post('/tank.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -160,7 +160,7 @@ module.exports = function (handler)
 
 
 
-  router.put('/tank', function(req, res, next) {
+  router.put('/tank.json', function(req, res, next) {
         var param = {
           ns: 'plc',
           vs: '1.0',
@@ -177,7 +177,7 @@ module.exports = function (handler)
             });
   });
 
-  router.post('/download', function(req, res, next) {
+  router.post('/download.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
@@ -208,7 +208,7 @@ var _tcpSerever = function(handler){
 
   // Keep track of the chat clients
   var clients = [];
-  console.log('plc server: Start');
+  // console.log('plc server: Start');
   // Start a TCP Server
   net.createServer(function (socket) {
 

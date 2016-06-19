@@ -76,7 +76,7 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
                     //];  //todo user flag and ng if to hide when filtering;
                     this.shipmentList = [];
                     console.log("Shipment is up and running");
-                    this.request.get("/plc/shipments").subscribe(function (res) {
+                    this.request.get("/plc/shipments.json").subscribe(function (res) {
                         // console.log("res------", res);
                         if (res.pl && res.pl.shipmentList) {
                             _this.shipmentList = res.pl.shipmentList;
@@ -89,7 +89,7 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
                     var _this = this;
                     alert.status = 2;
                     console.log("alert-----", alert);
-                    this.request.put("/plc/alert", alert).subscribe(function (res) {
+                    this.request.put("/plc/alert.json", alert).subscribe(function (res) {
                         console.log("res----", res);
                         if (res.pl && res.pl.alert && res.pl.alert.code) {
                             _this.router.navigate(['ShipmentMap', { tank: res.pl.alert.code }]);

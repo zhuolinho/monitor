@@ -182,7 +182,7 @@ alertsList:any[] = [];
   constructor(private request:RequestService){
   console.log("Home processed alerts is up and running");
   var self = this;
-    this.request.get('/plc/alerts/processed').subscribe(res => {
+    this.request.get('/plc/alerts/processed.json').subscribe(res => {
       if(res.pl && res.pl.alerts){
 
         console.log("res.pl.alerts",res.pl.alerts)
@@ -214,7 +214,7 @@ alertsList:any[] = [];
     }
 
     download(){
-      this.request.post('/plc/download',{}).subscribe(res => {
+      this.request.post('/plc/download.json',{}).subscribe(res => {
         console.log("res-----",res);
         window.location = res.pl.file;
       });
