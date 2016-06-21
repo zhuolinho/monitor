@@ -158,8 +158,6 @@ module.exports = function (handler)
   });
 
 
-
-
   router.put('/tank.json', function(req, res, next) {
         var param = {
           ns: 'plc',
@@ -194,8 +192,6 @@ module.exports = function (handler)
               helpers.sendResponse(res, 404, r);
             });
   });
-
-
 
   //plc Connection
   _tcpSerever(handler);
