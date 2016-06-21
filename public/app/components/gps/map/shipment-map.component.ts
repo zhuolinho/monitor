@@ -214,12 +214,12 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     var marker = new BMap.Marker(point);
     if(data.lp){
       var opts = {
-    	  width : 120,     // 信息窗口宽度
+    	  width : 140,     // 信息窗口宽度
     	  height: 70,     // 信息窗口高度
     	  title : "车辆信息" , // 信息窗口标题
     	  enableMessage:true//设置允许信息窗发送短息
     	}
-    	var infoWindow = new BMap.InfoWindow("车牌号:"+data.lp +",\n"+ "速度:"+data.speed+"Km/H"+",\n"+"定位时间:"+data.time, opts);  // 创建信息窗口对象
+    	var infoWindow = new BMap.InfoWindow("车牌号:"+data.lp+ "速度:"+data.speed+"km/h "+"定位时间:"+data.time, opts);  // 创建信息窗口对象
     	marker.addEventListener("click", function(){
     		ShipmentMap.gpsmap.openInfoWindow(infoWindow,point); //开启信息窗口
     	});

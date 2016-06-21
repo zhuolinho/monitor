@@ -183,12 +183,12 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var opts = {
-                            width: 120,
+                            width: 140,
                             height: 70,
                             title: "车辆信息",
                             enableMessage: true //设置允许信息窗发送短息
                         };
-                        var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + ",\n" + "速度:" + data.speed + "Km/H" + ",\n" + "定位时间:" + data.time, opts); // 创建信息窗口对象
+                        var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + "速度:" + data.speed + "km/h " + "定位时间:" + data.time, opts); // 创建信息窗口对象
                         marker.addEventListener("click", function () {
                             ShipmentMap.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
                         });
