@@ -165,16 +165,43 @@ gps.getCompletedShipments =  function(m) {
 }
 
 
-
 gps.getAllCars =  function(m) {
-  console.log("getAllCars FUNCTION");
- var r = {pl: {}, er:''};
-  var deferred = q.defer();
-  r.pl.cars = global.allCars;
-  deferred.resolve(r);
-  return deferred.promise;
+
+  var r = {pl: null, status:false , er:''};
+   var deferred = q.defer();
+
+   gpsModel.aggregate(
+           [
+             { $sort: { sim: 1, time: 1}},
+             {
+               $group:
+                 {
+                   _id:"$sim",
+                   time: { $last: "$time" },
+                   lng: { $last: "$lng" },
+                   lat: { $last: "$lat" },
+                   speed: { $last: "$speed"},
+                   lp:{$last: "$lp"}
+                 }
+             }
+           ]
+        ).exec(function(err,resp){
+            if (err){
+              r.er = JSON.stringify(err);
+              deferred.reject(r);
+            }
+            else{
+              r.pl = {cars:resp};
+              r.status = true;
+              deferred.resolve(r);
+            }
+        });
+   return deferred.promise;
 
 }
+
+
+
 
 
 
@@ -212,20 +239,6 @@ gps.processIncommingData = function(m){
     else {
 
       var toSave = {sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp};
-
-      // var gpsData = new gpsModel({
-      //                           sim:m.pl.sim,
-      //                           loc:m.pl.loc,
-      //                           lng:m.pl.lng,
-      //                           lat:m.pl.lat,
-      //                           speed:m.pl.speed,
-      //                           course:m.pl.course,
-      //                           time:m.pl.time,
-      //                           alarm:m.pl.alarm,
-      //                           addr:m.pl.addr,
-      //                           rawd:m.pl.rawd,
-      //                           lp:m.pl.lp
-      //                   })
 
       var gpsData = new gpsModel(toSave);
         global.allCars[sim] = gpsData;  //save latest position of each car;
