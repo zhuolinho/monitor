@@ -33,6 +33,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   static gpsmap:any;
   isShiping:boolean = false;
   user:any;
+  totalCarNumber:number;
   newShipment:any = {
       sim:'',
       dest:'',
@@ -202,11 +203,29 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
             enableGeolocation: true
           });
           ShipmentMap.gpsmap.addControl(navigationControl);
+
+          // function showInfo(e){
+          //   console.log(e.point.lng + ", " + e.point.lat);
+          // }
+          // ShipmentMap.gpsmap.addEventListener("click", showInfo);
   }
 
   addMarker(data){
-    var point = new BMap.Point(data.lng, data.lat);
+    var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
     var marker = new BMap.Marker(point);
+    if(data.lp){
+      var opts = {
+    	  width : 140,     // 信息窗口宽度
+    	  height: 70,     // 信息窗口高度
+    	  title : "车辆信息" , // 信息窗口标题
+    	  enableMessage:true//设置允许信息窗发送短息
+    	}
+    	var infoWindow = new BMap.InfoWindow("车牌号:"+data.lp+ "速度:"+data.speed+"km/h "+"定位时间:"+data.time, opts);  // 创建信息窗口对象
+    	marker.addEventListener("click", function(){
+    		ShipmentMap.gpsmap.openInfoWindow(infoWindow,point); //开启信息窗口
+    	});
+    }
+
     ShipmentMap.gpsmap.addOverlay(marker);
   }
 
@@ -424,6 +443,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
             for (let i = 0; i < allcars.length; i++) {
                 this.addMarker(allcars[i]);
             }
+
+            this.totalCarNumber =  allcars.length;
       });
     }
 

@@ -173,10 +173,26 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         enableGeolocation: true
                     });
                     ShipmentMap.gpsmap.addControl(navigationControl);
+                    // function showInfo(e){
+                    //   console.log(e.point.lng + ", " + e.point.lat);
+                    // }
+                    // ShipmentMap.gpsmap.addEventListener("click", showInfo);
                 };
                 ShipmentMap.prototype.addMarker = function (data) {
-                    var point = new BMap.Point(data.lng, data.lat);
+                    var point = new BMap.Point(parseFloat(data.lng) + config_1.config.gpsError.lng, parseFloat(data.lat) + config_1.config.gpsError.lat);
                     var marker = new BMap.Marker(point);
+                    if (data.lp) {
+                        var opts = {
+                            width: 140,
+                            height: 70,
+                            title: "车辆信息",
+                            enableMessage: true //设置允许信息窗发送短息
+                        };
+                        var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + "速度:" + data.speed + "km/h " + "定位时间:" + data.time, opts); // 创建信息窗口对象
+                        marker.addEventListener("click", function () {
+                            ShipmentMap.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
+                        });
+                    }
                     ShipmentMap.gpsmap.addOverlay(marker);
                 };
                 ShipmentMap.prototype.addCustomMarker = function (cardata) {
@@ -341,6 +357,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         for (var i = 0; i < allcars.length; i++) {
                             _this.addMarker(allcars[i]);
                         }
+                        _this.totalCarNumber = allcars.length;
                     });
                 };
                 ShipmentMap.prototype.calculateDistance = function (scrPoint, desPoint) {

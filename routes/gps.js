@@ -9,21 +9,10 @@ var router = express.Router();
 
 //socket-------
 var gpsApp = require('express')();
-// var port = 3001;
+var port = 3001;
 var server = require('http').Server(gpsApp);
 var io = require('socket.io')(server);
-// var sticky = require('sticky-session'); //for sockect on multicores process
-// // server.listen(port);
-// if (!sticky.listen(server, 3001)) {
-//   // Master code
-//   server.once('listening', function() {
-//     console.log('server started on 3001 port');
-//   });
-// } else {
-//   // Worker code
-// }
-
-
+server.listen(port);
 
 
 var q = require('q');
