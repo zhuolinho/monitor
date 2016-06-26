@@ -179,7 +179,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     ShipmentMap.gpsmap.addEventListener("click", showInfo);
                 };
                 ShipmentMap.prototype.addMarker = function (data) {
-                    var point = new BMap.Point(data.lng, data.lat);
+                    var point = new BMap.Point(parseFloat(data.lng) + config_1.config.gpsError.lng, parseFloat(data.lat) + config_1.config.gpsError.lat);
                     var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var opts = {
@@ -355,6 +355,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         for (var i = 0; i < allcars.length; i++) {
                             _this.addMarker(allcars[i]);
                         }
+                        _this.totalCarNumber = allcars.length;
                     });
                 };
                 ShipmentMap.prototype.calculateDistance = function (scrPoint, desPoint) {

@@ -7,6 +7,7 @@ export interface ConfigType {
   color:string,
   bdmkey:string,
   usersPrivileges:any,
+  gpsError:{lng:number, lat: number},
   tanks:any[],
   alertTypes:any[],
   shipmentTanks:any[]
@@ -29,5 +30,6 @@ export const config:ConfigType = {
   },
   tanks:['CNG','LNG','集格','杜瓦瓶','官网','中转站'],
   shipmentTanks:['CNG','LNG','集格','杜瓦瓶','进场','拉回'],
-  alertTypes:['余量报警','压力报警','信号中断','泄漏报警','拉回报警','进场报警']
+  alertTypes:['余量报警','压力报警','信号中断','泄漏报警','拉回报警','进场报警'],
+  gpsError:{lng:0.010982, lat: 0.003664},
 };

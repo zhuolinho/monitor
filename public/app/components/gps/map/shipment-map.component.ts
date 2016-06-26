@@ -33,6 +33,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   static gpsmap:any;
   isShiping:boolean = false;
   user:any;
+  totalCarNumber:number;
   newShipment:any = {
       sim:'',
       dest:'',
@@ -210,7 +211,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   }
 
   addMarker(data){
-    var point = new BMap.Point(data.lng, data.lat);
+    var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
     var marker = new BMap.Marker(point);
     if(data.lp){
       var opts = {
@@ -442,6 +443,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
             for (let i = 0; i < allcars.length; i++) {
                 this.addMarker(allcars[i]);
             }
+
+            this.totalCarNumber =  allcars.length;
       });
     }
 
