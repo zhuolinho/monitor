@@ -173,10 +173,10 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         enableGeolocation: true
                     });
                     ShipmentMap.gpsmap.addControl(navigationControl);
-                    function showInfo(e) {
-                        console.log(e.point.lng + ", " + e.point.lat);
-                    }
-                    ShipmentMap.gpsmap.addEventListener("click", showInfo);
+                    // function showInfo(e){
+                    //   console.log(e.point.lng + ", " + e.point.lat);
+                    // }
+                    // ShipmentMap.gpsmap.addEventListener("click", showInfo);
                 };
                 ShipmentMap.prototype.addMarker = function (data) {
                     var point = new BMap.Point(parseFloat(data.lng) + config_1.config.gpsError.lng, parseFloat(data.lat) + config_1.config.gpsError.lat);

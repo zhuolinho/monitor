@@ -204,10 +204,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
           });
           ShipmentMap.gpsmap.addControl(navigationControl);
 
-          function showInfo(e){
-            console.log(e.point.lng + ", " + e.point.lat);
-          }
-          ShipmentMap.gpsmap.addEventListener("click", showInfo);
+          // function showInfo(e){
+          //   console.log(e.point.lng + ", " + e.point.lat);
+          // }
+          // ShipmentMap.gpsmap.addEventListener("click", showInfo);
   }
 
   addMarker(data){
