@@ -26,24 +26,12 @@ System.register(['angular2/core', 'angular2/router', '../../config'], function(e
         execute: function() {
             Navigator = (function () {
                 function Navigator() {
-                    this.menu = 0;
-                    this.url = "#/admin/monitor";
                     this.navigations = [
                         { link: ['/Admin', 'Home'], title: '首页', icon: 'dashboard' },
                         { link: ['/Admin', 'Monitor'], title: '实时监控', icon: 'videocam' },
                         { link: ['/Admin', 'Gps'], title: 'GPS ', icon: 'my_location' },
                         { link: ['/Admin', 'Settings'], title: '设置 ', icon: 'settings' }
                     ];
-                }
-                Navigator.prototype.shiftMenu = function () {
-                    this.menu++;
-                    if (this.menu % 3 == 0) {
-                        this.url = "#/admin/monitor";
-                    } else if (this.menu % 3 == 1) {
-                        this.url = "#/admin/gps";
-                    } else if (this.menu % 3 == 2) {
-                        this.url = "#/admin/home";
-                    }
                 }
                 Navigator = __decorate([
                     core_1.Component({
