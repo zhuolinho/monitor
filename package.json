@@ -27,10 +27,10 @@
     "sticky-session": "^1.1.2",
     "verbose": "^0.2.3",
     "yunpian-sms-client": "^1.0.3",
-    "node-xlsx":"^0.7.1",
-    "node-uuid":"^1.4.7"
+    "node-xlsx": "^0.7.1",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
-    "flightplan": "^0.6.13"
+    "flightplan": "^0.6.14"
   }
 }

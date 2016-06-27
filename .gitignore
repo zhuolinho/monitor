@@ -2,4 +2,6 @@ node_modules
 app_modules/dispatcher/dev.dispatcher.module.js
 gulpfile.js
 public/gulpfile.js
+public/node_modules
+public/bower_components
 flightplan.js
