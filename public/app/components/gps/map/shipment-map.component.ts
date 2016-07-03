@@ -211,7 +211,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   }
 
   addMarker(data){
-    var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
+    // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
+    var point = new BMap.Point(parseFloat(data.lng), parseFloat(data.lat));
     var marker = new BMap.Marker(point);
     if(data.lp){
       var opts = {

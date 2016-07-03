@@ -179,7 +179,8 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     // ShipmentMap.gpsmap.addEventListener("click", showInfo);
                 };
                 ShipmentMap.prototype.addMarker = function (data) {
-                    var point = new BMap.Point(parseFloat(data.lng) + config_1.config.gpsError.lng, parseFloat(data.lat) + config_1.config.gpsError.lat);
+                    // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
+                    var point = new BMap.Point(parseFloat(data.lng), parseFloat(data.lat));
                     var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var opts = {
@@ -348,9 +349,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     ShipmentMap.gpsmap.centerAndZoom(point, 10);
                     this.request.get('/gps/cars/all.json').subscribe(function (res) {
                         var cars = res.pl.cars;
-                        for (var x in cars) {
-                            console.log(cars[x].lng = parseFloat(cars[x].lng) + 0.2);
-                        }
+                        console.log("cars----", cars);
                         var allcars = Object.keys(cars).map(function (key) {
                             return cars[key];
                         });
