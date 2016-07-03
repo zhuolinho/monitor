@@ -15,7 +15,7 @@
     <div class="helper-vscrolling" style=" height:80vh;">
         <div *ngFor="#alert of alertsList; #i = index;">
           <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="(currentSort == alert.atype) || (currentSort == 'all')">
-            <div class="col s9">
+            <div class="col 9">
               <div class="helper-white-bg ">
                 <div class="row valign-wrapper helper-padding-5">
                   <div class="col s4 push-s8">
@@ -156,7 +156,7 @@
               </div>
 
             </div>
-            <div class="col s3 valign">
+            <div class="col m3 valign hide-on-small-only">
               <a (click)="veProcessed(alert)" *ngIf="!alert.status" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a>
             </div>
 

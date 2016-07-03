@@ -536,7 +536,8 @@ ul.side-nav.leftside-navigation hr {
 #left-sidebar-nav {
   position: fixed;
   width: 100px;
-  left: 180px;
+  /*left: 180px;*/
+  right: -220px;
   z-index: 999;
   height: auto;
 }
