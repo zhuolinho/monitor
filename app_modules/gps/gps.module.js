@@ -37,66 +37,6 @@ gps.init = function(m) {
 
 }
 
-// gps.saveIncommingData =  function(m) {
-//   console.log("saveIncommingData");
-//   var r = {pl: {}, status:false , er:''};
-//   var deferred = q.defer();
-//
-// // var stream = m.pl.stream;
-// // var port =  m.pl.port;
-//
-//   if(m.pl){
-//       // var data  = stream.split(',');
-//       // var sim = stream.split('|')[3];
-//       // var loc = data[0].split('|').pop();
-//       // var lp = gpsConfig.port[port].simPlate[sim];
-//
-//       if(m.pl.lp){
-//         var gpsData = new gpsModel({
-//                                   sim:m.pl.sim,
-//                                   loc:m.pl.loc,
-//                                   lng:m.pl.lng,
-//                                   lat:m.pl.lat,
-//                                   speed:m.pl.speed,
-//                                   course:m.pl.course,
-//                                   time:m.pl.time,
-//                                   alarm:m.pl.alarm,
-//                                   addr:m.pl.addr,
-//                                   rawd:m.pl.rawd,
-//                                   lp:m.pl.lp
-//                           })
-//
-//
-//           global.allCars[sim] = gpsData;  //save latest position of each car;
-//
-//           gpsData.save(function (err, gps) {
-//               if (err){
-//                 r.er = err;
-//                 r.status = false;
-//                 deferred.reject(r);
-//               }
-//               else{
-//                 r.pl.gps = gps;
-//                 r.status = true;
-//                 deferred.resolve(r);
-//               }
-//           })
-//       }
-//       else{
-//         r.er =  "no macthing licence plate found for sim number "+sim;
-//         r.status = false
-//         deferred.reject(r);
-//       }
-//     }
-//     else {
-//       r.er =  "empty data";
-//       r.status = false
-//       deferred.reject(r);
-//     }
-//   return deferred.promise;
-//
-// }
-
 
 gps.getData =  function(m) {
   console.log("getData FUNCTION");
@@ -207,7 +147,7 @@ gps.getAllCars =  function(m) {
 
 gps.processIncommingData = function(m){
   // console.log("processIncommingData FUNCTION");
- var r = {pl: null, er:''};
+ var r = {pl: null,status:false, er:''};
   var deferred = q.defer();
 
   var stream = m.pl.stream;
@@ -233,7 +173,7 @@ gps.processIncommingData = function(m){
     if(!lp){
       // console.log("no macthing licence plate found for sim number ",sim);
       r.er = "no macthing licence plate found for sim number "+sim;
-      deferred.reject(r);
+      deferred.resolve(r);
     }
     else {
 
@@ -242,6 +182,7 @@ gps.processIncommingData = function(m){
       var gpsData = new gpsModel(toSave);
         global.allCars[sim] = gpsData;  //save latest position of each car;
         r.pl =  {gps:gpsData};
+        r.status = true;
         deferred.resolve(r);
     }
   }
