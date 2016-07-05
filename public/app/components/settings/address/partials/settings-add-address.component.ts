@@ -85,22 +85,28 @@ export class SettingsAddAddress{
 
       console.log("posting ----",this.newTank);
 
-        this.request.post('/plc/tank',this.newTank).subscribe(res => {
+        this.request.post('/plc/tank.json',this.newTank).subscribe(res => {
             console.log("sub comp tank added-----", res);
+            jQuery("#"+this.data.id).closeModal();
             if(res.pl && res.pl.tank){
                 this.settingsSrvc.addTank(res.pl.tank);
-                jQuery("#"+this.data.id).closeModal();
+            }
+            else{
+              alert("系统错误!");
             }
         });
     }
 
     updateTank(){
       console.log("posting ----",this.editTarget);
-      this.request.put('/plc/tank',this.editTarget).subscribe(res => {
+      this.request.put('/plc/tank.json',this.editTarget).subscribe(res => {
           console.log("sub comp tank updated-----", res);
+          jQuery("#"+this.data.id).closeModal();
           if(res.pl && res.pl.tank){
               this.settingsSrvc.updateTank(res.pl.tank);
-             jQuery("#"+this.data.id).closeModal();
+          }
+          else{
+            alert("系统错误!");
           }
       });
     }

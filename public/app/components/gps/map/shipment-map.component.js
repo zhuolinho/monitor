@@ -35,6 +35,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     this.request = request;
                     this.userSrvc = userSrvc;
                     this.routeParams = routeParams;
+                    this.allCars = [];
                     this.selectedtab = 1;
                     this.delevered = false;
                     this.returnToRefill = true;
@@ -64,7 +65,6 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                 };
                 ShipmentMap.prototype.ngOnDestroy = function () {
                     ShipmentMap.mapLoaded = false;
-                    ShipmentMap.allCars = {};
                     ShipmentMap.gpsmap = null;
                 };
                 ShipmentMap.prototype.initUi = function () {
@@ -178,18 +178,18 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     // }
                     // ShipmentMap.gpsmap.addEventListener("click", showInfo);
                 };
-                ShipmentMap.prototype.addMarker = function (data) {
+                ShipmentMap.addMarker = function (data) {
                     // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
-                    var point = new BMap.Point(parseFloat(data.lng), parseFloat(data.lat));
+                    var point = new BMap.Point(data.lng, data.lat);
                     var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var opts = {
-                            width: 140,
+                            width: 150,
                             height: 70,
                             title: "车辆信息",
                             enableMessage: true //设置允许信息窗发送短息
                         };
-                        var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + "速度:" + data.speed + "km/h " + "定位时间:" + data.time, opts); // 创建信息窗口对象
+                        var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + ", 速度:" + data.speed + "km/h " + ", 定位时间:" + data.time, opts); // 创建信息窗口对象
                         marker.addEventListener("click", function () {
                             ShipmentMap.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
                         });
@@ -349,15 +349,50 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     ShipmentMap.gpsmap.centerAndZoom(point, 10);
                     this.request.get('/gps/cars/all.json').subscribe(function (res) {
                         var cars = res.pl.cars;
-                        console.log("cars----", cars);
-                        var allcars = Object.keys(cars).map(function (key) {
+                        console.log("all cars----", cars);
+                        _this.allCars = Object.keys(cars).map(function (key) {
                             return cars[key];
                         });
-                        for (var i = 0; i < allcars.length; i++) {
-                            _this.addMarker(allcars[i]);
+                        ShipmentMap.carsGroups = _this.groupByTen(_this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
+                        for (var i = 0; i < ShipmentMap.carsGroups.length; i++) {
+                            _this.adjustPoint(ShipmentMap.carsGroups[i], _this.addToMap); //convertor doen'st work for more thatn 10 points
                         }
-                        _this.totalCarNumber = allcars.length;
+                        _this.totalCarNumber = _this.allCars.length;
                     });
+                };
+                ShipmentMap.prototype.addToMap = function (adjusted) {
+                    console.log("processed cars->>>>>>---", adjusted);
+                    if (adjusted.status === 0) {
+                        if (adjusted.points.length > 4) {
+                            for (var i = 0; i < adjusted.points.length; i++) {
+                                ShipmentMap.carsGroups[0][i].lng = adjusted.points[i].lng;
+                                ShipmentMap.carsGroups[0][i].lat = adjusted.points[i].lat;
+                                ShipmentMap.carsGroups[0][i].valid = true;
+                                ShipmentMap.addMarker(ShipmentMap.carsGroups[0][i]);
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < adjusted.points.length; i++) {
+                                ShipmentMap.carsGroups[1][i].lng = adjusted.points[i].lng;
+                                ShipmentMap.carsGroups[1][i].lat = adjusted.points[i].lat;
+                                ShipmentMap.carsGroups[1][i].valid = true;
+                                ShipmentMap.addMarker(ShipmentMap.carsGroups[1][i]);
+                            }
+                        }
+                    }
+                };
+                ShipmentMap.prototype.adjustPoint = function (param, cb) {
+                    var convertor = new BMap.Convertor();
+                    var pointArr = [];
+                    if (Array.isArray(param)) {
+                        for (var i = 0; i < param.length; i++) {
+                            pointArr.push(new BMap.Point(param[i].lng, param[i].lat));
+                        }
+                    }
+                    else {
+                        pointArr.push(new BMap.Point(param.lng, param.lat));
+                    }
+                    convertor.translate(pointArr, 1, 5, cb); //can't take more than 10 point!!!
                 };
                 ShipmentMap.prototype.calculateDistance = function (scrPoint, desPoint) {
                     var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat); //起点
@@ -373,8 +408,18 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     });
                     return deferred.promise();
                 };
+                ShipmentMap.prototype.groupByTen = function (arr) {
+                    var group = [];
+                    var tempArr = arr;
+                    while (tempArr.length > 10) {
+                        group.push(tempArr.slice(0, 10));
+                        tempArr = tempArr.slice(10, tempArr.length);
+                    }
+                    group.push(tempArr);
+                    return group;
+                };
                 ShipmentMap.mapLoaded = false;
-                ShipmentMap.allCars = {};
+                ShipmentMap.carsGroups = [];
                 ShipmentMap = __decorate([
                     core_1.Component({
                         selector: 'shipment-map',

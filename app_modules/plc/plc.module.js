@@ -349,7 +349,7 @@ plc.updateTank =  function(m) {
 
     if(m.pl && m.pl.tank && m.pl.tank.code){
 
-      Tank.findOneAndUpdate({code:m.pl.tank.code}, m.pl.tank, { new: true }, function(err, tank) {
+      Tank.findOneAndUpdate({_id:m.pl.tank._id}, m.pl.tank, { new: true }, function(err, tank) {
                 if (err){
                   r.er = err;
                   r.em = 'problem finding tank';

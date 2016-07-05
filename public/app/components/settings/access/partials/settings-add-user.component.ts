@@ -46,7 +46,7 @@ export class SettingsAddUser{
       this.newUser.ap = this.data.users.type.id;
       console.log("posting ----",this.newUser);
 
-        this.request.post('/users/signup',this.newUser).subscribe(res => {
+        this.request.post('/users/signup.json',this.newUser).subscribe(res => {
             console.log("sub comp user added-----", res);
             if(res.pl && res.pl.user){
                 this.settingsSrvc.addUser(res.pl.user);
@@ -57,7 +57,7 @@ export class SettingsAddUser{
 
     updateUser(){
       console.log("posting ----",this.editTarget);
-      this.request.put('/users/update',this.editTarget).subscribe(res => {
+      this.request.put('/users/update.json',this.editTarget).subscribe(res => {
           console.log("user added-----", res);
           if(res.pl && res.pl.user){
               this.settingsSrvc.updateUser(res.pl.user);

@@ -231,8 +231,7 @@ gps.processIncommingData = function(m){
     var rawd = stream;
 
     if(!lp){
-      console.log("no macthing licence plate found for sim number ",sim);
-
+      // console.log("no macthing licence plate found for sim number ",sim);
       r.er = "no macthing licence plate found for sim number "+sim;
       deferred.reject(r);
     }
@@ -305,7 +304,8 @@ gps.newShipment =  function(m) {
           }
           else {
             r.er =  "no matching license plate for provided sim";
-            deferred.reject(r);
+            r.status = false;
+            deferred.resolve(r);
           }
       }
     else {

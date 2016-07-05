@@ -55,7 +55,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                     var _this = this;
                     this.newUser.ap = this.data.users.type.id;
                     console.log("posting ----", this.newUser);
-                    this.request.post('/users/signup', this.newUser).subscribe(function (res) {
+                    this.request.post('/users/signup.json', this.newUser).subscribe(function (res) {
                         console.log("sub comp user added-----", res);
                         if (res.pl && res.pl.user) {
                             _this.settingsSrvc.addUser(res.pl.user);
@@ -66,7 +66,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/re
                 SettingsAddUser.prototype.updateUser = function () {
                     var _this = this;
                     console.log("posting ----", this.editTarget);
-                    this.request.put('/users/update', this.editTarget).subscribe(function (res) {
+                    this.request.put('/users/update.json', this.editTarget).subscribe(function (res) {
                         console.log("user added-----", res);
                         if (res.pl && res.pl.user) {
                             _this.settingsSrvc.updateUser(res.pl.user);

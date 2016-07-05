@@ -93,22 +93,28 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                 SettingsAddAddress.prototype.addNewTank = function () {
                     var _this = this;
                     console.log("posting ----", this.newTank);
-                    this.request.post('/plc/tank', this.newTank).subscribe(function (res) {
+                    this.request.post('/plc/tank.json', this.newTank).subscribe(function (res) {
                         console.log("sub comp tank added-----", res);
+                        jQuery("#" + _this.data.id).closeModal();
                         if (res.pl && res.pl.tank) {
                             _this.settingsSrvc.addTank(res.pl.tank);
-                            jQuery("#" + _this.data.id).closeModal();
+                        }
+                        else {
+                            alert("系统错误!");
                         }
                     });
                 };
                 SettingsAddAddress.prototype.updateTank = function () {
                     var _this = this;
                     console.log("posting ----", this.editTarget);
-                    this.request.put('/plc/tank', this.editTarget).subscribe(function (res) {
+                    this.request.put('/plc/tank.json', this.editTarget).subscribe(function (res) {
                         console.log("sub comp tank updated-----", res);
+                        jQuery("#" + _this.data.id).closeModal();
                         if (res.pl && res.pl.tank) {
                             _this.settingsSrvc.updateTank(res.pl.tank);
-                            jQuery("#" + _this.data.id).closeModal();
+                        }
+                        else {
+                            alert("系统错误!");
                         }
                     });
                 };
