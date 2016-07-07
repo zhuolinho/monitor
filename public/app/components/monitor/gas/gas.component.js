@@ -93,6 +93,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         console.log("posting--", this.newAlert);
                         this.request.post('/plc/alert.json', this.newAlert).subscribe(function (res) {
                             console.log("alert created----", res);
+                            jQuery('#moveTanksFeedbackModal').openModal();
                         });
                     }
                 };

@@ -8,7 +8,7 @@ var plc = {};
 
 var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
-var Tank = require('../../models/tank');
+var Address = require('../../models/plc-address');
 var plcConfig = require('../../configs/plc');
 var lib = require('../../lib/lib');
 
@@ -205,46 +205,6 @@ var incommingData = m.pl;
 
 }
 
-//依次是   year（2字节）
-// month（1字节）
-// day（1字节）
-// weekday（1字节）
-// hour（1字节）
-// minute（1字节）
-// second（1字节）
-// nanosecond（4字节）
-
-var _extractDateInfo = function(data){
-  var date = '';
-  var year = data.slice(0,2);
-  var month = data.slice(2,3);
-  var day = data.slice(3,4);
-  var weekday = data.slice(4,5);
-  var hour = data.slice(5,6);
-  var minute = data.slice(6,7);
-  var second = data.slice(7,8);
-  var nanosecond = data.slice(8,12);
-
-  //var strYear = year.toString('hex')
-  //parseInt(strYear, 16);
-
-  date = parseInt(year.toString('hex'), 16) +"-"+
-         parseInt(month.toString('hex'), 16) +"-"+
-         parseInt(day.toString('hex'), 16) +" "+
-         parseInt(hour.toString('hex'), 16) +":"+
-         parseInt(minute.toString('hex'), 16) +":"+
-         parseInt(second.toString('hex'), 16);
-
-  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
-
-  console.log("date result----",result);
-
-  return result;
-}
-
-
-
-
 
 plc.getData =  function(m) {
   console.log("plc module: getData FUNCTION");
@@ -267,19 +227,19 @@ plc.getData =  function(m) {
 }
 
 
-plc.getTanks =  function(m) {
+plc.getAddress =  function(m) {
   console.log("plc module: getData FUNCTION");
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  Tank.find(function (err, tanks) {
+  Address.find(function (err, address) {
       if (err){
         r.er = err;
         r.status = false;
         deferred.reject(r);
       }
       else{
-        r.pl.tanks = tanks;
+        r.pl.address = address;
         r.status = true;
         deferred.resolve(r);
       }
@@ -288,81 +248,66 @@ plc.getTanks =  function(m) {
 }
 
 
-// plc.getSingle = function(m){  mongodb lookup
-//   db.plc.aggregate([
-//       {$match: {_id:m.pl._id}},
-//       {
-//         $lookup:
-//           {
-//             from: "tank",
-//             localField: "tank",
-//             foreignField: "code",
-//             as: "target_tank"
-//           }
-//      }
-//   ])
-// }
+plc.addNewAddress =  function(m) {
 
-
-plc.addNewTank =  function(m) {
-
-    console.log("add new tank----");
+    console.log("add new address----");
 
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
 
-    if(m.pl && m.pl.tank && m.pl.tank.code){
-        var newtank = new Tank({
-                          code:m.pl.tank.code,
-                          addr:m.pl.tank.addr,
-                          plcaddr1:m.pl.tank.plcaddr1,
-                          plcaddr2:m.pl.tank.plcaddr2
+    if(m.pl && m.pl.address && m.pl.address.addr){
+        var newAddress = new Address({
+                          code:m.pl.address.code,
+                          addr:m.pl.address.addr,
+                          cn:m.pl.address.cn,
+                          at:m.pl.address.at,
+                          plcaddr1:m.pl.address.plcaddr1,
+                          plcaddr2:m.pl.address.plcaddr2
                           });
 
-               newtank.save(function (error, tank){
-                 console.log("new tank saved----",tank);
+               newAddress.save(function (error, address){
                    if (!error){
-                     r.pl.tank = tank;
+                     r.pl.address = address;
                      deferred.resolve(r);
                    }
                    else{
                      r.er = error;
-                     r.em = 'invalid tank. already exist?';
+                     r.em = 'could not save. already exist?';
                      deferred.reject(r);
                    }
                });
       }
       else {
-        r.er =  "no tank or tank code provided";
+        r.er =  "no address or address code provided";
         deferred.reject(r);
       }
     return deferred.promise;
 }
 
-plc.updateTank =  function(m) {
+plc.updateAddress =  function(m) {
 
-    console.log(" update tank----");
+    console.log(" update address----");
 
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.tank && m.pl.tank.code){
+    if(m.pl && m.pl.address){
 
-      Tank.findOneAndUpdate({_id:m.pl.tank._id}, m.pl.tank, { new: true }, function(err, tank) {
+      Address.findOneAndUpdate({_id:m.pl.address._id}, m.pl.address, { new: true }, function(err, address) {
                 if (err){
                   r.er = err;
-                  r.em = 'problem finding tank';
+                  r.em = 'problem finding address';
                   deferred.reject(r);
                 }
                 else{
-                  r.pl.tank = tank;
+                  r.pl.address = address;
                   deferred.resolve(r);
                 }
       });
       }
       else {
-        r.er =  "no tank or tank code provided";
+        r.er =  "no address or address code provided";
         deferred.reject(r);
       }
     return deferred.promise;
@@ -511,6 +456,48 @@ plc.downloadData = function(m){
 
     return deferred.promise;
 }
+
+
+var _extractDateInfo = function(data){
+
+  //依次是   year（2字节）
+  // month（1字节）
+  // day（1字节）
+  // weekday（1字节）
+  // hour（1字节）
+  // minute（1字节）
+  // second（1字节）
+  // nanosecond（4字节）
+
+  var date = '';
+  var year = data.slice(0,2);
+  var month = data.slice(2,3);
+  var day = data.slice(3,4);
+  var weekday = data.slice(4,5);
+  var hour = data.slice(5,6);
+  var minute = data.slice(6,7);
+  var second = data.slice(7,8);
+  var nanosecond = data.slice(8,12);
+
+  //var strYear = year.toString('hex')
+  //parseInt(strYear, 16);
+
+  date = parseInt(year.toString('hex'), 16) +"-"+
+         parseInt(month.toString('hex'), 16) +"-"+
+         parseInt(day.toString('hex'), 16) +" "+
+         parseInt(hour.toString('hex'), 16) +":"+
+         parseInt(minute.toString('hex'), 16) +":"+
+         parseInt(second.toString('hex'), 16);
+
+  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
+
+  console.log("date result----",result);
+
+  return result;
+}
+
+
+
 
 
 

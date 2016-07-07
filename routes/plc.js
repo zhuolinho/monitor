@@ -116,12 +116,12 @@ module.exports = function (handler)
   });
 
 
-  router.get('/tanks/all.json', function(req, res, next) {
+  router.get('/address/all.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
           vs: '1.0',
-          op: 'getTanks',
+          op: 'getAddress',
           pl:{
           }
         };
@@ -139,13 +139,13 @@ module.exports = function (handler)
 
 
 
-  router.post('/tank.json', function(req, res, next) {
+  router.post('/address.json', function(req, res, next) {
 
         var param = {
           ns: 'plc',
           vs: '1.0',
-          op: 'addNewTank',
-          pl:{tank:req.body}
+          op: 'addNewAddress',
+          pl:{address:req.body}
         };
 
         handler(param)
@@ -158,12 +158,12 @@ module.exports = function (handler)
   });
 
 
-  router.put('/tank.json', function(req, res, next) {
+  router.put('/address.json', function(req, res, next) {
         var param = {
           ns: 'plc',
           vs: '1.0',
-          op: 'updateTank',
-          pl:{tank:req.body}
+          op: 'updateAddress',
+          pl:{address:req.body}
         };
 
         handler(param)

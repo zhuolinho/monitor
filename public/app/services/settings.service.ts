@@ -10,13 +10,13 @@ export class SettingsService{
   private newUserSource = new Subject<any>();
   private updatedUserSource = new Subject<any>();
 
-  private newTankSource = new Subject<any>();
-  private updatedTankSource = new Subject<any>();
+  private newAddressSource = new Subject<any>();
+  private updatedAddressSource = new Subject<any>();
 
   newUserAdded$ = this.newUserSource.asObservable();
   userUpdated$ = this.updatedUserSource.asObservable();
-  newTankAdded$ = this.newTankSource.asObservable();
-  tankUpdated$ = this.updatedTankSource.asObservable();
+  newAddressAdded$ = this.newAddressSource.asObservable();
+  addressUpdated$ = this.updatedAddressSource.asObservable();
 
 
   addUser(user:any){
@@ -27,12 +27,12 @@ export class SettingsService{
     this.updatedUserSource.next(user);
   }
 
-  addTank(tank:any){
-    this.newTankSource.next(tank);
+  addAddress(address:any){
+    this.newAddressSource.next(address);
   }
 
-  updateTank(tank:any){
-    this.updatedTankSource.next(tank);
+  updateAddress(address:any){
+    this.updatedAddressSource.next(address);
   }
 
 }

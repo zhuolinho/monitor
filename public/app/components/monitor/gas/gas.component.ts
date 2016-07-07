@@ -87,6 +87,7 @@ export class Gas{
           console.log("posting--",  this.newAlert);
         this.request.post('/plc/alert.json',this.newAlert).subscribe(res => {
           console.log("alert created----",res);
+           jQuery('#moveTanksFeedbackModal').openModal();
         });
       }
 

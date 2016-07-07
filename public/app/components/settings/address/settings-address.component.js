@@ -41,160 +41,34 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-ad
                     var _this = this;
                     this.settingsSrvc = settingsSrvc;
                     this.request = request;
-                    // tanksArray = [
-                    //     {
-                    //         type: { id: 1, value: 'CNG' },
-                    //         data: [
-                    //             {
-                    //                 code: 'C001',
-                    //                 addr: '闸北区天目东路111号XX站',
-                    //                 plcaddr: '192.167.0.1'
-                    //             },
-                    //             {
-                    //                 code: 'C002',
-                    //                 addr: '闸北区天目东路112号XXX站',
-                    //                 plcaddr: '192.167.1.2'
-                    //             },
-                    //             {
-                    //                 code: 'C003',
-                    //                 addr: '闸北区天目东路114号XX站',
-                    //                 plcaddr: '192.167.1.3'
-                    //             }
-                    //         ]
-                    //     },
-                    //     {
-                    //         type: { id: 2, value: 'LNG' },
-                    //         data: [
-                    //             {
-                    //                 code: 'L001',
-                    //                 addr: '闸北区沪太路113号XX站',
-                    //                 plcaddr: '192.167.1.8'
-                    //             },
-                    //             {
-                    //                 code: 'L002',
-                    //                 addr: '闸北区沪太路121号XXXX站',
-                    //                 plcaddr: '192.167.1.2'
-                    //             },
-                    //             {
-                    //                 code: 'L003',
-                    //                 addr: '闸北区沪太路220号XXX站',
-                    //                 plcaddr: '192.167.0.3'
-                    //             }
-                    //         ]
-                    //     },
-                    //     {
-                    //         type: { id: 3, value: '集格' },
-                    //         data: [
-                    //             {
-                    //                 code: 'J001',
-                    //                 addr: '闸北区新闸路55号XX站',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: 'J002',
-                    //                 addr: '闸北区新闸路980号XXXX站',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: 'J003',
-                    //                 addr: '闸北区新闸路201号XX站',
-                    //                 plcaddr: ''
-                    //             }
-                    //         ]
-                    //     },
-                    //
-                    //     {
-                    //         type: { id: 4, value: '杜瓦瓶' },
-                    //         data: [
-                    //             {
-                    //                 code: 'D011',
-                    //                 addr: '闸北区新闸路77号XX站',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: 'D022',
-                    //                 addr: '闸北区新闸路180号XXXX站',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: 'D013',
-                    //                 addr: '闸北区新闸路331号XX站',
-                    //                 plcaddr: ''
-                    //             }
-                    //         ]
-                    //     },
-                    //     {
-                    //         type: { id: 5, value: '管网' },
-                    //         data: [
-                    //             {
-                    //                 code: 'G001',
-                    //                 addr: '闸北区新闸路55号XX站',
-                    //                 plcaddr: '192.167.1.8'
-                    //             },
-                    //             {
-                    //                 code: 'G002',
-                    //                 addr: '闸北区新闸路980号XXXX站',
-                    //                 plcaddr: '192.167.1.2'
-                    //             },
-                    //             {
-                    //                 code: 'G003',
-                    //                 addr: '闸北区新闸路201号XX站',
-                    //                 plcaddr: '192.167.0.3'
-                    //             }
-                    //         ]
-                    //     },
-                    //     {
-                    //         type: { id: 6, value: '中转站' },
-                    //         data: [
-                    //             {
-                    //                 code: '总公司',
-                    //                 addr: '闸北区新闸路55号XX站',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: '中转站1号',
-                    //                 addr: '闸北区新闸路180号',
-                    //                 plcaddr: ''
-                    //             },
-                    //             {
-                    //                 code: '中转站2号',
-                    //                 addr: '闸北区新闸路801号',
-                    //                 plcaddr: ''
-                    //             }
-                    //         ]
-                    //     }
-                    // ];
                     this.currentSort = 'all';
                     this.selectedtab = 1;
-                    this.tanksArray = [];
+                    this.addressArray = [];
                     console.log("SettingsAddress is up and running");
                     var self = this;
-                    this.request.get("/plc/tanks/all.json").subscribe(function (res) {
+                    this.request.get("/plc/address/all.json").subscribe(function (res) {
                         console.log("got response--", res);
-                        if (res.pl && res.pl.tanks) {
-                            _this.tanks = res.pl.tanks;
+                        if (res.pl && res.pl.address) {
+                            _this.addresses = res.pl.address;
                         }
-                        console.log("got tanks--", _this.tanks);
-                        var groupTanksObj = _.groupBy(_this.tanks, function (tank) {
-                            return tank.code[0];
+                        var groupAddressesObj = _.groupBy(_this.addresses, 'at');
+                        console.log("groupaddressesObj--", groupAddressesObj);
+                        config_1.config.addresses.forEach(function (key, index) {
+                            var group = { type: { id: index + 1, value: key }, data: groupAddressesObj[key] || [] };
+                            self.addressArray.push(group);
                         });
-                        console.log("groupTanksObj--", groupTanksObj);
-                        config_1.config.tanks.forEach(function (key, index) {
-                            var group = { type: { id: index + 1, value: key }, data: groupTanksObj[key[0]] || [] };
-                            self.tanksArray.push(group);
-                        });
-                        _this.settingsSrvc.newTankAdded$.subscribe(function (newTank) {
-                            console.log("here is the new newTank----", newTank);
-                            var correspondingGroup = _.find(self.tanksArray, function (o) {
-                                return o.type.value[0] == newTank.code[0];
+                        _this.settingsSrvc.newAddressAdded$.subscribe(function (newAddr) {
+                            console.log("here is the new newAddr----", newAddr);
+                            var correspondingGroup = _.find(self.addressArray, function (o) {
+                                return o.type.value == newAddr.at;
                             });
                             if (correspondingGroup) {
-                                correspondingGroup.data.unshift(newTank);
+                                correspondingGroup.data.unshift(newAddr);
                                 self.initModal();
                             }
                         });
-                        _this.settingsSrvc.tankUpdated$.subscribe(function (tank) {
-                            console.log("here is the updated tank----", tank);
+                        _this.settingsSrvc.addressUpdated$.subscribe(function (addr) {
+                            console.log("here is the updated addr----", addr);
                         });
                         _this.initUi();
                         // console.log("key by", self.userArray)

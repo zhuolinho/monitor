@@ -17,7 +17,7 @@ export class SettingsAddAddress{
     set users(data){
       this.data = data;
 
-      switch(data.tanks.type.value){
+      switch(data.address.type.value){
         case 'CNG':
                 this.currentTanks = this.cngTanks;
                 break;
@@ -65,9 +65,11 @@ export class SettingsAddAddress{
     currentTanks:any[] = [];
     editMode:boolean = false;
     editTarget:any;
-    newTank:any = {
+    newAddress:any = {
       code:'',
+      cn:'',
       addr:'',
+      at:'',
       plcaddr1:'',
       plcaddr2:''
     };
@@ -81,15 +83,19 @@ export class SettingsAddAddress{
     }
 
 
-    addNewTank(){
+    addNewAddress(){
 
-      console.log("posting ----",this.newTank);
 
-        this.request.post('/plc/tank.json',this.newTank).subscribe(res => {
-            console.log("sub comp tank added-----", res);
+      this.newAddress.at = this.data.address.type.value;
+
+
+      console.log("posting ----",this.newAddress);
+
+        this.request.post('/plc/address.json',this.newAddress).subscribe(res => {
+            console.log("sub comp address added-----", res);
             jQuery("#"+this.data.id).closeModal();
-            if(res.pl && res.pl.tank){
-                this.settingsSrvc.addTank(res.pl.tank);
+            if(res.pl && res.pl.address){
+                this.settingsSrvc.addAddress(res.pl.address);
             }
             else{
               alert("系统错误!");
@@ -97,13 +103,13 @@ export class SettingsAddAddress{
         });
     }
 
-    updateTank(){
+    updateAddress(){
       console.log("posting ----",this.editTarget);
-      this.request.put('/plc/tank.json',this.editTarget).subscribe(res => {
-          console.log("sub comp tank updated-----", res);
+      this.request.put('/plc/address.json',this.editTarget).subscribe(res => {
+          console.log("sub comp address updated-----", res);
           jQuery("#"+this.data.id).closeModal();
-          if(res.pl && res.pl.tank){
-              this.settingsSrvc.updateTank(res.pl.tank);
+          if(res.pl && res.pl.address){
+              this.settingsSrvc.updateAddress(res.pl.address);
           }
           else{
             alert("系统错误!");
@@ -111,25 +117,10 @@ export class SettingsAddAddress{
       });
     }
 
-    veSelectedTank(event, compRef){ //@todo running multiple times
-      if(event && event.target && event.target.value){
-        if(!compRef.editTarget){
-              compRef.newTank.code = event.target.value;
-        }
-        else{
-              compRef.editTarget.code = event.target.value;
-        }
-        compRef.initSelect();
-      }
-
-      console.log("tank selected----")
-
-    }
-
     veSelecedPlcAddr1(event, compRef){
       if(event && event.target && event.target.value){
         if(!compRef.editTarget){
-              compRef.newTank.plcaddr1 = event.target.value;
+              compRef.newAddress.plcaddr1 = event.target.value;
         }
         else{
               compRef.editTarget.plcaddr1 = event.target.value;
@@ -141,7 +132,7 @@ export class SettingsAddAddress{
     veSelecedPlcAddr2(event, compRef){
       if(event && event.target && event.target.value){
         if(!compRef.editTarget){
-              compRef.newTank.plcaddr2 = event.target.value;
+              compRef.newAddress.plcaddr2 = event.target.value;
         }
         else{
               compRef.editTarget.plcaddr2 = event.target.value;
@@ -155,9 +146,6 @@ export class SettingsAddAddress{
       var _this = this;
       setTimeout(_=>{
             _this.initSelect();
-           jQuery('select#tankCode').on('change',function(event){
-             _this.veSelectedTank(event, _this);
-           });
 
            jQuery('select#plcAddr1').on('change',function(event){
              _this.veSelecedPlcAddr1(event, _this);

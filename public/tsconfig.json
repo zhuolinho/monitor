@@ -28,7 +28,6 @@
     "app/boot.ts",
     "app/components/admin/admin.component.ts",
     "app/components/gps/gps.component.ts",
-    "app/components/gps/map/error.ts",
     "app/components/gps/map/shipment-map.component.ts",
     "app/components/gps/processed/processed-shipment.component.ts",
     "app/components/gps/shipment/shiment.component.ts",

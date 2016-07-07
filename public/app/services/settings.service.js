@@ -25,12 +25,12 @@ System.register(['angular2/core', 'rxjs/Subject'], function(exports_1, context_1
                 function SettingsService() {
                     this.newUserSource = new Subject_1.Subject();
                     this.updatedUserSource = new Subject_1.Subject();
-                    this.newTankSource = new Subject_1.Subject();
-                    this.updatedTankSource = new Subject_1.Subject();
+                    this.newAddressSource = new Subject_1.Subject();
+                    this.updatedAddressSource = new Subject_1.Subject();
                     this.newUserAdded$ = this.newUserSource.asObservable();
                     this.userUpdated$ = this.updatedUserSource.asObservable();
-                    this.newTankAdded$ = this.newTankSource.asObservable();
-                    this.tankUpdated$ = this.updatedTankSource.asObservable();
+                    this.newAddressAdded$ = this.newAddressSource.asObservable();
+                    this.addressUpdated$ = this.updatedAddressSource.asObservable();
                 }
                 SettingsService.prototype.addUser = function (user) {
                     this.newUserSource.next(user);
@@ -38,11 +38,11 @@ System.register(['angular2/core', 'rxjs/Subject'], function(exports_1, context_1
                 SettingsService.prototype.updateUser = function (user) {
                     this.updatedUserSource.next(user);
                 };
-                SettingsService.prototype.addTank = function (tank) {
-                    this.newTankSource.next(tank);
+                SettingsService.prototype.addAddress = function (address) {
+                    this.newAddressSource.next(address);
                 };
-                SettingsService.prototype.updateTank = function (tank) {
-                    this.updatedTankSource.next(tank);
+                SettingsService.prototype.updateAddress = function (address) {
+                    this.updatedAddressSource.next(address);
                 };
                 SettingsService = __decorate([
                     core_1.Injectable(), 

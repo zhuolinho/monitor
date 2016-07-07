@@ -51,9 +51,11 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                     ];
                     this.currentTanks = [];
                     this.editMode = false;
-                    this.newTank = {
+                    this.newAddress = {
                         code: '',
+                        cn: '',
                         addr: '',
+                        at: '',
                         plcaddr1: '',
                         plcaddr2: ''
                     };
@@ -64,7 +66,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                     get: function () { return this.data; },
                     set: function (data) {
                         this.data = data;
-                        switch (data.tanks.type.value) {
+                        switch (data.address.type.value) {
                             case 'CNG':
                                 this.currentTanks = this.cngTanks;
                                 break;
@@ -90,50 +92,39 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                     enumerable: true,
                     configurable: true
                 });
-                SettingsAddAddress.prototype.addNewTank = function () {
+                SettingsAddAddress.prototype.addNewAddress = function () {
                     var _this = this;
-                    console.log("posting ----", this.newTank);
-                    this.request.post('/plc/tank.json', this.newTank).subscribe(function (res) {
-                        console.log("sub comp tank added-----", res);
+                    this.newAddress.at = this.data.address.type.value;
+                    console.log("posting ----", this.newAddress);
+                    this.request.post('/plc/address.json', this.newAddress).subscribe(function (res) {
+                        console.log("sub comp address added-----", res);
                         jQuery("#" + _this.data.id).closeModal();
-                        if (res.pl && res.pl.tank) {
-                            _this.settingsSrvc.addTank(res.pl.tank);
+                        if (res.pl && res.pl.address) {
+                            _this.settingsSrvc.addAddress(res.pl.address);
                         }
                         else {
                             alert("系统错误!");
                         }
                     });
                 };
-                SettingsAddAddress.prototype.updateTank = function () {
+                SettingsAddAddress.prototype.updateAddress = function () {
                     var _this = this;
                     console.log("posting ----", this.editTarget);
-                    this.request.put('/plc/tank.json', this.editTarget).subscribe(function (res) {
-                        console.log("sub comp tank updated-----", res);
+                    this.request.put('/plc/address.json', this.editTarget).subscribe(function (res) {
+                        console.log("sub comp address updated-----", res);
                         jQuery("#" + _this.data.id).closeModal();
-                        if (res.pl && res.pl.tank) {
-                            _this.settingsSrvc.updateTank(res.pl.tank);
+                        if (res.pl && res.pl.address) {
+                            _this.settingsSrvc.updateAddress(res.pl.address);
                         }
                         else {
                             alert("系统错误!");
                         }
                     });
-                };
-                SettingsAddAddress.prototype.veSelectedTank = function (event, compRef) {
-                    if (event && event.target && event.target.value) {
-                        if (!compRef.editTarget) {
-                            compRef.newTank.code = event.target.value;
-                        }
-                        else {
-                            compRef.editTarget.code = event.target.value;
-                        }
-                        compRef.initSelect();
-                    }
-                    console.log("tank selected----");
                 };
                 SettingsAddAddress.prototype.veSelecedPlcAddr1 = function (event, compRef) {
                     if (event && event.target && event.target.value) {
                         if (!compRef.editTarget) {
-                            compRef.newTank.plcaddr1 = event.target.value;
+                            compRef.newAddress.plcaddr1 = event.target.value;
                         }
                         else {
                             compRef.editTarget.plcaddr1 = event.target.value;
@@ -144,7 +135,7 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                 SettingsAddAddress.prototype.veSelecedPlcAddr2 = function (event, compRef) {
                     if (event && event.target && event.target.value) {
                         if (!compRef.editTarget) {
-                            compRef.newTank.plcaddr2 = event.target.value;
+                            compRef.newAddress.plcaddr2 = event.target.value;
                         }
                         else {
                             compRef.editTarget.plcaddr2 = event.target.value;
@@ -156,9 +147,6 @@ System.register(['angular2/core', '../../../../config', '../../../../services/se
                     var _this = this;
                     setTimeout(function (_) {
                         _this.initSelect();
-                        jQuery('select#tankCode').on('change', function (event) {
-                            _this.veSelectedTank(event, _this);
-                        });
                         jQuery('select#plcAddr1').on('change', function (event) {
                             _this.veSelecedPlcAddr1(event, _this);
                         });
