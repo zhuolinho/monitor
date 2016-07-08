@@ -4,6 +4,8 @@ import {config} from '../../../../config';
 import {AlertModel} from '../../../../models/alert-model';
 declare var jQuery:any;
 
+declare var c3:any;
+
 @Component({
   selector:'home-alerts-detail',
   templateUrl:config.prefix + '/components/home/alerts/details/home.alerts.detail.component.html'
@@ -16,6 +18,8 @@ export class HomeAlertsDetail{
     @Input('data')
     set table(data){
       this.paramTable = data;
+
+      // this.showChart();
     }
 
     get table(){return this.paramTable;}
@@ -94,5 +98,17 @@ export class HomeAlertsDetail{
       setTimeout(_=>{
            jQuery('select').material_select();
       });
+    }
+
+    showChart(){
+        var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+              columns: [
+                ['data1', 30, 200, 100, 400, 150, 250],
+                ['data2', 50, 20, 10, 40, 15, 25]
+              ]
+            }
+        });
     }
  }

@@ -74,6 +74,7 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                     get: function () { return this.paramTable; },
                     set: function (data) {
                         this.paramTable = data;
+                        // this.showChart();
                     },
                     enumerable: true,
                     configurable: true
@@ -93,6 +94,17 @@ System.register(['angular2/core', '../../../../config'], function(exports_1, con
                 HomeAlertsDetail.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                    });
+                };
+                HomeAlertsDetail.prototype.showChart = function () {
+                    var chart = c3.generate({
+                        bindto: '#chart',
+                        data: {
+                            columns: [
+                                ['data1', 30, 200, 100, 400, 150, 250],
+                                ['data2', 50, 20, 10, 40, 15, 25]
+                            ]
+                        }
                     });
                 };
                 __decorate([

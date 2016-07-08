@@ -218,7 +218,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       if(data.lp){
         var opts = {
           width : 200,     // 信息窗口宽度
-          height: 80,     // 信息窗口高度
+          height: 100,     // 信息窗口高度
           title : "车辆信息" , // 信息窗口标题
           enableMessage:true//设置允许信息窗发送短息
         }
