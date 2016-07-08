@@ -185,7 +185,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     if (data.lp) {
                         var opts = {
                             width: 200,
-                            height: 80,
+                            height: 100,
                             title: "车辆信息",
                             enableMessage: true //设置允许信息窗发送短息
                         };
