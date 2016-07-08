@@ -184,8 +184,8 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var opts = {
-                            width: 150,
-                            height: 70,
+                            width: 200,
+                            height: 80,
                             title: "车辆信息",
                             enableMessage: true //设置允许信息窗发送短息
                         };
