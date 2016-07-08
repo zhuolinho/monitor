@@ -1030,7 +1030,13 @@ body, html{
     font-size: 0.6em !important; /*文字大小*/
     padding: 0 5px;
     line-height: 35px;/*针对文字：文字高度*/
-
+  }
+  .monitor-alert{
+    width: 60px !important;
+    height: 35px !important;
+    font-size: 0.6em !important; /*文字大小*/
+    padding: 0 5px;
+    line-height: 35px;/*针对文字：文字高度*/
   }
 }
 
