@@ -15,6 +15,11 @@
    <link rel='stylesheet' href='dist/css/admin.css' />
    <link rel='stylesheet' href='dist/css/monitor.css' />
 
+   <!-- Load c3.css -->
+<link href="bower_components/c3/c3.min.css" rel="stylesheet" type="text/css">
+
+
+
    <!-- 1. Load libraries -->
       <!-- IE required polyfills, in this exact order -->
       <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -27,6 +32,8 @@
       <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
       <script src="node_modules/angular2/bundles/router.dev.js"></script>
       <script src="node_modules/angular2/bundles/http.dev.js"></script>
+
+
 
 
        <!-- 2. Configure SystemJS -->
@@ -56,6 +63,8 @@
      </main>
 
     <script src="dist/js/lib.min.js"></script>
-
+    // <!-- Load d3.js and c3.js -->
+    <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
+    <script src="bower_components/c3/c3.min.js"></script>
   </body>
 </html>
