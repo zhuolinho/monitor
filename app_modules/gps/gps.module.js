@@ -151,16 +151,15 @@ gps.processIncommingData = function(m){
   var deferred = q.defer();
 
   var stream = m.pl.stream;
-  var port = m.pl.port;
 
 
-  if(stream && port){
+  if(stream){
     var data  = stream.split(',');
     var sim = stream.split('|')[3];
     var loc = data[0].split('|').pop();
     loc = parseInt(loc,10);
     var lat = data[2];
-    var lp = gpsConfig.port[port].simPlate[sim];
+    var lp = gpsConfig.simPlate[sim];
     var lng = data[1];
     var lat = data[2];
     var speed = data[3];
@@ -187,7 +186,7 @@ gps.processIncommingData = function(m){
     }
   }
   else{
-      r.er = "no port or stream provided";
+      r.er = "no or stream provided";
       deferred.reject(r);
   }
 
@@ -205,10 +204,9 @@ gps.newShipment =  function(m) {
   if(m && m.pl && m.pl.sim){
 
           var sim = m.pl.sim;
-          var ports = Object.keys(gpsConfig.port);
-          var lp =  gpsConfig.port[ports[0]].simPlate[sim]? gpsConfig.port[ports[0]].simPlate[sim]: gpsConfig.port[ports[1]].simPlate[sim];
+          var lp =  gpsConfig.simPlate[sim];
 
-            // console.log("lp---",ports,lp)
+            // console.log("lp---",lp);
 
           if(lp){
 

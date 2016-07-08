@@ -3,8 +3,7 @@ var helpers = require('../utilities/helpers');
 var gpsConf = require('../configs/gps');
 var express = require('express');
 var net = require('net');
-var client1 = new net.Socket();
-var client2 = new net.Socket();
+var client = new net.Socket();
 var router = express.Router();
 
 //socket-------
@@ -134,86 +133,55 @@ module.exports = function (handler)
 
 var _tcpCLient = function(handler){
 
-              var ports = Object.keys(gpsConf.port);
-            client1.connect(ports[0],gpsConf.ip, function(){
-
+            client.connect(gpsConf.port,gpsConf.ip, function(){
               var delay = gpsConf.timer;
-              var user = gpsConf.port[ports[0]].user;
+              var user = gpsConf.user;
               var initquery = queryGps(user)[0];
-              // console.log("initquery1--",initquery);
+              // console.log("initquery--",initquery);
 
-              client1.write(initquery, function(){
+              client.write(initquery, function(){
                         var timer = setInterval(function(){
                             var query = queryGps(user)[1]
-                              // console.log("making request1",query)
-                           client1.write(query);    // todo this part is failling ?
+                              // console.log("making request",query);
+                           client.write(query);
                         },delay);
               });
             });
 
-            client1.on('error',function(err){
-                console.log("GPS CONNECTION ERROR 1-----",err);
+            client.on('error',function(err){
+                console.log("GPS CONNECTION ERROR -----",err);
             });
-            client1.on('data', function (data) {
+
+            client.on('data', function (data) {
                 var stream = data.toString('utf8');
                 if(stream.length > 20){
-                    processIncommingData(handler,stream, ports[0]);
+                    processIncommingData(handler,stream);
                 }
             });
 
-            client1.once('close', function () {
-                console.log('Connection1 closed');
-            });
-
-            client2.connect(ports[1],gpsConf.ip, function(){
-
-              var delay = 2*gpsConf.timer;
-              var user = gpsConf.port[ports[1]].user;
-              var initquery = queryGps(user)[0];
-              // console.log("initquery2--",initquery);
-
-              client2.write(initquery, function(){
-                        var timer = setInterval(function(){
-                            var query = queryGps(user)[1]
-                              // console.log("making request2",query)
-                           client2.write(query);
-                        },delay);
-              });
-            });
-
-            client2.on('error',function(err){
-                console.log("GPS CONNECTION ERROR 2-----",err);
-            });
-
-            client2.on('data', function (data) {
-                var stream = data.toString('utf8');
-                if(stream.length > 20){
-                    processIncommingData(handler,stream, ports[1]);
-                }
-            });
-            client2.once('close', function () {
-                console.log('Connection2 closed');
+            client.once('close', function () {
+                // console.log('Connection closed');
             });
 
 }
 
 
-function processIncommingData(handler,stream,port){
+function processIncommingData(handler,stream){
 
   var param = {
         ns: 'gps',
         vs: '1.0',
         op: 'processIncommingData',
-        pl:{stream:stream,port:port}
+        pl:{stream:stream}
   }
 
   handler(param)
       .then(function (r) {
-        // console.log("route: processed "+port+" data successful");
+        // console.log("route: process data successful",r);
         io.emit("carMove",r);
       })
       .fail(function (r) {
-          // console.log("route: gps processed  fail");
+          console.log("route: gps process data  fail");
       });
 }
 
