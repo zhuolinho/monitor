@@ -110,7 +110,7 @@ body, html{
   .monitor-table.vstrip .table-cell{
       padding:10px 15px;
   }
-  
+
   .new-alert-badge{
     border-radius: 50%;
     height: 20px;
@@ -1019,6 +1019,7 @@ body, html{
     top: -25px;
     left: 0;
 }
+
 
 @media  screen and (max-width: 600px){
 

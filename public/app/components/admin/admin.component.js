@@ -55,7 +55,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../../s
                 function AdminComponent(localUserService, router) {
                     this.localUserService = localUserService;
                     this.router = router;
-                    console.log("admin is up and running", this.localUserService.getUser());
+                    console.log("admin is up and running:user ", this.localUserService.getUser());
                 }
                 AdminComponent = __decorate([
                     core_1.Component({

@@ -44,7 +44,8 @@ declare var jQuery:any;
 export class AdminComponent{
   constructor(public localUserService:UserService, public router:Router){
 
-    console.log("admin is up and running", this.localUserService.getUser());
+    console.log("admin is up and running:user ", this.localUserService.getUser());
+
   }
 
   // routerCanActivate(){

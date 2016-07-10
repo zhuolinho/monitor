@@ -16,3 +16,14 @@
   .leftside-navigation {
     padding-top: 50px;
   }
+
+
+  @media  screen and (max-width: 992px){
+    .side-nav.fixed{
+      top: 0;
+    }
+
+    .side-nav.fixed{
+      font-size: 0.8em !important;
+    }
+  }

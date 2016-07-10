@@ -1,14 +1,14 @@
             <!-- START LEFT SIDEBAR NAV-->
             <aside id="left-sidebar-nav">
                 <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
-
                     <li class="bold" *ngFor="#nav of navigations">
-                        <a [routerLink]="nav.link"  class="waves-effect waves-light nav-item"><i class="xxl material-icons"> {{nav.icon}} </i> {{nav.title}}</a>
+                        <a [routerLink]="nav.link"  class="waves-effect waves-light nav-item" [ngClass]="{'hide-on-med-and-down':nav.icon == 'settings'}">
+                          <i class="xxl material-icons"> {{nav.icon}} </i> {{nav.title}}
+                        </a>
                     </li>
                 </ul>
-
-
-
-                <a (click)="shiftMenu();" data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan" href={{url}}><i class="mdi-navigation-menu"></i></a>
+                <a data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan">
+                  <i class="mdi-navigation-menu"></i>
+                </a>
             </aside>
             <!-- END LEFT SIDEBAR NAV-->

@@ -16,7 +16,7 @@ declare var jQuery:any;
 @Component({
   selector:'main',
   template: '<router-outlet></router-outlet>',
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES,CORE_DIRECTIVES],
      providers: []  //providers were moved to the boot due to login redirect CanActivate implementation
 })
 

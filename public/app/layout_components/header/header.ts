@@ -24,6 +24,7 @@ export class Header {
     constructor(router:Router, private localUserService:UserService) {
       this.router = router;
       this.user = this.localUserService.getUser();
+
       // this.logo = CONFIG.resourcePath + 'img/logo.png'
       // console.log(this.logo);
 
