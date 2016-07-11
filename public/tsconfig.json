@@ -69,6 +69,7 @@
     "app/services/request.service.ts",
     "app/services/settings.service.ts",
     "app/services/user.service.ts",
+    "models/gpsAlert.ts",
     "typings/browser.d.ts",
     "typings/browser/ambient/es6-shim/index.d.ts",
     "typings/browser/ambient/jasmine/index.d.ts"

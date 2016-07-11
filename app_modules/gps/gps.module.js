@@ -9,6 +9,7 @@ var gps = {};
 
 var q = require('q');
 var gpsModel = require('../../models/gps');
+var gpsAlertModel = require('../../models/gps-alert');
 var Shiment = require('../../models/shipment');
 var gpsConfig = require('../../configs/gps');
 var lib = require('../../lib/lib');
@@ -165,7 +166,7 @@ gps.processIncommingData = function(m){
     var speed = data[3];
     var course = data[4];
     var time = data[5];
-    var alarm = data[6];
+    var alarm = data[6].split('|')[0];
     var addr = "";
     var rawd = stream;
 
@@ -253,6 +254,83 @@ gps.newShipment =  function(m) {
     }
   return deferred.promise;
 }
+
+
+
+gps.newGpsAlert =  function(m) {
+  console.log("newGpsAlert");
+  var r = {pl: null, status:false , er:''};
+  var deferred = q.defer();
+
+  if(m && m.pl && m.pl.sim){
+          var sim = m.pl.sim;
+          var lp =  gpsConfig.simPlate[sim];
+
+            console.log("lp---",lp);
+
+          if(lp){
+
+            var gpsAlert = new gpsAlertModel({
+                                sim:sim,
+                                addr:m.pl.addr,
+                                lp:lp,
+                                atype:m.pl.atype,
+                                an:m.pl.an,
+                                speed:m.pl.speed,
+                                time:m.pl.time,
+                                lng:m.pl.lng,
+                                lat:m.pl.lat,
+                            });
+
+
+            gpsAlert.save(function (err, resp) {
+                if (err){
+                  r.er = err;
+                  deferred.reject(r);
+                }
+                else{
+                  r.pl = {shipment:resp};
+                  r.status = true;
+                  deferred.resolve(r);
+                }
+            })
+          }
+          else {
+            r.er =  "no matching license plate for provided sim";
+            r.status = false;
+            deferred.resolve(r);
+          }
+      }
+    else {
+      r.er =  "no data or sim card provided";
+      deferred.reject(r);
+    }
+  return deferred.promise;
+}
+
+
+
+
+gps.gpsAlerts =  function(m) {
+  console.log("gpsAlerts ------");
+ var r = {pl: null, status:false , er:''};
+  var deferred = q.defer();
+
+  gpsAlertModel.find(function (err, resp) {
+      if (err){
+        r.er = JSON.stringify(err);
+        deferred.reject(r);
+      }
+      else{
+        r.pl = {alerts:resp};
+        r.status = true;
+        deferred.resolve(r);
+      }
+  })
+  return deferred.promise;
+
+}
+
 
 
 

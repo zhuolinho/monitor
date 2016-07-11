@@ -63,6 +63,46 @@ module.exports = function (handler)
   });
 
 
+  router.get('/alert/all.json', function(req, res, next) {
+
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'gpsAlerts',
+          pl:{
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+  router.post('/alert.json', function(req, res, next) {
+        var param = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'newGpsAlert',
+          pl:req.body
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              console.log(r.er);
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
 
   router.get('/shipments/done.json', function(req, res, next) {
 
@@ -177,7 +217,7 @@ function processIncommingData(handler,stream){
 
   handler(param)
       .then(function (r) {
-        // console.log("route: process data successful",r);
+        console.log("route: process data successful",r);
         io.emit("carMove",r);
       })
       .fail(function (r) {

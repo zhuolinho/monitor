@@ -208,11 +208,80 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     }
                     var socket = io(url);
                     socket.on('carMove', function (data) {
-                        console.log("socket got data-----", data);
+                        console.log("carMove-----", data);
                         if (data.pl && data.pl.gps) {
                             var cardata = data.pl.gps;
+                            _this.handleAlarm(cardata);
                             _this.updateShowAllPosition(cardata);
                         }
+                    });
+                };
+                ShipmentMap.prototype.handleAlarm = function (param) {
+                    console.log("handle alarm------", param);
+                    var that = this;
+                    if (param.alarm) {
+                        if (param.alarm.slice(9, 10) === '1') {
+                            console.log("speed alert");
+                            var alert = {
+                                sim: param.sim,
+                                time: param.time,
+                                lng: param.lng,
+                                lat: param.lat,
+                                speed: param.speed,
+                                atype: "speed",
+                                an: "超速报警",
+                                addr: '',
+                                lp: param.lp
+                            };
+                            var convertor = new BMap.Convertor();
+                            var pointArr = [];
+                            pointArr.push(new BMap.Point(alert.lng, alert.lat));
+                            convertor.translate(pointArr, 1, 5, function (resp) {
+                                if (resp.status === 0) {
+                                    alert.lng = resp.points[0].lng;
+                                    alert.lat = resp.points[0].lat;
+                                    that.saveGpsAlert(alert);
+                                }
+                            });
+                        }
+                        if (param.alarm.slice(10, 11) === '1') {
+                            console.log("prohibited zone alert");
+                            console.log("speed alert");
+                            var alert = {
+                                sim: param.sim,
+                                time: param.time,
+                                lng: param.lng,
+                                lat: param.lat,
+                                speed: param.speed,
+                                atype: "prohibitedzone",
+                                an: "越界报警",
+                                addr: '',
+                                lp: param.lp
+                            };
+                            var convertor = new BMap.Convertor();
+                            var pointArr = [];
+                            pointArr.push(new BMap.Point(alert.lng, alert.lat));
+                            convertor.translate(pointArr, 1, 5, function (resp) {
+                                if (resp.status === 0) {
+                                    alert.lng = resp.points[0].lng;
+                                    alert.lat = resp.points[0].lat;
+                                    that.saveGpsAlert(alert);
+                                }
+                            });
+                        }
+                    }
+                };
+                ShipmentMap.prototype.saveGpsAlert = function (param) {
+                    var that = this;
+                    // console.log("saveGpsAlert----",param);
+                    var geoc = new BMap.Geocoder();
+                    geoc.getLocation(new BMap.Point(param.lng, param.lat), function (rs) {
+                        var addComp = rs.addressComponents;
+                        param.addr = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+                        // console.log("saving param-----", param);
+                        that.request.post('/gps/alert.json', param).subscribe(function (res) {
+                            console.log("gps alert created-----", res);
+                        });
                     });
                 };
                 ShipmentMap.prototype.addCustomMarker = function (cardata) {

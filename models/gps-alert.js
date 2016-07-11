@@ -6,9 +6,10 @@ var gpsAlertSchema = mongoose.Schema({
                     lng:String,  //longitude
                     lat:String, //latitude
                     speed:String,
-                    atype:String, //alert type  speed alert, prohibited route alert
+                    atype:String, //alert type 'speed' and 'prohibitedzone'  alert
+                    an:String, //alert name (chinese)
                     addr:String,   // alert address
-                    lp:{type:String,require:true}, //licence plate
+                    lp:String, //licence plate
               });
 //
 module.exports = mongoose.model('gpsalert',gpsAlertSchema);
