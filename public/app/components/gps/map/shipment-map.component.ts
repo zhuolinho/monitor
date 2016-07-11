@@ -33,6 +33,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   returnToRefill:boolean = true;
   static gpsmap:any;
   static carsGroups:any[] = [];
+  static allMarkers:any = {};
   isShiping:boolean = false;
   user:any;
   totalCarNumber:number;
@@ -66,10 +67,13 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   }
 
   ngOnDestroy(){
+    //reset static variables
     ShipmentMap.mapLoaded = false;
     ShipmentMap.gpsmap = null;
-
+    ShipmentMap.allMarkers = {};
+    ShipmentMap.carsGroups = [];
   }
+
   initUi(){
     var _this = this;
     setTimeout(_=>{
@@ -213,9 +217,15 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
   static addMarker(data){
     // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
-      var point = new BMap.Point(data.lng, data.lat);
-      var marker = new BMap.Marker(point);
+
+      // var marker = new BMap.Marker(point);
+
+
       if(data.lp){
+
+        var point = new BMap.Point(data.lng, data.lat);
+        ShipmentMap.allMarkers[data._id] = new BMap.Marker(point);   //_id = sim;
+
         var opts = {
           width : 200,     // 信息窗口宽度
           height: 100,     // 信息窗口高度
@@ -223,12 +233,36 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
           enableMessage:true//设置允许信息窗发送短息
         }
         var infoWindow = new BMap.InfoWindow("车牌号:"+data.lp+ ", 速度:"+data.speed+"km/h "+", 定位时间:"+data.time, opts);  // 创建信息窗口对象
-        marker.addEventListener("click", function(){
+        ShipmentMap.allMarkers[data._id].addEventListener("click", function(){
           ShipmentMap.gpsmap.openInfoWindow(infoWindow,point); //开启信息窗口
         });
+
+
+        ShipmentMap.gpsmap.addOverlay(ShipmentMap.allMarkers[data._id]);
       }
-      ShipmentMap.gpsmap.addOverlay(marker);
   }
+
+  iniSocket(){
+      var _this = this;
+        var url = 'http://139.196.18.222:3001';
+
+        if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
+          url = 'http://localhost:3001';
+        }
+        var socket = io(url);
+       socket.on('carMove', function(data){
+         console.log("socket got data-----",data);
+          //  if(_this.targetCar && data.pl&&data.pl.gps){
+          //     var cardata = data.pl.gps;
+          //     _this.updatePosition(cardata);
+          //  }
+
+           if(data.pl&&data.pl.gps){
+              var cardata = data.pl.gps;
+              _this.updateShoAllPosition(cardata);
+           }
+       });
+    }
 
 
   addCustomMarker(cardata){
@@ -247,6 +281,17 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         ShipmentMap.gpsmap.addOverlay(this.targetMarker);
   }
 
+
+
+  updateShoAllPosition(cardata){
+
+        console.log('updateShoAllPosition---',cardata);
+        console.log("ShipmentMap.allMarkers-----",ShipmentMap.allMarkers);
+        if(ShipmentMap.allMarkers[cardata.sim]){
+            console.log("cardata.sim----",cardata.sim);
+            ShipmentMap.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
+        }
+    }
 
   updatePosition(cardata,dest){
 
@@ -294,24 +339,6 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       this.request.put('/gps/shipment/done.json', this.newShipment).subscribe(res => {
         console.log("res shipment done-----", res);
       });
-    }
-
-
-    iniSocket(){
-      var _this = this;
-        var url = 'http://139.196.18.222:3001';
-
-        if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-          url = 'http://localhost:3001';
-        }
-        var socket = io(url);
-      //  socket.on('carMove', function(data){
-      //    console.log("socket got data-----",data);
-      //      if(_this.targetCar && data.pl&&data.pl.gps){
-      //         var cardata = data.pl.gps;
-      //         _this.updatePosition(cardata);
-      //      }
-      //  });
     }
 
     veConfirmShipment(){

@@ -64,8 +64,11 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     this.iniSocket();
                 };
                 ShipmentMap.prototype.ngOnDestroy = function () {
+                    //reset static variables
                     ShipmentMap.mapLoaded = false;
                     ShipmentMap.gpsmap = null;
+                    ShipmentMap.allMarkers = {};
+                    ShipmentMap.carsGroups = [];
                 };
                 ShipmentMap.prototype.initUi = function () {
                     var _this = this;
@@ -180,9 +183,10 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                 };
                 ShipmentMap.addMarker = function (data) {
                     // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
-                    var point = new BMap.Point(data.lng, data.lat);
-                    var marker = new BMap.Marker(point);
+                    // var marker = new BMap.Marker(point);
                     if (data.lp) {
+                        var point = new BMap.Point(data.lng, data.lat);
+                        ShipmentMap.allMarkers[data._id] = new BMap.Marker(point); //_id = sim;
                         var opts = {
                             width: 200,
                             height: 100,
@@ -190,11 +194,30 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                             enableMessage: true //设置允许信息窗发送短息
                         };
                         var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + ", 速度:" + data.speed + "km/h " + ", 定位时间:" + data.time, opts); // 创建信息窗口对象
-                        marker.addEventListener("click", function () {
+                        ShipmentMap.allMarkers[data._id].addEventListener("click", function () {
                             ShipmentMap.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
                         });
+                        ShipmentMap.gpsmap.addOverlay(ShipmentMap.allMarkers[data._id]);
                     }
-                    ShipmentMap.gpsmap.addOverlay(marker);
+                };
+                ShipmentMap.prototype.iniSocket = function () {
+                    var _this = this;
+                    var url = 'http://139.196.18.222:3001';
+                    if (window.location.hostname.indexOf('localhost') >= 0) {
+                        url = 'http://localhost:3001';
+                    }
+                    var socket = io(url);
+                    socket.on('carMove', function (data) {
+                        console.log("socket got data-----", data);
+                        //  if(_this.targetCar && data.pl&&data.pl.gps){
+                        //     var cardata = data.pl.gps;
+                        //     _this.updatePosition(cardata);
+                        //  }
+                        if (data.pl && data.pl.gps) {
+                            var cardata = data.pl.gps;
+                            _this.updateShoAllPosition(cardata);
+                        }
+                    });
                 };
                 ShipmentMap.prototype.addCustomMarker = function (cardata) {
                     var iconImage = 'dist/images/truck.new.gif';
@@ -207,6 +230,14 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var marker = new BMap.Marker(point, { icon: myIcon });
                     this.targetMarker = marker;
                     ShipmentMap.gpsmap.addOverlay(this.targetMarker);
+                };
+                ShipmentMap.prototype.updateShoAllPosition = function (cardata) {
+                    console.log('updateShoAllPosition---', cardata);
+                    console.log("ShipmentMap.allMarkers-----", ShipmentMap.allMarkers);
+                    if (ShipmentMap.allMarkers[cardata.sim]) {
+                        console.log("cardata.sim----", cardata.sim);
+                        ShipmentMap.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
+                    }
                 };
                 ShipmentMap.prototype.updatePosition = function (cardata, dest) {
                     var _this = this;
@@ -245,21 +276,6 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     this.request.put('/gps/shipment/done.json', this.newShipment).subscribe(function (res) {
                         console.log("res shipment done-----", res);
                     });
-                };
-                ShipmentMap.prototype.iniSocket = function () {
-                    var _this = this;
-                    var url = 'http://139.196.18.222:3001';
-                    if (window.location.hostname.indexOf('localhost') >= 0) {
-                        url = 'http://localhost:3001';
-                    }
-                    var socket = io(url);
-                    //  socket.on('carMove', function(data){
-                    //    console.log("socket got data-----",data);
-                    //      if(_this.targetCar && data.pl&&data.pl.gps){
-                    //         var cardata = data.pl.gps;
-                    //         _this.updatePosition(cardata);
-                    //      }
-                    //  });
                 };
                 ShipmentMap.prototype.veConfirmShipment = function () {
                     var that = this;
@@ -420,6 +436,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                 };
                 ShipmentMap.mapLoaded = false;
                 ShipmentMap.carsGroups = [];
+                ShipmentMap.allMarkers = {};
                 ShipmentMap = __decorate([
                     core_1.Component({
                         selector: 'shipment-map',
