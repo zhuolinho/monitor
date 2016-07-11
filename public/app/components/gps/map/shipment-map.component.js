@@ -209,10 +209,6 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     var socket = io(url);
                     socket.on('carMove', function (data) {
                         console.log("socket got data-----", data);
-                        //  if(_this.targetCar && data.pl&&data.pl.gps){
-                        //     var cardata = data.pl.gps;
-                        //     _this.updatePosition(cardata);
-                        //  }
                         if (data.pl && data.pl.gps) {
                             var cardata = data.pl.gps;
                             _this.updateShowAllPosition(cardata);
