@@ -215,7 +215,7 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                         //  }
                         if (data.pl && data.pl.gps) {
                             var cardata = data.pl.gps;
-                            _this.updateShoAllPosition(cardata);
+                            _this.updateShowAllPosition(cardata);
                         }
                     });
                 };
@@ -231,11 +231,9 @@ System.register(['angular2/core', 'angular2/router', '../../../config', '../../.
                     this.targetMarker = marker;
                     ShipmentMap.gpsmap.addOverlay(this.targetMarker);
                 };
-                ShipmentMap.prototype.updateShoAllPosition = function (cardata) {
-                    console.log('updateShoAllPosition---', cardata);
-                    console.log("ShipmentMap.allMarkers-----", ShipmentMap.allMarkers);
+                ShipmentMap.prototype.updateShowAllPosition = function (cardata) {
                     if (ShipmentMap.allMarkers[cardata.sim]) {
-                        console.log("cardata.sim----", cardata.sim);
+                        // console.log("cardata.sim----",cardata.sim);
                         ShipmentMap.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
                     }
                 };

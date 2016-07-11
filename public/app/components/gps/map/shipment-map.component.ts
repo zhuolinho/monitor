@@ -259,7 +259,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
            if(data.pl&&data.pl.gps){
               var cardata = data.pl.gps;
-              _this.updateShoAllPosition(cardata);
+              _this.updateShowAllPosition(cardata);
            }
        });
     }
@@ -283,12 +283,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
 
 
-  updateShoAllPosition(cardata){
+  updateShowAllPosition(cardata){
 
-        console.log('updateShoAllPosition---',cardata);
-        console.log("ShipmentMap.allMarkers-----",ShipmentMap.allMarkers);
         if(ShipmentMap.allMarkers[cardata.sim]){
-            console.log("cardata.sim----",cardata.sim);
+            // console.log("cardata.sim----",cardata.sim);
             ShipmentMap.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
         }
     }
