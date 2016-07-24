@@ -211,7 +211,7 @@ plc.getData =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  Plc.find(function (err, plc) {
+  PlcAlert.find(function (err, plc) {
       if (err){
         r.er = err;
         r.status = false;

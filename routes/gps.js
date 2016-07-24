@@ -217,7 +217,7 @@ function processIncommingData(handler,stream){
 
   handler(param)
       .then(function (r) {
-        console.log("route: process data successful",r);
+        // console.log("route: process data successful",r);
         io.emit("carMove",r);
       })
       .fail(function (r) {
