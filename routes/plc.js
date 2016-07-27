@@ -193,6 +193,26 @@ module.exports = function (handler)
             });
   });
 
+
+  router.post('/test.json', function(req, res, next) {
+      console.log("route plc test-----");
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'handleIncommingData',
+          pl:req.body.plc
+        };
+
+        handler(param)
+            .then(function (r) {
+              console.log("plc test data saved-----");
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
   //plc Connection
   _tcpSerever(handler);
 
