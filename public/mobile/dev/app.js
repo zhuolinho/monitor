@@ -41,7 +41,7 @@ var HomeTable = React.createClass({
     },
     componentDidMount: function () {
         var component = this;
-        $.getJSON("/plc/alerts/unprocessed.json", function (result) {
+        $.get("/plc/alerts/unprocessed.json", function (result) {
             component.setState({alerts: result.pl.alerts});
         });
     },
@@ -55,9 +55,13 @@ var HomeTable = React.createClass({
             return (
                 <tr key={i}>
                     <th>{alert.tank}</th>
-                    <td>A</td>
-                    <td>{alert.am||""}</td>
-                    <td>{alert.rt||""}</td>
+                    <td><select>
+                        <option value="6348">J6348</option>
+                        <option value="6548">C6548</option>
+                        <option value="6898">D6898</option>
+                    </select></td>
+                    <td>{alert.am || ""}</td>
+                    <td>{alert.rt || ""}</td>
                     <td>{(alert.atime || "") + "/" + (alert.pa || "")}</td>
                 </tr>
             );
@@ -80,14 +84,89 @@ var HomeTable = React.createClass({
         );
     }
 });
+var HomeCollapsible = React.createClass({
+    componentDidUpdate: function () {
+        $("table").table("refresh");
+    },
+    render: function () {
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
+        return (
+            <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+                <h3>{this.props.aType}</h3>
+                <select>
+                    {months.map(function (month) {
+                        i++;
+                        return (
+                            <option key={i}>{month}</option>
+                        );
+                    })}
+                </select>
+                <table data-role="table" data-mode="columntoggle" className="ui-responsive">
+                    <thead>
+                    <tr>
+                        <th data-priority="2">罐号</th>
+                        <th >报警时间</th>
+                        <th >接报时间</th>
+                        <th data-priority="3">调度员</th>
+                        <th>报警类型</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.props.alerts.map(function (alert) {
+                        j++;
+                        return <tr key={j}>
+                            <td>{alert.code}</td>
+                            <td>{alert.atime}</td>
+                            <td>{alert.pt}</td>
+                            <td>{alert.pa}</td>
+                            <td>{alert.atype}</td>
+                        </tr>;
+                    })}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+});
 var Content2 = React.createClass({
+    getInitialState: function () {
+        return {alerts: []};
+    },
+    componentDidMount: function () {
+        var component = this;
+        $.get("/plc/alertsg/processed.json", function (result) {
+            component.setState({alerts: result.pl.alerts});
+        });
+    },
     render: function () {
         var {id, ...other} = this.props;
+        var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
+        var i = 0;
+
+        function groupBy(arr, key) {
+            var res = {};
+            arr.forEach(function (e) {
+                if (!res[e[key]]) {
+                    res[e[key]] = [];
+                }
+                res[e[key]].push(e);
+            });
+            return res;
+        }
+
+        var groupObj = groupBy(this.state.alerts, "atype");
         return (
             <div data-role="main" className="ui-content">
-                <a href="#pagetwo">外部页面</a>
-                <br/>
-                <a href="externalnotexist.html">外部页面不存在。</a>
+                <div data-role="collapsible-set">
+                     {alertTypes.map(function (alertType) {
+                         i++;
+                         return (
+                             <HomeCollapsible key={i} aType={alertType} alerts={groupObj[alertType] || []}/>
+                         );
+                     })}
+                </div>
             </div>
         );
     }

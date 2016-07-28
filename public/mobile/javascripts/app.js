@@ -55,7 +55,7 @@ var HomeTable = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var component = this;
-        $.getJSON("dev/unprocessed.json", function (result) {
+        $.get("/dev/unprocessed.json", function (result) {
             component.setState({ alerts: result.pl.alerts });
         });
     },
@@ -77,18 +77,36 @@ var HomeTable = React.createClass({
                 React.createElement(
                     "td",
                     null,
-                    "A"
+                    React.createElement(
+                        "select",
+                        null,
+                        React.createElement(
+                            "option",
+                            { value: "6348" },
+                            "J6348"
+                        ),
+                        React.createElement(
+                            "option",
+                            { value: "6548" },
+                            "C6548"
+                        ),
+                        React.createElement(
+                            "option",
+                            { value: "6898" },
+                            "D6898"
+                        )
+                    )
                 ),
-                alert.am ? React.createElement(
+                React.createElement(
                     "td",
                     null,
-                    alert.am
-                ) : null,
-                alert.rt ? React.createElement(
+                    alert.am || ""
+                ),
+                React.createElement(
                     "td",
                     null,
-                    alert.rt
-                ) : null,
+                    alert.rt || ""
+                ),
                 React.createElement(
                     "td",
                     null,
@@ -136,28 +154,155 @@ var HomeTable = React.createClass({
         );
     }
 });
+var HomeCollapsible = React.createClass({
+    displayName: "HomeCollapsible",
+
+    componentDidUpdate: function componentDidUpdate() {
+        $("table").table("refresh");
+    },
+    render: function render() {
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
+        return React.createElement(
+            "div",
+            { "data-role": "collapsible", "data-collapsed-icon": "carat-d", "data-expanded-icon": "carat-u" },
+            React.createElement(
+                "h3",
+                null,
+                this.props.aType
+            ),
+            React.createElement(
+                "select",
+                null,
+                months.map(function (month) {
+                    i++;
+                    return React.createElement(
+                        "option",
+                        { key: i },
+                        month
+                    );
+                })
+            ),
+            React.createElement(
+                "table",
+                { "data-role": "table", "data-mode": "columntoggle", className: "ui-responsive" },
+                React.createElement(
+                    "thead",
+                    null,
+                    React.createElement(
+                        "tr",
+                        null,
+                        React.createElement(
+                            "th",
+                            { "data-priority": "2" },
+                            "罐号"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "报警时间"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "接报时间"
+                        ),
+                        React.createElement(
+                            "th",
+                            { "data-priority": "3" },
+                            "调度员"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "报警类型"
+                        )
+                    )
+                ),
+                React.createElement(
+                    "tbody",
+                    null,
+                    this.props.alerts.map(function (alert) {
+                        j++;
+                        return React.createElement(
+                            "tr",
+                            { key: j },
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.code
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.atime
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pt
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pa
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.atype
+                            )
+                        );
+                    })
+                )
+            )
+        );
+    }
+});
 var Content2 = React.createClass({
     displayName: "Content2",
 
+    getInitialState: function getInitialState() {
+        return { alerts: [] };
+    },
+    componentDidMount: function componentDidMount() {
+        var component = this;
+        $.get("/dev/processed.json", function (result) {
+            component.setState({ alerts: result.pl.alerts });
+        });
+    },
     render: function render() {
         var _props = this.props;
         var id = _props.id;
 
         var other = _objectWithoutProperties(_props, ["id"]);
 
+        var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
+        var i = 0;
+
+        function groupBy(arr, key) {
+            var res = {};
+            arr.forEach(function (e) {
+                if (!res[e[key]]) {
+                    res[e[key]] = [];
+                }
+                res[e[key]].push(e);
+            });
+            return res;
+        }
+
+        var groupObj = groupBy(this.state.alerts, "atype");
         return React.createElement(
             "div",
             { "data-role": "main", className: "ui-content" },
             React.createElement(
-                "a",
-                { href: "#pagetwo" },
-                "外部页面"
-            ),
-            React.createElement("br", null),
-            React.createElement(
-                "a",
-                { href: "externalnotexist.html" },
-                "外部页面不存在。"
+                "div",
+                { "data-role": "collapsible-set" },
+                alertTypes.map(function (alertType) {
+                    i++;
+                    return React.createElement(HomeCollapsible, { key: i, aType: alertType, alerts: groupObj[alertType] || [] });
+                })
             )
         );
     }
