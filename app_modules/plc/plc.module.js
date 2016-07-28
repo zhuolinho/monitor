@@ -173,15 +173,40 @@ var incommingData = m.pl;
 
   if(incommingData){
 
-    var dateInfo =  _extractDateInfo(incommingData);
+      var dateInfo =  _extractDateInfo(incommingData);
+      var chanelDateInfo =  _extractChanelDateInfo(incommingData);
+
+      console.log("dateInfo1,dateInfo2------",dateInfo, chanelDateInfo);
 
       var plcData = new PlcAlert({
                                 rawd:incommingData.toString('hex'),
-                                at:dateInfo.stdDate, //standard date.
-                                wd:dateInfo.weekday, //weekday
-                                ns:dateInfo.nanosecond,
+                                atime1:dateInfo.stdDate, //standard date.
+                                atime2:chanelDateInfo.stdDate, //standard date.
+                                wd:dateInfo1.weekday, //weekday
+                                ns:dateInfo1.nanosecond,
+                                addr1:'',
+                                iwc1:'',// instantaneous working conditions 1
+                                isc1:'',//instantaneous standard conditions 1
+                                p1:'',// pressure 1
+                                temp1:'',//temperature 1
+                                pwc1:'',// positive working conditions 1
+                                rwc1:'',// reverse working conditions 1
+                                cf1:'',//communication failure 1
+                                er1:'',// error report 1
+                                p2:'',// pressure 2
+                                addr2:'',
+                                iwc2:'',// instantaneous working conditions 1
+                                isc2:'',//instantaneous standard conditions 1
+                                p2:'',// pressure 2
+                                temp2:'',//temperature 2
+                                pwc2:'',// positive working conditions 2
+                                rwc2:'',// reverse working conditions 2
+                                cf2:'',//communication failure 2
+                                er2:'',
                                 tank:'C001'
-                        })
+                        });
+
+    console.log("saving plc-------", plcData);
 
         plcData.save(function (err, plc) {
             if (err){
@@ -211,7 +236,7 @@ plc.getData =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  Plc.find(function (err, plc) {
+  PlcAlert.find(function (err, plc) {
       if (err){
         r.er = err;
         r.status = false;
@@ -481,6 +506,109 @@ var _extractDateInfo = function(data){
 
   //var strYear = year.toString('hex')
   //parseInt(strYear, 16);
+
+  date = parseInt(year.toString('hex'), 16) +"-"+
+         parseInt(month.toString('hex'), 16) +"-"+
+         parseInt(day.toString('hex'), 16) +" "+
+         parseInt(hour.toString('hex'), 16) +":"+
+         parseInt(minute.toString('hex'), 16) +":"+
+         parseInt(second.toString('hex'), 16);
+
+  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
+
+  console.log("date result----",result);
+
+  return result;
+}
+
+
+
+var _extractChanelDateInfo = function(data){
+
+  //依次是   year（2字节）
+  // month（1字节）
+  // day（1字节）
+  // weekday（1字节）
+  // hour（1字节）
+  // minute（1字节）
+  // second（1字节）
+  // nanosecond（4字节）
+
+  var date = '';
+  var year = data.slice(12,14);
+  var month = data.slice(14,15);
+  var day = data.slice(15,16);
+  var weekday = data.slice(16,17);
+  var hour = data.slice(17,18);
+  var minute = data.slice(18,19);
+  var second = data.slice(19,20);
+  var nanosecond = data.slice(20,24);
+
+  //var strYear = year.toString('hex')
+  //parseInt(strYear, 16);
+
+  date = parseInt(year.toString('hex'), 16) +"-"+
+         parseInt(month.toString('hex'), 16) +"-"+
+         parseInt(day.toString('hex'), 16) +" "+
+         parseInt(hour.toString('hex'), 16) +":"+
+         parseInt(minute.toString('hex'), 16) +":"+
+         parseInt(second.toString('hex'), 16);
+
+  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
+
+  console.log("date result----",result);
+
+  return result;
+}
+
+
+
+
+var _extractPlcData = function(data){
+
+  //数据	64 bits
+  //表1站地址	2
+  //表1瞬时工况	4
+  // 表1瞬时标况	4
+  // 表1压力	4
+  // 表1温度	4
+  // 表1正工况累计	4
+  // 表1正标况累计	4
+  // 表1逆标况累计	4
+  // 表1通讯故障	1
+  // 表1错误情报	1
+  // 表2站地址	2
+  // 表2瞬时工况	4
+  // 表2瞬时标况	4
+  // 表2压力	4
+  // 表2温度	4
+  // 表2正工况累计	4
+  // 表2正标况累计	4
+  // 表2逆标况累计	4
+  // 表2通讯故障	1
+  // 表2错误情报	1
+
+  var addr1 = data.slice(24,26);
+  var instantaneousWorkingCond1 = data.slice(26,30);
+  var instantaneousStandardCond1 = data.slice(30,34);
+  var pressure1 = data.slice(34,38);
+  var temp1 = data.slice(38,42);
+  var positiveWorkingCond1  = data.slice(42,46);
+  var reverseWorkingCond1  = data.slice(46,50);
+  var comminucationFailure1 = data.slice(50,51);
+  var errorReport1 = data.slice(51,52);
+
+
+  var addr2 = data.slice(56,58);
+  var instantaneousWorkingCond2 = data.slice(58,62);
+  var instantaneousStandardCond2 = data.slice(62,66);
+  var pressure2 = data.slice(66,70);
+  var temp2 = data.slice(70,74);
+  var positiveWorkingCond2  = data.slice(74,78);
+  var reverseWorkingCond2  = data.slice(78,82);
+  var comminucationFailure2 = data.slice(82,83);
+  var errorReport2 = data.slice(83,84);
+
 
   date = parseInt(year.toString('hex'), 16) +"-"+
          parseInt(month.toString('hex'), 16) +"-"+

@@ -13,6 +13,9 @@ plan.target('production', [
 ]);
 // run commands on localhost
 plan.local(function(local) {
+
+
+
   local.log('Copy files to remote hosts');
   var filesToCopy = local.exec('git ls-files', {exec: {maxBuffer: 10000*1024}});
   // rsync files to all the destination's hosts
@@ -21,6 +24,7 @@ plan.local(function(local) {
 
 // run commands on remote hosts (destinations)
 plan.remote(function(remote) {
+
   remote.log('Reload application');
   remote.exec('pm2 reload '+appName , {user: username});
 });
