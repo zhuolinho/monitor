@@ -2,6 +2,25 @@
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+var EventEmitter = {
+    _events: {},
+    dispatch: function dispatch(event, data) {
+        if (!this._events[event]) {
+            // 没有监听事件
+            return;
+        }
+        for (var i = 0; i < this._events[event].length; i++) {
+            this._events[event][i](data);
+        }
+    },
+    subscribe: function subscribe(event, callback) {
+        // 创建一个新事件数组
+        if (!this._events[event]) {
+            this._events[event] = [];
+        }
+        this._events[event].push(callback);
+    }
+};
 var Header = React.createClass({
     displayName: "Header",
 
@@ -55,7 +74,7 @@ var HomeTable = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var component = this;
-        $.get("/dev/unprocessed.json", function (result) {
+        $.get("/plc/alerts/unprocessed.json", function (result) {
             component.setState({ alerts: result.pl.alerts });
         });
     },
@@ -79,7 +98,7 @@ var HomeTable = React.createClass({
                     null,
                     React.createElement(
                         "select",
-                        null,
+                        { "data-role": "none" },
                         React.createElement(
                             "option",
                             { value: "6348" },
@@ -149,7 +168,7 @@ var HomeTable = React.createClass({
             React.createElement(
                 "tbody",
                 null,
-                bodyNodes
+                bodyNodes.length ? bodyNodes : "加载中..."
             )
         );
     }
@@ -260,6 +279,26 @@ var HomeCollapsible = React.createClass({
         );
     }
 });
+var GpsMap = React.createClass({
+    displayName: "GpsMap",
+
+    componentDidMount: function componentDidMount() {
+        var map = new BMap.Map("gpsMap"); // 创建地图实例
+        var point = new BMap.Point(121.454, 31.153); // 创建点坐标
+        map.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
+        $.get("/gps/cars/all.json", function (result) {
+            result.pl.cars.forEach(function (ele) {
+                point = new BMap.Point(ele.lng, ele.lat);
+                var marker = new BMap.Marker(point);
+                map.addOverlay(marker);
+            });
+        });
+    },
+    render: function render() {
+        var mapHeight = $.mobile.getScreenHeight() - 111;
+        return React.createElement("div", { id: "gpsMap", style: { height: mapHeight } });
+    }
+});
 var Content2 = React.createClass({
     displayName: "Content2",
 
@@ -268,7 +307,7 @@ var Content2 = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var component = this;
-        $.get("/dev/processed.json", function (result) {
+        $.get("/plc/alerts/processed.json", function (result) {
             component.setState({ alerts: result.pl.alerts });
         });
     },
@@ -283,11 +322,11 @@ var Content2 = React.createClass({
 
         function groupBy(arr, key) {
             var res = {};
-            arr.forEach(function (e) {
-                if (!res[e[key]]) {
-                    res[e[key]] = [];
+            arr.forEach(function (ele) {
+                if (!res[ele[key]]) {
+                    res[ele[key]] = [];
                 }
-                res[e[key]].push(e);
+                res[ele[key]].push(ele);
             });
             return res;
         }
@@ -327,6 +366,17 @@ var Content3 = React.createClass({
     displayName: "Content3",
 
     render: function render() {
+        return React.createElement(
+            "div",
+            { "data-role": "main", className: "ui-content", style: { padding: 0 } },
+            React.createElement(GpsMap, null)
+        );
+    }
+});
+var Content4 = React.createClass({
+    displayName: "Content4",
+
+    render: function render() {
         var _props3 = this.props;
         var id = _props3.id;
 
@@ -335,13 +385,23 @@ var Content3 = React.createClass({
         return React.createElement(
             "div",
             { "data-role": "main", className: "ui-content" },
-            "Page3"
+            "Content4"
         );
+    }
+});
+var BlankContent = React.createClass({
+    displayName: "BlankContent",
+
+    render: function render() {
+        return React.createElement("div", { "data-role": "main", className: "ui-content" });
     }
 });
 var Footer = React.createClass({
     displayName: "Footer",
 
+    handleClick: function handleClick(event) {
+        EventEmitter.dispatch(event.target.id);
+    },
     render: function render() {
         return React.createElement(
             "div",
@@ -354,30 +414,33 @@ var Footer = React.createClass({
                     null,
                     React.createElement(
                         "li",
-                        null,
+                        { onClick: this.handleClick },
                         React.createElement(
                             "a",
-                            { href: "#pageone", "data-icon": "home", "data-transition": "none",
+                            { id: "pageone", href: "#pageone", "data-icon": "home",
+                                "data-transition": "none",
                                 className: this.props.id == "pageone" ? "ui-btn-active ui-state-persist" : "" },
                             "首页"
                         )
                     ),
                     React.createElement(
                         "li",
-                        null,
+                        { onClick: this.handleClick },
                         React.createElement(
                             "a",
-                            { href: "#pagetwo", "data-icon": "arrow-r", "data-transition": "none",
+                            { id: "pagetwo", href: "#pagetwo", "data-icon": "arrow-r",
+                                "data-transition": "none",
                                 className: this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : "" },
                             "实时监控"
                         )
                     ),
                     React.createElement(
                         "li",
-                        null,
+                        { onClick: this.handleClick },
                         React.createElement(
                             "a",
-                            { href: "#pagethree", "data-icon": "clock", "data-transition": "none",
+                            { id: "pagethree", href: "#pagethree", "data-icon": "clock",
+                                "data-transition": "none",
                                 className: this.props.id == "pagethree" ? "ui-btn-active ui-state-persist" : "" },
                             "GPS"
                         )
@@ -391,22 +454,43 @@ var Page = React.createClass({
     displayName: "Page",
 
     getInitialState: function getInitialState() {
-        return { selected: "button1" };
+        return { selected: "button1", isDelete: false };
     },
     handleHeader: function handleHeader(buttonId) {
         this.setState({ selected: buttonId });
     },
     componentDidUpdate: function componentDidUpdate() {
-        $("#content").trigger("create");
+        if (this.state.isDelete) {
+            this.setState({ isDelete: false });
+        } else {
+            $("#content").trigger("create");
+        }
+    },
+    componentDidMount: function componentDidMount() {
+        var component = this;
+        EventEmitter.subscribe(this.props.id, function () {
+            component.setState({ isDelete: true });
+        });
     },
     render: function render() {
-        var content = React.createElement(Content3, null);
-        if (this.state.selected == "button1") {
-            if (this.props.id == "pageone") {
-                content = React.createElement(Content1, null);
+        var content = React.createElement(BlankContent, null);
+        if (!this.state.isDelete) {
+            content = React.createElement(Content4, null);
+            if (this.state.selected == "button1") {
+                if (this.props.id == "pageone") {
+                    content = React.createElement(Content1, null);
+                }
+            } else if (this.state.selected == "button2") {
+                if (this.props.id == "pageone") {
+                    content = React.createElement(Content2, null);
+                } else if (this.props.id == "pagethree") {
+                    content = React.createElement(Content3, null);
+                }
             }
-        } else if (this.state.selected == "button2") {
-            content = React.createElement(Content2, null);
+        } else {
+            if (this.state.selected == "button2" && this.props.id == "pagethree") {
+                content = React.createElement(Content3, null);
+            }
         }
         return React.createElement(
             "div",
@@ -420,6 +504,9 @@ var Page = React.createClass({
 var App = React.createClass({
     displayName: "App",
 
+    // componentDidMount: function () {
+    //     $.mobile.initializePage();
+    // },
     render: function render() {
         return React.createElement(
             "div",

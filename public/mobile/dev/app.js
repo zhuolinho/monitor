@@ -1,3 +1,21 @@
+var EventEmitter = {
+    _events: {},
+    dispatch: function (event, data) {
+        if (!this._events[event]) { // 没有监听事件
+            return;
+        }
+        for (var i = 0; i < this._events[event].length; i++) {
+            this._events[event][i](data);
+        }
+    },
+    subscribe: function (event, callback) {
+        // 创建一个新事件数组
+        if (!this._events[event]) {
+            this._events[event] = [];
+        }
+        this._events[event].push(callback);
+    }
+};
 var Header = React.createClass({
     getInitialState: function () {
         return {selected: "button1"};
@@ -29,7 +47,7 @@ var Header = React.createClass({
         return (
             <div data-role="header" data-position="fixed" data-tap-toggle="false" style={{textAlign: "center"}}>
                 <div data-role="controlgroup" data-type="horizontal">
-                     {buttonNodes}
+                    {buttonNodes}
                 </div>
             </div>
         );
@@ -55,7 +73,7 @@ var HomeTable = React.createClass({
             return (
                 <tr key={i}>
                     <th>{alert.tank}</th>
-                    <td><select>
+                    <td><select data-role="none">
                         <option value="6348">J6348</option>
                         <option value="6548">C6548</option>
                         <option value="6898">D6898</option>
@@ -78,7 +96,7 @@ var HomeTable = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
-                {bodyNodes}
+                {bodyNodes.length ? bodyNodes : "加载中..."}
                 </tbody>
             </table>
         );
@@ -130,13 +148,40 @@ var HomeCollapsible = React.createClass({
         );
     }
 });
+var GpsMap = React.createClass({
+    componentDidMount: function () {
+        var map = new BMap.Map("gpsMap");          // 创建地图实例
+        var point = new BMap.Point(121.454, 31.153);  // 创建点坐标
+        map.centerAndZoom(point, 10);                 // 初始化地图，设置中心点坐标和地图级别
+        $.get("/gps/cars/all.json", function (result) {
+            var convertor = new BMap.Convertor();
+            result.pl.cars.forEach(function (ele) {
+                var ggPoint = new BMap.Point(ele.lng, ele.lat);
+                var pointArr = [];
+                pointArr.push(ggPoint);
+                convertor.translate(pointArr, 1, 5, function (data) {
+                    if(data.status === 0) {
+                        var marker = new BMap.Marker(data.points[0]);
+                        map.addOverlay(marker);
+                    }
+                });
+            });
+        })
+    },
+    render: function () {
+        var mapHeight = $.mobile.getScreenHeight() - 111;
+        return (
+            <div id="gpsMap" style={{height: mapHeight}}></div>
+        );
+    }
+});
 var Content2 = React.createClass({
     getInitialState: function () {
         return {alerts: []};
     },
     componentDidMount: function () {
         var component = this;
-        $.get("/plc/alertsg/processed.json", function (result) {
+        $.get("/plc/alerts/processed.json", function (result) {
             component.setState({alerts: result.pl.alerts});
         });
     },
@@ -147,11 +192,11 @@ var Content2 = React.createClass({
 
         function groupBy(arr, key) {
             var res = {};
-            arr.forEach(function (e) {
-                if (!res[e[key]]) {
-                    res[e[key]] = [];
+            arr.forEach(function (ele) {
+                if (!res[ele[key]]) {
+                    res[ele[key]] = [];
                 }
-                res[e[key]].push(e);
+                res[ele[key]].push(ele);
             });
             return res;
         }
@@ -160,12 +205,12 @@ var Content2 = React.createClass({
         return (
             <div data-role="main" className="ui-content">
                 <div data-role="collapsible-set">
-                     {alertTypes.map(function (alertType) {
-                         i++;
-                         return (
-                             <HomeCollapsible key={i} aType={alertType} alerts={groupObj[alertType] || []}/>
-                         );
-                     })}
+                    {alertTypes.map(function (alertType) {
+                        i++;
+                        return (
+                            <HomeCollapsible key={i} aType={alertType} alerts={groupObj[alertType] || []}/>
+                        );
+                    })}
                 </div>
             </div>
         );
@@ -183,28 +228,51 @@ var Content1 = React.createClass({
 });
 var Content3 = React.createClass({
     render: function () {
+        return (
+            <div data-role="main" className="ui-content" style={{padding: 0}}>
+                <GpsMap/>
+            </div>
+        );
+    }
+});
+var Content4 = React.createClass({
+    render: function () {
         var {id, ...other} = this.props;
         return (
             <div data-role="main" className="ui-content">
-                Page3
+                Content4
+            </div>
+        );
+    }
+});
+var BlankContent = React.createClass({
+    render: function () {
+        return (
+            <div data-role="main" className="ui-content">
             </div>
         );
     }
 });
 var Footer = React.createClass({
+    handleClick: function (event) {
+        EventEmitter.dispatch(event.target.id);
+    },
     render: function () {
         return (
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#pageone" data-icon="home" data-transition="none"
-                               className={this.props.id == "pageone" ? "ui-btn-active ui-state-persist" : ""}>首页</a>
+                        <li onClick={this.handleClick}><a id="pageone" href="#pageone" data-icon="home"
+                                                          data-transition="none"
+                                                          className={this.props.id == "pageone" ? "ui-btn-active ui-state-persist" : ""}>首页</a>
                         </li>
-                        <li><a href="#pagetwo" data-icon="arrow-r" data-transition="none"
-                               className={this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : ""}>实时监控</a>
+                        <li onClick={this.handleClick}><a id="pagetwo" href="#pagetwo" data-icon="arrow-r"
+                                                          data-transition="none"
+                                                          className={this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : ""}>实时监控</a>
                         </li>
-                        <li><a href="#pagethree" data-icon="clock" data-transition="none"
-                               className={this.props.id == "pagethree" ? "ui-btn-active ui-state-persist" : ""}>GPS</a>
+                        <li onClick={this.handleClick}><a id="pagethree" href="#pagethree" data-icon="clock"
+                                                          data-transition="none"
+                                                          className={this.props.id == "pagethree" ? "ui-btn-active ui-state-persist" : ""}>GPS</a>
                         </li>
                     </ul>
                 </div>
@@ -214,27 +282,48 @@ var Footer = React.createClass({
 });
 var Page = React.createClass({
     getInitialState: function () {
-        return {selected: "button1"};
+        return {selected: "button1", isDelete: false};
     },
     handleHeader: function (buttonId) {
         this.setState({selected: buttonId});
     },
     componentDidUpdate: function () {
-        $("#content").trigger("create");
+        if (this.state.isDelete) {
+            this.setState({isDelete: false});
+        } else {
+            $("#content").trigger("create");
+        }
+    },
+    componentDidMount: function () {
+        var component = this;
+        EventEmitter.subscribe(this.props.id, function () {
+            component.setState({isDelete: true});
+        });
     },
     render: function () {
-        var content = <Content3/>;
-        if (this.state.selected == "button1") {
-            if (this.props.id == "pageone") {
-                content = <Content1/>;
+        var content = <BlankContent/>;
+        if (!this.state.isDelete) {
+            content = <Content4/>;
+            if (this.state.selected == "button1") {
+                if (this.props.id == "pageone") {
+                    content = <Content1/>;
+                }
+            } else if (this.state.selected == "button2") {
+                if (this.props.id == "pageone") {
+                    content = <Content2/>;
+                } else if (this.props.id == "pagethree") {
+                    content = <Content3/>;
+                }
             }
-        } else if (this.state.selected == "button2") {
-            content = <Content2/>;
+        } else {
+            if (this.state.selected == "button2" && this.props.id == "pagethree") {
+                content = <Content3/>;
+            }
         }
         return (
             <div data-role="page" id={this.props.id}>
                 <Header titles={this.props.titles} callback={this.handleHeader}/>
-                 {content}
+                {content}
                 <Footer id={this.props.id}/>
             </div>
         );
