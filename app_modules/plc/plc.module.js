@@ -8,6 +8,7 @@ var plc = {};
 
 var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
+var iPlc = require('../../models/iplc');  //incomming plc data
 var Address = require('../../models/plc-address');
 var plcConfig = require('../../configs/plc');
 var lib = require('../../lib/lib');
@@ -173,40 +174,9 @@ var incommingData = m.pl;
 
   if(incommingData){
 
-      var dateInfo =  _extractDateInfo(incommingData);
-      var chanelDateInfo =  _extractChanelDateInfo(incommingData);
+      var plcData = _extractPlcData(incommingData);
 
-      console.log("dateInfo1,dateInfo2------",dateInfo, chanelDateInfo);
-
-      var plcData = new PlcAlert({
-                                rawd:incommingData.toString('hex'),
-                                atime1:dateInfo.stdDate, //standard date.
-                                atime2:chanelDateInfo.stdDate, //standard date.
-                                wd:dateInfo1.weekday, //weekday
-                                ns:dateInfo1.nanosecond,
-                                addr1:'',
-                                iwc1:'',// instantaneous working conditions 1
-                                isc1:'',//instantaneous standard conditions 1
-                                p1:'',// pressure 1
-                                temp1:'',//temperature 1
-                                pwc1:'',// positive working conditions 1
-                                rwc1:'',// reverse working conditions 1
-                                cf1:'',//communication failure 1
-                                er1:'',// error report 1
-                                p2:'',// pressure 2
-                                addr2:'',
-                                iwc2:'',// instantaneous working conditions 1
-                                isc2:'',//instantaneous standard conditions 1
-                                p2:'',// pressure 2
-                                temp2:'',//temperature 2
-                                pwc2:'',// positive working conditions 2
-                                rwc2:'',// reverse working conditions 2
-                                cf2:'',//communication failure 2
-                                er2:'',
-                                tank:'C001'
-                        });
-
-    console.log("saving plc-------", plcData);
+      console.log("saving plc-------", plcData);
 
         plcData.save(function (err, plc) {
             if (err){
@@ -236,7 +206,7 @@ plc.getData =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  PlcAlert.find(function (err, plc) {
+  iPlc.find(function (err, plc) {
       if (err){
         r.er = err;
         r.status = false;
@@ -483,16 +453,12 @@ plc.downloadData = function(m){
 }
 
 
-var _extractDateInfo = function(data){
 
-  //依次是   year（2字节）
-  // month（1字节）
-  // day（1字节）
-  // weekday（1字节）
-  // hour（1字节）
-  // minute（1字节）
-  // second（1字节）
-  // nanosecond（4字节）
+
+
+var _extractPlcData = function(data){
+
+
 
   var date = '';
   var year = data.slice(0,2);
@@ -514,57 +480,37 @@ var _extractDateInfo = function(data){
          parseInt(minute.toString('hex'), 16) +":"+
          parseInt(second.toString('hex'), 16);
 
-  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
-
-  console.log("date result----",result);
-
-  return result;
-}
 
 
 
-var _extractChanelDateInfo = function(data){
+     //依次是   year（2字节）
+     // month（1字节）
+     // day（1字节）
+     // weekday（1字节）
+     // hour（1字节）
+     // minute（1字节）
+     // second（1字节）
+     // nanosecond（4字节）
 
-  //依次是   year（2字节）
-  // month（1字节）
-  // day（1字节）
-  // weekday（1字节）
-  // hour（1字节）
-  // minute（1字节）
-  // second（1字节）
-  // nanosecond（4字节）
+     var chanelDate = '';
+     var cyear = data.slice(12,14);
+     var cmonth = data.slice(14,15);
+     var cday = data.slice(15,16);
+     var cweekday = data.slice(16,17);
+     var chour = data.slice(17,18);
+     var cminute = data.slice(18,19);
+     var csecond = data.slice(19,20);
+     var cnanosecond = data.slice(20,24); //not needed
 
-  var date = '';
-  var year = data.slice(12,14);
-  var month = data.slice(14,15);
-  var day = data.slice(15,16);
-  var weekday = data.slice(16,17);
-  var hour = data.slice(17,18);
-  var minute = data.slice(18,19);
-  var second = data.slice(19,20);
-  var nanosecond = data.slice(20,24);
-
-  //var strYear = year.toString('hex')
-  //parseInt(strYear, 16);
-
-  date = parseInt(year.toString('hex'), 16) +"-"+
-         parseInt(month.toString('hex'), 16) +"-"+
-         parseInt(day.toString('hex'), 16) +" "+
-         parseInt(hour.toString('hex'), 16) +":"+
-         parseInt(minute.toString('hex'), 16) +":"+
-         parseInt(second.toString('hex'), 16);
-
-  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
-
-  console.log("date result----",result);
-
-  return result;
-}
-
-
-
-
-var _extractPlcData = function(data){
+     //var strYear = year.toString('hex')
+     //parseInt(strYear, 16);
+ //not needed
+     chanelDate = parseInt(cyear.toString('hex'), 16) +"-"+
+            parseInt(cmonth.toString('hex'), 16) +"-"+
+            parseInt(cday.toString('hex'), 16) +" "+
+            parseInt(chour.toString('hex'), 16) +":"+
+            parseInt(cminute.toString('hex'), 16) +":"+
+            parseInt(csecond.toString('hex'), 16);
 
   //数据	64 bits
   //表1站地址	2
@@ -588,15 +534,20 @@ var _extractPlcData = function(data){
   // 表2通讯故障	1
   // 表2错误情报	1
 
+
+
+
+
   var addr1 = data.slice(24,26);
   var instantaneousWorkingCond1 = data.slice(26,30);
   var instantaneousStandardCond1 = data.slice(30,34);
   var pressure1 = data.slice(34,38);
   var temp1 = data.slice(38,42);
   var positiveWorkingCond1  = data.slice(42,46);
-  var reverseWorkingCond1  = data.slice(46,50);
-  var comminucationFailure1 = data.slice(50,51);
-  var errorReport1 = data.slice(51,52);
+  var positiveStandardCond1  = data.slice(46,50);
+  var reverseStandardCond1  = data.slice(50,54);
+  var comminucationFailure1 = data.slice(54,55);
+  var errorReport1 = data.slice(55,56);
 
 
   var addr2 = data.slice(56,58);
@@ -605,21 +556,42 @@ var _extractPlcData = function(data){
   var pressure2 = data.slice(66,70);
   var temp2 = data.slice(70,74);
   var positiveWorkingCond2  = data.slice(74,78);
-  var reverseWorkingCond2  = data.slice(78,82);
-  var comminucationFailure2 = data.slice(82,83);
-  var errorReport2 = data.slice(83,84);
+  var positiveStandardCond2  = data.slice(78,82);
+  var reverseStandardCond2  = data.slice(82,86);
+  var comminucationFailure2 = data.slice(86,87);
+  var errorReport2 = data.slice(87,88);
 
 
-  date = parseInt(year.toString('hex'), 16) +"-"+
-         parseInt(month.toString('hex'), 16) +"-"+
-         parseInt(day.toString('hex'), 16) +" "+
-         parseInt(hour.toString('hex'), 16) +":"+
-         parseInt(minute.toString('hex'), 16) +":"+
-         parseInt(second.toString('hex'), 16);
 
-  var result = {stdDate:date, weekday: parseInt(weekday.toString('hex'), 16), nanosecond:parseInt(nanosecond.toString('hex'), 16)};
 
-  console.log("date result----",result);
+ var result = new iPlc({
+                         rawd:data,  //raw data
+                         dct:date, //data collection time
+                         cdct:chanelDate, //chanel data collection time
+                         addr1:parseInt(addr1.toString('hex'), 16),
+                         iwc1:parseInt(instantaneousWorkingCond1.toString('hex'), 16),// instantaneous working conditions 1
+                         isc1:parseInt(instantaneousStandardCond1.toString('hex'), 16),//instantaneous standard conditions 1
+                         p1:parseInt(pressure1.toString('hex'), 16),// pressure 1
+                         temp1:parseInt(temp1.toString('hex'), 16),//temperature 1
+                         pwc1:parseInt(positiveWorkingCond1.toString('hex'), 16),// positive working conditions 1
+                         psc1:parseInt(positiveStandardCond1.toString('hex'), 16),// positive standard conditions 1
+                         rsc1:parseInt(reverseStandardCond1.toString('hex'), 16),// reverse standard conditions 1
+                         cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
+                         er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
+                         addr2:parseInt(addr2.toString('hex'), 16),
+                         iwc2:parseInt(instantaneousWorkingCond2.toString('hex'), 16),// instantaneous working conditions 2
+                         isc2:parseInt(instantaneousStandardCond2.toString('hex'), 16),//instantaneous standard conditions 2
+                         p2:parseInt(pressure2.toString('hex'), 16),// pressure 2
+                         temp2:parseInt(temp2.toString('hex'), 16),//temperature 2
+                         pwc2:parseInt(positiveWorkingCond2.toString('hex'), 16),// positive working conditions 2
+                         psc2:parseInt(positiveStandardCond2.toString('hex'), 16),// positive standard conditions 2
+                         rsc2:parseInt(reverseStandardCond2.toString('hex'), 16),// reverse standard conditions 2
+                         cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
+                         er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
+                         tank:''
+                      });
+
+  console.log("extracted plc data result----",result);
 
   return result;
 }
