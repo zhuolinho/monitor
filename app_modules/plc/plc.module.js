@@ -173,10 +173,7 @@ var incommingData = m.pl;
 
   if(incommingData){
 
-      deferred.resolve({status:true});
-
-
-    var pchain = [];
+     var pchain = [];
 
       for (var i = 0; i < 100; i++) {
              console.log("loop----",i);
@@ -187,6 +184,7 @@ var incommingData = m.pl;
       pchain.forEach(function (f) {
           result = result.then(f);
       });
+      deferred.resolve({status:true});
 
     }
     else {
@@ -479,7 +477,7 @@ plc.downloadData = function(m){
 
 
 
-var _extractPlcData = function(data:any,index:number){
+var _extractPlcData = function(data,index){
 
   var i = index?index:0;
   var shift = i*76;
