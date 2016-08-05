@@ -167,33 +167,56 @@ plc.init = function(m) {
 
 plc.handleIncommingData =  function(m) {
   console.log("plc: handleIncommingData");
-  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
 var incommingData = m.pl;
 
   if(incommingData){
 
-      var plcData = _extractPlcData(incommingData);
+      deferred.resolve({status:true});
 
-      console.log("saving plc-------", plcData);
 
-        plcData.save(function (err, plc) {
-            if (err){
-              r.er = err;
-              r.status = false;
-              deferred.reject(r);
-            }
-            else{
-              r.pl.plc = plc;
-              r.status = true;
-              deferred.resolve(r);
-            }
-        })
+    var pchain = [];
+
+      for (var i = 0; i < 100; i++) {
+             console.log("loop----",i);
+             pchain.push(_extractPlcData(incommingData,i));
+      }
+
+      var result =  q();
+      pchain.forEach(function (f) {
+          result = result.then(f);
+      });
+
     }
     else {
       r.er =  "empty data";
       r.status = false
+      deferred.reject(r);
+    }
+  return deferred.promise;
+
+}
+
+plc.saveIncommingData =  function(m) {
+  console.log("plc saveIncommingData");
+  var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+  if(m){
+          m.save(function (err, plc) {
+              if (err){
+                r.er = err;
+                deferred.reject(r);
+              }
+              else{
+                r.pl.plc = plc;
+                r.status = true;
+                deferred.resolve(r);
+              }
+          })
+      }
+    else {
+      r.er =  "empty plc data";
       deferred.reject(r);
     }
   return deferred.promise;
@@ -456,10 +479,10 @@ plc.downloadData = function(m){
 
 
 
-var _extractPlcData = function(data){
+var _extractPlcData = function(data:any,index:number){
 
-
-
+  var i = index?index:0;
+  var shift = i*76;
   var date = '';
   var year = data.slice(0,2);
   var month = data.slice(2,3);
@@ -480,9 +503,6 @@ var _extractPlcData = function(data){
          parseInt(minute.toString('hex'), 16) +":"+
          parseInt(second.toString('hex'), 16);
 
-
-
-
      //依次是   year（2字节）
      // month（1字节）
      // day（1字节）
@@ -493,14 +513,14 @@ var _extractPlcData = function(data){
      // nanosecond（4字节）
 
      var chanelDate = '';
-     var cyear = data.slice(12,14);
-     var cmonth = data.slice(14,15);
-     var cday = data.slice(15,16);
-     var cweekday = data.slice(16,17);
-     var chour = data.slice(17,18);
-     var cminute = data.slice(18,19);
-     var csecond = data.slice(19,20);
-     var cnanosecond = data.slice(20,24); //not needed
+     var cyear = data.slice(12+shift,14+shift);
+     var cmonth = data.slice(14+shift,15+shift);
+     var cday = data.slice(15+shift,16+shift);
+     var cweekday = data.slice(16+shift,17+shift);
+     var chour = data.slice(17+shift,18+shift);
+     var cminute = data.slice(18+shift,19+shift);
+     var csecond = data.slice(19+shift,20+shift);
+     var cnanosecond = data.slice(20+shift,24+shift); //not needed
 
      //var strYear = year.toString('hex')
      //parseInt(strYear, 16);
@@ -538,28 +558,28 @@ var _extractPlcData = function(data){
 
 
 
-  var addr1 = data.slice(24,26);
-  var instantaneousWorkingCond1 = data.slice(26,30);
-  var instantaneousStandardCond1 = data.slice(30,34);
-  var pressure1 = data.slice(34,38);
-  var temp1 = data.slice(38,42);
-  var positiveWorkingCond1  = data.slice(42,46);
-  var positiveStandardCond1  = data.slice(46,50);
-  var reverseStandardCond1  = data.slice(50,54);
-  var comminucationFailure1 = data.slice(54,55);
-  var errorReport1 = data.slice(55,56);
+  var addr1 = data.slice(24+shift,26+shift);
+  var instantaneousWorkingCond1 = data.slice(26+shift,30+shift);
+  var instantaneousStandardCond1 = data.slice(30+shift,34+shift);
+  var pressure1 = data.slice(34+shift,38+shift);
+  var temp1 = data.slice(38+shift,42+shift);
+  var positiveWorkingCond1  = data.slice(42+shift,46+shift);
+  var positiveStandardCond1  = data.slice(46+shift,50+shift);
+  var reverseStandardCond1  = data.slice(50+shift,54+shift);
+  var comminucationFailure1 = data.slice(54+shift,55+shift);
+  var errorReport1 = data.slice(55+shift,56+shift);
 
 
-  var addr2 = data.slice(56,58);
-  var instantaneousWorkingCond2 = data.slice(58,62);
-  var instantaneousStandardCond2 = data.slice(62,66);
-  var pressure2 = data.slice(66,70);
-  var temp2 = data.slice(70,74);
-  var positiveWorkingCond2  = data.slice(74,78);
-  var positiveStandardCond2  = data.slice(78,82);
-  var reverseStandardCond2  = data.slice(82,86);
-  var comminucationFailure2 = data.slice(86,87);
-  var errorReport2 = data.slice(87,88);
+  var addr2 = data.slice(56+shift,58+shift);
+  var instantaneousWorkingCond2 = data.slice(58+shift,62+shift);
+  var instantaneousStandardCond2 = data.slice(62+shift,66+shift);
+  var pressure2 = data.slice(66+shift,70+shift);
+  var temp2 = data.slice(70+shift,74+shift);
+  var positiveWorkingCond2  = data.slice(74+shift,78+shift);
+  var positiveStandardCond2  = data.slice(78+shift,82+shift);
+  var reverseStandardCond2  = data.slice(82+shift,86+shift);
+  var comminucationFailure2 = data.slice(86+shift,87+shift);
+  var errorReport2 = data.slice(87+shift,88+shift);
 
 
 

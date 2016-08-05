@@ -244,7 +244,7 @@ var _tcpSerever = function(handler){
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
         console.log('plc server: got data stream----');
-        // saveData(handler,data);
+        saveData(handler,data);
     });
 
     // Remove the client from the list when it leaves
