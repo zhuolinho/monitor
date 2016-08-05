@@ -176,7 +176,7 @@ var incommingData = m.pl;
      var pchain = [];
 
       for (var i = 0; i < 100; i++) {
-             console.log("loop----",i);
+            //  console.log("loop----",i);
              pchain.push(_extractPlcData(incommingData,i));
       }
 
@@ -583,7 +583,7 @@ var _extractPlcData = function(data,index){
 
 
  var result = new iPlc({
-                         rawd:data,  //raw data
+                         rawd:'',  //raw data
                          dct:date, //data collection time
                          cdct:chanelDate, //chanel data collection time
                          addr1:parseInt(addr1.toString('hex'), 16),
@@ -609,7 +609,7 @@ var _extractPlcData = function(data,index){
                          tank:''
                       });
 
-  console.log("extracted plc data result----",result);
+  // console.log("extracted plc data result----",result);
 
   return result;
 }

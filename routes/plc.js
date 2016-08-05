@@ -228,6 +228,8 @@ var _tcpSerever = function(handler){
   // Start a TCP Server
   net.createServer(function (socket) {
 
+      var isSaving  = false;
+
     console.log('plc got new socket-----');
     // Identify this client
     socket.name = socket.remoteAddress + ":" + socket.remotePort;
@@ -243,8 +245,16 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
-        console.log('plc server: got data stream----');
-        saveData(handler, data);
+        if(!isSaving){
+          isSaving = true;
+          console.log('plc server: got data stream----');
+          saveData(handler, data);
+
+        var timer = setTimeout(function(){  //save every 1 min.
+              isSaving = false;
+              clearTimeout(timer);
+          },60000);
+        }
     });
 
     // Remove the client from the list when it leaves
@@ -267,7 +277,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---",r);
+        // console.log("plc route save data successful---",r);
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);
