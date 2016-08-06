@@ -390,10 +390,166 @@ var Content4 = React.createClass({
 
         var other = _objectWithoutProperties(_props3, ["id"]);
 
+        var months = ["2016年8月", "2016年7月", "2016年6月", "2016年5月", "2016年4月", "2016年3月", "2016年2月", "2016年1月"];
+        var i = 0;
+        var j = 0;
+        var tableByday = [{ code: "C002", date: "1月1号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月2号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月3号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月4号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月5号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月6号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月7号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月8号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月9号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月10号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月11号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月12号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月13号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月14号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月15号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月16号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月17号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月18号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月19号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月20号", "if": 0.0000, af: 0.0000, mf: 0.0000 }];
         return React.createElement(
             "div",
-            { "data-role": "main", className: "ui-content" },
-            "Content4"
+            { "data-role": "main", className: "ui-content ui-grid-a" },
+            React.createElement(
+                "div",
+                { className: "ui-block-a" },
+                React.createElement(
+                    "select",
+                    null,
+                    React.createElement(
+                        "option",
+                        { value: "0" },
+                        " 母站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "中转站1号" },
+                        "中转站1号"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "中转站2号" },
+                        "中转站2号"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "中转站3号" },
+                        "中转站3号"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "C001-闸北区天目中路111号XXX站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "C002-闸北区大宁路355号XXXXX站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        " C003-闸北区万荣路23号XXX站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        " L001-闸北区沪太路1500号XX基地"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        " L002-闸北区共和新路555号XXX基地"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        " L003-闸北区红星公路220号XXX基地"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "X001-黄浦区新闸路333号XXXXXX站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "X002-静安区海防路111号XX站"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "X003-虹口区四川北路222号XX站"
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "ui-block-b" },
+                React.createElement(
+                    "select",
+                    null,
+                    months.map(function (ele) {
+                        i++;
+                        return React.createElement(
+                            "option",
+                            { key: i },
+                            ele
+                        );
+                    })
+                )
+            ),
+            React.createElement("img", { src: "/dist/images/chart.jpg", style: { width: "100%" } }),
+            React.createElement(
+                "table",
+                { "data-role": "table", "data-mode": "columntoggle", className: "ui-responsive" },
+                React.createElement(
+                    "thead",
+                    null,
+                    React.createElement(
+                        "tr",
+                        null,
+                        React.createElement(
+                            "th",
+                            null,
+                            "CNG罐号"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "日期"
+                        ),
+                        React.createElement(
+                            "th",
+                            { "data-priority": "1" },
+                            "累积流量"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "平均流量"
+                        )
+                    )
+                ),
+                React.createElement(
+                    "tbody",
+                    null,
+                    tableByday.map(function (alert) {
+                        j++;
+                        return React.createElement(
+                            "tr",
+                            { key: j },
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.code
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.date
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.af
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.mf
+                            )
+                        );
+                    })
+                )
+            )
         );
     }
 });
@@ -483,10 +639,11 @@ var Page = React.createClass({
     render: function render() {
         var content = React.createElement(BlankContent, null);
         if (!this.state.isDelete) {
-            content = React.createElement(Content4, null);
             if (this.state.selected == "button1") {
                 if (this.props.id == "pageone") {
                     content = React.createElement(Content1, null);
+                } else if (this.props.id == "pagetwo") {
+                    content = React.createElement(Content4, null);
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {

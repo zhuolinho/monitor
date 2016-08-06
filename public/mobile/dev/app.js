@@ -239,9 +239,79 @@ var Content3 = React.createClass({
 var Content4 = React.createClass({
     render: function () {
         var {id, ...other} = this.props;
+        var months = ["2016年8月", "2016年7月", "2016年6月", "2016年5月", "2016年4月", "2016年3月", "2016年2月", "2016年1月"];
+        var i = 0;
+        var j = 0;
+        var tableByday = [{code: "C002", date: "1月1号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月2号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月3号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月4号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月5号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月6号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月7号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月8号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月9号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月10号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月11号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月12号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月13号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月14号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月15号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月16号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月17号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月18号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月19号", if: 0.0000, af: 0.0000, mf: 0.0000},
+            {code: "C002", date: "1月20号", if: 0.0000, af: 0.0000, mf: 0.0000}
+        ];
         return (
-            <div data-role="main" className="ui-content">
-                Content4
+            <div data-role="main" className="ui-content ui-grid-a">
+                <div className="ui-block-a">
+                    <select>
+                        <option value="0"> 母站</option>
+                        <option value="中转站1号">中转站1号</option>
+                        <option value="中转站2号">中转站2号</option>
+                        <option value="中转站3号">中转站3号</option>
+                        <option value="">C001-闸北区天目中路111号XXX站</option>
+                        <option value="">C002-闸北区大宁路355号XXXXX站</option>
+                        <option value=""> C003-闸北区万荣路23号XXX站</option>
+                        <option value=""> L001-闸北区沪太路1500号XX基地</option>
+                        <option value=""> L002-闸北区共和新路555号XXX基地</option>
+                        <option value=""> L003-闸北区红星公路220号XXX基地</option>
+                        <option value="">X001-黄浦区新闸路333号XXXXXX站</option>
+                        <option value="">X002-静安区海防路111号XX站</option>
+                        <option value="">X003-虹口区四川北路222号XX站</option>
+                    </select>
+                </div>
+                <div className="ui-block-b">
+                    <select>
+                        {months.map(function (ele) {
+                            i++;
+                            return (<option key={i}>{ele}</option>);
+                        })}
+                    </select>
+                </div>
+                <img src="/dist/images/chart.jpg" style={{width: "100%"}}/>
+                <table data-role="table" data-mode="columntoggle" className="ui-responsive">
+                    <thead>
+                    <tr>
+                        <th>CNG罐号</th>
+                        <th>日期</th>
+                        <th data-priority="1">累积流量</th>
+                        <th>平均流量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tableByday.map(function (alert) {
+                        j++;
+                        return <tr key={j}>
+                            <td>{alert.code}</td>
+                            <td>{alert.date}</td>
+                            <td>{alert.af}</td>
+                            <td>{alert.mf}</td>
+                        </tr>;
+                    })}
+                    </tbody>
+                </table>
             </div>
         );
     }
@@ -304,10 +374,11 @@ var Page = React.createClass({
     render: function () {
         var content = <BlankContent/>;
         if (!this.state.isDelete) {
-            content = <Content4/>;
             if (this.state.selected == "button1") {
                 if (this.props.id == "pageone") {
                     content = <Content1/>;
+                } else if (this.props.id == "pagetwo") {
+                    content = <Content4/>;
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {
@@ -331,9 +402,9 @@ var Page = React.createClass({
     }
 });
 var App = React.createClass({
-    // componentDidMount: function () {
-    //     $.mobile.initializePage();
-    // },
+    componentDidMount: function () {
+        $.mobile.initializePage();
+    },
     render: function () {
         return (
             <div>
