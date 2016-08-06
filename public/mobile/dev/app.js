@@ -158,6 +158,56 @@ var HomeCollapsible = React.createClass({
         );
     }
 });
+var GpsCollapsible = React.createClass({
+    componentDidUpdate: function () {
+        $("table").table("refresh");
+    },
+    render: function () {
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
+        return (
+            <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+                <h3>{this.props.aType}</h3>
+                <select>
+                    {months.map(function (month) {
+                        i++;
+                        return (
+                            <option key={i}>{month}</option>
+                        );
+                    })}
+                </select>
+                <table data-role="table" data-mode="columntoggle" className="ui-responsive">
+                    <thead>
+                    <tr>
+                        <th data-priority="2">原罐号</th>
+                        <th>换罐号</th>
+                        <th>配送时间</th>
+                        <th data-priority="1">送达时间</th>
+                        <th data-priority="3">车牌/司机/押运</th>
+                        <th>调度员</th>
+                        <th>距离</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.props.alerts.map(function (alert) {
+                        j++;
+                        return <tr key={j}>
+                            <td>{alert.oti}</td>
+                            <td>{alert.nti}</td>
+                            <td>{alert.dt}</td>
+                            <td>{alert.at}</td>
+                            <td>{(alert.lp || " ") + "/" + (alert.driver || " ") + "/" + (alert.s || " ")}</td>
+                            <td>{alert.pa}</td>
+                            <td>{alert.dist}</td>
+                        </tr>;
+                    })}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+});
 var GpsMap = React.createClass({
     componentDidMount: function () {
         var map = new BMap.Map("gpsMap");          // 创建地图实例
@@ -186,6 +236,61 @@ var GpsMap = React.createClass({
         );
     }
 });
+var GpsTable = React.createClass({
+    getInitialState: function () {
+        return {shipmentList: []};
+    },
+    componentDidMount: function () {
+        var component = this;
+        $.get("/plc/shipments.json", function (result) {
+            component.setState({shipmentList: result.pl.shipmentList});
+        });
+    },
+    componentDidUpdate: function () {
+        $("table").table("refresh");
+    },
+    render: function () {
+        var i = 0;
+        var bodyNodes = this.state.shipmentList.map(function (alert) {
+            i++;
+            return (
+                <tr key={i}>
+                    <th>{alert.tank}</th>
+                    <td>{alert.code}</td>
+                    <td>{alert.am || ""}</td>
+                    <td>{alert.rt || ""}</td>
+                    <td>{(alert.atime || "") + "/" + (alert.pa || "")}</td>
+                </tr>
+            );
+        });
+        return (
+            <table data-role="table" className="ui-responsive">
+                <thead>
+                <tr>
+                    <th/>
+                    <th>罐号</th>
+                    <th>余量/压力</th>
+                    <th>剩余时间</th>
+                    <th>时间/工号</th>
+                </tr>
+                </thead>
+                <tbody>
+                {bodyNodes.length ? bodyNodes : "加载中..."}
+                </tbody>
+            </table>
+        );
+    }
+});
+var Content1 = React.createClass({
+    render: function () {
+        var {id, ...other} = this.props;
+        return (
+            <div data-role="main" className="ui-content">
+                <HomeTable/>
+            </div>
+        );
+    }
+});
 var Content2 = React.createClass({
     getInitialState: function () {
         return {alerts: []};
@@ -211,16 +316,6 @@ var Content2 = React.createClass({
                         );
                     })}
                 </div>
-            </div>
-        );
-    }
-});
-var Content1 = React.createClass({
-    render: function () {
-        var {id, ...other} = this.props;
-        return (
-            <div data-role="main" className="ui-content">
-                <HomeTable/>
             </div>
         );
     }
@@ -337,6 +432,45 @@ var Content5 = React.createClass({
         );
     }
 });
+var Content6 = React.createClass({
+    render: function () {
+        var {id, ...other} = this.props;
+        return (
+            <div data-role="main" className="ui-content">
+                <GpsTable/>
+            </div>
+        );
+    }
+});
+var Content7 = React.createClass({
+    getInitialState: function () {
+        return {done: []};
+    },
+    componentDidMount: function () {
+        var component = this;
+        $.get("/gps/shipments/done.json", function (result) {
+            component.setState({done: result.pl.shipments});
+        });
+    },
+    render: function () {
+        var {id, ...other} = this.props;
+        var alertTypes = ["CNG", "LNG", "集格", "杜瓦瓶", "进场", "拉回"];
+        var i = 0;
+        var groupObj = groupBy(this.state.done, "ntt");
+        return (
+            <div data-role="main" className="ui-content">
+                <div data-role="collapsible-set">
+                    {alertTypes.map(function (alertType) {
+                        i++;
+                        return (
+                            <GpsCollapsible key={i} aType={alertType} alerts={groupObj[alertType] || []}/>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    }
+});
 var BlankContent = React.createClass({
     render: function () {
         return (
@@ -400,6 +534,8 @@ var Page = React.createClass({
                     content = <Content1/>;
                 } else if (this.props.id == "pagetwo") {
                     content = <Content4/>;
+                } else if (this.props.id == "pagethree") {
+                    content = <Content6/>;
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {
@@ -409,6 +545,8 @@ var Page = React.createClass({
                 } else if (this.props.id == "pagetwo") {
                     content = <Content5/>;
                 }
+            } else if (this.state.selected == "button3") {
+                content = <Content7/>;
             }
         } else {
             if (this.state.selected == "button2" && this.props.id == "pagethree") {

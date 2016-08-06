@@ -289,6 +289,132 @@ var HomeCollapsible = React.createClass({
         );
     }
 });
+var GpsCollapsible = React.createClass({
+    displayName: "GpsCollapsible",
+
+    componentDidUpdate: function componentDidUpdate() {
+        $("table").table("refresh");
+    },
+    render: function render() {
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
+        return React.createElement(
+            "div",
+            { "data-role": "collapsible", "data-collapsed-icon": "carat-d", "data-expanded-icon": "carat-u" },
+            React.createElement(
+                "h3",
+                null,
+                this.props.aType
+            ),
+            React.createElement(
+                "select",
+                null,
+                months.map(function (month) {
+                    i++;
+                    return React.createElement(
+                        "option",
+                        { key: i },
+                        month
+                    );
+                })
+            ),
+            React.createElement(
+                "table",
+                { "data-role": "table", "data-mode": "columntoggle", className: "ui-responsive" },
+                React.createElement(
+                    "thead",
+                    null,
+                    React.createElement(
+                        "tr",
+                        null,
+                        React.createElement(
+                            "th",
+                            { "data-priority": "2" },
+                            "原罐号"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "换罐号"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "配送时间"
+                        ),
+                        React.createElement(
+                            "th",
+                            { "data-priority": "1" },
+                            "送达时间"
+                        ),
+                        React.createElement(
+                            "th",
+                            { "data-priority": "3" },
+                            "车牌/司机/押运"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "调度员"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "距离"
+                        )
+                    )
+                ),
+                React.createElement(
+                    "tbody",
+                    null,
+                    this.props.alerts.map(function (alert) {
+                        j++;
+                        return React.createElement(
+                            "tr",
+                            { key: j },
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.oti
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.nti
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.dt
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.at
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                (alert.lp || " ") + "/" + (alert.driver || " ") + "/" + (alert.s || " ")
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pa
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.dist
+                            )
+                        );
+                    })
+                )
+            )
+        );
+    }
+});
 var GpsMap = React.createClass({
     displayName: "GpsMap",
 
@@ -317,6 +443,111 @@ var GpsMap = React.createClass({
         return React.createElement("div", { id: "gpsMap", style: { height: mapHeight } });
     }
 });
+var GpsTable = React.createClass({
+    displayName: "GpsTable",
+
+    getInitialState: function getInitialState() {
+        return { shipmentList: [] };
+    },
+    componentDidMount: function componentDidMount() {
+        var component = this;
+        $.get("/plc/shipments.json", function (result) {
+            component.setState({ shipmentList: result.pl.shipmentList });
+        });
+    },
+    componentDidUpdate: function componentDidUpdate() {
+        $("table").table("refresh");
+    },
+    render: function render() {
+        var i = 0;
+        var bodyNodes = this.state.shipmentList.map(function (alert) {
+            i++;
+            return React.createElement(
+                "tr",
+                { key: i },
+                React.createElement(
+                    "th",
+                    null,
+                    alert.tank
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    alert.code
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    alert.am || ""
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    alert.rt || ""
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    (alert.atime || "") + "/" + (alert.pa || "")
+                )
+            );
+        });
+        return React.createElement(
+            "table",
+            { "data-role": "table", className: "ui-responsive" },
+            React.createElement(
+                "thead",
+                null,
+                React.createElement(
+                    "tr",
+                    null,
+                    React.createElement("th", null),
+                    React.createElement(
+                        "th",
+                        null,
+                        "罐号"
+                    ),
+                    React.createElement(
+                        "th",
+                        null,
+                        "余量/压力"
+                    ),
+                    React.createElement(
+                        "th",
+                        null,
+                        "剩余时间"
+                    ),
+                    React.createElement(
+                        "th",
+                        null,
+                        "时间/工号"
+                    )
+                )
+            ),
+            React.createElement(
+                "tbody",
+                null,
+                bodyNodes.length ? bodyNodes : "加载中..."
+            )
+        );
+    }
+});
+var Content1 = React.createClass({
+    displayName: "Content1",
+
+    render: function render() {
+        var _props = this.props;
+        var id = _props.id;
+
+        var other = _objectWithoutProperties(_props, ["id"]);
+
+        return React.createElement(
+            "div",
+            { "data-role": "main", className: "ui-content" },
+            React.createElement(HomeTable, null)
+        );
+    }
+});
 var Content2 = React.createClass({
     displayName: "Content2",
 
@@ -330,10 +561,10 @@ var Content2 = React.createClass({
         });
     },
     render: function render() {
-        var _props = this.props;
-        var id = _props.id;
+        var _props2 = this.props;
+        var id = _props2.id;
 
-        var other = _objectWithoutProperties(_props, ["id"]);
+        var other = _objectWithoutProperties(_props2, ["id"]);
 
         var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
         var i = 0;
@@ -349,22 +580,6 @@ var Content2 = React.createClass({
                     return React.createElement(HomeCollapsible, { key: i, aType: alertType, alerts: groupObj[alertType] || [] });
                 })
             )
-        );
-    }
-});
-var Content1 = React.createClass({
-    displayName: "Content1",
-
-    render: function render() {
-        var _props2 = this.props;
-        var id = _props2.id;
-
-        var other = _objectWithoutProperties(_props2, ["id"]);
-
-        return React.createElement(
-            "div",
-            { "data-role": "main", className: "ui-content" },
-            React.createElement(HomeTable, null)
         );
     }
 });
@@ -601,6 +816,57 @@ var Content5 = React.createClass({
         );
     }
 });
+var Content6 = React.createClass({
+    displayName: "Content6",
+
+    render: function render() {
+        var _props4 = this.props;
+        var id = _props4.id;
+
+        var other = _objectWithoutProperties(_props4, ["id"]);
+
+        return React.createElement(
+            "div",
+            { "data-role": "main", className: "ui-content" },
+            React.createElement(GpsTable, null)
+        );
+    }
+});
+var Content7 = React.createClass({
+    displayName: "Content7",
+
+    getInitialState: function getInitialState() {
+        return { done: [] };
+    },
+    componentDidMount: function componentDidMount() {
+        var component = this;
+        $.get("/gps/shipments/done.json", function (result) {
+            component.setState({ done: result.pl.shipments });
+        });
+    },
+    render: function render() {
+        var _props5 = this.props;
+        var id = _props5.id;
+
+        var other = _objectWithoutProperties(_props5, ["id"]);
+
+        var alertTypes = ["CNG", "LNG", "集格", "杜瓦瓶", "进场", "拉回"];
+        var i = 0;
+        var groupObj = groupBy(this.state.done, "ntt");
+        return React.createElement(
+            "div",
+            { "data-role": "main", className: "ui-content" },
+            React.createElement(
+                "div",
+                { "data-role": "collapsible-set" },
+                alertTypes.map(function (alertType) {
+                    i++;
+                    return React.createElement(GpsCollapsible, { key: i, aType: alertType, alerts: groupObj[alertType] || [] });
+                })
+            )
+        );
+    }
+});
 var BlankContent = React.createClass({
     displayName: "BlankContent",
 
@@ -692,6 +958,8 @@ var Page = React.createClass({
                     content = React.createElement(Content1, null);
                 } else if (this.props.id == "pagetwo") {
                     content = React.createElement(Content4, null);
+                } else if (this.props.id == "pagethree") {
+                    content = React.createElement(Content6, null);
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {
@@ -701,6 +969,8 @@ var Page = React.createClass({
                 } else if (this.props.id == "pagetwo") {
                     content = React.createElement(Content5, null);
                 }
+            } else if (this.state.selected == "button3") {
+                content = React.createElement(Content7, null);
             }
         } else {
             if (this.state.selected == "button2" && this.props.id == "pagethree") {
