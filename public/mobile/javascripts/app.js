@@ -2,6 +2,16 @@
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+function groupBy(arr, key) {
+    var res = {};
+    arr.forEach(function (ele) {
+        if (!res[ele[key]]) {
+            res[ele[key]] = [];
+        }
+        res[ele[key]].push(ele);
+    });
+    return res;
+}
 var EventEmitter = {
     _events: {},
     dispatch: function dispatch(event, data) {
@@ -327,18 +337,6 @@ var Content2 = React.createClass({
 
         var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
         var i = 0;
-
-        function groupBy(arr, key) {
-            var res = {};
-            arr.forEach(function (ele) {
-                if (!res[ele[key]]) {
-                    res[ele[key]] = [];
-                }
-                res[ele[key]].push(ele);
-            });
-            return res;
-        }
-
         var groupObj = groupBy(this.state.alerts, "atype");
         return React.createElement(
             "div",
@@ -553,6 +551,56 @@ var Content4 = React.createClass({
         );
     }
 });
+var Content5 = React.createClass({
+    displayName: "Content5",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            { "data-role": "main", className: "ui-content ui-grid-a" },
+            React.createElement(
+                "div",
+                { className: "ui-block-a" },
+                React.createElement(
+                    "select",
+                    null,
+                    React.createElement(
+                        "option",
+                        null,
+                        "C002-闸北区大宁路355号XX站"
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "ui-block-b" },
+                React.createElement(
+                    "select",
+                    null,
+                    React.createElement(
+                        "option",
+                        { value: "0", disabled: true },
+                        "后门2号摄像头"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "1" },
+                        "后门3号摄像头"
+                    ),
+                    React.createElement(
+                        "option",
+                        { value: "2" },
+                        "后门4号摄像头"
+                    )
+                )
+            ),
+            React.createElement("video", {
+                src: "http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg==", /*此处填写购买获取到的m3u8地址 必填*/
+                poster: "/dist/images/logo1.jpg", /*此处填写封面图片地址 可选*/
+                controls: "controls", width: "100%", height: "100%" })
+        );
+    }
+});
 var BlankContent = React.createClass({
     displayName: "BlankContent",
 
@@ -650,6 +698,8 @@ var Page = React.createClass({
                     content = React.createElement(Content2, null);
                 } else if (this.props.id == "pagethree") {
                     content = React.createElement(Content3, null);
+                } else if (this.props.id == "pagetwo") {
+                    content = React.createElement(Content5, null);
                 }
             }
         } else {

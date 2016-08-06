@@ -1,3 +1,13 @@
+function groupBy(arr, key) {
+    var res = {};
+    arr.forEach(function (ele) {
+        if (!res[ele[key]]) {
+            res[ele[key]] = [];
+        }
+        res[ele[key]].push(ele);
+    });
+    return res;
+}
 var EventEmitter = {
     _events: {},
     dispatch: function (event, data) {
@@ -190,18 +200,6 @@ var Content2 = React.createClass({
         var {id, ...other} = this.props;
         var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
         var i = 0;
-
-        function groupBy(arr, key) {
-            var res = {};
-            arr.forEach(function (ele) {
-                if (!res[ele[key]]) {
-                    res[ele[key]] = [];
-                }
-                res[ele[key]].push(ele);
-            });
-            return res;
-        }
-
         var groupObj = groupBy(this.state.alerts, "atype");
         return (
             <div data-role="main" className="ui-content">
@@ -316,6 +314,29 @@ var Content4 = React.createClass({
         );
     }
 });
+var Content5 = React.createClass({
+    render: function () {
+        return (
+            <div data-role="main" className="ui-content ui-grid-a">
+                <div className="ui-block-a"><select>
+                    <option>C002-闸北区大宁路355号XX站</option>
+                </select></div>
+                <div className="ui-block-b">
+                    <select>
+                        <option value="0" disabled>后门2号摄像头</option>
+                        <option value="1">后门3号摄像头</option>
+                        <option value="2">后门4号摄像头</option>
+                    </select>
+                </div>
+                <video
+                    src="http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg=="  /*此处填写购买获取到的m3u8地址 必填*/
+                    poster="/dist/images/logo1.jpg"    /*此处填写封面图片地址 可选*/
+                    controls="controls" width="100%" height="100%">
+                </video>
+            </div>
+        );
+    }
+});
 var BlankContent = React.createClass({
     render: function () {
         return (
@@ -385,6 +406,8 @@ var Page = React.createClass({
                     content = <Content2/>;
                 } else if (this.props.id == "pagethree") {
                     content = <Content3/>;
+                } else if (this.props.id == "pagetwo") {
+                    content = <Content5/>;
                 }
             }
         } else {
