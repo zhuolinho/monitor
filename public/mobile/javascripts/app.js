@@ -287,10 +287,18 @@ var GpsMap = React.createClass({
         var point = new BMap.Point(121.454, 31.153); // 创建点坐标
         map.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
         $.get("/gps/cars/all.json", function (result) {
+            var convertor = new BMap.Convertor();
             result.pl.cars.forEach(function (ele) {
-                point = new BMap.Point(ele.lng, ele.lat);
-                var marker = new BMap.Marker(point);
-                map.addOverlay(marker);
+                var ggPoint = new BMap.Point(ele.lng, ele.lat);
+                convertor.translate([ggPoint], 1, 5, function (data) {
+                    if (data.status === 0) {
+                        var marker = new BMap.Marker(data.points[0]);
+                        marker.addEventListener("click", function () {
+                            alert("车辆:" + ele.lp + "\n速度:" + ele.speed + "km/h");
+                        });
+                        map.addOverlay(marker);
+                    }
+                });
             });
         });
     },

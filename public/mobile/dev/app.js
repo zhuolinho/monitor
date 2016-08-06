@@ -157,11 +157,12 @@ var GpsMap = React.createClass({
             var convertor = new BMap.Convertor();
             result.pl.cars.forEach(function (ele) {
                 var ggPoint = new BMap.Point(ele.lng, ele.lat);
-                var pointArr = [];
-                pointArr.push(ggPoint);
-                convertor.translate(pointArr, 1, 5, function (data) {
-                    if(data.status === 0) {
+                convertor.translate([ggPoint], 1, 5, function (data) {
+                    if (data.status === 0) {
                         var marker = new BMap.Marker(data.points[0]);
+                        marker.addEventListener("click", function () {
+                            alert("车辆:" + ele.lp + "\n速度:" + ele.speed + "km/h");
+                        });
                         map.addOverlay(marker);
                     }
                 });
@@ -330,9 +331,9 @@ var Page = React.createClass({
     }
 });
 var App = React.createClass({
-    componentDidMount: function () {
-        $.mobile.initializePage();
-    },
+    // componentDidMount: function () {
+    //     $.mobile.initializePage();
+    // },
     render: function () {
         return (
             <div>
