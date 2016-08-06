@@ -237,7 +237,7 @@ var _tcpSerever = function(handler){
     // Put this new client in the list
     clients.push(socket);
 
-    console.log('plc server: incoming socket----',socket.name);
+    // console.log('plc server: incoming socket----',socket.name);
 
     // Send a nice welcome message and announce
     socket.write("Welcome " + socket.name + "\n");
@@ -247,13 +247,13 @@ var _tcpSerever = function(handler){
     socket.on('data', function (data) {
         if(!isSaving){
           isSaving = true;
-          console.log('plc server: got data stream----');
+          // console.log('plc server: got data stream----');
           saveData(handler, data);
 
-        var timer = setTimeout(function(){  //save every 1 min.
+        var timer = setTimeout(function(){
               isSaving = false;
               clearTimeout(timer);
-          },60000);
+          },5*60000); //save every 5 min.
         }
     });
 
@@ -277,7 +277,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        // console.log("plc route save data successful---",r);
+        console.log("plc route save data successful---");
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);
