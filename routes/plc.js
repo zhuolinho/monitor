@@ -1,9 +1,12 @@
 
 var helpers = require('../utilities/helpers');
+var bufferConcat = require('buffer-concat');
 var express = require('express');
 var net = require('net');
 var client = new net.Socket();
 var router = express.Router();
+var chunks = [];
+var size = 0;
 
 
 
@@ -245,16 +248,27 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
+      size += data.length;
+      chunks.push(data);
+
+      console.log('plc data length----',size);
+
+      if((size-12)/76 >= 100){
+        console.log('got all plc data----');
+        socket.pause();
+        var validData = bufferConcat(chunks, size);
+        size = 0;
+        chunks = [];
         if(!isSaving){
           isSaving = true;
-          // console.log('plc server: got data stream----');
-          saveData(handler, data);
-
-        var timer = setTimeout(function(){
+          saveData(handler, validData);
+          var timer = setTimeout(function(){
+              socket.resume();
               isSaving = false;
               clearTimeout(timer);
           },5*60000); //save every 5 min.
         }
+      }
     });
 
     // Remove the client from the list when it leaves
