@@ -166,7 +166,7 @@ plc.init = function(m) {
 }
 
 plc.handleIncommingData =  function(m) {
-  console.log("plc: handleIncommingData");
+  console.log("plc: handleIncommingData",m.pl);
   var deferred = q.defer();
 
 var incommingData = m.pl;
@@ -176,8 +176,12 @@ var incommingData = m.pl;
      var pchain = [];
 
       for (var i = 0; i < 100; i++) {
-            //  console.log("loop----",i);
-             pchain.push(_extractPlcData(incommingData,i));
+             console.log("loop----",i);
+             var dataToSave = _extractPlcData(incommingData,i);
+             if((dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+               break;
+             }
+             pchain.push(_saveIncommingData(dataToSave));
       }
 
       var result =  q();
@@ -196,7 +200,7 @@ var incommingData = m.pl;
 
 }
 
-plc.saveIncommingData =  function(m) {
+var _saveIncommingData =  function(m) {
   console.log("plc saveIncommingData");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
@@ -587,23 +591,23 @@ var _extractPlcData = function(data,index){
                          dct:date, //data collection time
                          cdct:chanelDate, //chanel data collection time
                          addr1:parseInt(addr1.toString('hex'), 16),
-                         iwc1:parseInt(instantaneousWorkingCond1.toString('hex'), 16),// instantaneous working conditions 1
-                         isc1:parseInt(instantaneousStandardCond1.toString('hex'), 16),//instantaneous standard conditions 1
-                         p1:parseInt(pressure1.toString('hex'), 16),// pressure 1
-                         temp1:parseInt(temp1.toString('hex'), 16),//temperature 1
-                         pwc1:parseInt(positiveWorkingCond1.toString('hex'), 16),// positive working conditions 1
-                         psc1:parseInt(positiveStandardCond1.toString('hex'), 16),// positive standard conditions 1
-                         rsc1:parseInt(reverseStandardCond1.toString('hex'), 16),// reverse standard conditions 1
+                         iwc1:parseFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
+                         isc1:parseFloat(instantaneousStandardCond1.toString('hex')),//instantaneous standard conditions 1
+                         p1:parseFloat(pressure1.toString('hex')),// pressure 1
+                         temp1:parseFloat(temp1.toString('hex')),//temperature 1
+                         pwc1:parseFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
+                         psc1:parseFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
+                         rsc1:parseFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
                          cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
                          er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
                          addr2:parseInt(addr2.toString('hex'), 16),
-                         iwc2:parseInt(instantaneousWorkingCond2.toString('hex'), 16),// instantaneous working conditions 2
-                         isc2:parseInt(instantaneousStandardCond2.toString('hex'), 16),//instantaneous standard conditions 2
-                         p2:parseInt(pressure2.toString('hex'), 16),// pressure 2
-                         temp2:parseInt(temp2.toString('hex'), 16),//temperature 2
-                         pwc2:parseInt(positiveWorkingCond2.toString('hex'), 16),// positive working conditions 2
-                         psc2:parseInt(positiveStandardCond2.toString('hex'), 16),// positive standard conditions 2
-                         rsc2:parseInt(reverseStandardCond2.toString('hex'), 16),// reverse standard conditions 2
+                         iwc2:parseFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
+                         isc2:parseFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
+                         p2:parseFloat(pressure2.toString('hex')),// pressure 2
+                         temp2:parseFloat(temp2.toString('hex')),//temperature 2
+                         pwc2:parseFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
+                         psc2:parseFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
+                         rsc2:parseFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
                          cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
                          er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
                          tank:''
