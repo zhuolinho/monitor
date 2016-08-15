@@ -1,11 +1,12 @@
 
 
- import {Component, provide} from 'angular2/core'
+ import {Component, provide,AfterViewInit} from 'angular2/core'
  import {config} from '../../config';
  import {Gas} from './gas/gas.component';
  import {Camera} from './camera/camera.component';
  import {ROUTER_DIRECTIVES,RouteConfig, RouterLink} from 'angular2/router';
  declare var jQuery:any;
+
 
 
 @Component({
@@ -22,8 +23,11 @@
  ])
 
 
- export class Monitor{
+ export class Monitor implements AfterViewInit{
    constructor(){
    console.log("Monitor is up and running");
+   }
+   ngAfterViewInit(){
+
    }
   }

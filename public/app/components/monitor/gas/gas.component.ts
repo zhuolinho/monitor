@@ -1,5 +1,5 @@
 
-import {Component, provide} from 'angular2/core';
+import {Component, provide,AfterViewInit} from 'angular2/core';
 import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 import {GasDetail} from './details/gas.detail.component';
@@ -7,6 +7,7 @@ import {RequestService} from '../../../services/request.service';
 
 declare var jQuery:any;
 declare var _:any;
+ declare var io:any;
 
 @Component({
   selector:'gas',
@@ -14,7 +15,7 @@ declare var _:any;
   directives:[GasDetail]
 })
 
-export class Gas{
+export class Gas  implements AfterViewInit{
 
     availableTanks:any[] = [
         {id:'12345', selected:false},
@@ -41,6 +42,7 @@ export class Gas{
 
     allTankSelected:boolean = false;
     selectedTanks:any[] = [];
+    realTimeData:any;
     newAlert:any = {
       st:[],
       atime:'',
@@ -51,10 +53,13 @@ export class Gas{
     constructor(private request:RequestService,
         private lib:LibService){
       console.log("gas is up and running");
+
+    }
+    ngAfterViewInit(){
+      this.iniSocket();
       this.initSelect();
       this.initModal();
     }
-
 
     initSelect(){
       setTimeout(_=>{
@@ -127,6 +132,25 @@ export class Gas{
      }
 
    }
+
+
+   iniSocket(){
+        var _this = this;
+         var url = 'http://139.196.18.222:3003';
+
+         if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
+           url = 'http://localhost:3003';
+         }
+         var socket = io(url);
+        socket.on('realTimePlc', function(data){
+          console.log("realTimePlc-----",data);
+          if(data&&data.pl&&data.pl.plc){
+              _this.realTimeData = data.pl.plc;
+          }
+        });
+     }
+
+
     initModal(){
 
       var _this = this;

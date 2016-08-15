@@ -34,6 +34,8 @@ System.register(['angular2/core', '../../config', './gas/gas.component', './came
                 function Monitor() {
                     console.log("Monitor is up and running");
                 }
+                Monitor.prototype.ngAfterViewInit = function () {
+                };
                 Monitor = __decorate([
                     core_1.Component({
                         selector: 'monitor',

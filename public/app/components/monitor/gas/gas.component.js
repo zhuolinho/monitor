@@ -66,9 +66,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         addr: ''
                     };
                     console.log("gas is up and running");
+                }
+                Gas.prototype.ngAfterViewInit = function () {
+                    this.iniSocket();
                     this.initSelect();
                     this.initModal();
-                }
+                };
                 Gas.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
@@ -123,6 +126,20 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                             return o.id == tank.id;
                         });
                     }
+                };
+                Gas.prototype.iniSocket = function () {
+                    var _this = this;
+                    var url = 'http://139.196.18.222:3003';
+                    if (window.location.hostname.indexOf('localhost') >= 0) {
+                        url = 'http://localhost:3003';
+                    }
+                    var socket = io(url);
+                    socket.on('realTimePlc', function (data) {
+                        console.log("realTimePlc-----", data);
+                        if (data && data.pl && data.pl.plc) {
+                            _this.realTimeData = data.pl.plc;
+                        }
+                    });
                 };
                 Gas.prototype.initModal = function () {
                     var _this = this;

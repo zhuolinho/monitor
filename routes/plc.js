@@ -3,10 +3,14 @@ var helpers = require('../utilities/helpers');
 var bufferConcat = require('buffer-concat');
 var express = require('express');
 var net = require('net');
+var plcApp = require('express')();
+var server = require('http').Server(plcApp);
+var io = require('socket.io')(server);
 var client = new net.Socket();
 var router = express.Router();
 var chunks = [];
 var size = 0;
+server.listen(3003);
 
 
 
@@ -248,11 +252,10 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
+      console.log("got plc data-----");
       size += data.length;
       chunks.push(data);
-
-      console.log('plc data length----',size);
-
+      console.log('plc data size and buffer size----',size, socket.bufferSize);
       if((size-12)/76 >= 100){
         console.log('got all plc data----');
         socket.pause();
@@ -266,7 +269,7 @@ var _tcpSerever = function(handler){
               socket.resume();
               isSaving = false;
               clearTimeout(timer);
-          },5*60000); //save every 5 min.
+          },1*60000);
         }
       }
     });
@@ -291,7 +294,27 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---");
+        console.log("plc route save data successful---",r);
+        _getLatest(handler,r.length);
+      })
+      .fail(function (r) {
+          console.log("plc save data fail----",r);
+      });
+}
+
+function _getLatest(handler,length){
+
+  var param = {
+        ns: 'plc',
+        vs: '1.0',
+        op: 'getLatestData',
+        pl:{length:length}
+  }
+
+  handler(param)
+      .then(function (r) {
+        console.log("plc route save data successful---",r);
+              io.emit("realTimePlc",r);
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);

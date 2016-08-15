@@ -27,7 +27,7 @@ plan.remote(function(remote) {
 
 
   remote.log('Install dependencies');
-  remote.sudo('cd ~/monitor && npm install --production', {user: username});
+  // remote.sudo('cd ~/monitor && npm install --production', {user: username});
   remote.log('Reload application');
   remote.exec('pm2 reload '+appName , {user: username});
   remote.exec('pm2 logs '+appName , {user: username});
