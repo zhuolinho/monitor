@@ -39,6 +39,25 @@ module.exports = function (handler)
             });
   });
 
+  router.get('/latest.json', function(req, res, next) {
+
+
+      var param = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'getLatestData',
+            pl:{length:100}
+      }
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
   router.get('/alerts/:which.json', function(req, res, next) {
 
 
@@ -269,7 +288,7 @@ var _tcpSerever = function(handler){
               socket.resume();
               isSaving = false;
               clearTimeout(timer);
-          },1*60000);
+          },5*60000);
         }
       }
     });
