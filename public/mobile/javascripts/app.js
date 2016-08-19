@@ -110,29 +110,6 @@ var HomeTable = React.createClass({
                 React.createElement(
                     "td",
                     null,
-                    React.createElement(
-                        "select",
-                        { "data-role": "none" },
-                        React.createElement(
-                            "option",
-                            { value: "6348" },
-                            "J6348"
-                        ),
-                        React.createElement(
-                            "option",
-                            { value: "6548" },
-                            "C6548"
-                        ),
-                        React.createElement(
-                            "option",
-                            { value: "6898" },
-                            "D6898"
-                        )
-                    )
-                ),
-                React.createElement(
-                    "td",
-                    null,
                     alert.am || ""
                 ),
                 React.createElement(
@@ -157,11 +134,6 @@ var HomeTable = React.createClass({
                     "tr",
                     null,
                     React.createElement("th", null),
-                    React.createElement(
-                        "th",
-                        null,
-                        "罐号"
-                    ),
                     React.createElement(
                         "th",
                         null,
@@ -601,6 +573,19 @@ var Content3 = React.createClass({
 var Content4 = React.createClass({
     displayName: "Content4",
 
+    getInitialState: function getInitialState() {
+        return { tableByday: [] };
+    },
+    componentDidMount: function componentDidMount() {
+        var component = this;
+        $.get("/plc/latest.json", function (result) {
+            var tmp = [];
+            if (result.pl.plc.length) {
+                tmp.push(result.pl.plc[0]);
+            }
+            component.setState({ tableByday: tmp });
+        });
+    },
     render: function render() {
         var _props3 = this.props;
         var id = _props3.id;
@@ -610,7 +595,6 @@ var Content4 = React.createClass({
         var months = ["2016年8月", "2016年7月", "2016年6月", "2016年5月", "2016年4月", "2016年3月", "2016年2月", "2016年1月"];
         var i = 0;
         var j = 0;
-        var tableByday = [{ code: "C002", date: "1月1号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月2号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月3号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月4号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月5号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月6号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月7号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月8号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月9号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月10号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月11号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月12号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月13号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月14号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月15号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月16号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月17号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月18号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月19号", "if": 0.0000, af: 0.0000, mf: 0.0000 }, { code: "C002", date: "1月20号", "if": 0.0000, af: 0.0000, mf: 0.0000 }];
         return React.createElement(
             "div",
             { "data-role": "main", className: "ui-content ui-grid-a" },
@@ -738,7 +722,7 @@ var Content4 = React.createClass({
                 React.createElement(
                     "tbody",
                     null,
-                    tableByday.map(function (alert) {
+                    this.state.tableByday.map(function (alert) {
                         j++;
                         return React.createElement(
                             "tr",
@@ -746,22 +730,22 @@ var Content4 = React.createClass({
                             React.createElement(
                                 "td",
                                 null,
-                                alert.code
+                                "L001"
                             ),
                             React.createElement(
                                 "td",
                                 null,
-                                alert.date
+                                alert.dct
                             ),
                             React.createElement(
                                 "td",
                                 null,
-                                alert.af
+                                alert.iwc2
                             ),
                             React.createElement(
                                 "td",
                                 null,
-                                alert.mf
+                                alert.pwc2
                             )
                         );
                     })
@@ -815,7 +799,7 @@ var Content5 = React.createClass({
             ),
             React.createElement("video", {
                 src: "http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg==", /*此处填写购买获取到的m3u8地址 必填*/
-                poster: "/dist/images/logo1.jpg", /*此处填写封面图片地址 可选*/
+                poster: "", /*此处填写封面图片地址 可选*/
                 controls: "controls", width: "100%", height: "100%" })
         );
     }
