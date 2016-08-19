@@ -56,6 +56,10 @@ var Header = React.createClass({
         });
         return (
             <div data-role="header" data-position="fixed" data-tap-toggle="false" style={{textAlign: "center"}}>
+                <img src="/dist/images/logo1.jpg"
+                     style={{width: "39px", height: "39px", float: "left", marginTop: "7px"}}/>
+                <img src="/dist/images/logo2.jpg"
+                     style={{width: "39px", height: "39px", float: "right", marginTop: "7px"}}/>
                 <div data-role="controlgroup" data-type="horizontal">
                     {buttonNodes}
                 </div>

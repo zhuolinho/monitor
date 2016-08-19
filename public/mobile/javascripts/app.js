@@ -68,6 +68,10 @@ var Header = React.createClass({
         return React.createElement(
             "div",
             { "data-role": "header", "data-position": "fixed", "data-tap-toggle": "false", style: { textAlign: "center" } },
+            React.createElement("img", { src: "/dist/images/logo1.jpg",
+                style: { width: "39px", height: "39px", float: "left", marginTop: "7px" } }),
+            React.createElement("img", { src: "/dist/images/logo2.jpg",
+                style: { width: "39px", height: "39px", float: "right", marginTop: "7px" } }),
             React.createElement(
                 "div",
                 { "data-role": "controlgroup", "data-type": "horizontal" },
