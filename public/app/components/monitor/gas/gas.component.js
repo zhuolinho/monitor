@@ -122,13 +122,13 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.iniSocket();
                     this.initSelect();
                     this.showByDay();
-                    this.initGrapth();
                     this.updateTime();
                     this.checkInterruption();
                 };
                 Gas.prototype.ngOnDestroy = function () {
                     clearInterval(this.dateTimer);
                     clearInterval(this.checkInterruptionTimer);
+                    Gas.graphIsRunning = false;
                 };
                 Gas.prototype.updateTime = function () {
                     var _this = this;
@@ -248,6 +248,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 };
                 Gas.prototype.initGrapth = function () {
                     var that = this;
+                    Gas.graphIsRunning = true;
                     var INTERVAL = Math.PI / 30;
                     // Precompute wave
                     var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL), sinWave = d.map(Math.sin);
@@ -302,6 +303,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         }
                     });
                 };
+                Gas.graphIsRunning = false;
                 Gas = __decorate([
                     core_1.Component({
                         selector: 'gas',

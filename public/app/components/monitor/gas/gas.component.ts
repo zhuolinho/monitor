@@ -74,6 +74,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
   dataTimer:number = 300000;
   lastDataTime:number =  0;
   checkInterruptionTimer:any;
+  static graphIsRunning:boolean = false;
 
 
 
@@ -134,7 +135,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.iniSocket();
       this.initSelect();
       this.showByDay();
-      this.initGrapth();
       this.updateTime();
       this.checkInterruption();
     }
@@ -143,6 +143,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
       clearInterval(this.dateTimer);
 
       clearInterval(this.checkInterruptionTimer);
+
+      Gas.graphIsRunning = false;
     }
 
     updateTime(){
@@ -292,6 +294,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
     initGrapth(){
 
       var that = this;
+
+      Gas.graphIsRunning = true;
 
       var INTERVAL = Math.PI / 30;
 
