@@ -303,21 +303,21 @@ export class Gas  implements AfterViewInit,OnDestroy{
       var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
           sinWave = d.map(Math.sin);
 
-      var w = 600, h = 200,
+      var w = 700, h = 230,
           x = d3.scale.linear().domain([-5, 15]).range([0, w]),
           y = x,
           r = (function(a, b) {
         return Math.sqrt(a * a + b * b);
       })(x.invert(w), y.invert(h));
 
-      var vis = d3.select("#vis").append("svg")
+      var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
           .attr("width", w).attr("height", h);
 
-      vis.append("g")
+      realTimeSigStatus.append("g")
           .attr("id", "sinwave")
           .attr("width", w)
           .attr("height", h)
-          .attr("transform", "translate("+x(1)+")")
+          .attr("transform", "translate("+x(-7.85)+")")
         .selectAll("path")
           .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
         .enter().append("path")
@@ -336,8 +336,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
       }
       var axes = function(cx, cy, cls) {
         cx = x(cx); cy = y(cy);
-        line(vis, cx, 0, cx, h).attr("class", cls || "line")
-        line(vis, 0, cy, w, cy).attr("class", cls || "line")
+        line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
+        line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
       }
 
       axes(0, 1, "edge");
@@ -350,13 +350,13 @@ export class Gas  implements AfterViewInit,OnDestroy{
           offset += (elapsed - last) / 500;
           last = elapsed;
           if (offset > -2*Math.PI) offset = -4*Math.PI;
-          vis.selectAll("#sinwave")
+          realTimeSigStatus.selectAll("#sinwave")
             .attr("transform", "translate(" + x(offset+5*Math.PI/4) + ",0)")
           var xline = x(Math.sin(offset)) - x(0);
           var yline = x(-Math.cos(offset)) - y(0);
-          vis.select("#xline")
+          realTimeSigStatus.select("#xline")
             .attr("transform", "translate(0," + xline + ")");
-          vis.select("#yline")
+          realTimeSigStatus.select("#yline")
             .attr("transform", "translate(" + yline + ",0)");
         }
       });
