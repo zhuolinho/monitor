@@ -74,6 +74,9 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         '25日', '26日', '27日', '28日', '29日', '30日', '31日'
                     ];
                     this.detailmodal = {};
+                    this.goodConnection = false;
+                    this.dataTimer = 300000;
+                    this.lastDataTime = 0;
                     this.availableTanks = [
                         { id: '12345', selected: false },
                         { id: '62545', selected: false },
@@ -107,8 +110,9 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     };
                     console.log("gas is up and running");
                     // realTimeData
+                    this.date = lib.dateTime();
                     this.request.get('/plc/latest.json').subscribe(function (resp) {
-                        console.log("latest plc-----", resp);
+                        // console.log("latest plc-----",resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.realTimeData = resp.pl.plc;
                         }
@@ -117,8 +121,31 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
                     this.initSelect();
-                    this.initModal();
                     this.showByDay();
+                    this.initGrapth();
+                    this.updateTime();
+                    this.checkInterruption();
+                };
+                Gas.prototype.ngOnDestroy = function () {
+                    clearInterval(this.dateTimer);
+                    clearInterval(this.checkInterruptionTimer);
+                };
+                Gas.prototype.updateTime = function () {
+                    var _this = this;
+                    this.dateTimer = setInterval(function (_) {
+                        if (_this.goodConnection) {
+                            _this.date = _this.lib.dateTime();
+                        }
+                    }, 1000);
+                };
+                Gas.prototype.checkInterruption = function () {
+                    var _this = this;
+                    this.checkInterruptionTimer = setInterval(function (_) {
+                        var currentTime = Date.now();
+                        if ((currentTime - _this.lastDataTime) > _this.dataTimer) {
+                            _this.goodConnection = false;
+                        }
+                    }, 100000);
                 };
                 Gas.prototype.initSelect = function () {
                     setTimeout(function (_) {
@@ -183,26 +210,18 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     }
                     var socket = io(url);
                     socket.on('realTimePlc', function (data) {
+                        if (!that.goodConnection) {
+                            that.goodConnection = true;
+                        }
                         console.log("realTimePlc-----", data);
-                        if (data && data.pl && data.pl.plc) {
-                            that.realTimeData = data.pl.plc;
+                        if (data && data.main && data.main.pl && data.main.pl.plc) {
+                            that.realTimeData = data.main.pl.plc;
+                        }
+                        if (data.interval) {
+                            that.dataTimer = data.interval;
+                            that.lastDataTime = Date.now();
                         }
                     });
-                };
-                Gas.prototype.initModal = function () {
-                    var that = this;
-                    // gasUsageDetailModal
-                    // setTimeout(_=>{
-                    //     jQuery('.modal-trigger').leanModal({
-                    //          dismissible: true, // Modal can be dismissed by clicking outside of the modal
-                    //          opacity: .5, // Opacity of modal background
-                    //          in_duration: 300, // Transition in duration
-                    //          out_duration: 200, // Transition out duration
-                    //          ready: function() { console.log('Ready');}, // Callback for Modal open
-                    //          complete: function() { console.log('Closed'); } // Callback for Modal close
-                    //    });
-                    //   //  alert('getting models up');
-                    // });
                 };
                 Gas.prototype.showDetailModal = function (mail) {
                     jQuery("#gasUsageDetailModal").openModal();
@@ -221,6 +240,62 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.currentTable = this.tableByMonth;
                     this.currentSelect = this.years;
                     this.initSelect();
+                };
+                Gas.prototype.initGrapth = function () {
+                    var that = this;
+                    var INTERVAL = Math.PI / 30;
+                    // Precompute wave
+                    var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL), sinWave = d.map(Math.sin);
+                    var w = 600, h = 250, x = d3.scale.linear().domain([-5, 15]).range([0, w]), y = x, r = (function (a, b) {
+                        return Math.sqrt(a * a + b * b);
+                    })(x.invert(w), y.invert(h));
+                    var vis = d3.select("#vis").append("svg")
+                        .attr("width", w).attr("height", h);
+                    vis.append("g")
+                        .attr("id", "sinwave")
+                        .attr("width", w)
+                        .attr("height", h)
+                        .attr("transform", "translate(" + x(1) + ")")
+                        .selectAll("path")
+                        .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
+                        .enter().append("path")
+                        .attr("class", "wave")
+                        .attr("d", d3.svg.line()
+                        .x(function (d, i) { return x(i * INTERVAL) - x(0); })
+                        .y(function (d) { return y(d); }));
+                    var line = function (e, x1, y1, x2, y2) {
+                        return e.append("line")
+                            .attr("class", "line")
+                            .attr("x1", x1)
+                            .attr("y1", y1)
+                            .attr("x2", x2)
+                            .attr("y2", y2);
+                    };
+                    var axes = function (cx, cy, cls) {
+                        cx = x(cx);
+                        cy = y(cy);
+                        line(vis, cx, 0, cx, h).attr("class", cls || "line");
+                        line(vis, 0, cy, w, cy).attr("class", cls || "line");
+                    };
+                    axes(0, 1, "edge");
+                    axes(0, 0, "axis");
+                    var offset = -4 * Math.PI, last = 0;
+                    d3.timer(function (elapsed) {
+                        if (that.goodConnection) {
+                            offset += (elapsed - last) / 500;
+                            last = elapsed;
+                            if (offset > -2 * Math.PI)
+                                offset = -4 * Math.PI;
+                            vis.selectAll("#sinwave")
+                                .attr("transform", "translate(" + x(offset + 5 * Math.PI / 4) + ",0)");
+                            var xline = x(Math.sin(offset)) - x(0);
+                            var yline = x(-Math.cos(offset)) - y(0);
+                            vis.select("#xline")
+                                .attr("transform", "translate(0," + xline + ")");
+                            vis.select("#yline")
+                                .attr("transform", "translate(" + yline + ",0)");
+                        }
+                    });
                 };
                 Gas = __decorate([
                     core_1.Component({

@@ -39,7 +39,6 @@
     "app/components/login/login.component.ts",
     "app/components/main.component.ts",
     "app/components/monitor/camera/camera.component.ts",
-    "app/components/monitor/gas/details/gas.detail.component.ts",
     "app/components/monitor/gas/gas.component.ts",
     "app/components/monitor/monitor.component.ts",
     "app/components/settings/access/partials/settings-add-user.component.ts",

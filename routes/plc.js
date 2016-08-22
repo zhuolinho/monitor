@@ -9,6 +9,7 @@ var io = require('socket.io')(server);
 var client = new net.Socket();
 var router = express.Router();
 var chunks = [];
+var sTimer = 5*60000; //5min.
 var size = 0;
 server.listen(3003);
 
@@ -288,7 +289,7 @@ var _tcpSerever = function(handler){
               socket.resume();
               isSaving = false;
               clearTimeout(timer);
-          },5*60000);
+          },sTimer);
         }
       }
     });
@@ -333,7 +334,7 @@ function _getLatest(handler,length){
   handler(param)
       .then(function (r) {
         console.log("plc route save data successful---",r);
-              io.emit("realTimePlc",r);
+              io.emit("realTimePlc",{main:r,interval:sTimer});
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);

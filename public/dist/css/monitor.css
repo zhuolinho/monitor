@@ -242,8 +242,35 @@ body, html{
 
 
 
+/*graph css*/
 
 
+.circle, .wave {
+  fill: none;
+  stroke: red;
+  stroke-width: 1px;
+}
+.circle {
+  stroke: black;
+}
+.axis {
+  stroke: black;
+  stroke-width: 1px;
+}
+.edge {
+  stroke: #ccc;
+  stroke-width: 1px;
+}
+.line {
+  stroke: yellow;
+  stroke-width: 1.5px;
+}
+#dot {
+  fill: black;
+}
+.filler {
+  fill: white;
+}
 
 
 

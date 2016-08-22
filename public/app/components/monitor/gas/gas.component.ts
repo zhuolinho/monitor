@@ -1,5 +1,5 @@
 
-import {Component, provide,AfterViewInit} from 'angular2/core';
+import {Component, provide,AfterViewInit, OnDestroy} from 'angular2/core';
 import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';
@@ -7,7 +7,8 @@ import {RequestService} from '../../../services/request.service';
 
 declare var jQuery:any;
 declare var _:any;
- declare var io:any;
+declare var io:any;
+declare var d3:any;
 
 @Component({
   selector:'gas',
@@ -15,7 +16,7 @@ declare var _:any;
   // directives:[GasDetail]
 })
 
-export class Gas  implements AfterViewInit{
+export class Gas  implements AfterViewInit,OnDestroy{
 
 
   tableByday:any[] = [{code:'C002',date:'1月1号', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
@@ -67,7 +68,12 @@ export class Gas  implements AfterViewInit{
   selectedtab:number;  //to switch tabs, the rest is controlled on the page
   currentTable:any;
   detailmodal:any = {};
+  goodConnection:boolean = false;
   currentSelect:string[];
+  dateTimer:any;
+  dataTimer:number = 300000;
+  lastDataTime:number =  0;
+  checkInterruptionTimer:any;
 
 
 
@@ -100,6 +106,7 @@ export class Gas  implements AfterViewInit{
     allTankSelected:boolean = false;
     selectedTanks:any[] = [];
     realTimeData:any;
+    date:any;
     newAlert:any = {
       st:[],
       atime:'',
@@ -114,9 +121,9 @@ export class Gas  implements AfterViewInit{
       // realTimeData
 
 
-
+      this.date = lib.dateTime();
       this.request.get('/plc/latest.json').subscribe(resp => {
-        console.log("latest plc-----",resp);
+        // console.log("latest plc-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.realTimeData = resp.pl.plc;
         }
@@ -126,9 +133,35 @@ export class Gas  implements AfterViewInit{
     ngAfterViewInit(){
       this.iniSocket();
       this.initSelect();
-      this.initModal();
       this.showByDay();
+      this.initGrapth();
+      this.updateTime();
+      this.checkInterruption();
     }
+
+    ngOnDestroy(){
+      clearInterval(this.dateTimer);
+
+      clearInterval(this.checkInterruptionTimer);
+    }
+
+    updateTime(){
+       this.dateTimer = setInterval(_=>{
+         if(this.goodConnection ){
+            this.date = this.lib.dateTime();
+         }
+       },1000);
+    }
+
+
+        checkInterruption(){
+          this.checkInterruptionTimer = setInterval(_=>{
+            var currentTime  = Date.now();
+            if((currentTime - this.lastDataTime)>this.dataTimer){
+              this.goodConnection = false;
+            }
+          },100000);
+        }
 
     initSelect(){
       setTimeout(_=>{
@@ -212,31 +245,22 @@ export class Gas  implements AfterViewInit{
          }
          var socket = io(url);
         socket.on('realTimePlc', function(data){
+
+          if(!that.goodConnection){
+            that.goodConnection = true;
+          }
+
           console.log("realTimePlc-----",data);
-          if(data&&data.pl&&data.pl.plc){
-              that.realTimeData = data.pl.plc;
+          if(data&&data.main&&data.main.pl&&data.main.pl.plc){
+              that.realTimeData = data.main.pl.plc;
+          }
+
+          if(data.interval){
+            that.dataTimer = data.interval;
+            that.lastDataTime = Date.now();
           }
         });
      }
-
-
-    initModal(){
-
-      var that = this;
-        // gasUsageDetailModal
-        // setTimeout(_=>{
-        //     jQuery('.modal-trigger').leanModal({
-        //          dismissible: true, // Modal can be dismissed by clicking outside of the modal
-        //          opacity: .5, // Opacity of modal background
-        //          in_duration: 300, // Transition in duration
-        //          out_duration: 200, // Transition out duration
-        //          ready: function() { console.log('Ready');}, // Callback for Modal open
-        //          complete: function() { console.log('Closed'); } // Callback for Modal close
-        //    });
-        //   //  alert('getting models up');
-        // });
-    }
-
 
     showDetailModal(mail){
       jQuery("#gasUsageDetailModal").openModal();
@@ -258,5 +282,76 @@ export class Gas  implements AfterViewInit{
         this.currentTable = this.tableByMonth;
         this.currentSelect = this.years;
         this.initSelect();
+    }
+
+    initGrapth(){
+
+      var that = this;
+
+      var INTERVAL = Math.PI / 30;
+
+      // Precompute wave
+      var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
+          sinWave = d.map(Math.sin);
+
+
+      var w = 600, h = 250,
+          x = d3.scale.linear().domain([-5, 15]).range([0, w]),
+          y = x,
+          r = (function(a, b) {
+        return Math.sqrt(a * a + b * b);
+      })(x.invert(w), y.invert(h));
+
+      var vis = d3.select("#vis").append("svg")
+          .attr("width", w).attr("height", h);
+
+      vis.append("g")
+          .attr("id", "sinwave")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("transform", "translate("+x(1)+")")
+        .selectAll("path")
+          .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
+        .enter().append("path")
+          .attr("class", "wave")
+          .attr("d", d3.svg.line()
+            .x(function(d, i) { return x(i * INTERVAL) - x(0) })
+            .y(function(d) { return y(d) }));
+
+      var line = function(e, x1, y1, x2, y2) {
+        return e.append("line")
+            .attr("class", "line")
+            .attr("x1", x1)
+            .attr("y1", y1)
+            .attr("x2", x2)
+            .attr("y2", y2);
+      }
+      var axes = function(cx, cy, cls) {
+        cx = x(cx); cy = y(cy);
+        line(vis, cx, 0, cx, h).attr("class", cls || "line")
+        line(vis, 0, cy, w, cy).attr("class", cls || "line")
+      }
+
+      axes(0, 1, "edge");
+      axes(0, 0, "axis");
+
+      var offset = -4*Math.PI, last = 0;
+
+      d3.timer(function(elapsed) {
+        if(that.goodConnection){
+          offset += (elapsed - last) / 500;
+          last = elapsed;
+          if (offset > -2*Math.PI) offset = -4*Math.PI;
+          vis.selectAll("#sinwave")
+            .attr("transform", "translate(" + x(offset+5*Math.PI/4) + ",0)")
+          var xline = x(Math.sin(offset)) - x(0);
+          var yline = x(-Math.cos(offset)) - y(0);
+          vis.select("#xline")
+            .attr("transform", "translate(0," + xline + ")");
+          vis.select("#yline")
+            .attr("transform", "translate(" + yline + ",0)");
+        }
+      });
+
     }
  }

@@ -10,4 +10,11 @@ export class LibService{
     var result = datePart+" "+timePart;
     return result;
   }
+
+
+  date(){
+    var rightNow = new Date();
+    var datePart = rightNow.toISOString().slice(0,10);
+    return datePart;
+  }
 }
