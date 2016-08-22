@@ -263,7 +263,12 @@ export class Gas  implements AfterViewInit,OnDestroy{
      }
 
     showDetailModal(mail){
-      jQuery("#gasUsageDetailModal").openModal();
+      var that = this;
+      jQuery("#gasUsageDetailModal").openModal({
+           ready: function() {
+                that.initGrapth();
+            }
+      });
     }
 
 // code for detail modal
@@ -294,8 +299,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
       var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
           sinWave = d.map(Math.sin);
 
-
-      var w = 600, h = 250,
+      var w = 600, h = 200,
           x = d3.scale.linear().domain([-5, 15]).range([0, w]),
           y = x,
           r = (function(a, b) {

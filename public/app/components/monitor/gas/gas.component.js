@@ -224,7 +224,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     });
                 };
                 Gas.prototype.showDetailModal = function (mail) {
-                    jQuery("#gasUsageDetailModal").openModal();
+                    var that = this;
+                    jQuery("#gasUsageDetailModal").openModal({
+                        ready: function () {
+                            that.initGrapth();
+                        }
+                    });
                 };
                 // code for detail modal
                 Gas.prototype.showByDay = function () {
@@ -246,7 +251,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var INTERVAL = Math.PI / 30;
                     // Precompute wave
                     var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL), sinWave = d.map(Math.sin);
-                    var w = 600, h = 250, x = d3.scale.linear().domain([-5, 15]).range([0, w]), y = x, r = (function (a, b) {
+                    var w = 600, h = 200, x = d3.scale.linear().domain([-5, 15]).range([0, w]), y = x, r = (function (a, b) {
                         return Math.sqrt(a * a + b * b);
                     })(x.invert(w), y.invert(h));
                     var vis = d3.select("#vis").append("svg")
