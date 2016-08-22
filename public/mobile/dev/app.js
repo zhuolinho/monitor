@@ -56,6 +56,10 @@ var Header = React.createClass({
         });
         return (
             <div data-role="header" data-position="fixed" data-tap-toggle="false" style={{textAlign: "center"}}>
+                <img src="/dist/images/logo1.jpg"
+                     style={{width: "39px", height: "39px", float: "left", marginTop: "7px"}}/>
+                <img src="/dist/images/logo2.jpg"
+                     style={{width: "39px", height: "39px", float: "right", marginTop: "7px"}}/>
                 <div data-role="controlgroup" data-type="horizontal">
                     {buttonNodes}
                 </div>
@@ -83,11 +87,6 @@ var HomeTable = React.createClass({
             return (
                 <tr key={i}>
                     <th>{alert.tank}</th>
-                    <td><select data-role="none">
-                        <option value="6348">J6348</option>
-                        <option value="6548">C6548</option>
-                        <option value="6898">D6898</option>
-                    </select></td>
                     <td>{alert.am || ""}</td>
                     <td>{alert.rt || ""}</td>
                     <td>{(alert.atime || "") + "/" + (alert.pa || "")}</td>
@@ -99,7 +98,6 @@ var HomeTable = React.createClass({
                 <thead>
                 <tr>
                     <th/>
-                    <th>罐号</th>
                     <th>余量/压力</th>
                     <th>剩余时间</th>
                     <th>时间/工号</th>
@@ -330,32 +328,24 @@ var Content3 = React.createClass({
     }
 });
 var Content4 = React.createClass({
+    getInitialState: function () {
+        return {tableByday: []};
+    },
+    componentDidMount: function () {
+        var component = this;
+        $.get("/plc/latest.json", function (result) {
+            var tmp=[];
+            if(result.pl.plc.length) {
+                tmp.push(result.pl.plc[0]);
+            }
+            component.setState({tableByday: tmp});
+        });
+    },
     render: function () {
         var {id, ...other} = this.props;
         var months = ["2016年8月", "2016年7月", "2016年6月", "2016年5月", "2016年4月", "2016年3月", "2016年2月", "2016年1月"];
         var i = 0;
         var j = 0;
-        var tableByday = [{code: "C002", date: "1月1号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月2号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月3号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月4号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月5号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月6号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月7号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月8号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月9号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月10号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月11号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月12号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月13号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月14号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月15号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月16号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月17号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月18号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月19号", if: 0.0000, af: 0.0000, mf: 0.0000},
-            {code: "C002", date: "1月20号", if: 0.0000, af: 0.0000, mf: 0.0000}
-        ];
         return (
             <div data-role="main" className="ui-content ui-grid-a">
                 <div className="ui-block-a">
@@ -394,13 +384,13 @@ var Content4 = React.createClass({
                     </tr>
                     </thead>
                     <tbody>
-                    {tableByday.map(function (alert) {
+                    {this.state.tableByday.map(function (alert) {
                         j++;
                         return <tr key={j}>
-                            <td>{alert.code}</td>
-                            <td>{alert.date}</td>
-                            <td>{alert.af}</td>
-                            <td>{alert.mf}</td>
+                            <td>L001</td>
+                            <td>{alert.dct}</td>
+                            <td>{alert.iwc2}</td>
+                            <td>{alert.pwc2}</td>
                         </tr>;
                     })}
                     </tbody>
@@ -425,7 +415,7 @@ var Content5 = React.createClass({
                 </div>
                 <video
                     src="http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg=="  /*此处填写购买获取到的m3u8地址 必填*/
-                    poster="/dist/images/logo1.jpg"    /*此处填写封面图片地址 可选*/
+                    poster=""    /*此处填写封面图片地址 可选*/
                     controls="controls" width="100%" height="100%">
                 </video>
             </div>
