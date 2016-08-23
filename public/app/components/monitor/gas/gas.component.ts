@@ -141,9 +141,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     ngOnDestroy(){
       clearInterval(this.dateTimer);
-
       clearInterval(this.checkInterruptionTimer);
-
       Gas.graphIsRunning = false;
     }
 
@@ -295,71 +293,72 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
       var that = this;
 
-      Gas.graphIsRunning = true;
+      if(!Gas.graphIsRunning){
+         Gas.graphIsRunning = true;
+         var INTERVAL = Math.PI / 30;
 
-      var INTERVAL = Math.PI / 30;
+        // Precompute wave
+        var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
+            sinWave = d.map(Math.sin);
 
-      // Precompute wave
-      var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
-          sinWave = d.map(Math.sin);
+        var w = 900, h = 150,
+            x = d3.scale.linear().domain([-5, 15]).range([0, w]),
+            y = x,
+            r = (function(a, b) {
+          return Math.sqrt(a * a + b * b);
+        })(x.invert(w), y.invert(h));
 
-      var w = 700, h = 230,
-          x = d3.scale.linear().domain([-5, 15]).range([0, w]),
-          y = x,
-          r = (function(a, b) {
-        return Math.sqrt(a * a + b * b);
-      })(x.invert(w), y.invert(h));
+        var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
+            .attr("width", w).attr("height", h);
 
-      var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
-          .attr("width", w).attr("height", h);
+        realTimeSigStatus.append("g")
+            .attr("id", "sinwave")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("transform", "translate("+x(-11.2)+","+y(-8)+")")
+          .selectAll("path")
+            .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
+          .enter().append("path")
+            .attr("class", "wave")
+            .attr("d", d3.svg.line()
+              .x(function(d, i) { return x(i * INTERVAL) - x(0) })
+              .y(function(d) { return y(d) }));
 
-      realTimeSigStatus.append("g")
-          .attr("id", "sinwave")
-          .attr("width", w)
-          .attr("height", h)
-          .attr("transform", "translate("+x(-7.85)+")")
-        .selectAll("path")
-          .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
-        .enter().append("path")
-          .attr("class", "wave")
-          .attr("d", d3.svg.line()
-            .x(function(d, i) { return x(i * INTERVAL) - x(0) })
-            .y(function(d) { return y(d) }));
-
-      var line = function(e, x1, y1, x2, y2) {
-        return e.append("line")
-            .attr("class", "line")
-            .attr("x1", x1)
-            .attr("y1", y1)
-            .attr("x2", x2)
-            .attr("y2", y2);
-      }
-      var axes = function(cx, cy, cls) {
-        cx = x(cx); cy = y(cy);
-        line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
-        line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
-      }
-
-      axes(0, 1, "edge");
-      axes(0, 0, "axis");
-
-      var offset = -4*Math.PI, last = 0;
-
-      d3.timer(function(elapsed) {
-        if(that.goodConnection){
-          offset += (elapsed - last) / 500;
-          last = elapsed;
-          if (offset > -2*Math.PI) offset = -4*Math.PI;
-          realTimeSigStatus.selectAll("#sinwave")
-            .attr("transform", "translate(" + x(offset+5*Math.PI/4) + ",0)")
-          var xline = x(Math.sin(offset)) - x(0);
-          var yline = x(-Math.cos(offset)) - y(0);
-          realTimeSigStatus.select("#xline")
-            .attr("transform", "translate(0," + xline + ")");
-          realTimeSigStatus.select("#yline")
-            .attr("transform", "translate(" + yline + ",0)");
+        var line = function(e, x1, y1, x2, y2) {
+          return e.append("line")
+              .attr("class", "line")
+              .attr("x1", x1)
+              .attr("y1", y1)
+              .attr("x2", x2)
+              .attr("y2", y2);
         }
-      });
+        var axes = function(cx, cy, cls) {
+          cx = x(cx); cy = y(cy);
+          line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
+          line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
+        }
+
+        axes(3, -2, "edge");
+        axes(3, -3, "axis");
+
+        var offset = -4*Math.PI, last = 0;
+
+        d3.timer(function(elapsed) {
+          if(that.goodConnection){
+            offset += (elapsed - last) / 500;
+            last = elapsed;
+            if (offset > -2*Math.PI) offset = -4*Math.PI;
+            realTimeSigStatus.selectAll("#sinwave")
+              .attr("transform", "translate(" + x(offset+5*Math.PI/4) + ",0)")
+            var xline = x(Math.sin(offset)) - x(0);
+            var yline = x(-Math.cos(offset)) - y(0);
+            realTimeSigStatus.select("#xline")
+              .attr("transform", "translate(0," + xline + ")");
+            realTimeSigStatus.select("#yline")
+              .attr("transform", "translate(" + yline + ",0)");
+          }
+        });
+      }
 
     }
  }
