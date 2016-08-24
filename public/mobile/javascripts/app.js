@@ -586,6 +586,9 @@ var Content4 = React.createClass({
             component.setState({ tableByday: tmp });
         });
     },
+    componentDidUpdate: function componentDidUpdate() {
+        $("table").table("refresh");
+    },
     render: function render() {
         var _props3 = this.props;
         var id = _props3.id;
@@ -598,6 +601,75 @@ var Content4 = React.createClass({
         return React.createElement(
             "div",
             { "data-role": "main", className: "ui-content ui-grid-a" },
+            React.createElement(
+                "table",
+                { "data-role": "table", className: "ui-responsive" },
+                React.createElement(
+                    "thead",
+                    null,
+                    React.createElement(
+                        "tr",
+                        null,
+                        React.createElement("th", null),
+                        React.createElement(
+                            "th",
+                            null,
+                            "使用情况"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "余量/压力"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "温度"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "信号/异常"
+                        )
+                    )
+                ),
+                React.createElement(
+                    "tbody",
+                    null,
+                    this.state.tableByday.map(function (alert) {
+                        j++;
+                        return React.createElement(
+                            "tr",
+                            { key: j },
+                            React.createElement(
+                                "th",
+                                null,
+                                "C003-闸北区大宁路335号XX站"
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                "正在使用"
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.p2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.temp2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                "信号良好/无泄漏"
+                            )
+                        );
+                    })
+                )
+            ),
             React.createElement(
                 "div",
                 { className: "ui-block-a" },
@@ -687,7 +759,6 @@ var Content4 = React.createClass({
                     })
                 )
             ),
-            React.createElement("img", { src: "/dist/images/chart.jpg", style: { width: "100%" } }),
             React.createElement(
                 "table",
                 { "data-role": "table", "data-mode": "columntoggle", className: "ui-responsive" },
@@ -723,7 +794,6 @@ var Content4 = React.createClass({
                     "tbody",
                     null,
                     this.state.tableByday.map(function (alert) {
-                        j++;
                         return React.createElement(
                             "tr",
                             { key: j },
