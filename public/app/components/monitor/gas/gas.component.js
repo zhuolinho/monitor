@@ -289,12 +289,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         var offset = -4 * Math.PI, last = 0;
                         d3.timer(function (elapsed) {
                             if (that.goodConnection) {
-                                offset += (elapsed - last) / 500;
+                                offset += (elapsed - last) / 1000;
                                 last = elapsed;
                                 if (offset > -2 * Math.PI)
                                     offset = -4 * Math.PI;
                                 realTimeSigStatus.selectAll("#sinwave")
-                                    .attr("transform", "translate(" + x(offset + 5 * Math.PI / 4) + ",0)");
+                                    .attr("transform", "translate(" + x(offset + Math.PI / 20) + "," + y(-8) + ")");
                                 var xline = x(Math.sin(offset)) - x(0);
                                 var yline = x(-Math.cos(offset)) - y(0);
                                 realTimeSigStatus.select("#xline")
