@@ -334,12 +334,15 @@ var Content4 = React.createClass({
     componentDidMount: function () {
         var component = this;
         $.get("/plc/latest.json", function (result) {
-            var tmp=[];
-            if(result.pl.plc.length) {
+            var tmp = [];
+            if (result.pl.plc.length) {
                 tmp.push(result.pl.plc[0]);
             }
             component.setState({tableByday: tmp});
         });
+    },
+    componentDidUpdate: function () {
+        $("table").table("refresh");
     },
     render: function () {
         var {id, ...other} = this.props;
@@ -348,6 +351,29 @@ var Content4 = React.createClass({
         var j = 0;
         return (
             <div data-role="main" className="ui-content ui-grid-a">
+                <table data-role="table" className="ui-responsive">
+                    <thead>
+                    <tr>
+                        <th/>
+                        <th>使用情况</th>
+                        <th>余量/压力</th>
+                        <th>温度</th>
+                        <th>信号/异常</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.tableByday.map(function (alert) {
+                        j++;
+                        return <tr key={j}>
+                            <th>C003-闸北区大宁路335号XX站</th>
+                            <td>正在使用</td>
+                            <td>{alert.p2}</td>
+                            <td>{alert.temp2}</td>
+                            <td>信号良好/无泄漏</td>
+                        </tr>;
+                    })}
+                    </tbody>
+                </table>
                 <div className="ui-block-a">
                     <select>
                         <option value="0"> 母站</option>
@@ -373,7 +399,6 @@ var Content4 = React.createClass({
                         })}
                     </select>
                 </div>
-                <img src="/dist/images/chart.jpg" style={{width: "100%"}}/>
                 <table data-role="table" data-mode="columntoggle" className="ui-responsive">
                     <thead>
                     <tr>
@@ -385,7 +410,6 @@ var Content4 = React.createClass({
                     </thead>
                     <tbody>
                     {this.state.tableByday.map(function (alert) {
-                        j++;
                         return <tr key={j}>
                             <td>L001</td>
                             <td>{alert.dct}</td>
