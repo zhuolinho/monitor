@@ -344,7 +344,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         var offset = -4*Math.PI, last = 0;
 
         d3.timer(function(elapsed) {
-          if(that.goodConnection){
+          if(that.goodConnection){ p;
             offset += (elapsed - last) / 1000;
             last = elapsed;
             if (offset > -2*Math.PI) offset = -4*Math.PI;

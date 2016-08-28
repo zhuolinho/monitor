@@ -289,6 +289,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         var offset = -4 * Math.PI, last = 0;
                         d3.timer(function (elapsed) {
                             if (that.goodConnection) {
+                                p;
                                 offset += (elapsed - last) / 1000;
                                 last = elapsed;
                                 if (offset > -2 * Math.PI)
