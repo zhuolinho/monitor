@@ -365,7 +365,7 @@ var Content4 = React.createClass({
                     {this.state.tableByday.map(function (alert) {
                         j++;
                         return <tr key={j}>
-                            <th>C003-闸北区大宁路335号XX站</th>
+                            <th>L001-金山区枫湾路777号</th>
                             <td>正在使用</td>
                             <td>{alert.p2}</td>
                             <td>{alert.temp2}</td>
@@ -428,7 +428,7 @@ var Content5 = React.createClass({
         return (
             <div data-role="main" className="ui-content ui-grid-a">
                 <div className="ui-block-a"><select>
-                    <option>C002-闸北区大宁路355号XX站</option>
+                    <option>L001-金山区枫湾路777号</option>
                 </select></div>
                 <div className="ui-block-b">
                     <select>
