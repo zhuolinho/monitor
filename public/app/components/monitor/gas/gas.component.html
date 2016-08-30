@@ -5,7 +5,7 @@
       <div class="input-field">
           <select class="helper-select-font-bigger">
             <option value="0"  selected> L001-金山枫湾路777号</option>
-            <option value="0"  selected> 母站</option>
+            <option value="1"> 母站</option>
             <option  value="中转站1号">中转站1号</option>
            <option  value="中转站2号">中转站2号</option>
            <option  value="中转站3号">中转站3号</option>
@@ -73,24 +73,117 @@
                   <div class="table-cell"> 正在使用</div>
                 </div>
 
+
                 <div class="table-row">
-                  <div class="table-cell"> 余量/压力</div>
+                  <div class="table-cell">表1地址</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1瞬时工况</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc1}}</span></div>
+                </div>
+
+
+                <div class="table-row">
+                  <div class="table-cell">表1瞬时标况</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell"> 表1压力</div>
                   <!-- <div class="table-cell"> 89%/16kg/hps</div> -->
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p2}}/hps</span></div>
-
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p1}}</span></div>
                 </div>
 
                 <div class="table-row">
-                  <div class="table-cell">温度</div>
+                  <div class="table-cell">表1温度</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1正工况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].pwc1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1正标况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1逆标况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].rsc1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1通讯故障</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].cf1}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表1错误情报</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].er1}}</span></div>
+                </div>
+
+
+
+                <div class="table-row">
+                  <div class="table-cell">表2地址</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表2瞬时工况</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span></div>
+                </div>
+
+
+                <div class="table-row">
+                  <div class="table-cell">表2瞬时标况</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell"> 表2压力</div>
+                  <!-- <div class="table-cell"> 89%/26kg/hps</div> -->
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表2温度</div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp2}}</span></div>
-
                 </div>
 
+                <div class="table-row">
+                  <div class="table-cell">表2正工况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span></div>
+                </div>
 
                 <div class="table-row">
+                  <div class="table-cell">表2正标况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表2逆标况累计</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].rsc2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表2通讯故障</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].cf2}}</span></div>
+                </div>
+
+                <div class="table-row">
+                  <div class="table-cell">表2错误情报</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].er2}}</span></div>
+                </div>
+
+                <!-- <div class="table-row">
                   <div class="table-cell"> 信号/异常</div>
                   <div class="table-cell"> 信号良好/无泄漏</div>
-                </div>
+                </div> -->
 
                     <div class="clearfix"></div>
 
@@ -243,9 +336,14 @@
             <div class="row valign-wrapper">
               <div class="col s3 m3 ">
                 <div class="input-field">
-                    <select class="helper-select-font-bigger monitor-short-dropdown">
-                      <!-- <option value="" disabled selected>5月分</option> -->
-                      <option *ngFor="#item of currentSelect; #i = index" value="item">{{item}}</option>
+                    <select class="monitor-short-dropdown">
+
+                      <option *ngFor="#item of currentSelect; #i = index;" [value]="item">
+                        {{item}}
+
+                        <stong *ngIf="isShowByDay">月</stong>
+                        <stong *ngIf="!isShowByDay">年</stong>
+                      </option>
                     </select>
                     <!-- <label>选在时间</label> -->
                   </div>

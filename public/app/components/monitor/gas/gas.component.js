@@ -67,12 +67,14 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         { code: 'C002', date: '11月份', if: 0.0000, af: 0.0000, mf: 0.0000 },
                         { code: 'C002', date: '12月份', if: 0.0000, af: 0.0000, mf: 0.0000 }
                     ];
-                    this.months = ['2016年1月', '2016年2月', '2016年3月', '2016年4月', '2016年5月', '2016年6月', '2016年7月', '2016年8月', '2016年9月', '2016年10月', '2016年11月', '2016年12月'];
-                    this.years = ['2016年', '2015年', '2014年', '2013年', '2012年', '2011年', '2010年', '2009年', '2008年', '2007年'];
-                    this.days = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日',
-                        '13日', '14日', '15日', '16日', '17日', '18日', '19日', '20日', '21日', '22日', '23日', '24日',
-                        '25日', '26日', '27日', '28日', '29日', '30日', '31日'
-                    ];
+                    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                    // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
+                    this.years = [];
+                    // days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
+                    //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
+                    //                   '25日','26日','27日','28日','29日','30日','31日'
+                    //                 ];
+                    this.days = [];
                     this.detailmodal = {};
                     this.goodConnection = false;
                     this.dataTimer = 300000;
@@ -111,6 +113,8 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     console.log("gas is up and running");
                     // realTimeData
                     this.date = lib.dateTime();
+                    this.setYears(null);
+                    this.setDaysOfMonth(null, null);
                     this.request.get('/plc/latest.json').subscribe(function (resp) {
                         // console.log("latest plc-----",resp);
                         if (resp && resp.pl && resp.pl.plc) {
@@ -124,6 +128,21 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.showByDay();
                     this.updateTime();
                     this.checkInterruption();
+                };
+                Gas.prototype.setYears = function (startYear) {
+                    var sY = startYear || 2009;
+                    var y = 2016;
+                    while (y >= sY) {
+                        this.years.push(y--);
+                    }
+                };
+                Gas.prototype.setDaysOfMonth = function (year, month) {
+                    var y = year || new Date().getFullYear();
+                    var m = month || new Date().getMonth() + 1;
+                    var numDays = this.lib.daysInMonth(y, m);
+                    for (var i = 0; i < numDays; i++) {
+                        this.days.push(i + 1);
+                    }
                 };
                 Gas.prototype.ngOnDestroy = function () {
                     clearInterval(this.dateTimer);
@@ -236,12 +255,15 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // alert('by day');
                     console.log("by day");
                     this.currentTable = this.tableByday;
+                    // this.currentSelect = this.days;
+                    this.isShowByDay = true;
                     this.currentSelect = this.months;
                     this.initSelect();
                 };
                 Gas.prototype.showByMonth = function () {
-                    //  alert('by month');
+                    // alert('by month');
                     console.log("by month");
+                    this.isShowByDay = false;
                     this.currentTable = this.tableByMonth;
                     this.currentSelect = this.years;
                     this.initSelect();
@@ -289,7 +311,6 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         var offset = -4 * Math.PI, last = 0;
                         d3.timer(function (elapsed) {
                             if (that.goodConnection) {
-                                p;
                                 offset += (elapsed - last) / 1000;
                                 last = elapsed;
                                 if (offset > -2 * Math.PI)

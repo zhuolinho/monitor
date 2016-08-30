@@ -58,18 +58,21 @@ export class Gas  implements AfterViewInit,OnDestroy{
                         {code:'C002',date:'12月份', if:0.0000, af:0.0000, mf:0.0000}
       ];
 
-  months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
-  years:string[] = ['2016年','2015年','2014年','2013年','2012年','2011年','2010年','2009年','2008年','2007年']
-  days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
-                    '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
-                    '25日','26日','27日','28日','29日','30日','31日'
-                  ];
+  months:number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
+  // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
+  years:number[] = [];
+  // days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
+  //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
+  //                   '25日','26日','27日','28日','29日','30日','31日'
+  //                 ];
+
+  days:number[] = [];
 
   selectedtab:number;  //to switch tabs, the rest is controlled on the page
   currentTable:any;
   detailmodal:any = {};
   goodConnection:boolean = false;
-  currentSelect:string[];
+  currentSelect:number[];
   dateTimer:any;
   dataTimer:number = 300000;
   lastDataTime:number =  0;
@@ -77,11 +80,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
   static graphIsRunning:boolean = false;
 
 
-
-
-
-
-    availableTanks:any[] = [
+  availableTanks:any[] = [
         {id:'12345', selected:false},
         {id:'62545', selected:false},
         {id:'27456', selected:false},
@@ -108,6 +107,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     selectedTanks:any[] = [];
     realTimeData:any;
     date:any;
+    isShowByDay:boolean;
     newAlert:any = {
       st:[],
       atime:'',
@@ -123,6 +123,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
 
       this.date = lib.dateTime();
+      this.setYears(null);
+      this.setDaysOfMonth(null,null);
       this.request.get('/plc/latest.json').subscribe(resp => {
         // console.log("latest plc-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
@@ -137,6 +139,25 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.showByDay();
       this.updateTime();
       this.checkInterruption();
+    }
+
+    setYears(startYear){
+
+      var sY = startYear||2009;
+      var y = 2016;
+      while ( y >=sY) {
+          this.years.push(y--);
+      }
+    }
+
+    setDaysOfMonth(year,month){
+
+      var y = year||new Date().getFullYear();
+      var m = month || new Date().getMonth() + 1;
+      var numDays = this.lib.daysInMonth(y,m);
+      for (let i = 0; i <numDays; i++) {
+          this.days.push(i+1);
+      }
     }
 
     ngOnDestroy(){
@@ -220,8 +241,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
    }
 
-
-
    veToggleSelectTank(tank){
      tank.selected = !tank.selected;
      if(tank.selected){
@@ -234,7 +253,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
      }
 
    }
-
 
    iniSocket(){
         var that = this;
@@ -276,14 +294,17 @@ export class Gas  implements AfterViewInit,OnDestroy{
         // alert('by day');
         console.log("by day");
         this.currentTable = this.tableByday;
+        // this.currentSelect = this.days;
+        this.isShowByDay = true;
         this.currentSelect = this.months;
         this.initSelect();
 
     }
 
     showByMonth(){
-      //  alert('by month');
+        // alert('by month');
         console.log("by month");
+        this.isShowByDay = false;
         this.currentTable = this.tableByMonth;
         this.currentSelect = this.years;
         this.initSelect();
@@ -344,7 +365,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         var offset = -4*Math.PI, last = 0;
 
         d3.timer(function(elapsed) {
-          if(that.goodConnection){ p;
+          if(that.goodConnection){
             offset += (elapsed - last) / 1000;
             last = elapsed;
             if (offset > -2*Math.PI) offset = -4*Math.PI;

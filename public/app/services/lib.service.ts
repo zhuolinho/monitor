@@ -17,4 +17,8 @@ export class LibService{
     var datePart = rightNow.toISOString().slice(0,10);
     return datePart;
   }
+
+ daysInMonth(month,year) {
+      return new Date(year, month, 0).getDate();
+  }
 }

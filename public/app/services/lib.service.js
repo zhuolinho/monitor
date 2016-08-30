@@ -33,6 +33,9 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     var datePart = rightNow.toISOString().slice(0, 10);
                     return datePart;
                 };
+                LibService.prototype.daysInMonth = function (month, year) {
+                    return new Date(year, month, 0).getDate();
+                };
                 LibService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])

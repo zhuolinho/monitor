@@ -141,26 +141,27 @@ var alertsList =[
 plc.init = function(m) {
     var r = {pl: {status:true} , er:''};
 
+    // populating plcalerts
 
-    PlcAlert.find({},function(error, doc){
-      if(doc&&doc.length){
-          return;
-     }else {
-          // save sample to init it of not there.
-          var pchain = [];
-          for (var i = 0; i < alertsList.length; i++) {
-                 var message = {pl:{}};
-                 message.pl.alert =  alertsList[i];
-                 pchain.push(plc.addNewAlert(message));
-          }
-
-          var result =  q();
-          pchain.forEach(function (f) {
-              result = result.then(f);
-          });
-
-     }
-    });
+    // PlcAlert.find({},function(error, doc){
+    //   if(doc&&doc.length){
+    //       return;
+    //  }else {
+    //       // save sample to init it of not there.
+    //       var pchain = [];
+    //       for (var i = 0; i < alertsList.length; i++) {
+    //              var message = {pl:{}};
+    //              message.pl.alert =  alertsList[i];
+    //              pchain.push(plc.addNewAlert(message));
+    //       }
+    //
+    //       var result =  q();
+    //       pchain.forEach(function (f) {
+    //           result = result.then(f);
+    //       });
+    //
+    //  }
+    // });
     return q(r);
 }
 
