@@ -59,7 +59,7 @@ var Header = React.createClass({
                 <img src="/dist/images/logo1.jpg"
                      style={{height: "39px", float: "left", marginTop: "7px"}}/>
                 <img src="/dist/images/logo2.jpg"
-                     style={{height: "39px", float: "right", marginTop: "7px", marginLeft:"52px"}}/>
+                     style={{height: "39px", float: "right", marginTop: "7px", width: "81.578px"}}/>
                 <div data-role="controlgroup" data-type="horizontal">
                     {buttonNodes}
                 </div>
@@ -331,7 +331,7 @@ var Content4 = React.createClass({
     getInitialState: function () {
         return {tableByday: []};
     },
-    componentDidMount: function () {
+    update: function () {
         var component = this;
         $.get("/plc/latest.json", function (result) {
             var tmp = [];
@@ -341,8 +341,15 @@ var Content4 = React.createClass({
             component.setState({tableByday: tmp});
         });
     },
+    componentDidMount: function () {
+        this.update();
+    },
     componentDidUpdate: function () {
         $("table").table("refresh");
+        var component = this;
+        setTimeout(function () {
+            component.update();
+        }, 3000);
     },
     render: function () {
         var {id, ...other} = this.props;

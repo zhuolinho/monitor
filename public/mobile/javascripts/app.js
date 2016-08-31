@@ -50,10 +50,10 @@ var Header = React.createClass({
                 return React.createElement(
                     "button",
                     { key: i, onClick: component.handleClick, id: "button" + i, style: {
-                            backgroundColor: "#3388cc",
-                            color: "white",
-                            textShadow: "0 1px 0 #005599"
-                        } },
+                        backgroundColor: "#3388cc",
+                        color: "white",
+                        textShadow: "0 1px 0 #005599"
+                    } },
                     title
                 );
             } else {
@@ -71,7 +71,7 @@ var Header = React.createClass({
             React.createElement("img", { src: "/dist/images/logo1.jpg",
                 style: { height: "39px", float: "left", marginTop: "7px" } }),
             React.createElement("img", { src: "/dist/images/logo2.jpg",
-                style: { height: "39px", float: "right", marginTop: "7px", marginLeft: "52px" } }),
+                style: { height: "39px", float: "right", marginTop: "7px", width: "81.578px" } }),
             React.createElement(
                 "div",
                 { "data-role": "controlgroup", "data-type": "horizontal" },
@@ -576,7 +576,7 @@ var Content4 = React.createClass({
     getInitialState: function getInitialState() {
         return { tableByday: [] };
     },
-    componentDidMount: function componentDidMount() {
+    update: function update() {
         var component = this;
         $.get("/plc/latest.json", function (result) {
             var tmp = [];
@@ -586,8 +586,15 @@ var Content4 = React.createClass({
             component.setState({ tableByday: tmp });
         });
     },
+    componentDidMount: function componentDidMount() {
+        this.update();
+    },
     componentDidUpdate: function componentDidUpdate() {
         $("table").table("refresh");
+        var component = this;
+        setTimeout(function () {
+            component.update();
+        }, 3000);
     },
     render: function render() {
         var _props3 = this.props;
