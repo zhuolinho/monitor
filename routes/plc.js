@@ -117,6 +117,7 @@ module.exports = function (handler)
 
         handler(param)
             .then(function (r) {
+              io.emit("newPlcAlert",r);
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {
@@ -280,6 +281,7 @@ var _tcpSerever = function(handler){
     socket.on('data', function (data) {
       console.log("got plc data-----");
       goodConnection = true;
+      lastDataTime = Date.now();
       size += data.length;
       chunks.push(data);
       console.log('plc data size and buffer size----',size, socket.bufferSize);
@@ -295,7 +297,6 @@ var _tcpSerever = function(handler){
           var timer = setTimeout(function(){
               socket.resume();
               isSaving = false;
-              lastDataTime = Date.now();
               clearTimeout(timer);
           },sTimer);
         }
@@ -353,12 +354,12 @@ function _getLatest(handler,length){
 function _checkInterruption(){
     var checkInterruptionTimer = setInterval(_=>{
       var currentTime  = Date.now();
-      if((currentTime - lastDataTime)> sTimer){
+      if((currentTime - lastDataTime) > sTimer){
         if(goodConnection){ // if there has been any data since the last interuption
             goodConnection = false;
             var alert = {
                   am:'信号中断',
-                  atype:'003'
+                  atype:'信号中断'
             }
             _createPlcAlert(alert);
         }
@@ -383,6 +384,6 @@ function _checkInterruption(){
         })
         .fail(function (r) {
           //
-          console.log('error creating new alert',r);
+          console.log('plc route:  error creating new alert',r);
         });
   }

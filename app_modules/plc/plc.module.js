@@ -409,8 +409,7 @@ plc.addNewAlert = function(m){
                           tank:m.pl.alert.addr,
                           am:m.pl.alert.am,
                           rt:m.pl.alert.remainingTime,
-                          st:m.pl.alert.st,
-                          code:m.pl.alert.addr.substring(0,4)
+                          st:m.pl.alert.st
                         });
 
              newAlert.save(function (error, alert){

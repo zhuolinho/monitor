@@ -119,6 +119,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                         console.log("got new alert---", data);
                         if (data && data.pl && data.pl.alert) {
                             that.alertsList.unshift(data.pl.alert);
+                            that.alertGroups = _.groupBy(that.alertsList, 'atype');
                         }
                     });
                 };
