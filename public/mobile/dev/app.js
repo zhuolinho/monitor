@@ -57,9 +57,9 @@ var Header = React.createClass({
         return (
             <div data-role="header" data-position="fixed" data-tap-toggle="false" style={{textAlign: "center"}}>
                 <img src="/dist/images/logo1.jpg"
-                     style={{width: "39px", height: "39px", float: "left", marginTop: "7px"}}/>
+                     style={{height: "39px", float: "left", marginTop: "7px"}}/>
                 <img src="/dist/images/logo2.jpg"
-                     style={{width: "39px", height: "39px", float: "right", marginTop: "7px"}}/>
+                     style={{height: "39px", float: "right", marginTop: "7px", width: "81.578px"}}/>
                 <div data-role="controlgroup" data-type="horizontal">
                     {buttonNodes}
                 </div>
@@ -104,7 +104,7 @@ var HomeTable = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
-                {bodyNodes.length ? bodyNodes : "加载中..."}
+                {bodyNodes.length ? bodyNodes : "无报警"}
                 </tbody>
             </table>
         );
@@ -331,7 +331,7 @@ var Content4 = React.createClass({
     getInitialState: function () {
         return {tableByday: []};
     },
-    componentDidMount: function () {
+    update: function () {
         var component = this;
         $.get("/plc/latest.json", function (result) {
             var tmp = [];
@@ -341,8 +341,15 @@ var Content4 = React.createClass({
             component.setState({tableByday: tmp});
         });
     },
+    componentDidMount: function () {
+        this.update();
+    },
     componentDidUpdate: function () {
         $("table").table("refresh");
+        var component = this;
+        setTimeout(function () {
+            component.update();
+        }, 3000);
     },
     render: function () {
         var {id, ...other} = this.props;
@@ -356,9 +363,26 @@ var Content4 = React.createClass({
                     <tr>
                         <th/>
                         <th>使用情况</th>
-                        <th>余量/压力</th>
-                        <th>温度</th>
-                        <th>信号/异常</th>
+                        <th>表1地址</th>
+                        <th>表1瞬时工况</th>
+                        <th>表1瞬时标况</th>
+                        <th>表1压力</th>
+                        <th>表1温度</th>
+                        <th>表1正工况累计</th>
+                        <th>表1正标况累计</th>
+                        <th>表1逆标况累计</th>
+                        <th>表1通讯故障</th>
+                        <th>表1错误情报</th>
+                        <th>表2地址</th>
+                        <th>表2瞬时工况</th>
+                        <th>表2瞬时标况</th>
+                        <th>表2压力</th>
+                        <th>表2温度</th>
+                        <th>表2正工况累计</th>
+                        <th>表2正标况累计</th>
+                        <th>表2逆标况累计</th>
+                        <th>表2通讯故障</th>
+                        <th>表2错误情报</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -367,9 +391,26 @@ var Content4 = React.createClass({
                         return <tr key={j}>
                             <th>L001-金山区枫湾路777号</th>
                             <td>正在使用</td>
+                            <td>{alert.addr1}</td>
+                            <td>{alert.iwc1}</td>
+                            <td>{alert.isc1}</td>
+                            <td>{alert.p1}</td>
+                            <td>{alert.temp1}</td>
+                            <td>{alert.pwc1}</td>
+                            <td>{alert.psc1}</td>
+                            <td>{alert.rsc1}</td>
+                            <td>{alert.cf1}</td>
+                            <td>{alert.er1}</td>
+                            <td>{alert.addr2}</td>
+                            <td>{alert.iwc2}</td>
+                            <td>{alert.isc2}</td>
                             <td>{alert.p2}</td>
                             <td>{alert.temp2}</td>
-                            <td>信号良好/无泄漏</td>
+                            <td>{alert.pwc2}</td>
+                            <td>{alert.psc2}</td>
+                            <td>{alert.rsc2}</td>
+                            <td>{alert.cf2}</td>
+                            <td>{alert.er2}</td>
                         </tr>;
                     })}
                     </tbody>
@@ -549,7 +590,7 @@ var Page = React.createClass({
                 } else if (this.props.id == "pagetwo") {
                     content = <Content4/>;
                 } else if (this.props.id == "pagethree") {
-                    content = <Content6/>;
+                    content = <Content7/>;
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {
@@ -583,9 +624,9 @@ var App = React.createClass({
     render: function () {
         return (
             <div>
-                <Page id="pageone" titles={["报警通知", "处理与完成"]}/>
+                <Page id="pageone" titles={["报警通知", "处理完成"]}/>
                 <Page id="pagetwo" titles={["气种设备", "视频监控"]}/>
-                <Page id="pagethree" titles={["配送列表", "GPS地图", "处理与完成"]}/>
+                <Page id="pagethree" titles={["处理完成", "GPS地图"]}/>
             </div>
         );
     }

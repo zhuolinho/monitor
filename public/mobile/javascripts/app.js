@@ -50,10 +50,10 @@ var Header = React.createClass({
                 return React.createElement(
                     "button",
                     { key: i, onClick: component.handleClick, id: "button" + i, style: {
-                            backgroundColor: "#3388cc",
-                            color: "white",
-                            textShadow: "0 1px 0 #005599"
-                        } },
+                        backgroundColor: "#3388cc",
+                        color: "white",
+                        textShadow: "0 1px 0 #005599"
+                    } },
                     title
                 );
             } else {
@@ -69,9 +69,9 @@ var Header = React.createClass({
             "div",
             { "data-role": "header", "data-position": "fixed", "data-tap-toggle": "false", style: { textAlign: "center" } },
             React.createElement("img", { src: "/dist/images/logo1.jpg",
-                style: { width: "39px", height: "39px", float: "left", marginTop: "7px" } }),
+                style: { height: "39px", float: "left", marginTop: "7px" } }),
             React.createElement("img", { src: "/dist/images/logo2.jpg",
-                style: { width: "39px", height: "39px", float: "right", marginTop: "7px" } }),
+                style: { height: "39px", float: "right", marginTop: "7px", width: "81.578px" } }),
             React.createElement(
                 "div",
                 { "data-role": "controlgroup", "data-type": "horizontal" },
@@ -154,7 +154,7 @@ var HomeTable = React.createClass({
             React.createElement(
                 "tbody",
                 null,
-                bodyNodes.length ? bodyNodes : "加载中..."
+                bodyNodes.length ? bodyNodes : "无报警"
             )
         );
     }
@@ -576,7 +576,7 @@ var Content4 = React.createClass({
     getInitialState: function getInitialState() {
         return { tableByday: [] };
     },
-    componentDidMount: function componentDidMount() {
+    update: function update() {
         var component = this;
         $.get("/plc/latest.json", function (result) {
             var tmp = [];
@@ -586,8 +586,15 @@ var Content4 = React.createClass({
             component.setState({ tableByday: tmp });
         });
     },
+    componentDidMount: function componentDidMount() {
+        this.update();
+    },
     componentDidUpdate: function componentDidUpdate() {
         $("table").table("refresh");
+        var component = this;
+        setTimeout(function () {
+            component.update();
+        }, 3000);
     },
     render: function render() {
         var _props3 = this.props;
@@ -619,17 +626,102 @@ var Content4 = React.createClass({
                         React.createElement(
                             "th",
                             null,
-                            "余量/压力"
+                            "表1地址"
                         ),
                         React.createElement(
                             "th",
                             null,
-                            "温度"
+                            "表1瞬时工况"
                         ),
                         React.createElement(
                             "th",
                             null,
-                            "信号/异常"
+                            "表1瞬时标况"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1压力"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1温度"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1正工况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1正标况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1逆标况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1通讯故障"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表1错误情报"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2地址"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2瞬时工况"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2瞬时标况"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2压力"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2温度"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2正工况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2正标况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2逆标况累计"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2通讯故障"
+                        ),
+                        React.createElement(
+                            "th",
+                            null,
+                            "表2错误情报"
                         )
                     )
                 ),
@@ -654,6 +746,71 @@ var Content4 = React.createClass({
                             React.createElement(
                                 "td",
                                 null,
+                                alert.addr1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.iwc1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.isc1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.p1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.temp1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pwc1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.psc1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.rsc1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.cf1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.er1
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.addr2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.iwc2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.isc2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
                                 alert.p2
                             ),
                             React.createElement(
@@ -664,7 +821,27 @@ var Content4 = React.createClass({
                             React.createElement(
                                 "td",
                                 null,
-                                "信号良好/无泄漏"
+                                alert.pwc2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.psc2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.rsc2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.cf2
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.er2
                             )
                         );
                     })
@@ -1017,7 +1194,7 @@ var Page = React.createClass({
                 } else if (this.props.id == "pagetwo") {
                     content = React.createElement(Content4, null);
                 } else if (this.props.id == "pagethree") {
-                    content = React.createElement(Content6, null);
+                    content = React.createElement(Content7, null);
                 }
             } else if (this.state.selected == "button2") {
                 if (this.props.id == "pageone") {
@@ -1054,9 +1231,9 @@ var App = React.createClass({
         return React.createElement(
             "div",
             null,
-            React.createElement(Page, { id: "pageone", titles: ["报警通知", "处理与完成"] }),
+            React.createElement(Page, { id: "pageone", titles: ["报警通知", "处理完成"] }),
             React.createElement(Page, { id: "pagetwo", titles: ["气种设备", "视频监控"] }),
-            React.createElement(Page, { id: "pagethree", titles: ["配送列表", "GPS地图", "处理与完成"] })
+            React.createElement(Page, { id: "pagethree", titles: ["处理完成", "GPS地图"] })
         );
     }
 });
