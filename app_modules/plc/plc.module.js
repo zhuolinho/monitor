@@ -404,10 +404,9 @@ plc.addNewAlert = function(m){
 
   if(m.pl && m.pl.alert){
       var newAlert = new PlcAlert({
-                          atime:m.pl.alert.atime,
+                          atime:new Date(),
                           atype:m.pl.alert.atype,
                           tank:m.pl.alert.addr,
-                          pa:m.pl.alert.processedAgent,
                           am:m.pl.alert.am,
                           rt:m.pl.alert.remainingTime,
                           st:m.pl.alert.st,
@@ -451,7 +450,7 @@ plc.getPlcAlerts =  function(m) {
   }
  }
 
-  PlcAlert.find(query,function (err, resp) {
+  PlcAlert.find(query).sort({atime:-1}).exec(function (err, resp) {
       if (err){
         r.er = err;
         r.status = false;

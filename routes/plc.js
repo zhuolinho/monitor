@@ -8,6 +8,8 @@ var server = require('http').Server(plcApp);
 var io = require('socket.io')(server);
 var client = new net.Socket();
 var router = express.Router();
+var goodConnection = true;
+var lastDataTime = 0;
 var chunks = [];
 var sTimer = 5*60000; //5min.
 var size = 0;
@@ -221,6 +223,9 @@ module.exports = function (handler)
   });
 
 
+
+
+
   router.post('/test.json', function(req, res, next) {
       console.log("route plc test-----");
         var param = {
@@ -242,6 +247,7 @@ module.exports = function (handler)
 
   //plc Connection
   _tcpSerever(handler);
+  _checkInterruption();
 
   return router;
 };
@@ -273,6 +279,7 @@ var _tcpSerever = function(handler){
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
       console.log("got plc data-----");
+      goodConnection = true;
       size += data.length;
       chunks.push(data);
       console.log('plc data size and buffer size----',size, socket.bufferSize);
@@ -288,6 +295,7 @@ var _tcpSerever = function(handler){
           var timer = setTimeout(function(){
               socket.resume();
               isSaving = false;
+              lastDataTime = Date.now();
               clearTimeout(timer);
           },sTimer);
         }
@@ -340,3 +348,41 @@ function _getLatest(handler,length){
           console.log("plc save data fail----",r);
       });
 }
+
+
+function _checkInterruption(){
+    var checkInterruptionTimer = setInterval(_=>{
+      var currentTime  = Date.now();
+      if((currentTime - lastDataTime)> sTimer){
+        if(goodConnection){ // if there has been any data since the last interuption
+            goodConnection = false;
+            var alert = {
+                  am:'信号中断',
+                  atype:'003'
+            }
+            _createPlcAlert(alert);
+        }
+      }
+
+    },sTimer);
+  }
+
+  function _createPlcAlert(alert){
+    var param = {
+      ns: 'plc',
+      vs: '1.0',
+      op: 'addNewAlert',
+      pl:{
+        alert:alert
+      }
+    };
+
+    handler(param)
+        .then(function (r) {
+              io.emit("newPlcAlert",r);
+        })
+        .fail(function (r) {
+          //
+          console.log('error creating new alert',r);
+        });
+  }

@@ -47,6 +47,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     this.libSrvc = libSrvc;
                     this.currentSort = 'all';
                     this.alertsList = [];
+                    this.hasData = true;
                     console.log("Home alerts is up and running");
                     var self = this;
                     this.user = this.userSrvc.getUser();
@@ -54,13 +55,19 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                     this.request.get('/plc/alerts/unprocessed.json').subscribe(function (res) {
                         if (res.pl && res.pl.alerts) {
                             _this.alertsList = res.pl.alerts;
+                            if (!_this.alertsList.length) {
+                                _this.hasData = false;
+                            }
                             console.log("this.alertsList---", _this.alertsList);
                             _this.alertGroups = _.groupBy(_this.alertsList, 'atype');
                         }
-                        _this.initUi();
                     });
                     // /plc/alerts/all
                 }
+                HomeAlerts.prototype.ngAfterViewInit = function () {
+                    this.iniSocket();
+                    this.initUi();
+                };
                 HomeAlerts.prototype.veSortBy = function (wich) {
                     var _this = this;
                     if (this.currentSort != wich) {
@@ -102,6 +109,17 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                 HomeAlerts.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
+                    });
+                };
+                HomeAlerts.prototype.iniSocket = function () {
+                    var that = this;
+                    var url = 'http://' + window.location.hostname + ':3003';
+                    var socket = io(url);
+                    socket.on('newPlcAlert', function (data) {
+                        console.log("got new alert---", data);
+                        if (data && data.pl && data.pl.alert) {
+                            that.alertsList.unshift(data.pl.alert);
+                        }
                     });
                 };
                 HomeAlerts = __decorate([

@@ -1,5 +1,5 @@
 
-import {Component, provide} from 'angular2/core';
+import {Component, provide,AfterViewInit} from 'angular2/core';
 import {config} from '../../../config';
 import {HomeAlertsDetail} from './details/home.alerts.detail.component';
 import {HomeReturnAlertsDetail} from './return_details/home.return.alerts.detail.component';
@@ -10,6 +10,7 @@ import {CORE_DIRECTIVES} from 'angular2/common';
 import {LibService} from '../../../services/lib.service';
 declare var jQuery:any;
 declare var _:any;
+declare var io:any;
 
 @Component({
   selector:'home-alerts',
@@ -17,12 +18,13 @@ declare var _:any;
   directives:[HomeAlertsDetail,HomeReturnAlertsDetail,CORE_DIRECTIVES]
 })
 
-export class HomeAlerts{
+export class HomeAlerts implements AfterViewInit{
 
     currentSort:string = 'all';
 
     alertsList:any[] = [];
     alertGroups:any;
+    hasData:boolean = true;
 
     user:any;
 
@@ -34,14 +36,22 @@ export class HomeAlerts{
       this.request.get('/plc/alerts/unprocessed.json').subscribe(res => {
         if(res.pl && res.pl.alerts){
             this.alertsList = res.pl.alerts;
+            if(!this.alertsList.length){
+              this.hasData = false;
+            }
             console.log("this.alertsList---",this.alertsList);
             this.alertGroups =  _.groupBy(this.alertsList,'atype');
         }
-        this.initUi();
       });
 
       // /plc/alerts/all
     }
+
+    ngAfterViewInit(){
+      this.iniSocket();
+        this.initUi();
+    }
+
 
     veSortBy(wich){
       if(this.currentSort != wich){
@@ -90,4 +100,15 @@ export class HomeAlerts{
       });
 
     }
+    iniSocket(){
+         var that = this;
+          var url = 'http://'+window.location.hostname+':3003';
+          var socket = io(url);
+         socket.on('newPlcAlert', function(data){
+           console.log("got new alert---",data);
+           if(data && data.pl && data.pl.alert){
+               that.alertsList.unshift(data.pl.alert);
+           }
+         });
+      }
  }
