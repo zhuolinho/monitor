@@ -5,19 +5,10 @@
       <div class="input-field">
           <select class="helper-select-font-bigger">
             <option value="0"  selected> L001-金山枫湾路777号</option>
-            <option value="1"> 母站</option>
+            <!-- <option value="1"> 母站</option>
             <option  value="中转站1号">中转站1号</option>
            <option  value="中转站2号">中转站2号</option>
-           <option  value="中转站3号">中转站3号</option>
-          <option  value="">C001-闸北区天目中路111号XXX站</option>
-          <option  value="">C002-闸北区大宁路355号XXXXX站 </option>
-          <option  value=""> C003-闸北区万荣路23号XXX站</option>
-          <option  value=""> L001-闸北区沪太路1500号XX基地</option>
-          <option  value=""> L002-闸北区共和新路555号XXX基地</option>
-          <option  value=""> L003-闸北区红星公路220号XXX基地</option>
-          <option  value="">X001-黄浦区新闸路333号XXXXXX站</option>
-          <option  value="">X002-静安区海防路111号XX站</option>
-          <option  value="">X003-虹口区四川北路222号XX站</option>
+           <option  value="中转站3号">中转站3号</option> -->
 
           </select>
           <label >选择地址</label>
@@ -293,7 +284,7 @@
 
           <!-- <h4>Modal Header</h4> -->
           <div class="helper-font-double center-align helper-padding-30">
-                    C003-闸北区大宁路335号XX站
+                  L001-金山枫湾路777号
           </div>
 
           <div class="row modal-nav monitor-tabs">
@@ -334,20 +325,31 @@
               </div>
 
             <div class="row valign-wrapper">
+
               <div class="col s3 m3 ">
                 <div class="input-field">
-                    <select class="monitor-short-dropdown">
-
-                      <option *ngFor="#item of currentSelect; #i = index;" [value]="item">
+                    <select class="monitor-short-dropdown select-year">
+                      <option *ngFor="#item of years; #i = index;" [value]="item">
                         {{item}}
-
-                        <stong *ngIf="isShowByDay">月</stong>
-                        <stong *ngIf="!isShowByDay">年</stong>
+                        <stong >年</stong>
                       </option>
                     </select>
                     <!-- <label>选在时间</label> -->
                   </div>
               </div>
+
+              <div class="col s3 m3 ">
+                <div class="input-field">
+                    <select class="monitor-short-dropdown select-month">
+                      <option *ngFor="#item of currentSelect; #i = index;" [value]="item">
+                        {{item}}
+                        <stong>月</stong>
+                      </option>
+                    </select>
+                    <!-- <label>选在时间</label> -->
+                  </div>
+              </div>
+
               <div class="container valign">
                 <a class="btn right monitor-gray-button stripped waves-effect waves-light helper-margin-right-5">
                   下载数据
@@ -376,12 +378,14 @@
               </div>
           </div>
 
-          <h4 *ngIf="selectedtab==3" class="center-align" style="margin:13% 0;">
-            在线支付
+
+
+          <h4 *ngIf="selectedtab==3"  class="center-align" style="margin:13% 0;">
+            下载所有数据
           </h4>
 
-          <h4 *ngIf="selectedtab==4"  class="center-align" style="margin:13% 0;">
-            下载所有数据
+          <h4 *ngIf="selectedtab==4" class="center-align" style="margin:13% 0;">
+            在线支付
           </h4>
 
 

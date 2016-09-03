@@ -126,7 +126,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.setYears(null);
       this.setDaysOfMonth(null,null);
       this.request.get('/plc/latest.json').subscribe(resp => {
-        // console.log("latest plc-----",resp);
+        console.log("latest plc-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.realTimeData = resp.pl.plc;
         }
@@ -175,19 +175,29 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
 
-        checkInterruption(){
-          this.checkInterruptionTimer = setInterval(_=>{
-            var currentTime  = Date.now();
-            if((currentTime - this.lastDataTime)>this.dataTimer){
-              this.goodConnection = false;
-            }
-          },100000);
-        }
+    checkInterruption(){
+        this.checkInterruptionTimer = setInterval(_=>{
+          var currentTime  = Date.now();
+          if((currentTime - this.lastDataTime)>this.dataTimer){
+            this.goodConnection = false;
+          }
+        },100000);
+      }
 
     initSelect(){
       setTimeout(_=>{
            jQuery('select').material_select();
       });
+
+      jQuery('select').on('change',function(event){
+        console.log('year changed----',event);
+      });
+
+      jQuery('select.select-month').on('change',function(event){
+        console.log('month changed----',event);
+      });
+
+      // select-year
     }
 
 
@@ -256,11 +266,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
    iniSocket(){
         var that = this;
-         var url = 'http://139.196.18.222:3003';
-
-         if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-           url = 'http://localhost:3003';
-         }
+         var url = 'http://'+window.location.hostname+':3003';
          var socket = io(url);
         socket.on('realTimePlc', function(data){
 

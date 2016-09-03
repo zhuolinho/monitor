@@ -116,7 +116,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.setYears(null);
                     this.setDaysOfMonth(null, null);
                     this.request.get('/plc/latest.json').subscribe(function (resp) {
-                        // console.log("latest plc-----",resp);
+                        console.log("latest plc-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.realTimeData = resp.pl.plc;
                         }
@@ -170,6 +170,13 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     setTimeout(function (_) {
                         jQuery('select').material_select();
                     });
+                    jQuery('select').on('change', function (event) {
+                        console.log('year changed----', event);
+                    });
+                    jQuery('select.select-month').on('change', function (event) {
+                        console.log('month changed----', event);
+                    });
+                    // select-year
                 };
                 Gas.prototype.veReturnSelectedTanks = function () {
                     this.createNewAlert("拉回报警");
@@ -223,10 +230,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 };
                 Gas.prototype.iniSocket = function () {
                     var that = this;
-                    var url = 'http://139.196.18.222:3003';
-                    if (window.location.hostname.indexOf('localhost') >= 0) {
-                        url = 'http://localhost:3003';
-                    }
+                    var url = 'http://' + window.location.hostname + ':3003';
                     var socket = io(url);
                     socket.on('realTimePlc', function (data) {
                         if (!that.goodConnection) {

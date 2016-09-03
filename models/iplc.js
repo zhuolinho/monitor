@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 //incomming plc data
 var iPlcSchema = mongoose.Schema({
                     rawd:String,  //raw data
+                    cd:{type:Date,default:Date.now},// created date
                     dct:String, //data collection time
                     cdct:String, //chanel data collection time
                     addr1:String,

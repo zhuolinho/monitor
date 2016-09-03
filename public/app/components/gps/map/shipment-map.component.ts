@@ -245,11 +245,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
   iniSocket(){
       var _this = this;
-        var url = 'http://139.196.18.222:3001';
-
-        if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-          url = 'http://localhost:3001';
-        }
+        var url = 'http://'+window.location.hostname+':3001';
+        // if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
+        //   url = 'http://localhost:3001';
+        // }
         var socket = io(url);
        socket.on('carMove', function(data){
          console.log("carMove-----",data);

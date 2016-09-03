@@ -13,6 +13,12 @@
     <!-- toto add a back to top button -->
 
     <div class="helper-vscrolling" style=" height:80vh;">
+
+
+
+      <div class="center-align helper-white-bg helper-padding-30" *ngIf="!alertsList">
+        无报警
+      </div>
         <div *ngFor="#alert of alertsList; #i = index;">
           <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="(currentSort == alert.atype) || (currentSort == 'all')">
             <div class="col m9">
