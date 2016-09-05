@@ -643,7 +643,6 @@ var _extractPlcData = function(data,index){
   var errorReport2 = data.slice(87+shift,88+shift);
 
  var result = new iPlc({
-                         rawd:data.toString('hex'),  //raw data
                          cd:lib.dateTime(),
                          dct:date, //data collection time
                          cdct:chanelDate, //chanel data collection time
