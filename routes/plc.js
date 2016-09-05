@@ -1,6 +1,7 @@
 
 var helpers = require('../utilities/helpers');
 var bufferConcat = require('buffer-concat');
+var lib = require('../lib/lib');
 var express = require('express');
 var net = require('net');
 var plcApp = require('express')();
@@ -248,7 +249,7 @@ module.exports = function (handler)
 
   //plc Connection
   _tcpSerever(handler);
-  _checkInterruption();
+  _checkInterruption(handler);
 
   return router;
 };
@@ -281,7 +282,7 @@ var _tcpSerever = function(handler){
     socket.on('data', function (data) {
       console.log("got plc data-----");
       goodConnection = true;
-      lastDataTime = Date.now();
+      // lastDataTime = Date.now();
       size += data.length;
       chunks.push(data);
       console.log('plc data size and buffer size----',size, socket.bufferSize);
@@ -343,7 +344,7 @@ function _getLatest(handler,length){
   handler(param)
       .then(function (r) {
         console.log("plc route save data successful---",r);
-              io.emit("realTimePlc",{main:r,interval:sTimer});
+              io.emit("realTimePlc",r);
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);
@@ -351,7 +352,8 @@ function _getLatest(handler,length){
 }
 
 
-function _checkInterruption(){
+function _checkInterruption(handler){
+    var ctimer = sTimer+10000;
     var checkInterruptionTimer = setInterval(_=>{
       var currentTime  = Date.now();
       if((currentTime - lastDataTime) > sTimer){
@@ -361,14 +363,15 @@ function _checkInterruption(){
                   am:'信号中断',
                   atype:'信号中断'
             }
-            _createPlcAlert(alert);
+            _createPlcAlert(alert,handler);
+            io.emit("plcDataInterruption",{interuptionTime:lib.dateTime()});
         }
       }
 
-    },sTimer);
+    },ctimer);
   }
 
-  function _createPlcAlert(alert){
+  function _createPlcAlert(alert,handler){
     var param = {
       ns: 'plc',
       vs: '1.0',

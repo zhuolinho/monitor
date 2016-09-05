@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var plcAddressSchema = mongoose.Schema({
+                      cd:String, // creation date
                       code:{type:String},
                       addr:{type:String,required:true},
                       cn:{type:String, default:"无"}, // company name

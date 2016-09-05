@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var shipmentSchema = mongoose.Schema({
                     sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
                     dest:String,
+                    cd:String, //created date
                     dt:{type:Date, default: Date.now}, //departure time
                     at:String, //arrival time
                     origin:String,

@@ -284,15 +284,14 @@ plc.getData =  function(m) {
   return deferred.promise;
 }
 
-
-
 plc.getLatestData =  function(m) {
+
   console.log("plc module: getLatestData FUNCTION");
- var r = {pl: {}, status:false , er:''};
+  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
   var length = m.pl.length||1;
 
-  iPlc.find().limit(length).exec(function (err, plc) {
+  iPlc.find().sort({cd:-1}).limit(length).exec(function (err, plc) {
       if (err){
         r.er = err;
         r.status = false;
@@ -304,6 +303,7 @@ plc.getLatestData =  function(m) {
         deferred.resolve(r);
       }
   })
+
   return deferred.promise;
 }
 
@@ -339,6 +339,7 @@ plc.addNewAddress =  function(m) {
 
     if(m.pl && m.pl.address && m.pl.address.addr){
         var newAddress = new Address({
+                          cd:lib.dateTime(),
                           code:m.pl.address.code,
                           addr:m.pl.address.addr,
                           cn:m.pl.address.cn,
@@ -404,7 +405,7 @@ plc.addNewAlert = function(m){
 
   if(m.pl && m.pl.alert){
       var newAlert = new PlcAlert({
-                          atime:new Date(),
+                          atime:lib.dateTime(),
                           atype:m.pl.alert.atype,
                           tank:m.pl.alert.addr,
                           am:m.pl.alert.am,
@@ -643,6 +644,7 @@ var _extractPlcData = function(data,index){
 
  var result = new iPlc({
                          rawd:data.toString('hex'),  //raw data
+                         cd:lib.dateTime(),
                          dct:date, //data collection time
                          cdct:chanelDate, //chanel data collection time
                          addr1:parseInt(addr1.toString('hex'), 16),

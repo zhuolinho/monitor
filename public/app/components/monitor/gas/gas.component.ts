@@ -138,7 +138,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.initSelect();
       this.showByDay();
       this.updateTime();
-      this.checkInterruption();
+      // this.checkInterruption();
     }
 
     setYears(startYear){
@@ -162,7 +162,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     ngOnDestroy(){
       clearInterval(this.dateTimer);
-      clearInterval(this.checkInterruptionTimer);
+      // clearInterval(this.checkInterruptionTimer);
       Gas.graphIsRunning = false;
     }
 
@@ -175,14 +175,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
 
-    checkInterruption(){
-        this.checkInterruptionTimer = setInterval(_=>{
-          var currentTime  = Date.now();
-          if((currentTime - this.lastDataTime)>this.dataTimer){
-            this.goodConnection = false;
-          }
-        },100000);
-      }
+    // checkInterruption(){
+    //     this.checkInterruptionTimer = setInterval(_=>{
+    //       var currentTime  = Date.now();
+    //       if((currentTime - this.lastDataTime)>this.dataTimer){
+    //         this.goodConnection = false;
+    //       }
+    //     },100000);
+    //   }
 
     initSelect(){
       setTimeout(_=>{
@@ -275,14 +275,20 @@ export class Gas  implements AfterViewInit,OnDestroy{
           }
 
           console.log("realTimePlc-----",data);
-          if(data&&data.main&&data.main.pl&&data.main.pl.plc){
-              that.realTimeData = data.main.pl.plc;
+          if(data&&data.pl&& data.pl.plc){
+              that.realTimeData = data.pl.plc;
           }
 
-          if(data.interval){
-            that.dataTimer = data.interval;
-            that.lastDataTime = Date.now();
-          }
+          // if(data.interval){
+          //   that.dataTimer = data.interval;
+          //   // that.lastDataTime = Date.now();
+          // }
+        });
+
+
+        socket.on('plcDataInterruption', function(data){
+              console.log('plcDataInterruption', data);
+              that.goodConnection = false;
         });
      }
 

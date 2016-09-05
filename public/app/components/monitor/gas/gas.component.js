@@ -127,7 +127,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.initSelect();
                     this.showByDay();
                     this.updateTime();
-                    this.checkInterruption();
+                    // this.checkInterruption();
                 };
                 Gas.prototype.setYears = function (startYear) {
                     var sY = startYear || 2009;
@@ -146,7 +146,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 };
                 Gas.prototype.ngOnDestroy = function () {
                     clearInterval(this.dateTimer);
-                    clearInterval(this.checkInterruptionTimer);
+                    // clearInterval(this.checkInterruptionTimer);
                     Gas.graphIsRunning = false;
                 };
                 Gas.prototype.updateTime = function () {
@@ -157,15 +157,14 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                         }
                     }, 1000);
                 };
-                Gas.prototype.checkInterruption = function () {
-                    var _this = this;
-                    this.checkInterruptionTimer = setInterval(function (_) {
-                        var currentTime = Date.now();
-                        if ((currentTime - _this.lastDataTime) > _this.dataTimer) {
-                            _this.goodConnection = false;
-                        }
-                    }, 100000);
-                };
+                // checkInterruption(){
+                //     this.checkInterruptionTimer = setInterval(_=>{
+                //       var currentTime  = Date.now();
+                //       if((currentTime - this.lastDataTime)>this.dataTimer){
+                //         this.goodConnection = false;
+                //       }
+                //     },100000);
+                //   }
                 Gas.prototype.initSelect = function () {
                     setTimeout(function (_) {
                         jQuery('select').material_select();
@@ -237,13 +236,17 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                             that.goodConnection = true;
                         }
                         console.log("realTimePlc-----", data);
-                        if (data && data.main && data.main.pl && data.main.pl.plc) {
-                            that.realTimeData = data.main.pl.plc;
+                        if (data && data.pl && data.pl.plc) {
+                            that.realTimeData = data.pl.plc;
                         }
-                        if (data.interval) {
-                            that.dataTimer = data.interval;
-                            that.lastDataTime = Date.now();
-                        }
+                        // if(data.interval){
+                        //   that.dataTimer = data.interval;
+                        //   // that.lastDataTime = Date.now();
+                        // }
+                    });
+                    socket.on('plcDataInterruption', function (data) {
+                        console.log('plcDataInterruption', data);
+                        that.goodConnection = false;
                     });
                 };
                 Gas.prototype.showDetailModal = function (mail) {
