@@ -282,7 +282,7 @@ var _tcpSerever = function(handler){
     socket.on('data', function (data) {
       console.log("got plc data-----");
       goodConnection = true;
-      // lastDataTime = Date.now();
+      lastDataTime = Date.now();
       size += data.length;
       chunks.push(data);
       console.log('plc data size and buffer size----',size, socket.bufferSize);

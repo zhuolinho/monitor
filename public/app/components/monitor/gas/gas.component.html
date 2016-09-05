@@ -51,135 +51,116 @@
   <div class="helper-vscrolling" style="height:60vh; padding-bottom:30px; padding-top:10px;">
         <div class="helper-margin-bottom-20 valign-wrapper row">
           <div class="col m9">
-            <div class="helper-white-bg ">
-              <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block center-align">
+            <div class=" ">
+              <div class="row valign-wrapper helper-white-bg helper-padding-15 helper-font-bigger helper-display-block center-align">
                L001-金山枫湾路777号
               </div>
 
-              <div class="monitor-table helper-font-bigger" *ngIf="realTimeData">
+
+              <div class="row">
+
+
+                              <div class="monitor-table helper-font-bigger helper-white-bg" *ngIf="realTimeData">
+
+                                <div class="clearfix"></div>
+
+                                <!-- <div class="table-row">
+                                  <div class="table-cell"> 使用情况</div>
+                                  <div class="table-cell"> 正在使用</div>
+                                </div> -->
+
+                                <div class="table-row">
+                                  <div class="table-cell"> 流量表名称</div>
+                                  <div class="table-cell"> CNG表</div>
+                                </div>
+
+
+                                <div class="table-row">
+                                  <div class="table-cell">分配地址</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr1}}</span></div>
+                                </div>
+
+                                <!-- 标况累计 -->
+                                <div class="table-row">
+                                  <div class="table-cell">累计流量(Nm <sup>3</sup> )</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc1}}</span></div>
+                                </div>
+
+                                <!-- 瞬时标况 -->
+                                <div class="table-row">
+                                  <div class="table-cell">瞬时流量(Nm <sup>3</sup> )/h</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc1}}</span></div>
+                                </div>
+
+                                <div class="table-row">
+                                  <div class="table-cell">温度(<sup>o</sup>C)</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp1}}</span></div>
+                                </div>
+
+
+                                <div class="table-row">
+                                  <div class="table-cell"> 压力(Kpa)</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p1}}</span></div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                              </div>
+
+
+
+
+                              <div class="monitor-table helper-font-bigger  helper-white-bg helper-margin-top-10" *ngIf="realTimeData">
+
+                                <div class="clearfix"></div>
+
+                                <!-- <div class="table-row">
+                                  <div class="table-cell"> 使用情况</div>
+                                  <div class="table-cell"> 正在使用</div>
+                                </div> -->
+
+                                <div class="table-row">
+                                  <div class="table-cell"> 流量表名称</div>
+                                  <div class="table-cell"> 总表</div>
+                                </div>
+
+
+                                <div class="table-row">
+                                  <div class="table-cell">分配地址</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr2}}</span></div>
+                                </div>
+
+                                <!-- 标况累计 -->
+                                <div class="table-row">
+                                  <div class="table-cell">累计流量(Nm <sup>3</sup> )</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc2}}</span></div>
+                                </div>
+
+                                <!-- 瞬时标况 -->
+                                <div class="table-row">
+                                  <div class="table-cell">瞬时流量(Nm <sup>3</sup> )/h</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc2}}</span></div>
+                                </div>
+
+                                <div class="table-row">
+                                  <div class="table-cell">温度(<sup>o</sup>C)</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp2}}</span></div>
+                                </div>
+
+
+                                <div class="table-row">
+                                  <div class="table-cell"> 压力(Kpa)</div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p2}}</span></div>
+                                </div>
+
+              </div>
+
 
                 <div class="clearfix"></div>
 
-                <div class="table-row">
-                  <div class="table-cell"> 使用情况</div>
-                  <div class="table-cell"> 正在使用</div>
-                </div>
-
-
-                <div class="table-row">
-                  <div class="table-cell">表1地址</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1瞬时工况</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc1}}</span></div>
-                </div>
-
-
-                <div class="table-row">
-                  <div class="table-cell">表1瞬时标况</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell"> 表1压力</div>
-                  <!-- <div class="table-cell"> 89%/16kg/hps</div> -->
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1温度</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1正工况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].pwc1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1正标况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1逆标况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].rsc1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1通讯故障</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].cf1}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表1错误情报</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].er1}}</span></div>
-                </div>
-
-
-
-                <div class="table-row">
-                  <div class="table-cell">表2地址</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2瞬时工况</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span></div>
-                </div>
-
-
-                <div class="table-row">
-                  <div class="table-cell">表2瞬时标况</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell"> 表2压力</div>
-                  <!-- <div class="table-cell"> 89%/26kg/hps</div> -->
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2温度</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2正工况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2正标况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2逆标况累计</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].rsc2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2通讯故障</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].cf2}}</span></div>
-                </div>
-
-                <div class="table-row">
-                  <div class="table-cell">表2错误情报</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].er2}}</span></div>
-                </div>
-
-                <!-- <div class="table-row">
-                  <div class="table-cell"> 信号/异常</div>
-                  <div class="table-cell"> 信号良好/无泄漏</div>
-                </div> -->
-
-                    <div class="clearfix"></div>
-
               </div>
+
+
             </div>
 
           </div>
