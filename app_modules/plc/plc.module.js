@@ -220,9 +220,11 @@ var incommingData = m.pl;
       for (var i = 0; i < 100; i++) {
             //  console.log("loop----",i);
              var dataToSave = _extractPlcData(incommingData,i);
-             if((dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+            //  console.log("dataToSave-----",dataToSave);
+             if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' || dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
                break;
              }
+
              pchain.push(_saveIncommingData(dataToSave));
       }
 
