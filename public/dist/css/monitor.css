@@ -98,6 +98,23 @@ body, html{
       display: table-cell  !important;
   }
 
+  .monitor-table.table50-50 .table-row  .table-cell{
+    width: 50% !important;
+  }
+
+  .monitor-table.table55-45  .table-row .table-cell:first-child{
+    width: 55% !important;
+  }
+
+  .monitor-table.table60-40 .table-row .table-cell:first-child{
+    width: 60% !important;
+  }
+
+
+  .monitor-table.table40-60 .table-row .table-cell:first-child{
+    width: 40% !important;
+  }
+
   .monitor-table .table-cell.with-select .caret{
     top:0;
   }

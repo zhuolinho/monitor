@@ -52,15 +52,15 @@
         <div class="helper-margin-bottom-20 valign-wrapper row">
           <div class="col m9">
             <div class=" ">
-              <div class="row valign-wrapper helper-white-bg helper-padding-15 helper-font-bigger helper-display-block center-align">
+              <!-- <div class="row valign-wrapper helper-white-bg helper-padding-15 helper-font-bigger helper-display-block center-align">
                L001-金山枫湾路777号
-              </div>
+              </div> -->
 
 
               <div class="row">
 
 
-                              <div class="monitor-table helper-font-bigger helper-white-bg" *ngIf="realTimeData">
+                              <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" *ngIf="realTimeData">
 
                                 <div class="clearfix"></div>
 
@@ -82,13 +82,13 @@
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
-                                  <div class="table-cell">累计流量(Nm <sup>3</sup> )</div>
+                                  <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
                                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc1}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
-                                  <div class="table-cell">瞬时流量(Nm <sup>3</sup> )/h</div>
+                                  <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
                                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc1}}</span></div>
                                 </div>
 
@@ -107,10 +107,7 @@
 
                               </div>
 
-
-
-
-                              <div class="monitor-table helper-font-bigger  helper-white-bg helper-margin-top-10" *ngIf="realTimeData">
+                              <div class="monitor-table table55-45 helper-font-bigger  helper-white-bg helper-margin-top-10" *ngIf="realTimeData">
 
                                 <div class="clearfix"></div>
 
@@ -132,13 +129,13 @@
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
-                                  <div class="table-cell">累计流量(Nm <sup>3</sup> )</div>
+                                  <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
                                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc2}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
-                                  <div class="table-cell">瞬时流量(Nm <sup>3</sup> )/h</div>
+                                  <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
                                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc2}}</span></div>
                                 </div>
 
