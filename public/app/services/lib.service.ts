@@ -18,7 +18,8 @@ export class LibService{
     return datePart;
   }
 
- daysInMonth(month,year) {
-      return new Date(year, month, 0).getDate();
+ daysInMonth(year,month) {
+      var num = new Date(parseInt(year,10), parseInt(month,10), 0).getDate();
+      return num;
   }
 }

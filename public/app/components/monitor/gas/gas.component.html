@@ -238,7 +238,7 @@
 
 
 
-<!-- modal -->
+<!-- feedback modal -->
 
 <div id="moveTanksFeedbackModal" class="modal modal-fixed-footer" style="max-width:500px;">
   <div class="modal-content helper-overflow-hidden">
@@ -256,7 +256,7 @@
 
 
 
-    <!-- modal -->
+    <!-- detail modal -->
     <div id="gasUsageDetailModal" class="modal  fixed helper-padding-bottom-20">
       <div class="modal-content helper-overflow-hidden">
         <i class="modal-close material-icons right">clear</i>
@@ -305,24 +305,22 @@
 
             <div class="row valign-wrapper">
 
-              <div class="col s3 m3 ">
+              <div class="col s4 m4 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-year">
                       <option *ngFor="#item of years; #i = index;" [value]="item">
-                        {{item}}
-                        <stong >年</stong>
+                        {{item}}年
                       </option>
                     </select>
                     <!-- <label>选在时间</label> -->
                   </div>
               </div>
 
-              <div class="col s3 m3 ">
+              <div class="col s4 m4 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-month">
-                      <option *ngFor="#item of currentSelect; #i = index;" [value]="item">
-                        {{item}}
-                        <stong>月</stong>
+                      <option *ngFor="#item of months; #i = index;" [value]="item">
+                        {{item}}月
                       </option>
                     </select>
                     <!-- <label>选在时间</label> -->
@@ -338,23 +336,48 @@
 
 
               <div class="">
-                <div class="monitor-table stripped">
+                <div class="monitor-table stripped" *ngIf="isShowByDay">
                   <div class="table-row  helper-gray-bg-light">
                     <div class="table-cell"> 罐号 </div>
                     <div class="table-cell">日期  </div>
-                    <div class="table-cell">累积流量 </div>
+                    <div class="table-cell">累计流量 </div>
                     <div class="table-cell">平均流量  </div>
                   </div>
 
 
-                  <div class="table-row">
-                    <div class="table-cell"> L001 </div>
+                  <div class="table-row"  *ngFor="#d of days">
+                    <div class="table-cell"> L001 {{d}}</div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].dct}}</span></div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span> </div>
                     <div class="table-cell">  <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span> </div>
                   </div>
                 </div>
+
+                <!-- end of table -->
+
+
+                <div class="monitor-table stripped" *ngIf="!isShowByDay">
+                  <div class="table-row  helper-gray-bg-light">
+                    <div class="table-cell"> 罐号 </div>
+                    <div class="table-cell">日期  </div>
+                    <div class="table-cell">累计流量 </div>
+                    <div class="table-cell">平均流量  </div>
+                  </div>
+
+
+                  <div class="table-row" *ngFor="#m of months" >
+                    <div class="table-cell"> L001 {{m}}</div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].dct}}</span></div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span> </div>
+                    <div class="table-cell">  <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span> </div>
+                  </div>
+                </div>
+                <!-- end of table -->
               </div>
+
+
+              <!-- padding div -->
+              <div style="height:50px;"></div>
           </div>
 
 
