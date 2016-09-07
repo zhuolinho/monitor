@@ -349,7 +349,7 @@
                     <div class="table-cell"> 罐号 </div>
                     <div class="table-cell">日期  </div>
                     <div class="table-cell">累计流量 </div>
-                    <div class="table-cell">平均流量  </div>
+                    <div class="table-cell">用量  </div>
                   </div>
 
 
@@ -369,15 +369,15 @@
                     <div class="table-cell"> 罐号 </div>
                     <div class="table-cell">日期  </div>
                     <div class="table-cell">累计流量 </div>
-                    <div class="table-cell">平均流量  </div>
+                    <div class="table-cell">用量  </div>
                   </div>
 
 
                   <div class="table-row" *ngFor="#m of months" >
                     <div class="table-cell"> L001 {{m}}</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].dct}}</span></div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span> </div>
-                    <div class="table-cell">  <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span> </div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].dct}}</span></div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].maxVal}}</span> </div>
+                    <div class="table-cell">  <span *ngIf="realTimeData">{{statsData[0].maxVal}}</span> </div>
                   </div>
                 </div>
                 <!-- end of table -->
