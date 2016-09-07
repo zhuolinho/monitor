@@ -326,13 +326,12 @@ plc.getPlcStats = function(m){
 
       iPlc.aggregate([
           {
-              $match: {
-                  created: {y:m.pl.year, m:m.pl.month},
-              }
+              $match: {y:m.pl.year, m:m.pl.month},
           },
           {
               $group: {
                   _id:{day:"$d",data:"$psc2"},
+                  maxVal:{ $max: "$psc2" },
                   count: {$sum: 1}
               }
           }
