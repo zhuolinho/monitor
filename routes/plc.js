@@ -82,6 +82,25 @@ module.exports = function (handler)
             });
   });
 
+router.get('/stats/:year/:month.json', function(req, res, next) {
+
+
+    //which = all, processed, unprocessed.
+      var param = {
+        ns: 'plc',
+        vs: '1.0',
+        op: 'getPlcStats',
+        pl:{year:req.params.year,month:req.params.month}
+      };
+
+      handler(param)
+          .then(function (r) {
+             helpers.sendResponse(res, 200, r);
+          })
+          .fail(function (r) {
+            helpers.sendResponse(res, 404, r);
+          });
+});
 
   router.put('/alert.json', function(req, res, next) {
 

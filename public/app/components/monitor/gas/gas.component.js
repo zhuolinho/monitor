@@ -126,7 +126,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
                     this.initSelect();
-                    this.showByDay();
+                    // this.showByDay();
                     this.updateTime();
                     // this.checkInterruption();
                 };
@@ -268,13 +268,26 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.currentStatSelectedMonth = d.getMonth() + 1;
                     jQuery('select.select-month').val(this.currentStatSelectedMonth);
                     jQuery('select.select-year').val(this.currentStatSelectedYear);
-                    console.log("jQuery('select.select-year').val", jQuery('select.select-year').val(), this.currentStatSelectedYear, this.currentStatSelectedMonth);
+                    this.computeStats();
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
                             that.initGrapth();
                             that.initSelect();
                         }
                     });
+                };
+                Gas.prototype.getPlcStats = function (year, month) {
+                    var _this = this;
+                    console.log('get plc stats----', year, month);
+                    this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(function (resp) {
+                        console.log("plc stats-----", resp);
+                        if (resp && resp.pl && resp.pl.plc) {
+                            _this.statsData = resp.pl.plc;
+                        }
+                    });
+                };
+                Gas.prototype.computeStats = function () {
+                    this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
                 };
                 // code for detail modal
                 Gas.prototype.showByDay = function () {
@@ -291,7 +304,6 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // alert('by month');
                     console.log("by month");
                     this.isShowByDay = false;
-                    // this.currentTable = this.tableByMonth;
                     this.currentSelect = this.years;
                     this.initSelect();
                 };

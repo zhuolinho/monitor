@@ -305,7 +305,7 @@
 
             <div class="row valign-wrapper">
 
-              <div class="col s4 m4 ">
+              <div class="col s3 m3 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-year">
                       <option *ngFor="#item of years; #i = index;" [value]="item">
@@ -316,7 +316,7 @@
                   </div>
               </div>
 
-              <div class="col s4 m4 ">
+              <div class="col s3 m3 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-month">
                       <option *ngFor="#item of months; #i = index;" [value]="item">
@@ -327,8 +327,16 @@
                   </div>
               </div>
 
-              <div class="container valign">
-                <a class="btn right monitor-gray-button stripped waves-effect waves-light helper-margin-right-5">
+
+              <div class="col s2 m2 ">
+                    <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="computeStats();">
+                      统计
+                    </a>
+              </div>
+
+
+              <div class="col s3 m3">
+                <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5">
                   下载数据
                 </a>
               </div>

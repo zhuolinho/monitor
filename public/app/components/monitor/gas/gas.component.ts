@@ -110,6 +110,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     currentStatSelectedYear:number = 2016;
     currentStatSelectedMonth:number = 1;
     isShowByDay:boolean;
+    statsData:any[];
     newAlert:any = {
       st:[],
       atime:'',
@@ -129,13 +130,12 @@ export class Gas  implements AfterViewInit,OnDestroy{
         if(resp&&resp.pl&&resp.pl.plc){
             this.realTimeData = resp.pl.plc;
         }
-
       });
     }
     ngAfterViewInit(){
       this.iniSocket();
       this.initSelect();
-      this.showByDay();
+      // this.showByDay();
       this.updateTime();
       // this.checkInterruption();
     }
@@ -243,7 +243,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
            jQuery('#moveTanksFeedbackModal').openModal();
         });
       }
-
     }
 
 
@@ -314,7 +313,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.currentStatSelectedMonth = d.getMonth()+1;
       jQuery('select.select-month').val(this.currentStatSelectedMonth);
       jQuery('select.select-year').val(this.currentStatSelectedYear);
-      console.log("jQuery('select.select-year').val",jQuery('select.select-year').val(),this.currentStatSelectedYear,this.currentStatSelectedMonth);
+
+      this.computeStats();
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
@@ -322,6 +322,20 @@ export class Gas  implements AfterViewInit,OnDestroy{
                 that.initSelect();
             }
       });
+    }
+
+    getPlcStats(year,month){
+      console.log('get plc stats----', year,month);
+      this.request.get('/plc/stats/'+year+'/'+month+'.json').subscribe(resp => {
+        console.log("plc stats-----",resp);
+        if(resp&&resp.pl&&resp.pl.plc){
+            this.statsData = resp.pl.plc;
+        }
+      });
+    }
+
+    computeStats(){
+        this.getPlcStats(this.currentStatSelectedYear,this.currentStatSelectedMonth);
     }
 
 
@@ -342,7 +356,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
         // alert('by month');
         console.log("by month");
         this.isShowByDay = false;
-        // this.currentTable = this.tableByMonth;
         this.currentSelect = this.years;
         this.initSelect();
     }
