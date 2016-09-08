@@ -351,10 +351,10 @@ export class Gas  implements AfterViewInit,OnDestroy{
         this.currentStatSelectedMonth = d.getMonth()+1;
         jQuery('.select-year').val(this.currentStatSelectedYear);
         jQuery('.select-month').val(this.currentStatSelectedMonth);
-        
+
        // re-initialize material-select
         this.setDaysOfMonth(null,null);
-        // this.computeStats();
+        this.computeStats();
         this.initSelect();
     }
 
@@ -370,7 +370,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
        // re-initialize material-select
         this.currentSelect = this.years;
-        // this.computeStats();
+        this.computeStats();
         this.initSelect();
     }
 

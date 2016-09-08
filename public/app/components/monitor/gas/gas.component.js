@@ -303,7 +303,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     jQuery('.select-month').val(this.currentStatSelectedMonth);
                     // re-initialize material-select
                     this.setDaysOfMonth(null, null);
-                    // this.computeStats();
+                    this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.showByMonth = function () {
@@ -316,7 +316,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     jQuery('.select-year').val(this.currentStatSelectedYear);
                     // re-initialize material-select
                     this.currentSelect = this.years;
-                    // this.computeStats();
+                    this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.initGrapth = function () {
