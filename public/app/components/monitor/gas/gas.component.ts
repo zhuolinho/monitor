@@ -363,7 +363,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         this.isShowByDay = false;
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth =  null;
+        this.currentStatSelectedMonth =  0;
         this.currentSelect = this.years;
         this.computeStats();
         this.initSelect();
