@@ -278,6 +278,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 };
                 Gas.prototype.getPlcStats = function (year, month) {
                     var _this = this;
+                    this.statsData = [];
                     console.log('get plc stats----', year, month);
                     this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(function (resp) {
                         console.log("plc stats-----", resp);

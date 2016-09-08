@@ -325,6 +325,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
     getPlcStats(year,month){
+      this.statsData = [];
       console.log('get plc stats----', year,month);
       this.request.get('/plc/stats/'+year+'/'+month+'.json').subscribe(resp => {
         console.log("plc stats-----",resp);
