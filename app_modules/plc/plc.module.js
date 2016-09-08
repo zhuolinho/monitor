@@ -331,9 +331,9 @@ plc.getPlcStats = function(m){
                     count: {$sum: 1}
                 }
             }
-        ],function (err, plc) {
+        ]).sort({date:1}).exec(function (err, plc) {
 
-                console.log("got group plc",plc);
+                console.log("got group plc>>>>>>>---",plc);
             if (err){
               r.er = err;
               r.status = false;
@@ -386,7 +386,7 @@ plc.getPlcStats = function(m){
                     count: {$sum: 1}
                 }
             }
-        ],function (err, plc) {
+        ]).sort({date:1}).exec(function (err, plc) {
           // console.log("got group plc",plc);
             if (err){
               r.er = err;
@@ -396,7 +396,7 @@ plc.getPlcStats = function(m){
             else{
               var previousDate = lib.getMonthBefore(m.pl.year,1);
               iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
-                
+
                   // console.log("got previous plc",plc2);
                   if (err2){
                     r.er = err2;

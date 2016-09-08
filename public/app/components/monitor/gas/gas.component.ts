@@ -314,8 +314,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
       jQuery('select.select-month').val(this.currentStatSelectedMonth);
       jQuery('select.select-year').val(this.currentStatSelectedYear);
 
-      this.computeStats();
-
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
                 that.initGrapth();

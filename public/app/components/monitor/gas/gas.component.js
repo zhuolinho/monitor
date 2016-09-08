@@ -268,7 +268,6 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.currentStatSelectedMonth = d.getMonth() + 1;
                     jQuery('select.select-month').val(this.currentStatSelectedMonth);
                     jQuery('select.select-year').val(this.currentStatSelectedYear);
-                    this.computeStats();
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
                             that.initGrapth();
