@@ -347,7 +347,9 @@ export class Gas  implements AfterViewInit,OnDestroy{
         // this.currentTable = this.tableByday;
         // this.currentSelect = this.days;
         this.isShowByDay = true;
-        // this.currentSelect = this.months;
+        var d = new Date();
+        this.currentStatSelectedYear = d.getFullYear();
+        this.currentStatSelectedMonth = d.getMonth()+1;
         this.setDaysOfMonth(null,null);
         this.initSelect();
     }
@@ -355,7 +357,11 @@ export class Gas  implements AfterViewInit,OnDestroy{
     showByMonth(){
         // alert('by month');
         console.log("by month");
+
         this.isShowByDay = false;
+        var d = new Date();
+        this.currentStatSelectedYear = d.getFullYear();
+        this.currentStatSelectedMonth =  null;
         this.currentSelect = this.years;
         this.initSelect();
     }

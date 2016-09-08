@@ -316,7 +316,7 @@
                   </div>
               </div>
 
-              <div class="col s3 m3 ">
+              <div class="col s3 m3 " *ngIf="isShowByDay">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-month">
                       <option *ngFor="#item of months; #i = index;" [value]="item">
@@ -353,11 +353,11 @@
                   </div>
 
 
-                  <div class="table-row"  *ngFor="#d of days">
-                    <div class="table-cell"> L001 {{d}}</div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].dct}}</span></div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].iwc2}}</span> </div>
-                    <div class="table-cell">  <span *ngIf="realTimeData">{{realTimeData[0].pwc2}}</span> </div>
+                  <div class="table-row"  *ngFor="#data of statsData">
+                    <div class="table-cell"> L001 </div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].dct}}</span></div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].iwc2}}</span> </div>
+                    <div class="table-cell">  <span *ngIf="realTimeData">{{statsData[0].pwc2}}</span> </div>
                   </div>
                 </div>
 
@@ -373,8 +373,8 @@
                   </div>
 
 
-                  <div class="table-row" *ngFor="#m of months" >
-                    <div class="table-cell"> L001 {{m}}</div>
+                  <div class="table-row" *ngFor="#data of statsData" >
+                    <div class="table-cell"> L001 </div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].dct}}</span></div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].maxVal}}</span> </div>
                     <div class="table-cell">  <span *ngIf="realTimeData">{{statsData[0].maxVal}}</span> </div>

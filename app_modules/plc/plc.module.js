@@ -321,9 +321,6 @@ plc.getPlcStats = function(m){
     if(m && m.pl && m.pl.year){
       if(m && m.pl && m.pl.month){
 
-
-        // var time = new Date().getTime() - 30 * 24 * 60 * 60 * 1000;
-
         iPlc.aggregate([
             {
                 $match: {y:m.pl.year, m:m.pl.month},
@@ -332,7 +329,7 @@ plc.getPlcStats = function(m){
                 $group: {
                     _id:"$d",
                     maxVal:{ $max: "$psc2" },
-                    date:"$cd",
+                    date:{$max:"$cd"},
                     count: {$sum: 1}
                 }
             }
@@ -343,9 +340,20 @@ plc.getPlcStats = function(m){
               deferred.reject(r);
             }
             else{
-              r.pl.plc = plc;
-              r.status = true;
-              deferred.resolve(r);
+              var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
+              iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+                  if (err2){
+                    r.er = err2;
+                    r.status = false;
+                    deferred.reject(r);
+                  }
+                  else{
+                    plc.push(plc2[0]);//merge two arrays;
+                    r.pl.plc = plc;
+                    r.status = true;
+                    deferred.resolve(r);
+                  }
+              })
             }
         });
 
@@ -353,36 +361,42 @@ plc.getPlcStats = function(m){
       else{
 
 
-        // iPlc.group({
-        //   key:{m:1},
-        //   cond:{y:m.pl.year},
-        //   reduce: function ( curr, result ) { },
-        //   initial: {}
-        //   }).exec(function (err, plc) {
-        //       if (err){
-        //         r.er = err;
-        //         r.status = false;
-        //         deferred.reject(r);
-        //       }
-        //       else{
-        //         r.pl.plc = plc;
-        //         r.status = true;
-        //         deferred.resolve(r);
-        //       }
-        //   });
+        iPlc.aggregate([
+            {
+                $match: {y:m.pl.year},
+            },
+            {
+                $group: {
+                    _id:"$m",
+                    maxVal:{ $max: "$psc2" },
+                    date:{$max:"$cd"},
+                    count: {$sum: 1}
+                }
+            }
+        ],function (err, plc) {
+            if (err){
+              r.er = err;
+              r.status = false;
+              deferred.reject(r);
+            }
+            else{
+              var previousDate = lib.getMonthBefore(m.pl.year,1);
+              iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+                  if (err2){
+                    r.er = err2;
+                    r.status = false;
+                    deferred.reject(r);
+                  }
+                  else{
+                    plc.push(plc2[0]);//merge two arrays;
+                    r.pl.plc = plc;
+                    r.status = true;
+                    deferred.resolve(r);
+                  }
+              })
+            }
+        });
 
-          // iPlc.find({y:m.pl.year}).sort({m:-1}).exec(function (err, plc) {
-          //     if (err){
-          //       r.er = err;
-          //       r.status = false;
-          //       deferred.reject(r);
-          //     }
-          //     else{
-          //       r.pl.plc = plc;
-          //       r.status = true;
-          //       deferred.resolve(r);
-          //     }
-          // });
       }
     }
     else{

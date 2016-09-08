@@ -296,7 +296,9 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // this.currentTable = this.tableByday;
                     // this.currentSelect = this.days;
                     this.isShowByDay = true;
-                    // this.currentSelect = this.months;
+                    var d = new Date();
+                    this.currentStatSelectedYear = d.getFullYear();
+                    this.currentStatSelectedMonth = d.getMonth() + 1;
                     this.setDaysOfMonth(null, null);
                     this.initSelect();
                 };
@@ -304,6 +306,9 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // alert('by month');
                     console.log("by month");
                     this.isShowByDay = false;
+                    var d = new Date();
+                    this.currentStatSelectedYear = d.getFullYear();
+                    this.currentStatSelectedMonth = null;
                     this.currentSelect = this.years;
                     this.initSelect();
                 };
