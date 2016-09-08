@@ -351,6 +351,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         this.currentStatSelectedYear = d.getFullYear();
         this.currentStatSelectedMonth = d.getMonth()+1;
         this.setDaysOfMonth(null,null);
+        this.computeStats();
         this.initSelect();
     }
 
@@ -363,6 +364,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         this.currentStatSelectedYear = d.getFullYear();
         this.currentStatSelectedMonth =  null;
         this.currentSelect = this.years;
+        this.computeStats();
         this.initSelect();
     }
 

@@ -300,6 +300,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = d.getMonth() + 1;
                     this.setDaysOfMonth(null, null);
+                    this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.showByMonth = function () {
@@ -310,6 +311,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = null;
                     this.currentSelect = this.years;
+                    this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.initGrapth = function () {
