@@ -311,13 +311,13 @@ plc.getLatestData =  function(m) {
 plc.getPlcStats = function(m){
 
 
-    console.log("plc module: getPlcStats FUNCTION");
+    console.log("plc module: getPlcStats FUNCTION",m.pl);
     var r = {pl: {}, status:false , er:''};
     var deferred = q.defer();
     var computedValues = [];
 
     if(m && m.pl && m.pl.year){
-      if(m && m.pl && m.pl.month){
+      if(m && m.pl && m.pl.month && m.pl.month != '0'){
 
         iPlc.aggregate([
             {
@@ -374,7 +374,6 @@ plc.getPlcStats = function(m){
       }
       else{
 
-
         iPlc.aggregate([
             {
                 $match: {y:m.pl.year},
@@ -388,7 +387,7 @@ plc.getPlcStats = function(m){
                 }
             }
         ],function (err, plc) {
-          console.log("got group plc",plc);
+          // console.log("got group plc",plc);
             if (err){
               r.er = err;
               r.status = false;
@@ -397,8 +396,8 @@ plc.getPlcStats = function(m){
             else{
               var previousDate = lib.getMonthBefore(m.pl.year,1);
               iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
-//
-                  console.log("got previous plc",plc2);
+                
+                  // console.log("got previous plc",plc2);
                   if (err2){
                     r.er = err2;
                     r.status = false;
