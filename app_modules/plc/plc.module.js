@@ -359,8 +359,11 @@ plc.getPlcStats = function(m){
                         plc[0].usage  =  plc[0].maxVal;
                     }
 
+                      plc[0].date = plc[0].date.slice(0,10);
+
                     for (var i = 1; i < plc.length; i++) {
                       plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                      plc[i].date = plc[i].date.slice(0,10);
                     }
                     r.pl.plc = plc;
                     r.status = true;
@@ -411,8 +414,11 @@ plc.getPlcStats = function(m){
                         plc[0].usage  =  plc[0].maxVal;
                     }
 
+                    plc[0].date = plc[0].date.slice(0,7);
+
                     for (var i = 1; i < plc.length; i++) {
                       plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                      plc[i].date = plc[i].date.slice(0,7);
                     }
                     r.pl.plc = plc;
                     r.status = true;
