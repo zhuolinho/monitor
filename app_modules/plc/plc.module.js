@@ -334,6 +334,8 @@ plc.getPlcStats = function(m){
                 }
             }
         ],function (err, plc) {
+
+                console.log("got group plc",plc);
             if (err){
               r.er = err;
               r.status = false;
@@ -342,13 +344,24 @@ plc.getPlcStats = function(m){
             else{
               var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
               iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                      console.log("got previous plc",plc2);
                   if (err2){
                     r.er = err2;
                     r.status = false;
                     deferred.reject(r);
                   }
                   else{
-                    plc.push(plc2[0]);//merge two arrays;
+                    if(plc2.length){
+                        plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                    }
+                    else{
+                        plc[0].usage  =  plc[0].maxVal;
+                    }
+
+                    for (var i = 1; i < plc.length; i++) {
+                      plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                    }
                     r.pl.plc = plc;
                     r.status = true;
                     deferred.resolve(r);
@@ -374,6 +387,7 @@ plc.getPlcStats = function(m){
                 }
             }
         ],function (err, plc) {
+          console.log("got group plc",plc);
             if (err){
               r.er = err;
               r.status = false;
@@ -382,13 +396,24 @@ plc.getPlcStats = function(m){
             else{
               var previousDate = lib.getMonthBefore(m.pl.year,1);
               iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+//
+                  console.log("got previous plc",plc2);
                   if (err2){
                     r.er = err2;
                     r.status = false;
                     deferred.reject(r);
                   }
                   else{
-                    plc.push(plc2[0]);//merge two arrays;
+                    if(plc2.length){
+                        plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                    }
+                    else{
+                        plc[0].usage  =  plc[0].maxVal;
+                    }
+
+                    for (var i = 1; i < plc.length; i++) {
+                      plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                    }
                     r.pl.plc = plc;
                     r.status = true;
                     deferred.resolve(r);
@@ -405,18 +430,6 @@ plc.getPlcStats = function(m){
         deferred.reject(r);
     }
 
-    // iPlc.find().sort({cd:-1}).exec(function (err, plc) {
-    //     if (err){
-    //       r.er = err;
-    //       r.status = false;
-    //       deferred.reject(r);
-    //     }
-    //     else{
-    //       r.pl.plc = plc;
-    //       r.status = true;
-    //       deferred.resolve(r);
-    //     }
-    // })
 
     return deferred.promise;
 

@@ -353,11 +353,11 @@
                   </div>
 
 
-                  <div class="table-row"  *ngFor="#data of statsData">
+                  <div class="table-row"  *ngFor="#data of statsData; #i=index;">
                     <div class="table-cell"> L001 </div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].dct}}</span></div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{statsData[0].iwc2}}</span> </div>
-                    <div class="table-cell">  <span *ngIf="realTimeData">{{statsData[0].pwc2}}</span> </div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
+                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+                    <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
                   </div>
                 </div>
 
