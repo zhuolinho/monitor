@@ -299,8 +299,11 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = d.getMonth() + 1;
+                    jQuery('.select-year').val(this.currentStatSelectedYear);
+                    jQuery('.select-month').val(this.currentStatSelectedMonth);
+                    // re-initialize material-select
                     this.setDaysOfMonth(null, null);
-                    this.computeStats();
+                    // this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.showByMonth = function () {
@@ -310,8 +313,10 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = 0;
+                    jQuery('.select-year').val(this.currentStatSelectedYear);
+                    // re-initialize material-select
                     this.currentSelect = this.years;
-                    this.computeStats();
+                    // this.computeStats();
                     this.initSelect();
                 };
                 Gas.prototype.initGrapth = function () {
