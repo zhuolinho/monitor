@@ -125,12 +125,12 @@ export class Gas  implements AfterViewInit,OnDestroy{
       // realTimeData
       this.date = lib.dateTime();
       this.setYears(null);
-      // this.request.get('/plc/latest.json').subscribe(resp => {
-      //   console.log("latest plc-----",resp);
-      //   if(resp&&resp.pl&&resp.pl.plc){
-      //       this.realTimeData = resp.pl.plc;
-      //   }
-      // });
+      this.request.get('/plc/latest.json').subscribe(resp => {
+        console.log("latest plc-----",resp);
+        if(resp&&resp.pl&&resp.pl.plc){
+            this.realTimeData = resp.pl.plc;
+        }
+      });
     }
     ngAfterViewInit(){
       this.iniSocket();

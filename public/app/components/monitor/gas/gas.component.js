@@ -29,6 +29,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
         execute: function() {
             Gas = (function () {
                 function Gas(request, lib) {
+                    var _this = this;
                     this.request = request;
                     this.lib = lib;
                     this.tableByday = [{ code: 'C002', date: '1月1号', if: 0.0000, af: 0.0000, mf: 0.0000 },
@@ -115,12 +116,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // realTimeData
                     this.date = lib.dateTime();
                     this.setYears(null);
-                    // this.request.get('/plc/latest.json').subscribe(resp => {
-                    //   console.log("latest plc-----",resp);
-                    //   if(resp&&resp.pl&&resp.pl.plc){
-                    //       this.realTimeData = resp.pl.plc;
-                    //   }
-                    // });
+                    this.request.get('/plc/latest.json').subscribe(function (resp) {
+                        console.log("latest plc-----", resp);
+                        if (resp && resp.pl && resp.pl.plc) {
+                            _this.realTimeData = resp.pl.plc;
+                        }
+                    });
                 }
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
