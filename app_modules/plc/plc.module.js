@@ -340,34 +340,42 @@ plc.getPlcStats = function(m){
               deferred.reject(r);
             }
             else{
-              var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
-              iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+              if(plc && plc.length){
 
-                      console.log("got previous plc",plc2);
-                  if (err2){
-                    r.er = err2;
-                    r.status = false;
-                    deferred.reject(r);
-                  }
-                  else{
-                    if(plc2.length){
-                        plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
+                iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                        console.log("got previous plc",plc2);
+                    if (err2){
+                      r.er = err2;
+                      r.status = false;
+                      deferred.reject(r);
                     }
                     else{
-                        plc[0].usage  =  plc[0].maxVal;
-                    }
+                      if(plc2.length){
+                          plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                      }
+                      else{
+                          plc[0].usage  =  plc[0].maxVal;
+                      }
 
-                      plc[0].date = plc[0].date.slice(0,10);
+                        plc[0].date = plc[0].date.slice(0,10);
 
-                    for (var i = 1; i < plc.length; i++) {
-                      plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
-                      plc[i].date = plc[i].date.slice(0,10);
+                      for (var i = 1; i < plc.length; i++) {
+                        plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                        plc[i].date = plc[i].date.slice(0,10);
+                      }
+                      r.pl.plc = plc;
+                      r.status = true;
+                      deferred.resolve(r);
                     }
-                    r.pl.plc = plc;
-                    r.status = true;
-                    deferred.resolve(r);
-                  }
-              })
+                })
+
+              }else{
+                r.pl.plc = [];
+                r.status = false;
+                deferred.resolve(r);
+              }
             }
         });
 
@@ -394,34 +402,42 @@ plc.getPlcStats = function(m){
               deferred.reject(r);
             }
             else{
-              var previousDate = lib.getMonthBefore(m.pl.year,1);
-              iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
 
-                  // console.log("got previous plc",plc2);
-                  if (err2){
-                    r.er = err2;
-                    r.status = false;
-                    deferred.reject(r);
-                  }
-                  else{
-                    if(plc2.length){
-                        plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+              if(plc && plc.length){
+                var previousDate = lib.getMonthBefore(m.pl.year,1);
+                iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                    // console.log("got previous plc",plc2);
+                    if (err2){
+                      r.er = err2;
+                      r.status = false;
+                      deferred.reject(r);
                     }
                     else{
-                        plc[0].usage  =  plc[0].maxVal;
-                    }
+                      if(plc2.length){
+                          plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                      }
+                      else{
+                          plc[0].usage  =  plc[0].maxVal;
+                      }
 
-                    plc[0].date = plc[0].date.slice(0,7);
+                      plc[0].date = plc[0].date.slice(0,7);
 
-                    for (var i = 1; i < plc.length; i++) {
-                      plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
-                      plc[i].date = plc[i].date.slice(0,7);
+                      for (var i = 1; i < plc.length; i++) {
+                        plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                        plc[i].date = plc[i].date.slice(0,7);
+                      }
+                      r.pl.plc = plc;
+                      r.status = true;
+                      deferred.resolve(r);
                     }
-                    r.pl.plc = plc;
-                    r.status = true;
-                    deferred.resolve(r);
-                  }
-              })
+                })
+              }else {
+                r.pl.plc = [];
+                r.status = false;
+                deferred.resolve(r);
+              }
+
             }
         });
 
