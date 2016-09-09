@@ -29,7 +29,6 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
         execute: function() {
             Gas = (function () {
                 function Gas(request, lib) {
-                    var _this = this;
                     this.request = request;
                     this.lib = lib;
                     this.tableByday = [{ code: 'C002', date: '1月1号', if: 0.0000, af: 0.0000, mf: 0.0000 },
@@ -116,17 +115,16 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     // realTimeData
                     this.date = lib.dateTime();
                     this.setYears(null);
-                    this.request.get('/plc/latest.json').subscribe(function (resp) {
-                        console.log("latest plc-----", resp);
-                        if (resp && resp.pl && resp.pl.plc) {
-                            _this.realTimeData = resp.pl.plc;
-                        }
-                    });
+                    // this.request.get('/plc/latest.json').subscribe(resp => {
+                    //   console.log("latest plc-----",resp);
+                    //   if(resp&&resp.pl&&resp.pl.plc){
+                    //       this.realTimeData = resp.pl.plc;
+                    //   }
+                    // });
                 }
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
                     this.initSelect();
-                    // this.showByDay();
                     this.updateTime();
                     // this.checkInterruption();
                 };
@@ -172,12 +170,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var that = this;
                     setTimeout(function (_) {
                         jQuery('select').material_select();
-                    });
-                    jQuery('select.select-year').change(function (e) {
-                        that.statYearSelected(e);
-                    });
-                    jQuery('select.select-month').change(function (e) {
-                        that.statMothSelected(e);
+                        jQuery('select.select-year').change(function (e) {
+                            that.statYearSelected(e);
+                        });
+                        jQuery('select.select-month').change(function (e) {
+                            that.statMothSelected(e);
+                        });
                     });
                 };
                 Gas.prototype.statYearSelected = function (event) {
@@ -266,12 +264,12 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = d.getMonth() + 1;
-                    jQuery('select.select-month').val(this.currentStatSelectedMonth);
-                    jQuery('select.select-year').val(this.currentStatSelectedYear);
+                    // jQuery('select.select-month').val(this.currentStatSelectedMonth);
+                    // jQuery('select.select-year').val(this.currentStatSelectedYear);
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
                             that.initGrapth();
-                            that.initSelect();
+                            // that.initSelect();
                         }
                     });
                 };
@@ -291,6 +289,7 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                 };
                 // code for detail modal
                 Gas.prototype.showByDay = function () {
+                    var _this = this;
                     // alert('by day');
                     console.log("by day");
                     // this.currentTable = this.tableByday;
@@ -299,25 +298,30 @@ System.register(['angular2/core', '../../../services/lib.service', '../../../con
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = d.getMonth() + 1;
-                    jQuery('.select-year').val(this.currentStatSelectedYear);
-                    jQuery('.select-month').val(this.currentStatSelectedMonth);
                     // re-initialize material-select
                     this.setDaysOfMonth(null, null);
                     this.computeStats();
-                    this.initSelect();
+                    setTimeout(function (_) {
+                        jQuery('.select-year').val(_this.currentStatSelectedYear);
+                        jQuery('.select-month').val(_this.currentStatSelectedMonth);
+                        _this.initSelect();
+                    });
                 };
                 Gas.prototype.showByMonth = function () {
+                    var _this = this;
                     // alert('by month');
                     console.log("by month");
                     this.isShowByDay = false;
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
                     this.currentStatSelectedMonth = 0;
-                    jQuery('.select-year').val(this.currentStatSelectedYear);
                     // re-initialize material-select
                     this.currentSelect = this.years;
                     this.computeStats();
-                    this.initSelect();
+                    setTimeout(function (_) {
+                        jQuery('.select-year').val(_this.currentStatSelectedYear);
+                        _this.initSelect();
+                    });
                 };
                 Gas.prototype.initGrapth = function () {
                     var that = this;

@@ -125,17 +125,16 @@ export class Gas  implements AfterViewInit,OnDestroy{
       // realTimeData
       this.date = lib.dateTime();
       this.setYears(null);
-      this.request.get('/plc/latest.json').subscribe(resp => {
-        console.log("latest plc-----",resp);
-        if(resp&&resp.pl&&resp.pl.plc){
-            this.realTimeData = resp.pl.plc;
-        }
-      });
+      // this.request.get('/plc/latest.json').subscribe(resp => {
+      //   console.log("latest plc-----",resp);
+      //   if(resp&&resp.pl&&resp.pl.plc){
+      //       this.realTimeData = resp.pl.plc;
+      //   }
+      // });
     }
     ngAfterViewInit(){
       this.iniSocket();
       this.initSelect();
-      // this.showByDay();
       this.updateTime();
       // this.checkInterruption();
     }
@@ -175,7 +174,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
        },1000);
     }
 
-
     // checkInterruption(){
     //     this.checkInterruptionTimer = setInterval(_=>{
     //       var currentTime  = Date.now();
@@ -190,17 +188,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
       var that = this;
       setTimeout(_=>{
            jQuery('select').material_select();
+           jQuery('select.select-year').change(function(e){
+                     that.statYearSelected(e);
+           });
+
+           jQuery('select.select-month').change(function(e){
+               that.statMothSelected(e);
+           });
       });
-
-      jQuery('select.select-year').change(function(e){
-                that.statYearSelected(e);
-      });
-
-      jQuery('select.select-month').change(function(e){
-          that.statMothSelected(e);
-
-      });
-
     }
 
     statYearSelected(event){
@@ -311,13 +306,13 @@ export class Gas  implements AfterViewInit,OnDestroy{
       var d = new Date();
       this.currentStatSelectedYear = d.getFullYear();
       this.currentStatSelectedMonth = d.getMonth()+1;
-      jQuery('select.select-month').val(this.currentStatSelectedMonth);
-      jQuery('select.select-year').val(this.currentStatSelectedYear);
+      // jQuery('select.select-month').val(this.currentStatSelectedMonth);
+      // jQuery('select.select-year').val(this.currentStatSelectedYear);
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
                 that.initGrapth();
-                that.initSelect();
+                // that.initSelect();
             }
       });
     }
@@ -338,8 +333,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
 
-
-// code for detail modal
+    // code for detail modal
     showByDay(){
         // alert('by day');
         console.log("by day");
@@ -349,13 +343,17 @@ export class Gas  implements AfterViewInit,OnDestroy{
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
         this.currentStatSelectedMonth = d.getMonth()+1;
-        jQuery('.select-year').val(this.currentStatSelectedYear);
-        jQuery('.select-month').val(this.currentStatSelectedMonth);
+
 
        // re-initialize material-select
         this.setDaysOfMonth(null,null);
         this.computeStats();
-        this.initSelect();
+        setTimeout(_=>{
+          jQuery('.select-year').val(this.currentStatSelectedYear);
+          jQuery('.select-month').val(this.currentStatSelectedMonth);
+          this.initSelect();
+        });
+
     }
 
     showByMonth(){
@@ -366,12 +364,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
         this.currentStatSelectedMonth =  0;
-        jQuery('.select-year').val(this.currentStatSelectedYear);
 
        // re-initialize material-select
         this.currentSelect = this.years;
         this.computeStats();
-        this.initSelect();
+        setTimeout(_=>{
+          jQuery('.select-year').val(this.currentStatSelectedYear);
+          this.initSelect();
+        });
     }
 
     initGrapth(){
