@@ -305,41 +305,44 @@ var _tcpSerever = function(handler){
       console.log("got plc data-----");
       goodConnection = true;
       lastDataTime = Date.now();
-      var patern1 = data.slice(0,6);
-      var patern2 = data.slice(-4);
-      var strPatern1 = patern1.toString('hex');
-      var strPatern2 = patern2.toString('hex');
+      // var patern1 = data.slice(0,6);
+      // var patern2 = data.slice(-4);
+      // var strPatern1 = patern1.toString('hex');
+      // var strPatern2 = patern2.toString('hex');
 
       // size += data.length;
 
       // console.log('plc data size and buffer size----',size, socket.bufferSize);
-      console.log("plcConf----",plcConf);
-      console.log("patern1---patern2---",patern1,patern2);
-      console.log("strPatern1---strPatern2---",strPatern1,strPatern2);
+      // console.log("plcConf----",plcConf);
+      // console.log("patern1---patern2---",patern1,patern2);
+      // console.log("strPatern1---strPatern2---",strPatern1,strPatern2);
 
 
 
-      if(strPatern1 === plcConf.start && strPatern2 === plcConf.end){ //check if both begin and end
+      if(lib.isPlcBegin(data) && lib.isPlcEnd(data)){ //check if both begin and end
 
-            console.log('got both ends of  plc data----',data);
+            console.log('got both ends of  plc data----',plcConf.start,plcConf.end);
           gotInOnePiece = true;
       }
-      else  if(!gotStart && strPatern1===plcConf.start){  ///check begin
+      else  if(!gotStart && lib.isPlcBegin(data)){  ///check begin
             gotStart = true;
             console.log('got begin plc data----',plcConf.start);
             var temp1 = data.slice(6);
-            size += temp.length;
+            size += temp1.length;
             chunks.push(temp1);
           }
 
-      else   if(strPatern1!==plcConf.start && strPatern2 !== plcConf.end){//check middle
+      else   if(gotStart && !lib.isPlcBegin(data) && !lib.isPlcEnd(data)){//check middle
             console.log('got middle plc data----',data);
             var temp2 = data;
             size += temp2.length;
             chunks.push(temp2);
         }
 
-      if(strPatern2 === plcConf.end){ //check end
+      if(lib.isPlcEnd(data)){ //check end
+
+
+          console.log('got end plc data----',plcConf.start);
 
           var temp3 = null;
 

@@ -108,7 +108,7 @@ gps.getCompletedShipments =  function(m) {
 
 gps.getAllCars =  function(m) {
 
-  var r = {pl: null, status:false , er:''};
+  var r = {pl: null, status:false , ec:'',em:''};
    var deferred = q.defer();
 
    gpsModel.aggregate(
@@ -128,7 +128,9 @@ gps.getAllCars =  function(m) {
            ]
         ).exec(function(err,resp){
             if (err){
-              r.er = JSON.stringify(err);
+              console.log("err-----gps mod-----",err);
+              r.ec = JSON.stringify(err.ec);
+              r.em = JSON.stringify(err.em);
               deferred.reject(r);
             }
             else{

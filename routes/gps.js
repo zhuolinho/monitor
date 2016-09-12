@@ -194,6 +194,7 @@ var _tcpCLient = function(handler){
 
             client.on('data', function (data) {
                 var stream = data.toString('utf8');
+                console.log("got gps string------");
                 if(stream.length > 20){
                     processIncommingData(handler,stream);
                 }
