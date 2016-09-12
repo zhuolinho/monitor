@@ -2,7 +2,6 @@
 var helpers = require('../utilities/helpers');
 var bufferConcat = require('buffer-concat');
 var lib = require('../lib/lib');
-var plcConf = require('../configs/plc');
 var express = require('express');
 var net = require('net');
 var plcApp = require('express')();
@@ -10,8 +9,6 @@ var server = require('http').Server(plcApp);
 var io = require('socket.io')(server);
 var client = new net.Socket();
 var router = express.Router();
-var gotStart = false;
-var gotInOnePiece = false;
 var goodConnection = true;
 var lastDataTime = 0;
 var chunks = [];
@@ -305,71 +302,24 @@ var _tcpSerever = function(handler){
       console.log("got plc data-----");
       goodConnection = true;
       lastDataTime = Date.now();
-      var patern1 = data.slice(0,6);
-      var patern2 = data.slice(-4);
-      var strPatern1 = patern1.toString('hex');
-      var strPatern2 = patern2.toString('hex');
-
-      // size += data.length;
-
-      // console.log('plc data size and buffer size----',size, socket.bufferSize);
-      console.log("plcConf----",plcConf);
-      console.log("patern1---patern2---",patern1,patern2);
-      console.log("strPatern1---strPatern2---",strPatern1,strPatern2);
-
-
-
-      if(strPatern1 === plcConf.start && strPatern2 === plcConf.end){ //check if both begin and end
-
-            console.log('got both ends of  plc data----',data);
-          gotInOnePiece = true;
-      }
-      else  if(!gotStart && strPatern1===plcConf.start){  ///check begin
-            gotStart = true;
-            console.log('got begin plc data----',plcConf.start);
-            var temp1 = data.slice(6);
-            size += temp.length;
-            chunks.push(temp1);
-          }
-
-      else   if(strPatern1!==plcConf.start && strPatern2 !== plcConf.end){//check middle
-            console.log('got middle plc data----',data);
-            var temp2 = data;
-            size += temp2.length;
-            chunks.push(temp2);
+      size += data.length;
+      chunks.push(data);
+      console.log('plc data size and buffer size----',size, socket.bufferSize);
+      if((size-12)/76 >= 100){
+        console.log('got all plc data----');
+        socket.pause();
+        var validData = bufferConcat(chunks, size);
+        size = 0;
+        chunks = [];
+        if(!isSaving){
+          isSaving = true;
+          saveData(handler, validData);
+          var timer = setTimeout(function(){
+              socket.resume();
+              isSaving = false;
+              clearTimeout(timer);
+          },sTimer);
         }
-
-      if(strPatern2 === plcConf.end){ //check end
-
-          var temp3 = null;
-
-          if(gotInOnePiece){
-            temp3 = data.slice(6,-4);
-          }
-          else{
-            temp3 = data.slice(0,-4);
-          }
-
-          size += temp3.length;
-          chunks.push(temp3);
-
-          socket.pause();
-          var validData = bufferConcat(chunks, size);
-
-
-          if(!isSaving){
-            isSaving = true;
-            saveData(handler, validData);
-            var timer = setTimeout(function(){
-                socket.resume();
-                gotStart = false;
-                chunks = [];
-                gotInOnePiece = false;
-                size = 0;
-                isSaving = false;
-                clearTimeout(timer);
-            },sTimer);
-          }
       }
     });
 
