@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './details/home.alerts.detail.component', './return_details/home.return.alerts.detail.component', '../../../services/request.service', '../../../services/user.service', 'angular2/common', '../../../services/lib.service'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../../config', '../../../services/request.service', '../../../services/user.service', 'angular2/common', '../../../services/lib.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, home_alerts_detail_component_1, home_return_alerts_detail_component_1, request_service_1, user_service_1, common_1, lib_service_1;
+    var core_1, config_1, request_service_1, user_service_1, common_1, lib_service_1;
     var HomeAlerts;
     return {
         setters:[
@@ -19,12 +19,6 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (home_alerts_detail_component_1_1) {
-                home_alerts_detail_component_1 = home_alerts_detail_component_1_1;
-            },
-            function (home_return_alerts_detail_component_1_1) {
-                home_return_alerts_detail_component_1 = home_return_alerts_detail_component_1_1;
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
@@ -40,18 +34,30 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
             }],
         execute: function() {
             HomeAlerts = (function () {
-                function HomeAlerts(request, userSrvc, libSrvc) {
+                function HomeAlerts(request, userSrvc, lib) {
                     var _this = this;
                     this.request = request;
                     this.userSrvc = userSrvc;
-                    this.libSrvc = libSrvc;
+                    this.lib = lib;
                     this.currentSort = 'all';
                     this.alertsList = [];
                     this.hasData = true;
+                    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                    // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
+                    this.years = [];
+                    // days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
+                    //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
+                    //                   '25日','26日','27日','28日','29日','30日','31日'
+                    //                 ];
+                    this.days = [];
+                    this.detailmodal = {};
+                    this.currentStatSelectedYear = 2016;
+                    this.currentStatSelectedMonth = 1;
                     console.log("Home alerts is up and running");
                     var self = this;
                     this.user = this.userSrvc.getUser();
                     console.log("this.user----", this.user);
+                    this.setYears(null);
                     this.request.get('/plc/alerts/unprocessed.json').subscribe(function (res) {
                         if (res.pl && res.pl.alerts) {
                             _this.alertsList = res.pl.alerts;
@@ -81,7 +87,7 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                 HomeAlerts.prototype.veProcessed = function (alert) {
                     var _this = this;
                     var self = this;
-                    alert.pt = this.libSrvc.dateTime();
+                    alert.pt = this.lib.dateTime();
                     alert.status = 1;
                     alert.pa = this.user.an;
                     console.log("alert------", alert);
@@ -106,11 +112,6 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                         //  alert('getting models up');
                     });
                 };
-                HomeAlerts.prototype.initSelect = function () {
-                    setTimeout(function (_) {
-                        jQuery('select').material_select();
-                    });
-                };
                 HomeAlerts.prototype.iniSocket = function () {
                     var that = this;
                     var url = 'http://' + window.location.hostname + ':3003';
@@ -123,11 +124,116 @@ System.register(['angular2/core', '../../../config', './details/home.alerts.deta
                         }
                     });
                 };
+                HomeAlerts.prototype.initSelect = function () {
+                    var that = this;
+                    setTimeout(function (_) {
+                        jQuery('select').material_select();
+                        jQuery('select.select-year').change(function (e) {
+                            that.statYearSelected(e);
+                        });
+                        jQuery('select.select-month').change(function (e) {
+                            that.statMothSelected(e);
+                        });
+                    });
+                };
+                HomeAlerts.prototype.setYears = function (startYear) {
+                    var sY = startYear || 2009;
+                    var y = 2016;
+                    while (y >= sY) {
+                        this.years.push(y--);
+                    }
+                };
+                HomeAlerts.prototype.setDaysOfMonth = function (year, month) {
+                    this.days = [];
+                    var y = year || new Date().getFullYear();
+                    var m = month || new Date().getMonth() + 1;
+                    var numDays = this.lib.daysInMonth(y, m);
+                    for (var i = 0; i < numDays; i++) {
+                        this.days.push(i + 1);
+                    }
+                    console.log("this.days----", this.days);
+                };
+                HomeAlerts.prototype.statYearSelected = function (event) {
+                    console.log('year changed1----', event.target.value);
+                    this.currentStatSelectedYear = event.target.value;
+                };
+                HomeAlerts.prototype.statMothSelected = function (event) {
+                    console.log('month changed1----', event.target.value);
+                    this.currentStatSelectedMonth = event.target.value;
+                    this.setDaysOfMonth(this.currentStatSelectedYear, this.currentStatSelectedMonth);
+                };
+                HomeAlerts.prototype.showDetailModal = function (alert) {
+                    console.log("selected alert----", alert);
+                    this.detailmodal.selectedtab = 1;
+                    var that = this;
+                    var d = new Date();
+                    this.currentStatSelectedYear = d.getFullYear();
+                    this.currentStatSelectedMonth = d.getMonth() + 1;
+                    // jQuery('select.select-month').val(this.currentStatSelectedMonth);
+                    // jQuery('select.select-year').val(this.currentStatSelectedYear);
+                    jQuery("#alertDetailsModal").openModal({
+                        ready: function () {
+                            that.initGrapth();
+                            that.initSelect();
+                        }
+                    });
+                };
+                HomeAlerts.prototype.getPlcStats = function (year, month) {
+                    var _this = this;
+                    this.statsData = [];
+                    console.log('get plc stats----', year, month);
+                    this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(function (resp) {
+                        console.log("plc stats-----", resp);
+                        if (resp && resp.pl && resp.pl.plc) {
+                            _this.statsData = resp.pl.plc;
+                        }
+                    });
+                };
+                HomeAlerts.prototype.computeStats = function () {
+                    this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
+                };
+                // code for detail modal
+                HomeAlerts.prototype.showByDay = function () {
+                    var _this = this;
+                    // alert('by day');
+                    console.log("by day");
+                    this.isShowByDay = true;
+                    var d = new Date();
+                    this.currentStatSelectedYear = d.getFullYear();
+                    this.currentStatSelectedMonth = d.getMonth() + 1;
+                    // re-initialize material-select
+                    this.setDaysOfMonth(null, null);
+                    this.computeStats();
+                    setTimeout(function (_) {
+                        jQuery('.select-year').val(_this.currentStatSelectedYear);
+                        jQuery('.select-month').val(_this.currentStatSelectedMonth);
+                        _this.initSelect();
+                    });
+                };
+                HomeAlerts.prototype.showByMonth = function () {
+                    var _this = this;
+                    // alert('by month');
+                    console.log("by month");
+                    this.isShowByDay = false;
+                    var d = new Date();
+                    this.currentStatSelectedYear = d.getFullYear();
+                    this.currentStatSelectedMonth = 0;
+                    // re-initialize material-select
+                    this.currentSelect = this.years;
+                    this.computeStats();
+                    setTimeout(function (_) {
+                        jQuery('.select-year').val(_this.currentStatSelectedYear);
+                        _this.initSelect();
+                    });
+                };
+                HomeAlerts.prototype.initGrapth = function () {
+                    var that = this;
+                };
                 HomeAlerts = __decorate([
                     core_1.Component({
                         selector: 'home-alerts',
                         templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
-                        directives: [home_alerts_detail_component_1.HomeAlertsDetail, home_return_alerts_detail_component_1.HomeReturnAlertsDetail, common_1.CORE_DIRECTIVES]
+                        directives: [common_1.CORE_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService, lib_service_1.LibService])
                 ], HomeAlerts);

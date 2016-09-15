@@ -19,44 +19,44 @@ declare var d3:any;
 export class Gas  implements AfterViewInit,OnDestroy{
 
 
-  tableByday:any[] = [{code:'C002',date:'1月1号', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
-                      {code:'C002',date:'1月2号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月3号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月4号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月5号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月6号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月7号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月8号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月9号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月10号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月11号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月12号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月13号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月14号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月15号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月16号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月17号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月18号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月19号', if:0.0000, af:0.0000, mf:0.0000},
-                      {code:'C002',date:'1月20号', if:0.0000, af:0.0000, mf:0.0000}
-    ];
-
-
-
-    tableByMonth:any[] = [
-                        {code:'C002',date:'1月份', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
-                        {code:'C002',date:'2月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'3月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'4月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'5月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'6月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'7月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'8月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'9月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'10月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'11月份', if:0.0000, af:0.0000, mf:0.0000},
-                        {code:'C002',date:'12月份', if:0.0000, af:0.0000, mf:0.0000}
-      ];
+  // tableByday:any[] = [{code:'C002',date:'1月1号', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
+  //                     {code:'C002',date:'1月2号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月3号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月4号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月5号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月6号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月7号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月8号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月9号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月10号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月11号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月12号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月13号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月14号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月15号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月16号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月17号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月18号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月19号', if:0.0000, af:0.0000, mf:0.0000},
+  //                     {code:'C002',date:'1月20号', if:0.0000, af:0.0000, mf:0.0000}
+  //   ];
+  //
+  //
+  //
+  //   tableByMonth:any[] = [
+  //                       {code:'C002',date:'1月份', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
+  //                       {code:'C002',date:'2月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'3月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'4月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'5月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'6月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'7月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'8月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'9月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'10月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'11月份', if:0.0000, af:0.0000, mf:0.0000},
+  //                       {code:'C002',date:'12月份', if:0.0000, af:0.0000, mf:0.0000}
+  //     ];
 
   months:number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
   // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
@@ -139,26 +139,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
       // this.checkInterruption();
     }
 
-    setYears(startYear){
-
-      var sY = startYear||2009;
-      var y = 2016;
-      while ( y >=sY) {
-          this.years.push(y--);
-      }
-    }
-
-    setDaysOfMonth(year,month){
-      this.days = [];
-      var y = year||new Date().getFullYear();
-      var m = month || new Date().getMonth() + 1;
-      var numDays = this.lib.daysInMonth(y,m);
-      for (let i = 0; i <numDays; i++) {
-          this.days.push(i+1);
-      }
-
-      console.log("this.days----",this.days);
-    }
 
     ngOnDestroy(){
       clearInterval(this.dateTimer);
@@ -182,33 +162,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
     //       }
     //     },100000);
     //   }
-
-    initSelect(){
-
-      var that = this;
-      setTimeout(_=>{
-           jQuery('select').material_select();
-           jQuery('select.select-year').change(function(e){
-                     that.statYearSelected(e);
-           });
-
-           jQuery('select.select-month').change(function(e){
-               that.statMothSelected(e);
-           });
-      });
-    }
-
-    statYearSelected(event){
-
-      console.log('year changed1----',event.target.value);
-          this.currentStatSelectedYear = event.target.value;
-    }
-
-    statMothSelected(event){
-          console.log('month changed1----',event.target.value);
-          this.currentStatSelectedMonth = event.target.value;
-          this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
-    }
 
 
     veReturnSelectedTanks(){
@@ -301,18 +254,64 @@ export class Gas  implements AfterViewInit,OnDestroy{
         });
      }
 
-    showDetailModal(mail){
+
+     initSelect(){
+
+       var that = this;
+       setTimeout(_=>{
+            jQuery('select').material_select();
+            jQuery('select.select-year').change(function(e){
+                      that.statYearSelected(e);
+            });
+
+            jQuery('select.select-month').change(function(e){
+                that.statMothSelected(e);
+            });
+       });
+     }
+
+     setYears(startYear){
+
+       var sY = startYear||2009;
+       var y = 2016;
+       while ( y >=sY) {
+           this.years.push(y--);
+       }
+     }
+
+     setDaysOfMonth(year,month){
+       this.days = [];
+       var y = year||new Date().getFullYear();
+       var m = month || new Date().getMonth() + 1;
+       var numDays = this.lib.daysInMonth(y,m);
+       for (let i = 0; i <numDays; i++) {
+           this.days.push(i+1);
+       }
+
+       console.log("this.days----",this.days);
+     }
+
+     statYearSelected(event){
+
+       console.log('year changed1----',event.target.value);
+           this.currentStatSelectedYear = event.target.value;
+     }
+
+     statMothSelected(event){
+           console.log('month changed1----',event.target.value);
+           this.currentStatSelectedMonth = event.target.value;
+           this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
+     }
+
+    showDetailModal(param){
       var that = this;
       var d = new Date();
       this.currentStatSelectedYear = d.getFullYear();
       this.currentStatSelectedMonth = d.getMonth()+1;
-      // jQuery('select.select-month').val(this.currentStatSelectedMonth);
-      // jQuery('select.select-year').val(this.currentStatSelectedYear);
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
                 that.initGrapth();
-                // that.initSelect();
             }
       });
     }
@@ -337,8 +336,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
     showByDay(){
         // alert('by day');
         console.log("by day");
-        // this.currentTable = this.tableByday;
-        // this.currentSelect = this.days;
         this.isShowByDay = true;
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
