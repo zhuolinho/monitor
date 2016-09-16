@@ -8,19 +8,23 @@ export class RequestService {
   private paramHeaders: any = new Headers({ 'Content-Type': 'application/json' });
   private paramOptions:any;
 
-  public constructor(httpService: Http) {
+  public constructor(private httpService: Http) {
     this.http = httpService;
+
     this.paramOptions = new RequestOptions({ headers: this.paramHeaders});
   }
 
   get(path) {
+    var user = this.getUser();
+    this.paramOptions.headers.append('user', JSON.stringify(user));
     return this.http.get(path, this.paramOptions).map((response: Response) => {
       return response.json();
     });
   }
 
   post(path, data) {
-    // console.log(' this.paramOptions', this.paramOptions);
+    var user = this.getUser();
+    this.paramOptions.headers.append('user', JSON.stringify(user));
     return this.http.post(path,  JSON.stringify(data), this.paramOptions).map((response: Response) => {
         var r: any = response.json();
         return r;
@@ -28,10 +32,16 @@ export class RequestService {
   }
 
   put(path, data) {
-    // console.log(' this.paramOptions', this.paramOptions);
+    var user = this.getUser();
+    this.paramOptions.headers.append('user', JSON.stringify(user));
     return this.http.put(path,  JSON.stringify(data), this.paramOptions).map((response: Response) => {
         var r: any = response.json();
         return r;
     });
   }
+
+  getUser(){
+      return JSON.parse(sessionStorage.getItem('user'));
+  }
+
 }

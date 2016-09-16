@@ -211,7 +211,7 @@ plc.handleIncommingData =  function(m) {
   // console.log("plc: handleIncommingData",m.pl);
   var deferred = q.defer();
 
-var incommingData = m.pl;
+var incommingData = m.pl.data;
 
   if(incommingData){
 
