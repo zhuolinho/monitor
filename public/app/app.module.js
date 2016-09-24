@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', '@angular/platform-browser', "./services/router.service", './components/main.component', './components/login/login.component', './components/admin/admin.component', '@angular/forms', './services/user.service', './services/request.service', './services/settings.service', './services/lib.service', './layout_components/header/header', './layout_components/navigator/navigator', './layout_components/footer/footer', './components/home/home.component', './components/monitor/monitor.component', './components/gps/gps.component', './components/settings/settings.component', './components/home/alerts/home.alerts.component', './components/home/alerts_processed/home.alerts.processed.component', './components/gps/map/shipment-map.component', './components/gps/processed/processed-shipment.component', './components/gps/shipment/shiment.component', './components/monitor/gas/gas.component', './components/monitor/camera/camera.component', './components/settings/sms/settings-sms.component', './components/settings/auth/settings-auth.component', './components/settings/access/settings-access.component', './components/settings/address/settings-address.component', './components/settings/formula/settings-formula.component', './components/settings/offline_users/settings-offline-users.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', '@angular/platform-browser', '@angular/common', "./services/router.service", './components/main.component', './components/login/login.component', './components/admin/admin.component', '@angular/forms', './services/user.service', './services/request.service', './services/settings.service', './services/lib.service', './layout_components/header/header', './layout_components/navigator/navigator', './layout_components/footer/footer', './components/home/home.component', './components/monitor/monitor.component', './components/gps/gps.component', './components/settings/settings.component', './components/home/alerts/home.alerts.component', './components/home/alerts_processed/home.alerts.processed.component', './components/gps/map/shipment-map.component', './components/gps/processed/processed-shipment.component', './components/gps/shipment/shiment.component', './components/monitor/gas/gas.component', './components/monitor/camera/camera.component', './components/settings/sms/settings-sms.component', './components/settings/auth/settings-auth.component', './components/settings/access/settings-access.component', './components/settings/address/settings-address.component', './components/settings/formula/settings-formula.component', './components/settings/offline_users/settings-offline-users.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', '@angular/platform-browser', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, platform_browser_1, router_service_1, main_component_1, login_component_1, admin_component_1, forms_1, user_service_1, request_service_1, settings_service_1, lib_service_1, header_1, navigator_1, footer_1, home_component_1, monitor_component_1, gps_component_1, settings_component_1, home_alerts_component_1, home_alerts_processed_component_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1, gas_component_1, camera_component_1, settings_sms_component_1, settings_auth_component_1, settings_access_component_1, settings_address_component_1, settings_formula_component_1, settings_offline_users_component_1;
+    var core_1, http_1, platform_browser_1, common_1, router_service_1, main_component_1, login_component_1, admin_component_1, forms_1, user_service_1, request_service_1, settings_service_1, lib_service_1, header_1, navigator_1, footer_1, home_component_1, monitor_component_1, gps_component_1, settings_component_1, home_alerts_component_1, home_alerts_processed_component_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1, gas_component_1, camera_component_1, settings_sms_component_1, settings_auth_component_1, settings_access_component_1, settings_address_component_1, settings_formula_component_1, settings_offline_users_component_1;
     var AppModule;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['@angular/core', '@angular/http', '@angular/platform-browser', 
             },
             function (platform_browser_1_1) {
                 platform_browser_1 = platform_browser_1_1;
+            },
+            function (common_1_1) {
+                common_1 = common_1_1;
             },
             function (router_service_1_1) {
                 router_service_1 = router_service_1_1;
@@ -149,6 +152,7 @@ System.register(['@angular/core', '@angular/http', '@angular/platform-browser', 
                             settings_offline_users_component_1.SettingsOfflineUsers
                         ],
                         providers: [
+                            { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy },
                             user_service_1.UserService,
                             request_service_1.RequestService,
                             settings_service_1.SettingsService,

@@ -67,9 +67,6 @@ module.exports = function (handler)
 
   router.get('/alerts/:which.json', function(req, res, next) {
 
-
-    console.log("req.Headers---",JSON.parse(req.headers.user));
-
         var param = {
           ns: 'plc',
           vs: '1.0',
@@ -94,7 +91,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
         ns: 'plc',
         vs: '1.0',
         op: 'getPlcStats',
-        pl:{year:req.params.year,month:req.params.month,user:JSON.parse(req.headers.user)}
+        pl:{year:req.params.year, month:req.params.month, user:JSON.parse(req.headers.user)}
       };
 
       handler(param)

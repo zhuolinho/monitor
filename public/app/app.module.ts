@@ -2,6 +2,8 @@ import { NgModule }      from '@angular/core';
 import { HttpModule }    from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 import {globalRouting} from "./services/router.service";
 import {MainComponent} from './components/main.component';
 import {LoginComponent} from './components/login/login.component';
@@ -85,6 +87,7 @@ import {SettingsOfflineUsers} from './components/settings/offline_users/settings
 
   ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     UserService,
     RequestService,
     SettingsService,
