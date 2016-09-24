@@ -159,7 +159,7 @@ handler(param)
 
 
 
-// restricted routes
+// restricted routes...not used?
 router.get('/admin.json', passport.authenticate('jwt', { session: false}), function(req, res) {
 
   var param = {

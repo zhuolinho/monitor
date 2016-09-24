@@ -28,6 +28,7 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'getData',
           pl:{
+            user:lib.reqUser(req)
           }
         };
 
@@ -49,6 +50,7 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'getAllCars',
           pl:{
+              user:lib.reqUser(req)
           }
         };
 
@@ -70,6 +72,7 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'gpsAlerts',
           pl:{
+              user:lib.reqUser(req)
           }
         };
 
@@ -89,7 +92,8 @@ module.exports = function (handler)
           ns: 'gps',
           vs: '1.0',
           op: 'newGpsAlert',
-          pl:req.body
+          pl:{
+            data:req.body, user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -110,7 +114,7 @@ module.exports = function (handler)
           ns: 'gps',
           vs: '1.0',
           op: 'getCompletedShipments',
-          pl:{}
+          pl:{  user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -130,7 +134,7 @@ module.exports = function (handler)
           ns: 'gps',
           vs: '1.0',
           op: 'newShipment',
-          pl:req.body
+          pl:{data:req.body,  user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -150,7 +154,7 @@ module.exports = function (handler)
           ns: 'gps',
           vs: '1.0',
           op: 'shipmentComplete',
-          pl:req.body
+          pl:{data:req.body, user:lib.reqUser(req)}
         };
 
         handler(param)

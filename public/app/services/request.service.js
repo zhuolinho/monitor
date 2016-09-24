@@ -25,20 +25,20 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map'], fun
             RequestService = (function () {
                 function RequestService(httpService) {
                     this.httpService = httpService;
-                    this.paramHeaders = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    this.paramHeaders = new http_1.Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
                     this.http = httpService;
                     this.paramOptions = new http_1.RequestOptions({ headers: this.paramHeaders });
                 }
                 RequestService.prototype.get = function (path) {
                     var user = this.getUser();
-                    this.paramOptions.headers.append('user', JSON.stringify(user));
+                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
                     return this.http.get(path, this.paramOptions).map(function (response) {
                         return response.json();
                     });
                 };
                 RequestService.prototype.post = function (path, data) {
                     var user = this.getUser();
-                    this.paramOptions.headers.append('user', JSON.stringify(user));
+                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
                     return this.http.post(path, JSON.stringify(data), this.paramOptions).map(function (response) {
                         var r = response.json();
                         return r;
@@ -46,7 +46,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map'], fun
                 };
                 RequestService.prototype.put = function (path, data) {
                     var user = this.getUser();
-                    this.paramOptions.headers.append('user', JSON.stringify(user));
+                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
                     return this.http.put(path, JSON.stringify(data), this.paramOptions).map(function (response) {
                         var r = response.json();
                         return r;

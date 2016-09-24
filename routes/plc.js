@@ -35,7 +35,7 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'getData',
           pl:{
-            user:JSON.parse(req.headers.user)
+            user:lib.reqUser(req)
           }
         };
 
@@ -53,7 +53,7 @@ module.exports = function (handler)
             ns: 'plc',
             vs: '1.0',
             op: 'getLatestData',
-            pl:{length:100, user:JSON.parse(req.headers.user)}
+            pl:{length:100, user:lib.reqUser(req)}
       }
 
         handler(param)
@@ -71,7 +71,7 @@ module.exports = function (handler)
           ns: 'plc',
           vs: '1.0',
           op: 'getPlcAlerts',
-          pl:{which:req.params.which,user:JSON.parse(req.headers.user)}
+          pl:{which:req.params.which,user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -91,7 +91,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
         ns: 'plc',
         vs: '1.0',
         op: 'getPlcStats',
-        pl:{year:req.params.year, month:req.params.month, user:JSON.parse(req.headers.user)}
+        pl:{year:req.params.year, month:req.params.month, user:lib.reqUser(req)}
       };
 
       handler(param)
@@ -110,8 +110,8 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           vs: '1.0',
           op: 'updatePlcAlert',
           pl:{
-            alert:req.body,
-            user:JSON.parse(req.headers.user)
+            data:req.body,
+            user:lib.reqUser(req)
           }
         };
 
@@ -134,7 +134,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           op: 'addNewAlert',
           pl:{
             alert:req.body,
-            user:JSON.parse(req.headers.user)
+            user:lib.reqUser(req)
           }
         };
 
@@ -156,7 +156,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'getShipmentList',
-          pl:{user:JSON.parse(req.headers.user)}
+          pl:{user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -175,7 +175,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'getAddress',
-          pl:{user:JSON.parse(req.headers.user)
+          pl:{user:lib.reqUser(req)
           }
         };
 
@@ -198,7 +198,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'addNewAddress',
-          pl:{address:req.body,user:JSON.parse(req.headers.user)}
+          pl:{address:req.body,user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -216,7 +216,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'updateAddress',
-          pl:{address:req.body,user:JSON.parse(req.headers.user)}
+          pl:{address:req.body,user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -234,7 +234,7 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'downloadData',
-          pl:{user:JSON.parse(req.headers.user)}
+          pl:{user:lib.reqUser(req)}
         };
 
         handler(param)
@@ -387,7 +387,7 @@ var _tcpSerever = function(handler){
 
 function saveData(handler,data){
 
-  var user = JSON.parse(req.headers.user);
+  var user = lib.reqUser(req);
   var param = {
         ns: 'plc',
         vs: '1.0',

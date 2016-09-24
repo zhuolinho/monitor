@@ -642,9 +642,9 @@ plc.updatePlcAlert =  function(m) {
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.alert && m.pl.alert._id){
+    if(m.pl && m.pl.data && m.pl.data._id){
 
-      PlcAlert.findOneAndUpdate({_id:m.pl.alert._id}, m.pl.alert, { new: true }, function(err, resp) {
+      PlcAlert.findOneAndUpdate({_id:m.pl.data._id}, m.pl.data, { new: true }, function(err, resp) {
                 if (err){
                   r.er = err;
                   r.em = 'problem finding alert';

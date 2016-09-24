@@ -204,54 +204,65 @@ gps.newShipment =  function(m) {
   var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  if(m && m.pl && m.pl.sim){
 
-          var sim = m.pl.sim;
-          var lp =  gpsConfig.simPlate[sim];
+  if(m && m.pl && m.pl.data){
 
-            // console.log("lp---",lp);
-
-          if(lp){
+        var data = m.pl.data;
+        if(data.sim){
 
 
-            var shipment = new Shiment({
-                                sim:sim,
-                                addr:m.pl.addr,
-                                s:m.pl.supercargo,
-                                driver:m.pl.driver,
-                                dist:m.pl.dist,
-                                lp:lp,
-                                dest:m.pl.dest,
-                                origin:m.pl.origin,
-                                oti:m.pl.oti,
-                                nti:m.pl.nti,
-                                ntt:m.pl.ntt,
-                                ed:m.pl.ed,
-                                pa:m.pl.pa,
-                                rs:m.pl.rs
-                            });
+              var sim = data.sim;
+              var lp =  gpsConfig.simPlate[sim];
+
+                // console.log("lp---",lp);
+
+              if(lp){
 
 
-            shipment.save(function (err, resp) {
-                if (err){
-                  r.er = err;
-                  deferred.reject(r);
-                }
-                else{
-                  r.pl = {shipment:resp};
-                  r.status = true;
-                  deferred.resolve(r);
-                }
-            })
-          }
-          else {
-            r.er =  "no matching license plate for provided sim";
-            r.status = false;
-            deferred.resolve(r);
-          }
+                var shipment = new Shiment({
+                                    sim:sim,
+                                    addr:data.addr,
+                                    s:data.supercargo,
+                                    driver:data.driver,
+                                    dist:data.dist,
+                                    lp:lp,
+                                    dest:data.dest,
+                                    origin:data.origin,
+                                    oti:data.oti,
+                                    nti:data.nti,
+                                    ntt:data.ntt,
+                                    ed:data.ed,
+                                    pa:data.pa,
+                                    rs:data.rs
+                                });
+
+
+                shipment.save(function (err, resp) {
+                    if (err){
+                      r.er = err;
+                      deferred.reject(r);
+                    }
+                    else{
+                      r.pl = {shipment:resp};
+                      r.status = true;
+                      deferred.resolve(r);
+                    }
+                })
+              }
+              else{
+                    r.er =  "no matching license plate for provided sim";
+                    r.status = false;
+                    deferred.resolve(r);
+              }
+        }
+        else{
+              r.er =  "sim card provided";
+              r.status = false;
+              deferred.resolve(r);
+        }
       }
     else {
-      r.er =  "no data or sim card provided";
+      r.er =  "no data";
       deferred.reject(r);
     }
   return deferred.promise;
@@ -264,49 +275,61 @@ gps.newGpsAlert =  function(m) {
   var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  if(m && m.pl && m.pl.sim){
-          var sim = m.pl.sim;
-          var lp =  gpsConfig.simPlate[sim];
+  if(m && m.pl && m.pl.data){
 
-            console.log("lp---",lp);
+              var data = m.pl.data;
+                if(data.sim){
 
-          if(lp){
+                            var sim = data.sim;
+                            var lp =  gpsConfig.simPlate[sim];
 
-            var gpsAlert = new gpsAlertModel({
-                                sim:sim,
-                                addr:m.pl.addr,
-                                lp:lp,
-                                atype:m.pl.atype,
-                                an:m.pl.an,
-                                speed:m.pl.speed,
-                                time:m.pl.time,
-                                lng:m.pl.lng,
-                                lat:m.pl.lat,
-                            });
+                              console.log("lp---",lp);
+
+                            if(lp){
+
+                              var gpsAlert = new gpsAlertModel({
+                                                  sim:sim,
+                                                  addr:data.addr,
+                                                  lp:lp,
+                                                  atype:data.atype,
+                                                  an:data.an,
+                                                  speed:data.speed,
+                                                  time:data.time,
+                                                  lng:data.lng,
+                                                  lat:data.lat,
+                                              });
 
 
-            gpsAlert.save(function (err, resp) {
-                if (err){
-                  r.er = err;
-                  deferred.reject(r);
+                              gpsAlert.save(function (err, resp) {
+                                  if (err){
+                                    r.er = err;
+                                    deferred.reject(r);
+                                  }
+                                  else{
+                                    r.pl = {shipment:resp};
+                                    r.status = true;
+                                    deferred.resolve(r);
+                                  }
+                              })
+
                 }
-                else{
-                  r.pl = {shipment:resp};
-                  r.status = true;
+                else {
+                  r.er =  "no matching license plate for provided sim";
+                  r.status = false;
                   deferred.resolve(r);
                 }
-            })
+              }
+              else {
+                r.er =  "no sim provide";
+                r.status = false;
+                deferred.resolve(r);
+              }
+
           }
           else {
-            r.er =  "no matching license plate for provided sim";
-            r.status = false;
-            deferred.resolve(r);
-          }
+            r.er =  "no data  provided";
+            deferred.reject(r);
       }
-    else {
-      r.er =  "no data or sim card provided";
-      deferred.reject(r);
-    }
   return deferred.promise;
 }
 
@@ -343,7 +366,7 @@ gps.shipmentComplete = function(m){
   var r = {pl: null, er:'',em:''};
   var deferred = q.defer();
 
-  var shipment = m.pl;
+  var shipment = m.pl.data;
 
   if(shipment && shipment.sim ){
 
