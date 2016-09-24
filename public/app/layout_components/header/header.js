@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/router', '../../services/user.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../config', '@angular/router', '../../services/user.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,22 +10,18 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, config_1, router_1, router_2, user_service_1;
+    var core_1, config_1, router_1, user_service_1;
     var Header;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (common_1_1) {
-                common_1 = common_1_1;
-            },
             function (config_1_1) {
                 config_1 = config_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-                router_2 = router_1_1;
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
@@ -61,16 +57,15 @@ System.register(['angular2/core', 'angular2/common', '../../config', 'angular2/r
                 };
                 Header.prototype.logout = function () {
                     this.localUserService.logout();
-                    this.router.navigate(['/Login']);
+                    this.router.navigate(['/']);
                 };
                 Header = __decorate([
                     core_1.Component({
                         selector: 'header',
                         templateUrl: config_1.config.prefix + 'layout_components/header/header.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.RouterLink],
                         styleUrls: [config_1.config.prefix + 'layout_components/header/resources/css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
                 ], Header);
                 return Header;
             }());

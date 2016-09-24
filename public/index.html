@@ -14,29 +14,16 @@
    <link rel='stylesheet' href='dist/css/lib.min.css' />
    <link rel='stylesheet' href='dist/css/admin.css' />
    <link rel='stylesheet' href='dist/css/monitor.css' />
+
    <!-- Load c3.css -->
 <link href="bower_components/c3/c3.min.css" rel="stylesheet" type="text/css">
 
 
 
-   <!-- 1. Load libraries -->
-      <!-- IE required polyfills, in this exact order -->
-      <script src="node_modules/es6-shim/es6-shim.min.js"></script>
-      <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
-      <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
-
-      <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-      <script src="node_modules/systemjs/dist/system.src.js"></script>
-      <script src="node_modules/rxjs/bundles/Rx.js"></script>
-      <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
-      <script src="node_modules/angular2/bundles/router.dev.js"></script>
-      <script src="node_modules/angular2/bundles/http.dev.js"></script>
-
-
 
 
        <!-- 2. Configure SystemJS -->
-       <script>
+       <!-- <script>
             System.config({
               packages: {
                 app: {
@@ -49,7 +36,24 @@
               .then(null, console.error.bind(console));
 
 
-       </script>
+       </script> -->
+
+
+       <!-- 1. Load libraries -->
+ <!-- Polyfill(s) for older browsers -->
+<script src="node_modules/core-js/client/shim.min.js"></script>
+<script src="node_modules/zone.js/dist/zone.js"></script>
+<script src="node_modules/reflect-metadata/Reflect.js"></script>
+<script src="node_modules/systemjs/dist/system.src.js"></script>
+<!-- 2. Configure SystemJS -->
+<script src="systemjs.config.js"></script>
+<script>
+  System.import('app').catch(function(err){ console.error(err); });
+</script>
+
+
+
+
   </head>
   <body  style="background-color:#E4EAF0">
 
@@ -62,8 +66,9 @@
      </main>
 
     <script src="dist/js/lib.min.js"></script>
-     <!-- Load d3.js and c3.js -->
+    <!-- Load d3.js and c3.js -->
     <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
     <script src="bower_components/c3/c3.min.js"></script>
+
   </body>
 </html>

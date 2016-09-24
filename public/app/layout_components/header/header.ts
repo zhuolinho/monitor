@@ -1,8 +1,6 @@
-import {Component} from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common';
+import {Component} from '@angular/core';
 import {config} from '../../config';
-import {RouterLink} from 'angular2/router';
-import {Router} from 'angular2/router';
+import {Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 
 declare var jQuery:any;
@@ -10,7 +8,6 @@ declare var jQuery:any;
 @Component({
     selector: 'header',
     templateUrl: config.prefix + 'layout_components/header/header.html',
-    directives:[CORE_DIRECTIVES,RouterLink],
     styleUrls:[config.prefix +'layout_components/header/resources/css/style.css']
 })
 
@@ -52,7 +49,7 @@ export class Header {
 
     logout(){
         this.localUserService.logout();
-        this.router.navigate(['/Login']);
+        this.router.navigate(['/']);
     }
 
 }

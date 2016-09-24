@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router'], function(exports_1) {
+System.register(['@angular/core'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,18 +10,12 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1;
+    var core_1;
     var Sidebar;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
-            },
-            function (router_1_1) {
-                router_1 = router_1_1;
             }],
         execute: function() {
             Sidebar = (function () {
@@ -40,16 +36,11 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
                 Sidebar = __decorate([
                     core_1.Component({
                         selector: 'sidebar',
-                    }),
-                    core_1.View({
-                        templateUrl: '/assets/takashimaya/web/admin/components/layout/sidebar/sidebar.html',
-                        //styleUrls: [],
-                        directives: [common_1.CORE_DIRECTIVES, router_1.RouterLink]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], Sidebar);
                 return Sidebar;
-            })();
+            }());
             exports_1("Sidebar", Sidebar);
         }
     }

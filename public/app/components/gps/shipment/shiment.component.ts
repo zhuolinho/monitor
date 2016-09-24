@@ -1,15 +1,14 @@
 
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {Router} from 'angular2/router'
-import {CORE_DIRECTIVES} from 'angular2/common';
+import {Router} from '@angular/router';
 import {RequestService} from '../../../services/request.service';
 declare var jQuery:any;
 
 @Component({
   selector:'shipment',
   templateUrl:config.prefix + '/components/gps/shipment/shipment.component.html',
-  directives:[CORE_DIRECTIVES]
+  // directives:[CORE_DIRECTIVES]
 })
 
 export class Shipment{

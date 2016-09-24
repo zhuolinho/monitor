@@ -1,7 +1,7 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
 import {UserService} from '../../../services/user.service';
-import {Router, CanActivate} from 'angular2/router';
+import {Router, CanActivate} from '@angular/router';
 import {hasSettingsAcess} from '../../../services/has-settings-access';
 
 declare var jQuery:any;
@@ -39,7 +39,7 @@ export class SettingsAuth{
          if(!response.er){
            _this.localUserService.logedInSettings();
           setTimeout(function(){
-             _this.router.parent.navigate(['SettingsAccess']);
+            //  _this.router.parent.navigate(['SettingsAccess']); //todo--- put back
           });
          }
 

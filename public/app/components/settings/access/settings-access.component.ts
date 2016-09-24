@@ -1,8 +1,8 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {SettingsAddUser} from './partials/settings-add-user.component';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
-import {CanActivate} from 'angular2/router';
+// import {SettingsAddUser} from './partials/settings-add-user.component';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
+// import {CanActivate} from '@angular/router';
 import {RequestService} from '../../../services/request.service';
 import {SettingsService} from '../../../services/settings.service';
 declare var jQuery:any;
@@ -11,13 +11,13 @@ declare var _:any;
 @Component({
   selector:'settings-access',
   templateUrl:config.prefix + '/components/settings/access/settings-access.component.html',
-  directives:[SettingsAddUser]
+  // directives:[SettingsAddUser]
 })
 
 
-@CanActivate((to, from) => {
-  return hasSettingsAcess();  //working fine.ignore red line warning
-})
+// @CanActivate((to, from) => {
+//   return hasSettingsAcess();  //working fine.ignore red line warning
+// })
 
 export class SettingsAccess{
 

@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', '../../services/user.service', 'angular2/router'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../config', '../../services/user.service', '@angular/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -42,7 +42,7 @@ System.register(['angular2/core', '../../config', '../../services/user.service',
                     this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (res) {
                         if (!res.er) {
                             _this.localUserService.saveUser(res.pl);
-                            _this.router.navigate(['Admin']);
+                            _this.router.navigate(['/admin/home']);
                         }
                         else {
                             _this.loginError = true;

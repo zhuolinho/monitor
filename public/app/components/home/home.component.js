@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../config', './alerts/home.alerts.component', './alerts_processed/home.alerts.processed.component', 'angular2/router'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../config'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../config', './alerts/home.alerts.componen
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, home_alerts_component_1, home_alerts_processed_component_1, router_1;
+    var core_1, config_1;
     var Home;
     return {
         setters:[
@@ -19,15 +19,6 @@ System.register(['angular2/core', '../../config', './alerts/home.alerts.componen
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (home_alerts_component_1_1) {
-                home_alerts_component_1 = home_alerts_component_1_1;
-            },
-            function (home_alerts_processed_component_1_1) {
-                home_alerts_processed_component_1 = home_alerts_processed_component_1_1;
-            },
-            function (router_1_1) {
-                router_1 = router_1_1;
             }],
         execute: function() {
             Home = (function () {
@@ -47,12 +38,7 @@ System.register(['angular2/core', '../../config', './alerts/home.alerts.componen
                     core_1.Component({
                         selector: 'home',
                         templateUrl: config_1.config.prefix + '/components/home/home.component.html',
-                        directives: [router_1.ROUTER_DIRECTIVES, router_1.RouterLink]
-                    }),
-                    router_1.RouteConfig([
-                        { path: '/alerts', component: home_alerts_component_1.HomeAlerts, name: 'HomeAlerts', useAsDefault: true },
-                        { path: '/processed', component: home_alerts_processed_component_1.HomeProcssedAlerts, name: 'HomeProcssedAlerts' }
-                    ]), 
+                    }), 
                     __metadata('design:paramtypes', [])
                 ], Home);
                 return Home;

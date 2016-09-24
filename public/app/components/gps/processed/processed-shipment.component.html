@@ -5,7 +5,7 @@
   <ul class="collapsible row" data-collapsible="accordion">
 
 
-          <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="#shipment of shipments">
+          <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="let shipment of shipments">
             <div class="collapsible-header active"> <span class="left helper-font-bigger">{{shipment.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
             <div class="collapsible-body helper-padding-10">
 
@@ -13,7 +13,7 @@
                     <div class="col s2 m2 ">
                       <div class="input-field">
                           <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth">
-                            <option *ngFor="#m of months; #i = index" [attr.selected]="i == 0">{{m}}</option>
+                            <option *ngFor="let m of months; let i = index" [attr.selected]="i == 0">{{m}}</option>
                           </select>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                          <div class="table-cell">距离 </div>
                     </div>
 
-                    <div class="table-row" *ngFor="#data of shipment.data">
+                    <div class="table-row" *ngFor="let data of shipment.data">
                       <div class="table-cell"> {{data.oti}} </div>
                       <div class="table-cell">{{data.nti}}  </div>
                       <div class="table-cell">{{data.dt}} </div>

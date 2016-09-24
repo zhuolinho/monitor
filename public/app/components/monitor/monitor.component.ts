@@ -1,27 +1,16 @@
 
 
- import {Component, provide,AfterViewInit} from 'angular2/core'
+ import {Component,AfterViewInit} from '@angular/core'
  import {config} from '../../config';
- import {Gas} from './gas/gas.component';
- import {Camera} from './camera/camera.component';
- import {ROUTER_DIRECTIVES,RouteConfig, RouterLink} from 'angular2/router';
+ import { RouterLink} from '@angular/router';
  declare var jQuery:any;
 
 
 
 @Component({
   selector:'monitor',
-  templateUrl:config.prefix + '/components/monitor/monitor.component.html',
-  directives:[ROUTER_DIRECTIVES,RouterLink]
+  templateUrl:config.prefix + '/components/monitor/monitor.component.html'
 })
-
-
-
- @RouteConfig([
-   {path:'/gas', component:Gas, name:'Gas',useAsDefault:true},
-   {path:'/camera', component:Camera, name:'Camera'}
- ])
-
 
  export class Monitor implements AfterViewInit{
    constructor(){

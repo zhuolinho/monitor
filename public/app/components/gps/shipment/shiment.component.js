@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', 'angular2/router', 'angular2/common', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../config', '@angular/router', '../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, router_1, common_1, request_service_1;
+    var core_1, config_1, router_1, request_service_1;
     var Shipment;
     return {
         setters:[
@@ -22,9 +22,6 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
@@ -100,7 +97,6 @@ System.register(['angular2/core', '../../../config', 'angular2/router', 'angular
                     core_1.Component({
                         selector: 'shipment',
                         templateUrl: config_1.config.prefix + '/components/gps/shipment/shipment.component.html',
-                        directives: [common_1.CORE_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, request_service_1.RequestService])
                 ], Shipment);

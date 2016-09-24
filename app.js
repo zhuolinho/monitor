@@ -24,10 +24,10 @@ console.log('\nAPP: Loading APP ...');
                   var handler = r.pl.fn;
                   var gps = require('./routes/gps')(handler);
                   var plc = require('./routes/plc')(handler);
-                  var index = require('./routes/index');
+                  // var index = require('./routes/index');
                   var users = require('./routes/users')(handler);
                   // view engine setup
-                  app.set('views', path.join(__dirname, 'views'));
+                  // app.set('views', path.join(__dirname, 'views'));
                   app.set('view engine', 'hjs');
 
                   // uncomment after placing your favicon in /public
@@ -41,7 +41,7 @@ console.log('\nAPP: Loading APP ...');
                   app.use(require('less-middleware')(path.join(__dirname, 'public')));
                   app.use(express.static(path.join(__dirname, 'public')));
 
-                  app.use('/', index);
+                  // app.use('/', index);
                   app.use('/users', users);
                   app.use('/gps', gps);
                   app.use('/plc', plc);
@@ -66,26 +66,16 @@ console.log('\nAPP: Loading APP ...');
 
                   // development error handler
                   // will print stacktrace
-                  if (app.get('env') === 'development') {
-                    app.use(function(err, req, res, next) {
-                      res.status(err.status || 500);
-                      res.render('error', {
-                        message: err.message,
-                        error: err
-                      });
-                    });
-
-                  }
-
-                  // production error handler
-                  // no stacktraces leaked to user
-                  app.use(function(err, req, res, next) {
-                    res.status(err.status || 500);
-                    res.render('error', {
-                      message: err.message,
-                      error: {}
-                    });
-                  });
+                  // if (app.get('env') === 'development') {
+                  //   app.use(function(err, req, res, next) {
+                  //     res.status(err.status || 500);
+                  //     res.render('error', {
+                  //       message: err.message,
+                  //       error: err
+                  //     });
+                  //   });
+                  //
+                  // }
 
             }
             else {

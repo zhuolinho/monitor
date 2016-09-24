@@ -1,5 +1,5 @@
 
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
 import {RequestService} from '../../../services/request.service';
 declare var jQuery:any;

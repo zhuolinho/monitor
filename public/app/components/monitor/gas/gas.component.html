@@ -200,7 +200,7 @@
 
                 <div class="col s8">
                     <div class="monitor-table vstrip helper-font-bigger" style="border-top:hidden; border-bottom:hidden;">
-                          <div class="table-row" *ngFor="#tank of availableTanks; #i=index;">
+                          <div class="table-row" *ngFor="let tank of availableTanks; let i=index;">
                             <div class="table-cell" style="">
                             <span class="left" style="margin-top:6px;">{{tank.id}}</span>
                               <a class="right" style="margin-top:8px;"  >
@@ -309,7 +309,7 @@
               <div class="col s3 m3 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-year">
-                      <option *ngFor="#item of years; #i = index;" [value]="item">
+                      <option *ngFor="let item of years; let i = index;" [value]="item">
                         {{item}}年
                       </option>
                     </select>
@@ -320,7 +320,7 @@
               <div class="col s3 m3 " *ngIf="isShowByDay">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-month">
-                      <option *ngFor="#item of months; #i = index;" [value]="item">
+                      <option *ngFor="let item of months; let i = index;" [value]="item">
                         {{item}}月
                       </option>
                     </select>
@@ -354,7 +354,7 @@
                   </div>
 
 
-                  <div class="table-row"  *ngFor="#data of statsData; #i=index;">
+                  <div class="table-row"  *ngFor="let data of statsData; let i=index;">
                     <div class="table-cell"> L001 </div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
@@ -374,7 +374,7 @@
                   </div>
 
 
-                  <div class="table-row" *ngFor="#data of statsData" >
+                  <div class="table-row" *ngFor="let data of statsData" >
                     <div class="table-cell"> L001 </div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                     <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>

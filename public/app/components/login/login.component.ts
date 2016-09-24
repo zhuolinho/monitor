@@ -1,8 +1,8 @@
 
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../config';
 import {UserService} from '../../services/user.service';
-import {Router, CanActivate} from 'angular2/router';
+import {Router, CanActivate} from '@angular/router';
 declare var jQuery:any;
 
 @Component({
@@ -29,7 +29,7 @@ export class LoginComponent{
 
         if(!res.er){
             _this.localUserService.saveUser(res.pl);
-            _this.router.navigate(['Admin']);
+            _this.router.navigate(['/admin/home']);
         }
         else{
           _this.loginError = true;

@@ -14,7 +14,7 @@
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
         <ul   class="collapsible row" data-collapsible="accordion">
-              <li *ngFor="#userGroup of staffArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+              <li *ngFor="let userGroup of staffArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
                 <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 员工列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
                 <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
                   <div class="col s12">
@@ -29,7 +29,7 @@
                           <div class="table-cell">手机号码 </div>
                         </div>
 
-                        <div class="table-row" *ngFor="#user of userGroup.data">
+                        <div class="table-row" *ngFor="let user of userGroup.data">
                           <div class="table-cell"> {{user.an}} </div>
                           <div class="table-cell"> {{user.name}}  </div>
                           <!-- <div class="table-cell"> {{user.addr}} </div> -->
@@ -38,7 +38,7 @@
                       </div>
 
                     <!-- modal goes here -->
-                   <settings-add-offline-user [data]="{id:'id'+i,users:userGroup}" #usermodal> </settings-add-offline-user>
+                   <!-- <settings-add-offline-user [data]="{id:'id'+i,users:userGroup}" #usermodal> </settings-add-offline-user> -->
                   </div>
 
                 </div>

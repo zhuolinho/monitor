@@ -1,5 +1,5 @@
 
-import {Component, provide,Input} from 'angular2/core';
+import {Component,Input} from '@angular/core';
 import {config} from '../../../../config';
 import {AlertModel} from '../../../../models/alert-model';
 import {SettingsService} from '../../../../services/settings.service';

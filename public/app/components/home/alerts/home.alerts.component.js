@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', '../../../services/request.service', '../../../services/user.service', 'angular2/common', '../../../services/lib.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/lib.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1, user_service_1, common_1, lib_service_1;
+    var core_1, config_1, request_service_1, user_service_1, lib_service_1;
     var HomeAlerts;
     return {
         setters:[
@@ -25,9 +25,6 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
             },
             function (lib_service_1_1) {
                 lib_service_1 = lib_service_1_1;
@@ -233,7 +230,6 @@ System.register(['angular2/core', '../../../config', '../../../services/request.
                     core_1.Component({
                         selector: 'home-alerts',
                         templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
-                        directives: [common_1.CORE_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService, lib_service_1.LibService])
                 ], HomeAlerts);

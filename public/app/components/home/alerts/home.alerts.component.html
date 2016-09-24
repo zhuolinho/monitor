@@ -18,7 +18,7 @@
       <div class="center-align helper-white-bg helper-padding-30" *ngIf="!hasData" style=" height:70vh;">
         无报警
       </div>
-        <div *ngFor="#alert of alertsList; #i = index;">
+        <div *ngFor="let alert of alertsList; let i = index;">
           <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="(currentSort == alert.atype) || (currentSort == 'all')">
             <div class="col m9">
               <div class="helper-white-bg ">
@@ -108,7 +108,7 @@
                     <div class="table-cell">
 
                       <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
-                          <span *ngFor="#n of alert.st"> {{n.ti}}, </span>
+                          <span *ngFor="let n of alert.st"> {{n.ti}}, </span>
                       </div>
 
                       <div class="monitor-alert" *ngIf="!alert.status">
@@ -116,7 +116,7 @@
                       </div>
 
                       <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">
-                        <a  href="{{'#homereturnalert'+i}}" class="modal-trigger">显示全部</a>
+                        <a  href="{{'let homereturnalert'+i}}" class="modal-trigger">显示全部</a>
                       </div>
                     </div>
                   </div>
@@ -233,7 +233,7 @@
                     <div class="col s3 m3 ">
                       <div class="input-field">
                           <select class="monitor-short-dropdown select-year">
-                            <option *ngFor="#item of years; #i = index;" [value]="item">
+                            <option *ngFor="let item of years; let i = index;" [value]="item">
                               {{item}}年
                             </option>
                           </select>
@@ -244,7 +244,7 @@
                     <div class="col s3 m3 " *ngIf="isShowByDay">
                       <div class="input-field">
                           <select class="monitor-short-dropdown select-month">
-                            <option *ngFor="#item of months; #i = index;" [value]="item">
+                            <option *ngFor="let item of months; let i = index;" [value]="item">
                               {{item}}月
                             </option>
                           </select>
@@ -278,7 +278,7 @@
                         </div>
 
 
-                        <div class="table-row"  *ngFor="#data of statsData; #i=index;">
+                        <div class="table-row"  *ngFor="let data of statsData; let i=index;">
                           <div class="table-cell"> L001 </div>
                           <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                           <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
@@ -298,7 +298,7 @@
                         </div>
 
 
-                        <div class="table-row" *ngFor="#data of statsData" >
+                        <div class="table-row" *ngFor="let data of statsData" >
                           <div class="table-cell"> L001 </div>
                           <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                           <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
@@ -347,7 +347,7 @@
 
               <div class="helper-vscrolling" style="height:50vh;">
 
-                <div class="center-align" *ngFor="#n of selectedTanks">
+                <div class="center-align" *ngFor="let n of selectedTanks">
                     {{n?.ti}}
                 </div>
 

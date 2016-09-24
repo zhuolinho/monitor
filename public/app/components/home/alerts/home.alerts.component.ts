@@ -1,11 +1,11 @@
 
-import {Component, provide,AfterViewInit} from 'angular2/core';
+import {Component,AfterViewInit} from '@angular/core';
 import {config} from '../../../config';
 
 import {AlertModel} from '../../../models/alert-model';
 import {RequestService} from '../../../services/request.service';
 import {UserService} from '../../../services/user.service';
-import {CORE_DIRECTIVES} from 'angular2/common';
+// import {CORE_DIRECTIVES} from '@angular/common';
 import {LibService} from '../../../services/lib.service';
 declare var jQuery:any;
 declare var _:any;
@@ -14,7 +14,7 @@ declare var io:any;
 @Component({
   selector:'home-alerts',
   templateUrl:config.prefix + '/components/home/alerts/home.alerts.component.html',
-  directives:[CORE_DIRECTIVES]
+  // directives:[CORE_DIRECTIVES]
 })
 
 export class HomeAlerts implements AfterViewInit{

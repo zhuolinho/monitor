@@ -1,6 +1,6 @@
 
-import {Component, provide, AfterViewInit, OnDestroy} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, AfterViewInit, OnDestroy} from '@angular/core';
+// import {RouteParams} from '@angular/router';
 import {config} from '../../../config';
 import {gpsAlert} from '../../../../models/gpsAlert';
 import {RequestService} from '../../../services/request.service';
@@ -54,8 +54,9 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       ed:''//estimated duration
   };
   constructor(private request:RequestService,
-              private userSrvc:UserService,
-              private routeParams:RouteParams){
+              private userSrvc:UserService
+              // ,private routeParams:RouteParams
+            ){
         this.user = this.userSrvc.getUser();
   console.log("ShipmentMap is up and running");
 
@@ -493,7 +494,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         that.newShipment.dist = distance;
         that.newShipment.ed = duration;
         that.newShipment.pa = that.user.an;
-        that.newShipment.oti = that.routeParams.get('tank');
+        // that.newShipment.oti = that.routeParams.get('tank');
 
 
 

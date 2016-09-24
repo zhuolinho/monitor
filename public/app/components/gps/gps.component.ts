@@ -1,26 +1,25 @@
 
-import {Component, provide} from 'angular2/core'
+import {Component} from '@angular/core'
 import {config} from '../../config';
-import {RouteConfig, ROUTER_DIRECTIVES, RouterLink} from 'angular2/router';
+import {RouterLink} from '@angular/router';
 import {RequestService} from '../../services/request.service';
-import {ShipmentMap} from './map/shipment-map.component';
-import {ProcessedShipment} from './processed/processed-shipment.component';
-import {Shipment} from './shipment/shiment.component';
+// import {ShipmentMap} from './map/shipment-map.component';
+// import {ProcessedShipment} from './processed/processed-shipment.component';
+// import {Shipment} from './shipment/shiment.component';
 
 @Component({
   selector:'gps',
-  templateUrl:config.prefix + '/components/gps/gps.component.html',
-  directives:[ROUTER_DIRECTIVES,RouterLink]
+  templateUrl:config.prefix + '/components/gps/gps.component.html'
 })
 
 
 
 
- @RouteConfig([
-   {path:'/shipment', component:Shipment, name:'Shipment',useAsDefault:true},
-   {path:'/map/:tank', component:ShipmentMap, name:'ShipmentMap'},
-   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'}
- ])
+ // @RouteConfig([
+ //   {path:'/shipment', component:Shipment, name:'Shipment',useAsDefault:true},
+ //   {path:'/map/:tank', component:ShipmentMap, name:'ShipmentMap'},
+ //   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'}
+ // ])
 
 export class Gps{
   static points:any = {};

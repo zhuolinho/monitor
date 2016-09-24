@@ -1,20 +1,20 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {SettingsEditFormula} from './partials/settings-edit-formula.component';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
-import {CanActivate} from 'angular2/router';
+// import {SettingsEditFormula} from './partials/settings-edit-formula.component';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
+import {CanActivate} from '@angular/router';
 
 declare var jQuery:any;
 
 @Component({
   selector:'settings-formula',
   templateUrl:config.prefix + '/components/settings/formula/settings-formula.component.html',
-  directives:[SettingsEditFormula]
+  // directives:[SettingsEditFormula]
 })
-
-@CanActivate((to, from) => {
-  return hasSettingsAcess();  //working fine.ignore red line warning
-})
+//
+// @CanActivate((to, from) => {
+//   return hasSettingsAcess();  //working fine.ignore red line warning
+// })
 
 export class SettingsFormula{
 

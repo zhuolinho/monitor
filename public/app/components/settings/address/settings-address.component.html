@@ -18,7 +18,7 @@
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
       <ul class="collapsible row" data-collapsible="accordion">
-          <li *ngFor="#addressGroup of addressArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+          <li *ngFor="let addressGroup of addressArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
             <div *ngIf="(currentSort == addressGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 地址列表 ( {{addressGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
             <div *ngIf="(currentSort == addressGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
@@ -33,7 +33,7 @@
                       <div class="table-cell">PLC地址1 </div>
                       <div class="table-cell">PLC地址2 </div>
                     </div>
-                    <div class="table-row" *ngFor="#address of addressGroup.data">
+                    <div class="table-row" *ngFor="let address of addressGroup.data">
                       <div class="table-cell"> {{address.code}} </div>
                       <div class="table-cell"> {{address.addr}} </div>
                       <div class="table-cell"> {{address.plcaddr1}}</div>
@@ -42,7 +42,7 @@
                   </div>
 
                 <!-- modal goes here -->
-               <settings-add-address [data]="{id:'id'+i, address:addressGroup}" #modal> </settings-add-address>
+               <!-- <settings-add-address [data]="{id:'id'+i, address:addressGroup}" #modal> </settings-add-address> -->
               </div>
 
             </div>

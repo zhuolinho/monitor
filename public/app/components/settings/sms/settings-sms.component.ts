@@ -1,20 +1,20 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {SettingsAddSmsUser} from './partials/settings-add-sms-user.component';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
-import {CanActivate} from 'angular2/router';
+// import {SettingsAddSmsUser} from './partials/settings-add-sms-user.component';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
+import {CanActivate} from '@angular/router';
 
 declare var jQuery:any;
 
 @Component({
   selector:'settings-sms',
   templateUrl:config.prefix + '/components/settings/sms/settings-sms.component.html',
-  directives:[SettingsAddSmsUser]
+  // directives:[SettingsAddSmsUser]
 })
 
-@CanActivate((to, from) => {
-  return hasSettingsAcess();  //working fine.ignore red line warning
-})
+// @CanActivate((to, from) => {
+//   return hasSettingsAcess();  //working fine.ignore red line warning
+// })
 
 export class SettingsSms{
 

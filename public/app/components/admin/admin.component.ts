@@ -1,8 +1,7 @@
 
-import {Component ,Inject, Injectable, provide, OnInit} from 'angular2/core'
-import {CORE_DIRECTIVES} from 'angular2/common';
-import {HTTP_PROVIDERS } from 'angular2/http';
-import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig,Location, CanActivate, LocationStrategy, HashLocationStrategy, Route, Router, RouterLink} from 'angular2/router';
+import {Component ,Inject, Injectable, OnInit} from '@angular/core'
+// import {CORE_DIRECTIVES} from '@angular/common';
+import {CanActivate, Route, Router, RouterLink} from '@angular/router';
 import {RequestService} from '../../services/request.service';
 import {UserService} from '../../services/user.service';
 import {isLoggedIn} from '../../services/is-logged-in';
@@ -18,28 +17,29 @@ import {config} from '../../config';
 import {Settings} from '../settings/settings.component';
 
 
-
 declare var jQuery:any;
 
 @Component({
   selector:'admin',
   templateUrl: config.prefix+'components/admin/admin.component.html',
-  directives: [ROUTER_DIRECTIVES,
-    Header,
-     Navigator,
-     CORE_DIRECTIVES, RouterLink]
+  // directives: [
+  //   // ROUTER_DIRECTIVES,
+  //   Header,
+  //    Navigator
+  //   //  CORE_DIRECTIVES, RouterLink
+  //  ]
 })
 
-@CanActivate((to, from) => {
-  return isLoggedIn();  //working fine.ignore red line warning
-})
+// @CanActivate((to, from) => {
+//   return isLoggedIn();  //working fine.ignore red line warning
+// })
 
-@RouteConfig([
-  {path:'/home/...', component:Home, name:'Home', useAsDefault:true},
-  {path:'/monitor/...', component:Monitor, name:'Monitor'},
-  {path:'/gps/...', component:Gps, name:'Gps'},
-  {path:'/settings/...', component:Settings, name:'Settings'}
-])
+// @RouteConfig([
+//   {path:'/home/...', component:Home, name:'Home', useAsDefault:true},
+//   {path:'/monitor/...', component:Monitor, name:'Monitor'},
+//   {path:'/gps/...', component:Gps, name:'Gps'},
+//   {path:'/settings/...', component:Settings, name:'Settings'}
+// ])
 
 export class AdminComponent{
   constructor(public localUserService:UserService, public router:Router){

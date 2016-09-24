@@ -1,8 +1,8 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {SettingsAddOfflineUser} from './partials/settings-add-offline-user.component';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
-import {CanActivate} from 'angular2/router';
+// import {SettingsAddOfflineUser} from './partials/settings-add-offline-user.component';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
+// import {CanActivate} from '@angular/router';
 import {RequestService} from '../../../services/request.service';
 import {SettingsService} from '../../../services/settings.service';
 declare var jQuery:any;
@@ -11,12 +11,12 @@ declare var _:any;
 @Component({
   selector:'settings-address',
   templateUrl:config.prefix + '/components/settings/offline_users/settings-offline-users.component.html',
-  directives:[SettingsAddOfflineUser]
+  // directives:[SettingsAddOfflineUser]
 })
-
-@CanActivate((to, from) => {
-  return hasSettingsAcess();  //working fine.ignore red line warning
-})
+//
+// @CanActivate((to, from) => {
+//   return hasSettingsAcess();  //working fine.ignore red line warning
+// })
 
 
 export class SettingsOfflineUsers{

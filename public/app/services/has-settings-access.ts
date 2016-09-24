@@ -1,6 +1,6 @@
 import {appInjector} from './app-injector';
 import {UserService} from './user.service';
-import {Router, RouteParams} from 'angular2/router';
+import {Router} from '@angular/router';
 
 export const hasSettingsAcess = (to, from) => {
 	let injector = appInjector();

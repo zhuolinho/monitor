@@ -1,22 +1,22 @@
-import {Component, provide} from 'angular2/core';
+import {Component} from '@angular/core';
 import {config} from '../../../config';
-import {SettingsAddAddress} from './partials/settings-add-address.component';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
+// import {SettingsAddAddress} from './partials/settings-add-address.component';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {SettingsService} from '../../../services/settings.service';
 import {RequestService} from '../../../services/request.service';
-import {CanActivate} from 'angular2/router';
+import {CanActivate} from '@angular/router';
 declare var jQuery:any;
 declare var _:any;
 
 @Component({
   selector:'settings-address',
   templateUrl:config.prefix + '/components/settings/address/settings-address.component.html',
-  directives:[SettingsAddAddress]
+  // directives:[SettingsAddAddress]
 })
 
-@CanActivate((to, from) => {
-  return hasSettingsAcess();  //working fine.ignore red line warning
-})
+// @CanActivate((to, from) => {
+//   return hasSettingsAcess();  //working fine.ignore red line warning
+// })
 
 
 export class SettingsAddress{

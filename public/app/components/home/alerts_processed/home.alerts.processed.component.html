@@ -2,7 +2,7 @@
 <div class="helper-padding-10 helper-vscrolling" style=" height:80vh;">
   <ul class="collapsible row" data-collapsible="accordion">
 
-      <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="#alert of alertsList">
+      <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="let alert of alertsList">
         <div class="collapsible-header active"> <span class="left helper-font-bigger">{{alert.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
         <div class="collapsible-body helper-padding-10">
 
@@ -10,7 +10,7 @@
                 <div class="col s2 m2 ">
                   <div class="input-field">
                       <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth">
-                        <option *ngFor="#m of months; #i = index" [attr.selected]="i == 0">{{m}}</option>
+                        <option *ngFor="let m of months; let i = index" [attr.selected]="i == 0">{{m}}</option>
                       </select>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                   <div class="table-cell">报警类型  </div>
                 </div>
 
-                <div class="table-row" *ngFor="#data of alert.data">
+                <div class="table-row" *ngFor="let data of alert.data">
                   <div class="table-cell"> {{data.code}} </div>
                   <div class="table-cell">{{data.atime}}  </div>
                   <div class="table-cell">{{data.pt}} </div>

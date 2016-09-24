@@ -13,7 +13,7 @@
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
       <ul class="collapsible row" data-collapsible="accordion">
-          <li *ngFor="#userGroup of userArray; #i = index;" class="helper-margin-bottom-15 helper-white-bg ">
+          <li *ngFor="let userGroup of userArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
             <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 授权列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
             <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
@@ -30,7 +30,7 @@
                       <div class="table-cell">账号密码  </div>
                       <div class="table-cell">权限  </div>
                     </div>
-                    <div class="table-row" *ngFor="#user of userGroup.data">
+                    <div class="table-row" *ngFor="let user of userGroup.data">
                       <div class="table-cell"> {{user.an}} </div>
                       <div class="table-cell"> {{user.name}}  </div>
                       <div class="table-cell"> {{user.addr}} </div>
@@ -41,7 +41,7 @@
                   </div>
 
                 <!-- modal goes here -->
-               <settings-add-user [data]="{id:'modalid' + i,users:userGroup}" #modal> </settings-add-user>
+               <!-- <settings-add-user [data]="{id:'modalid' + i,users:userGroup}" #modal> </settings-add-user> -->
               </div>
 
             </div>

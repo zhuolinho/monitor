@@ -1,4 +1,4 @@
-System.register(['./app-injector', './user.service', 'angular2/router'], function(exports_1, context_1) {
+System.register(['./app-injector', './user.service', '@angular/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var app_injector_1, user_service_1, router_1;

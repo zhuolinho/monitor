@@ -1,5 +1,5 @@
 
-import {Component, provide,AfterViewInit, OnDestroy} from 'angular2/core';
+import {Component,AfterViewInit, OnDestroy} from '@angular/core';
 import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';

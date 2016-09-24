@@ -25,6 +25,7 @@
     "rewriteTsconfig": true
   },
   "files": [
+    "app/app.module.ts",
     "app/boot.ts",
     "app/components/admin/admin.component.ts",
     "app/components/gps/gps.component.ts",
@@ -64,11 +65,13 @@
     "app/services/is-logged-in.ts",
     "app/services/lib.service.ts",
     "app/services/request.service.ts",
+    "app/services/router.service.ts",
     "app/services/settings.service.ts",
     "app/services/user.service.ts",
     "models/gpsAlert.ts",
     "typings/browser.d.ts",
     "typings/browser/ambient/es6-shim/index.d.ts",
-    "typings/browser/ambient/jasmine/index.d.ts"
+    "typings/browser/ambient/jasmine/index.d.ts",
+    "typings/index.d.ts"
   ]
 }

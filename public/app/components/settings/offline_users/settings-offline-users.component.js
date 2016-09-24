@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../../config', './partials/settings-add-offline-user.component', '../../../services/has-settings-access', 'angular2/router', '../../../services/request.service', '../../../services/settings.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/settings.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_add_offline_user_component_1, has_settings_access_1, router_1, request_service_1, settings_service_1;
+    var core_1, config_1, request_service_1, settings_service_1;
     var SettingsOfflineUsers;
     return {
         setters:[
@@ -19,15 +19,6 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (settings_add_offline_user_component_1_1) {
-                settings_add_offline_user_component_1 = settings_add_offline_user_component_1_1;
-            },
-            function (has_settings_access_1_1) {
-                has_settings_access_1 = has_settings_access_1_1;
-            },
-            function (router_1_1) {
-                router_1 = router_1_1;
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
@@ -195,10 +186,6 @@ System.register(['angular2/core', '../../../config', './partials/settings-add-of
                     core_1.Component({
                         selector: 'settings-address',
                         templateUrl: config_1.config.prefix + '/components/settings/offline_users/settings-offline-users.component.html',
-                        directives: [settings_add_offline_user_component_1.SettingsAddOfflineUser]
-                    }),
-                    router_1.CanActivate(function (to, from) {
-                        return has_settings_access_1.hasSettingsAcess(); //working fine.ignore red line warning
                     }), 
                     __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsOfflineUsers);

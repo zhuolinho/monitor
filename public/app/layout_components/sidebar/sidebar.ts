@@ -1,7 +1,7 @@
-import {Component, View} from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common';
+import {Component} from '@angular/core';
+// import {CORE_DIRECTIVES} from '@angular/common';
 // import {utilService} from "../../commons/services/utilService";
-import {RouterLink} from 'angular2/router';
+import {RouterLink} from '@angular/router';
 
 
 
@@ -14,11 +14,11 @@ import {RouterLink} from 'angular2/router';
 // ])
 
 
-@View({
-	templateUrl: '/assets/takashimaya/web/admin/components/layout/sidebar/sidebar.html',
-    //styleUrls: [],
-    directives: [CORE_DIRECTIVES, RouterLink]
-})
+// @View({
+// 	templateUrl: '/assets/takashimaya/web/admin/components/layout/sidebar/sidebar.html',
+//     //styleUrls: [],
+//     directives: [CORE_DIRECTIVES, RouterLink]
+// })
 export class Sidebar {
 	// navigation: any[];
     constructor() {

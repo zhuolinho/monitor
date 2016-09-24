@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 // import {utilService} from "../../commons/services/utilService";
 import {config} from '../../config';
 
@@ -9,7 +9,7 @@ import {config} from '../../config';
 
 //
 // @View({
-//     
+//
 //     //styleUrls: [],
 //     //directives:[CORE_DIRECTIVES,RouterLink]
 // })
