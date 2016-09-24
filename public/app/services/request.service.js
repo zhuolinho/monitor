@@ -25,35 +25,35 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map'], fun
             RequestService = (function () {
                 function RequestService(httpService) {
                     this.httpService = httpService;
-                    this.paramHeaders = new http_1.Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
                     this.http = httpService;
-                    this.paramOptions = new http_1.RequestOptions({ headers: this.paramHeaders });
+                    // this.paramOptions = new RequestOptions({ headers: this.paramHeaders});
                 }
                 RequestService.prototype.get = function (path) {
-                    var user = this.getUser();
-                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
-                    return this.http.get(path, this.paramOptions).map(function (response) {
+                    return this.http.get(path, this.getHeaders()).map(function (response) {
                         return response.json();
                     });
                 };
                 RequestService.prototype.post = function (path, data) {
-                    var user = this.getUser();
-                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
-                    return this.http.post(path, JSON.stringify(data), this.paramOptions).map(function (response) {
+                    return this.http.post(path, JSON.stringify(data), this.getHeaders()).map(function (response) {
                         var r = response.json();
                         return r;
                     });
                 };
                 RequestService.prototype.put = function (path, data) {
-                    var user = this.getUser();
-                    this.paramOptions.headers.append('Authorization', JSON.stringify(user));
-                    return this.http.put(path, JSON.stringify(data), this.paramOptions).map(function (response) {
+                    return this.http.put(path, JSON.stringify(data), this.getHeaders()).map(function (response) {
                         var r = response.json();
                         return r;
                     });
                 };
                 RequestService.prototype.getUser = function () {
                     return JSON.parse(sessionStorage.getItem('user'));
+                };
+                RequestService.prototype.getHeaders = function () {
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
+                    this.paramOptions = new http_1.RequestOptions({ headers: headers });
+                    var user = this.getUser();
+                    this.paramOptions.headers.append('user', JSON.stringify(user));
+                    return this.paramOptions;
                 };
                 RequestService = __decorate([
                     core_1.Injectable(), 
