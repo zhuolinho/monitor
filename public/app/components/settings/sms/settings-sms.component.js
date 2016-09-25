@@ -151,6 +151,7 @@ System.register(['@angular/core', '../../../config'], function(exports_1, contex
                     ];
                     this.currentSort = 'all';
                     this.selectedtab = 0;
+                    this.editMode = false;
                     console.log("SettingsSms is up and running");
                     this.initUi();
                 }
@@ -164,35 +165,27 @@ System.register(['@angular/core', '../../../config'], function(exports_1, contex
                         }, 100);
                     }
                 };
-                //
-                // veSortByArivalSms(){
-                //   if(this.currentSort!='4'){
-                //     this.currentSort='4';
-                //   }
-                //     this.initUi();
-                // }
-                //
-                // veSortByDeliveryStaffSms(){
-                //   if(this.currentSort!='3'){
-                //     this.currentSort='3';
-                //   }
-                //     this.initUi();
-                // }
-                //
-                // veSortByAlertHandlerSms(){
-                //   if(this.currentSort!='2'){
-                //     this.currentSort='2';
-                //   }
-                //     this.initUi();
-                // }
-                //
-                // veSortByAlertSms(){
-                //   if(this.currentSort!='1'){
-                //     this.currentSort='1';
-                //   }
-                //
-                //   this.initUi();
-                // }
+                SettingsSms.prototype.showDetailModal = function (arg) {
+                    console.log("selected item----", arg);
+                    var that = this;
+                    if (arg.user) {
+                        this.editMode = true;
+                        this.editTarget = arg.user;
+                    }
+                    else {
+                        this.editMode = false;
+                        this.editTarget = null;
+                    }
+                    this.smsType = arg.type;
+                    jQuery("#settingsSmsDetailsModal").openModal({
+                        ready: function () {
+                            that.initSelect();
+                        }
+                    });
+                };
+                SettingsSms.prototype.closeDetailModal = function () {
+                    jQuery("#settingsSmsDetailsModal").closeModal();
+                };
                 SettingsSms.prototype.initUi = function () {
                     var _this = this;
                     setTimeout(function (_) {

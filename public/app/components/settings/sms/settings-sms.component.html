@@ -18,7 +18,7 @@
             <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
               <div class="col s12">
-                    <a href="{{'#id'+i}}" (click) = "modal.editMode = false;"  class="right  modal-trigger helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
+                    <a  (click) = "showDetailModal({type:userGroup.type.value});"  class="right helper-font-bigger helper-padding-bottom-10 helper-padding-right-10">  <i class="material-icons helper-font-bigger helper-display-block left helper-margin-right-0">add</i> <i class="helper-display-block helper-margin-left-0 right">添加</i></a>
               </div>
             <div class="helper-margin-bottom-20 valign-wrapper helper-hpadding-15">
                   <div class="monitor-table helper-font-bigger">
@@ -36,12 +36,9 @@
                       <div class="table-cell"> {{user.addr}} </div>
                       <div class="table-cell"> {{user.phone}} </div>
                       <div class="table-cell"> {{user.ap}} </div>
-                      <div class="table-cell"> {{user.p}}<a href="{{'#id'+i}}"   class="right modal-trigger" (click)="modal.editMode = true; modal.editTarget = user"> 编辑</a></div>
+                      <div class="table-cell"> {{user.p}}<a (click) = "showDetailModal({type:userGroup.type.value,user:user});"  class="right"> 编辑</a></div>
                     </div>
                   </div>
-
-                <!-- modal goes here -->
-               <!-- <settings-add-sms-user [data]="{id:'id'+i,users:userGroup}" #modal> </settings-add-sms-user> -->
               </div>
 
             </div>
@@ -50,3 +47,129 @@
 
         </ul>
     </div>
+
+
+
+<!-- details modal -->
+
+        <div id="settingsSmsDetailsModal" class="modal " style="overflow:auto;">
+          <div class="modal-content">
+            <i class="modal-close material-icons right">clear</i>
+            <h4 *ngIf="!editMode">  设置捷报短信权限</h4>
+            <h4 *ngIf="editMode">  编辑短信权限</h4>
+
+
+            <div class="row">
+              <div class="col s12 helper-font-bigger center-align">
+                  <span class="helper-border-bottom helper-padding-10">
+                    基本信息
+                  </span>
+              </div>
+            </div>
+
+           <div class="row">
+
+               <div class="input-field col s12">
+                 <select>
+                   <option value="" disabled selected>请选择账号/姓名</option>
+                   <option value="1">201/皮良波</option>
+                   <option value="1">201/皮良波</option>
+                 </select>
+                 <label>账号/姓名:</label>
+               </div>
+
+
+               <div class="input-field col s12">
+                 <select>
+                   <option value="" disabled selected>请选择身份/等级</option>
+                   <option value="1">接警员/2</option>
+                   <option value="1">接警员/2</option>
+                   <option value="1">接警员/2</option>
+                 </select>
+                 <label>身份/等级:</label>
+               </div>
+
+              <div class="input-field col s12">
+                <input disabled id="phone" type="text" class="validate"  value="13917208893">
+                <label for="phone" style="top:-.5rem">手机:</label>
+              </div>
+            </div>
+
+            <div class="row helper-vmargin-20">
+              <div class="col s12 helper-font-bigger center-align">
+                  <span class="helper-border-bottom helper-padding-10">
+                    短信权限
+                  </span>
+              </div>
+            </div>
+
+           <div class="row helper-padding-top-20">
+
+             <form action="#">
+
+               <div class="row">
+                 <div class="col m3">
+
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box11" checked="checked" />
+                     <label for="filled-in-box">报警短信</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box12" checked="checked" />
+                     <label for="filled-in-box">余量报警</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box13" checked="checked" />
+                     <label for="filled-in-box">泄漏报警</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box14" checked="checked" />
+                     <label for="filled-in-box">信号中断</label>
+                   </h6>
+                 </div>
+                 <div class="col m3">
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box21" checked="checked" />
+                     <label for="filled-in-box">接警短信</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box22" checked="checked" />
+                     <label for="filled-in-box">余量报警</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box23" checked="checked" />
+                     <label for="filled-in-box">泄漏报警</label>
+                   </h6>
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box24" checked="checked" />
+                     <label for="filled-in-box">信号中断</label>
+                   </h6>
+                 </div>
+                 <div class="col m3">
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box31" checked="checked" />
+                     <label for="filled-in-box">配送短信</label>
+                   </h6>
+                 </div>
+                 <div class="col m3">
+                   <h6>
+                     <input type="checkbox" class="filled-in" id="filled-in-box41" checked="checked" />
+                     <label for="filled-in-box">送达短信</label>
+                   </h6>
+                 </div>
+               </div>
+
+               </form>
+
+
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+           <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+         </div>
+
+          <!-- for the select -->
+         <div style="padding-bottom:60px;"></div>
+      </div>

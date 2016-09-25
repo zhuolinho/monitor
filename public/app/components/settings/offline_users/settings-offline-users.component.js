@@ -111,6 +111,15 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                     this.currentSort = 'all';
                     this.selectedtab = 1;
                     this.staffArray = [];
+                    this.editMode = false;
+                    this.newUser = {
+                        name: "",
+                        phone: "",
+                        pw: "111111",
+                        addr: "",
+                        ap: "",
+                        sex: ""
+                    };
                     console.log("Settings Offline users is up and running");
                     var self = this;
                     this.request.get("/users/offline.json").subscribe(function (res) {
@@ -153,6 +162,51 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         }, 100);
                     }
                 };
+                SettingsOfflineUsers.prototype.showDetailModal = function (arg) {
+                    console.log("selected itme----", arg);
+                    var that = this;
+                    if (arg.user) {
+                        this.editMode = true;
+                        this.editTarget = arg.user;
+                        this.userCategory = config_1.config.usersPrivileges[this.editTarget.ap];
+                    }
+                    else {
+                        this.editMode = false;
+                        this.editTarget = null;
+                        this.newUser.ap = arg.category;
+                        this.userCategory = config_1.config.usersPrivileges[this.newUser.ap];
+                    }
+                    jQuery("#settingsOfflineUsersDetailModal").openModal({
+                        ready: function () {
+                            that.initSelect();
+                        }
+                    });
+                };
+                SettingsOfflineUsers.prototype.closeDetailModal = function () {
+                    jQuery("#settingsOfflineUsersDetailModal").closeModal();
+                };
+                SettingsOfflineUsers.prototype.addNewUser = function () {
+                    var _this = this;
+                    console.log("posting ----", this.newUser);
+                    this.request.post('/users/signup.json', this.newUser).subscribe(function (res) {
+                        console.log("sub comp offline user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.addUser(res.pl.user);
+                            _this.closeDetailModal();
+                        }
+                    });
+                };
+                SettingsOfflineUsers.prototype.updateUser = function () {
+                    var _this = this;
+                    console.log("posting ----", this.editTarget);
+                    this.request.put('/users/update.json', this.editTarget).subscribe(function (res) {
+                        console.log("user added-----", res);
+                        if (res.pl && res.pl.user) {
+                            _this.settingsSrvc.updateUser(res.pl.user);
+                            _this.closeDetailModal();
+                        }
+                    });
+                };
                 SettingsOfflineUsers.prototype.initUi = function () {
                     this.initCollapase();
                     this.initModal();
@@ -185,7 +239,7 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                 SettingsOfflineUsers = __decorate([
                     core_1.Component({
                         selector: 'settings-address',
-                        templateUrl: config_1.config.prefix + '/components/settings/offline_users/settings-offline-users.component.html',
+                        templateUrl: config_1.config.prefix + '/components/settings/offline_users/settings-offline-users.component.html'
                     }), 
                     __metadata('design:paramtypes', [request_service_1.RequestService, settings_service_1.SettingsService])
                 ], SettingsOfflineUsers);

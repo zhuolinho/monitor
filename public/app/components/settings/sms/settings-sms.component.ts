@@ -148,6 +148,9 @@ export class SettingsSms{
 
         currentSort:string = 'all';
         selectedtab:number = 0;
+        editMode:boolean = false;
+        editTarget:any;
+        smsType:string;
 
         constructor(){
           console.log("SettingsSms is up and running");
@@ -167,35 +170,34 @@ export class SettingsSms{
       }
 
 
-        //
-        // veSortByArivalSms(){
-        //   if(this.currentSort!='4'){
-        //     this.currentSort='4';
-        //   }
-        //     this.initUi();
-        // }
-        //
-        // veSortByDeliveryStaffSms(){
-        //   if(this.currentSort!='3'){
-        //     this.currentSort='3';
-        //   }
-        //     this.initUi();
-        // }
-        //
-        // veSortByAlertHandlerSms(){
-        //   if(this.currentSort!='2'){
-        //     this.currentSort='2';
-        //   }
-        //     this.initUi();
-        // }
-        //
-        // veSortByAlertSms(){
-        //   if(this.currentSort!='1'){
-        //     this.currentSort='1';
-        //   }
-        //
-        //   this.initUi();
-        // }
+
+        showDetailModal(arg){
+          console.log("selected item----",arg);
+          var that = this;
+
+          if(arg.user){
+            this.editMode = true;
+            this.editTarget = arg.user;
+          }
+          else{
+            this.editMode = false;
+            this.editTarget = null;
+          }
+
+          this.smsType = arg.type;
+
+          jQuery("#settingsSmsDetailsModal").openModal({
+               ready: function() {
+                    that.initSelect();
+                }
+          });
+        }
+
+        closeDetailModal(){
+              jQuery("#settingsSmsDetailsModal").closeModal();
+        }
+
+
         initUi(){
 
           var _this = this;
@@ -220,5 +222,7 @@ export class SettingsSms{
                jQuery('select').material_select();
           });
         }
+
+
 
  }
