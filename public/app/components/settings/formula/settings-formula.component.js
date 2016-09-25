@@ -51,10 +51,22 @@ System.register(['@angular/core', '../../../config'], function(exports_1, contex
                         jQuery('select').material_select();
                     });
                 };
+                SettingsFormula.prototype.showDetailModal = function (arg) {
+                    console.log("selected item----", arg);
+                    var that = this;
+                    jQuery("#" + arg.modalId).openModal({
+                        ready: function () {
+                            that.initSelect();
+                        }
+                    });
+                };
+                SettingsFormula.prototype.closeDetailModal = function () {
+                    // jQuery("#").closeModal();
+                };
                 SettingsFormula = __decorate([
                     core_1.Component({
                         selector: 'settings-formula',
-                        templateUrl: config_1.config.prefix + '/components/settings/formula/settings-formula.component.html',
+                        templateUrl: config_1.config.prefix + '/components/settings/formula/settings-formula.component.html'
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SettingsFormula);
