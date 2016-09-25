@@ -2,7 +2,7 @@
             <aside id="left-sidebar-nav">
                 <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
                     <li class="bold" *ngFor="let nav of navigations">
-                        <a [routerLink]="nav.link"  class="waves-effect waves-light nav-item" [ngClass]="{'hide-on-med-and-down':nav.icon == 'settings'}">
+                        <a [routerLink]="nav.link" routerLinkActive="router-link-active"  class="waves-effect waves-light nav-item" [ngClass]="{'hide-on-med-and-down':nav.icon == 'settings'}">
                           <i class="xxl material-icons"> {{nav.icon}} </i> {{nav.title}}
                         </a>
                     </li>

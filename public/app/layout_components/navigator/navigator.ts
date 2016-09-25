@@ -16,10 +16,10 @@ export class Navigator implements AfterViewInit {
    navigations:any[];
    constructor() {
       this.navigations = [
-          {link:['/admin/home'], title:'首页', icon:'dashboard'},
-          {link:['/admin/monitor'], title:'实时监控', icon:'videocam'},
-          {link:['/admin/gps'], title:'GPS ', icon:'my_location'},
-          {link:['/admin/settings'], title:'设置 ', icon:'settings'}
+          {link:['/admin/home/alert'], title:'首页', icon:'dashboard'},
+          {link:['/admin/monitor/gas'], title:'实时监控', icon:'videocam'},
+          {link:['/admin/gps/shipments'], title:'GPS ', icon:'my_location'},
+          {link:['/admin/settings/auth'], title:'设置 ', icon:'settings'}
         ];
     }
 

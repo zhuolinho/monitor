@@ -1,5 +1,11 @@
 
-<div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+
+
+<div class="center-align helper-white-bg helper-padding-30"  *ngIf="shipmentList"  style=" height:70vh;">
+  无配送
+</div>
+
+<div *ngIf="shipmentList"  class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
     <div *ngFor="let shipment of shipmentList; let i = index;">
 
       <div class="helper-margin-bottom-20 valign-wrapper row">

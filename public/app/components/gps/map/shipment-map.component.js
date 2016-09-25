@@ -1,4 +1,4 @@
-System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/user.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../config', '../../../services/request.service', '../../../services/user.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,12 +10,15 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1, user_service_1;
+    var core_1, router_1, config_1, request_service_1, user_service_1;
     var ShipmentMap;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (config_1_1) {
                 config_1 = config_1_1;
@@ -28,7 +31,8 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
             }],
         execute: function() {
             ShipmentMap = (function () {
-                function ShipmentMap(request, userSrvc) {
+                function ShipmentMap(route, request, userSrvc) {
+                    this.route = route;
                     this.request = request;
                     this.userSrvc = userSrvc;
                     this.allCars = [];
@@ -52,8 +56,15 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         ed: '' //estimated duration
                     };
                     this.user = this.userSrvc.getUser();
-                    console.log("ShipmentMap is up and running");
+                    console.log("ShipmentMap is up and running---");
                 }
+                ShipmentMap.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.route.params.forEach(function (params) {
+                        _this.tankId = params['tank'];
+                        console.log("params['tank']----", _this.tankId);
+                    });
+                };
                 ShipmentMap.prototype.ngAfterViewInit = function () {
                     this.initUi();
                     this.loadJScript();
@@ -392,7 +403,8 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         that.newShipment.dist = distance;
                         that.newShipment.ed = duration;
                         that.newShipment.pa = that.user.an;
-                        // that.newShipment.oti = that.routeParams.get('tank');
+                        that.newShipment.oti = this.route.queryParams.map(function (params) { return params['tank'] || 'None'; });
+                        console.log("tank id----", that.newShipment.oti);
                         var pts = route.getResults().getPlan(0).getRoute(0).getPath(); //通过驾车实例，获得一系列点的数组
                         var paths = pts.length;
                         var i = 0;
@@ -502,7 +514,7 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
                         styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_1.ActivatedRoute, request_service_1.RequestService, user_service_1.UserService])
                 ], ShipmentMap);
                 return ShipmentMap;
             }());

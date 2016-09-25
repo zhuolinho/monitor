@@ -1,6 +1,7 @@
 
 var helpers = require('../utilities/helpers');
 var gpsConf = require('../configs/gps');
+var lib = require('../lib/lib');
 var express = require('express');
 var net = require('net');
 var client = new net.Socket();

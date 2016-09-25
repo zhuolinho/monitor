@@ -29,7 +29,7 @@ export class LoginComponent{
 
         if(!res.er){
             _this.localUserService.saveUser(res.pl);
-            _this.router.navigate(['/admin/home']);
+            _this.router.navigate(['/admin/home/alerts']);
         }
         else{
           _this.loginError = true;

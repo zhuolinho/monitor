@@ -42,7 +42,7 @@ System.register(['@angular/core', '../../config', '../../services/user.service',
                     this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (res) {
                         if (!res.er) {
                             _this.localUserService.saveUser(res.pl);
-                            _this.router.navigate(['/admin/home']);
+                            _this.router.navigate(['/admin/home/alerts']);
                         }
                         else {
                             _this.loginError = true;

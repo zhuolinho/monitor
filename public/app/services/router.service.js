@@ -88,7 +88,7 @@ System.register(['@angular/router', '../components/login/login.component', '../c
                 { path: 'admin', component: admin_component_1.AdminComponent, children: [
                         { path: 'home', component: home_component_1.Home, children: [
                                 { path: 'alerts', component: home_alerts_component_1.HomeAlerts },
-                                { path: 'processed', component: home_alerts_processed_component_1.HomeProcssedAlerts },
+                                { path: 'processed-alerts', component: home_alerts_processed_component_1.HomeProcssedAlerts },
                                 { path: '**', component: home_alerts_component_1.HomeAlerts }
                             ] },
                         { path: 'monitor', component: monitor_component_1.Monitor, children: [
@@ -97,9 +97,9 @@ System.register(['@angular/router', '../components/login/login.component', '../c
                                 { path: '**', component: gas_component_1.Gas }
                             ] },
                         { path: 'gps', component: gps_component_1.Gps, children: [
-                                { path: 'shipment', component: shiment_component_1.Shipment },
-                                { path: 'map/:tank', component: shipment_map_component_1.ShipmentMap },
-                                { path: 'processed', component: processed_shipment_component_1.ProcessedShipment },
+                                { path: 'shipments', component: shiment_component_1.Shipment },
+                                { path: 'shipment-map/:tank', component: shipment_map_component_1.ShipmentMap },
+                                { path: 'processed-shipments', component: processed_shipment_component_1.ProcessedShipment },
                                 { path: '**', component: shiment_component_1.Shipment }
                             ] },
                         { path: 'settings', component: settings_component_1.Settings, children: [

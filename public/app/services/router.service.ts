@@ -62,7 +62,7 @@ const ROUTES: Routes = [
   {path:'admin',component:AdminComponent, children:[
     {path:'home', component:Home,children:[
       {path:'alerts', component:HomeAlerts},
-      {path:'processed', component:HomeProcssedAlerts},
+      {path:'processed-alerts', component:HomeProcssedAlerts},
       {path:'**',component:HomeAlerts}
     ]},
     {path:'monitor', component:Monitor,children:[
@@ -71,9 +71,9 @@ const ROUTES: Routes = [
       {path:'**',component:Gas}
     ]},
     {path:'gps', component:Gps,children:[
-      {path:'shipment', component:Shipment},
-      {path:'map/:tank', component:ShipmentMap},
-      {path:'processed', component:ProcessedShipment},
+      {path:'shipments', component:Shipment},
+      {path:'shipment-map/:tank', component:ShipmentMap},
+      {path:'processed-shipments', component:ProcessedShipment},
       {path:'**',component:Shipment}
     ]},
     {path:'settings', component:Settings,children:[

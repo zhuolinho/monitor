@@ -1,6 +1,6 @@
 
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
-// import {RouteParams} from '@angular/router';
+import {ActivatedRoute,Params} from '@angular/router';
 import {config} from '../../../config';
 import {gpsAlert} from '../../../../models/gpsAlert';
 import {RequestService} from '../../../services/request.service';
@@ -37,6 +37,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   static allMarkers:any = {};
   isShiping:boolean = false;
   user:any;
+  tankId:string;
   totalCarNumber:number;
   newShipment:any = {
       sim:'',
@@ -53,14 +54,23 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       pa:'',
       ed:''//estimated duration
   };
-  constructor(private request:RequestService,
+  constructor(
+              private route:ActivatedRoute,
+              private request:RequestService,
               private userSrvc:UserService
-              // ,private routeParams:RouteParams
+
             ){
         this.user = this.userSrvc.getUser();
-  console.log("ShipmentMap is up and running");
+  console.log("ShipmentMap is up and running---");
 
   }
+
+  ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      this.tankId = params['tank'];
+        console.log("params['tank']----",this.tankId);
+    });
+}
 
   ngAfterViewInit(){
     this.initUi();
@@ -494,9 +504,9 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         that.newShipment.dist = distance;
         that.newShipment.ed = duration;
         that.newShipment.pa = that.user.an;
-        // that.newShipment.oti = that.routeParams.get('tank');
+        that.newShipment.oti = this.route.queryParams.map(params => params['tank'] || 'None');
 
-
+        console.log("tank id----",that.newShipment.oti);
 
         var pts = route.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
         var paths = pts.length;
