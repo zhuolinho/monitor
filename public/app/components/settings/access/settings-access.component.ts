@@ -132,6 +132,7 @@ export class SettingsAccess{
       if(arg.user){
         this.editMode = true;
         this.editTarget = arg.user;
+        this.userCategory = config.usersPrivileges[this.editTarget.ap];
       }
       else{
         this.editMode = false;
