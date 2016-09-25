@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {config} from '../../../config';
 import {UserService} from '../../../services/user.service';
 import {Router, CanActivate} from '@angular/router';
-import {hasSettingsAcess} from '../../../services/has-settings-access';
+// import {hasSettingsAcess} from '../../../services/has-settings-access';
 
 declare var jQuery:any;
 
@@ -19,7 +19,7 @@ export class SettingsAuth{
       console.log("SettingsAuth is up and running");
 
       if(this.localUserService.getSettingAcess()){  //redirect if already signed in.
-        this.router.navigate(['SettingsAccess']);
+        this.router.navigate(['/admin/settings/access']);
         return;
       }
       this.authUser = this.localUserService.getUser();
@@ -39,7 +39,7 @@ export class SettingsAuth{
          if(!response.er){
            _this.localUserService.logedInSettings();
           setTimeout(function(){
-            //  _this.router.parent.navigate(['SettingsAccess']); //todo--- put back
+             _this.router.navigate(['/admin/settings/access']);
           });
          }
 

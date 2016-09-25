@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
 import {config} from '../../../config';
-// import {SettingsAddUser} from './partials/settings-add-user.component';
-// import {hasSettingsAcess} from '../../../services/has-settings-access';
-// import {CanActivate} from '@angular/router';
 import {RequestService} from '../../../services/request.service';
 import {SettingsService} from '../../../services/settings.service';
 declare var jQuery:any;
@@ -21,147 +18,30 @@ declare var _:any;
 
 export class SettingsAccess{
 
-  // userArray:any[] = [
-  //           {
-  //             type:{id:1,value:'管理层'}, // 管理层
-  //             data:[
-  //               {
-  //                 an:'101',  //account number
-  //                 name: '胡某某',
-  //                 addr:'----',
-  //                 phone:'13987226225',
-  //                 ap:'1******6',  // account password
-  //                 p:'1', //permission
-  //                 sex:0
-  //               },
-  //               {
-  //                 an:'102',  //account number
-  //                 name: '徐某某',
-  //                 addr:'----',
-  //                 phone:'18987226225',
-  //                 ap:'1******6',  // account password
-  //                 p:'1', //permission
-  //                 sex:1
-  //               },
-  //               {
-  //                 an:'103',  //account number
-  //                 name: '高阳',
-  //                 addr:'----',
-  //                 phone:'17987226228',
-  //                 ap:'1******6',  // account password
-  //                 p:'1', //permission
-  //                 sex:0
-  //               },
-  //               {
-  //                 an:'104',  //account number
-  //                 name: '高琳',
-  //                 addr:'----',
-  //                 phone:'13987226228',
-  //                 ap:'1******6',  // account password
-  //                 p:'1', //permission
-  //                 sex:1
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             type:{id:2,value:'监管员'},
-  //             data:[
-  //               {
-  //                 an:'201',  //account number
-  //                 name: '韩丽',
-  //                 addr:'----',
-  //                 phone:'13987226223',
-  //                 ap:'1******6',  // account password
-  //                 p:'2' //permission
-  //               },
-  //               {
-  //                 an:'202',  //account number
-  //                 name: '宋红',
-  //                 addr:'----',
-  //                 phone:'14987226225',
-  //                 ap:'1******6',  // account password
-  //                 p:'2' //permission
-  //               },
-  //               {
-  //                 an:'203',  //account number
-  //                 name: '高阳',
-  //                 addr:'----',
-  //                 phone:'17987226228',
-  //                 ap:'1******6',  // account password
-  //                 p:'2' //permission
-  //               },
-  //               {
-  //                 an:'204',  //account number
-  //                 name: '梁凯',
-  //                 addr:'----',
-  //                 phone:'1392226228',
-  //                 ap:'1******6',  // account password
-  //                 p:'2' //permission
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             type:{id:3,value:'调度员'},
-  //             data:[
-  //               {
-  //                 an:'301',  //account number
-  //                 name: '赵敏',
-  //                 addr:'----',
-  //                 phone:'13987226223',
-  //                 ap:'1******6',  // account password
-  //                 p:'3' //permission
-  //               },
-  //               {
-  //                 an:'302',  //account number
-  //                 name: '孔德',
-  //                 addr:'----',
-  //                 phone:'13987226225',
-  //                 ap:'1******6',  // account password
-  //                 p:'3' //permission
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             type:{id:4,value:'客户'},
-  //             data:[
-  //               {
-  //                 an:'401',  //account number
-  //                 name: 'Candy',
-  //                 addr:'----',
-  //                 phone:'13987226223',
-  //                 ap:'1******6',  // account password
-  //                 p:'4' //permission
-  //               },
-  //               {
-  //                 an:'402',  //account number
-  //                 name: '周璐',
-  //                 addr:'----',
-  //                 phone:'18987226003',
-  //                 ap:'1******6',  // account password
-  //                 p:'4' //permission
-  //               },
-  //               {
-  //                 an:'403',  //account number
-  //                 name: '黄金红',
-  //                 addr:'----',
-  //                 phone:'13937722609',
-  //                 ap:'1******6',  // account password
-  //                 p:'4' //permission
-  //               }
-  //             ]
-  //           }
-  //
-  // ];
     userArray:any[] = [];
     currentSort:any = 'all';
     selectedtab:number = 0;
     users:any[];
+    userCategory:string;
+
+
+    newUser:any = {
+      name:"",
+      phone:"",
+      pw:"",
+      addr:"",
+      ap:"",
+      sex:""
+    };
+
+   editMode:boolean = false;
+   editTarget:any;
 
     constructor(private request:RequestService, private settingsSrvc:SettingsService){
       var self = this;
       console.log("SettingsAccess is up and running");
       this.request.get("/users/access.json").subscribe(res => {
-          console.log("got response--",res);
+          console.log("got response for users--",res);
           if(res.pl && res.pl.users){
               this.users = res.pl.users;
           }
@@ -242,5 +122,63 @@ export class SettingsAccess{
       setTimeout(_=>{
            jQuery('select').material_select();
       });
+    }
+
+
+
+    showDetailModal(arg){
+      console.log("selected itme----",arg);
+      var that = this;
+      if(arg.user){
+        this.editMode = true;
+        this.editTarget = arg.user;
+      }
+      else{
+        this.editMode = false;
+        this.editTarget = null;
+        this.newUser.ap = arg.category;
+        this.userCategory = config.usersPrivileges[this.newUser.ap];
+      }
+      jQuery("#settinsAccessDetailModal").openModal({
+           ready: function() {
+                that.initSelect();
+            }
+      });
+    }
+
+    closeDetailModal(){
+          jQuery("#settinsAccessDetailModal").closeModal();
+    }
+
+
+
+
+    addNewUser(){
+      console.log("posting ----",this.newUser);
+
+        this.request.post('/users/signup.json',this.newUser).subscribe(res => {
+            console.log("sub comp user added-----", res);
+            if(res.pl && res.pl.user){
+                this.settingsSrvc.addUser(res.pl.user);
+                this.closeDetailModal();
+            }
+        });
+    }
+
+    updateUser(){
+      console.log("posting ----",this.editTarget);
+      this.request.put('/users/update.json',this.editTarget).subscribe(res => {
+          console.log("user added-----", res);
+          if(res.pl && res.pl.user){
+              this.settingsSrvc.updateUser(res.pl.user);
+                this.closeDetailModal();
+          }
+
+      });
+    }
+
+    veSelectGender(event){
+        console.log("value-----",event);
+
     }
  }

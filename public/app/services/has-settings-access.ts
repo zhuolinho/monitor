@@ -11,7 +11,7 @@ export const hasSettingsAcess = (to, from) => {
 		return true;
   }
   else{
-    router.navigate(['/Admin','Settings']);
+    router.navigate(['/admin/settins/auth']);
     return false;
   }
 };

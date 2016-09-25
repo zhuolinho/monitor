@@ -23,7 +23,7 @@ System.register(['./app-injector', './user.service', '@angular/router'], functio
                     return true;
                 }
                 else {
-                    router.navigate(['/Admin', 'Settings']);
+                    router.navigate(['/admin/settins/auth']);
                     return false;
                 }
             });

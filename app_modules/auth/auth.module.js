@@ -215,7 +215,7 @@ auth.getAccessUsers = function(m){
   var r = {pl: {}, er:''};
   var deferred = q.defer();
   // Thing.find().gt('age', 21)
-    User.find().where('an').lt(600).exec(
+    User.find().where('an').lt(60000).exec(
       function(err,users){
 
         if(err){

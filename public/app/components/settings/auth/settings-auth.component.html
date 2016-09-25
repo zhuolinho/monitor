@@ -9,12 +9,12 @@
           <div class="col s6 offset-s3">
             <div class="input-field">
               <i class="material-icons prefix helper-gray">person</i>
-              <input id="icon_prefix" type="text" class="validate helper-black" [(ngModel)]="user.username" disabled>
+              <input id="icon_prefix" type="text" class="validate helper-black" name="username" [(ngModel)]="user.username" disabled>
               <label for="icon_prefix" class="active">账号</label>
             </div>
             <div class="input-field">
               <i class="material-icons prefix helper-gray">lock</i>
-              <input id="icon_phone" type="password" class="validate helper-black"  [(ngModel)]="user.password">
+              <input id="icon_phone" type="password" class="validate helper-black" name="password"  [(ngModel)]="user.password">
               <label for="icon_telephone">密码</label>
             </div>
             <div class="helper-hpadding-25 helper-margin-top-30 center-align">

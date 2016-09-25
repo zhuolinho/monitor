@@ -34,7 +34,7 @@ System.register(['@angular/core', '../../../config', '../../../services/user.ser
                     this.user = { username: '', password: '' };
                     console.log("SettingsAuth is up and running");
                     if (this.localUserService.getSettingAcess()) {
-                        this.router.navigate(['SettingsAccess']);
+                        this.router.navigate(['/admin/settings/access']);
                         return;
                     }
                     this.authUser = this.localUserService.getUser();
@@ -53,7 +53,7 @@ System.register(['@angular/core', '../../../config', '../../../services/user.ser
                         if (!response.er) {
                             _this.localUserService.logedInSettings();
                             setTimeout(function () {
-                                //  _this.router.parent.navigate(['SettingsAccess']); //todo--- put back
+                                _this.router.navigate(['/admin/settings/access']);
                             });
                         }
                     });

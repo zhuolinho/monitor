@@ -53,7 +53,6 @@ import {SettingsOfflineUsers} from './components/settings/offline_users/settings
   imports:  [
     BrowserModule,
     FormsModule,
-    // RouterModule,
     HttpModule,
     globalRouting
   ],

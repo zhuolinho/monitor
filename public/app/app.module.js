@@ -122,7 +122,6 @@ System.register(['@angular/core', '@angular/http', '@angular/platform-browser', 
                         imports: [
                             platform_browser_1.BrowserModule,
                             forms_1.FormsModule,
-                            // RouterModule,
                             http_1.HttpModule,
                             router_service_1.globalRouting
                         ],
