@@ -94,6 +94,13 @@
 
                       </div>
 
+
+                    <div class="input-field col s12">
+                      <input *ngIf="editTarget" id="email" type="email" class="validate" name="email" [(ngModel)]="editTarget.email">
+                      <input *ngIf="!editTarget" id="email" type="email" class="validate"  required name="email" data-error="必须填" data-success="好"  [(ngModel)]="newUser.email" >
+                      <label for="email" class="active">邮箱:</label>
+                    </div>
+
                       <div class="input-field col s12">
                         <input *ngIf="editTarget" id="phone" type="text" name="phone" class="validate" [(ngModel)]="editTarget.phone">
                         <input *ngIf="!editTarget" id="phone" type="text" name="phone" class="validate"  [(ngModel)]="newUser.phone" >

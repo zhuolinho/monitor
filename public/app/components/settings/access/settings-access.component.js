@@ -38,6 +38,7 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                     this.newUser = {
                         name: "",
                         phone: "",
+                        email: '',
                         pw: "",
                         addr: "",
                         ap: "",

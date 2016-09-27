@@ -98,6 +98,12 @@
                       </div>
 
                       <div class="input-field col s12">
+                        <input *ngIf="editTarget" id="email" type="email" class="validate" name="email" [(ngModel)]="editTarget.email">
+                        <input *ngIf="!editTarget" id="email" type="email" class="validate"  required name="email" data-error="必须填" data-success="好"  [(ngModel)]="newUser.email" >
+                        <label for="email" class="active">邮箱:</label>
+                      </div>
+
+                      <div class="input-field col s12">
                         <input *ngIf="editTarget" id="phone" type="text" class="validate" name="phone" [(ngModel)]="editTarget.phone">
                         <input *ngIf="!editTarget" id="phone" type="text" class="validate"  required name="phone" data-error="必须填" data-success="好"  [(ngModel)]="newUser.phone" >
                         <label for="phone" class="active">手机:</label>

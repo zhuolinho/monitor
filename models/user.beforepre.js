@@ -5,26 +5,23 @@ var bcrypt = require('bcrypt-nodejs');
 
 // set up a mongoose model
 var UserSchema = new Schema({
-  oID:String,
   ll:{  //last login
     type:Date,
     default:new Date()
   },
   an:{ //account Number
     type:Number,
-    required:true
+    required:true,
+    unique:true
   },
   name: {
         type: String,
         required: true
   },
-  email:{ //account Number
+  phone:{
     type:String,
     required:true,
     unique:true
-  },
-  phone:{
-    type:String
   },
   pw: {
         type: String,
@@ -49,11 +46,9 @@ var UserSchema = new Schema({
       sia:{type:Boolean, default:false}, //signal interruption alert 信号中断
     }
 },
-{
-  timestamps:true
-})
+{timestamps:true});
 
-UserSchema.pre('save',function(next){
+UserSchema.pre('save', function (next) {
     var user = this;
     if (this.isModified('pw') || this.isNew) {
         bcrypt.genSalt(10, function (err, salt) {
@@ -69,17 +64,32 @@ UserSchema.pre('save',function(next){
             });
         });
     } else {
-
         return next();
     }
 });
 
 
+var _updateUser = function(m,cb){
 
-UserSchema.methods.setOrg = function (org, cb) {
-    this.oID = org.oID;
-    cb(null, this);
-};
+}
+
+
+// UserSchema.pre('findOneAndUpdate', function(next) {
+//   console.log('------------->>>>>> update updatedAt: ', this.updatedAt);
+//   this.updatedAt = Date.now();
+//   next();
+// });
+//
+//
+// UserSchema.pre('findOneAndUpdate', function() {
+//   this.findOneAndUpdate({}, { updatedAt: Date.now() });
+// });
+
+
+// UserSchema.pre('save', function(next) {
+//   // do stuff
+//   next();
+// });
 
 UserSchema.methods.comparePassword = function (passw, cb) {
     bcrypt.compare(passw, this.pw, function (err, isMatch) {

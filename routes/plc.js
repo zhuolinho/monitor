@@ -270,8 +270,8 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
   // });
 
   //plc Connection
-  _tcpSerever(handler);
-  _checkInterruption(handler);
+  // _tcpSerever(handler);
+  // _checkInterruption(handler);
 
   return router;
 };

@@ -236,17 +236,19 @@ gps.newShipment =  function(m) {
                                     rs:data.rs
                                 });
 
+                shipment.setOwner(m.pl.user,function(error,doc){
+                  doc.save(function (err, resp) {
+                      if (err){
+                        r.er = err;
+                        deferred.reject(r);
+                      }
+                      else{
+                        r.pl = {shipment:resp};
+                        r.status = true;
+                        deferred.resolve(r);
+                      }
+                  })
 
-                shipment.save(function (err, resp) {
-                    if (err){
-                      r.er = err;
-                      deferred.reject(r);
-                    }
-                    else{
-                      r.pl = {shipment:resp};
-                      r.status = true;
-                      deferred.resolve(r);
-                    }
                 })
               }
               else{

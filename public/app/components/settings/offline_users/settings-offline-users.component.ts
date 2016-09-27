@@ -95,14 +95,17 @@ export class SettingsOfflineUsers{
   users:any[];
   editMode:boolean = false;
   editTarget:any;
+
   newUser:any = {
-    name:"",
-    phone:"",
-    pw:"111111",
-    addr:"",
-    ap:"",
-    sex:""
-  };
+      name:"",
+      phone:"",
+      email:'',
+      pw:"111111",
+      addr:"",
+      ap:"",
+      sex:""
+    };
+
 
     constructor(private request:RequestService, private settingsSrvc:SettingsService){
       console.log("Settings Offline users is up and running");

@@ -28,6 +28,7 @@ export class SettingsAccess{
     newUser:any = {
       name:"",
       phone:"",
+      email:'',
       pw:"",
       addr:"",
       ap:"",

@@ -14,13 +14,37 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'registerUser',
           pl:{
-            user:req.body
+            data:req.body,
+            user:lib.reqUser(req)
           }
         };
 
         handler(param)
             .then(function (r) {
               console.log("user registered----",r);
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              // console.log(r.er);
+              var r = {pl: null, er:r.er};
+              helpers.sendResponse(res, 501, r);
+            });
+  });
+
+
+  router.post('/org.json', function(req, res, next) {
+        var param = {
+          ns: 'auth',
+          vs: '1.0',
+          op: 'createOrganization',
+          pl:{
+            org:req.body
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+              console.log("route org created ----",r);
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {
@@ -91,7 +115,9 @@ var param = {
   ns: 'auth',
   vs: '1.0',
   op: 'getUsers',
-  pl:{}
+  pl:{
+    user:lib.reqUser(req)
+  }
 };
 
 handler(param)
@@ -113,7 +139,9 @@ var param = {
   ns: 'auth',
   vs: '1.0',
   op: 'getAccessUsers',
-  pl:{}
+  pl:{
+    user:lib.reqUser(req)
+  }
 };
 
 handler(param)
@@ -136,7 +164,9 @@ var param = {
   ns: 'auth',
   vs: '1.0',
   op: 'getOfflineUsers',
-  pl:{}
+  pl:{
+    user:lib.reqUser(req)
+  }
 };
 
 handler(param)
@@ -161,30 +191,30 @@ handler(param)
 
 
 // restricted routes...not used?
-router.get('/admin.json', passport.authenticate('jwt', { session: false}), function(req, res) {
-
-  var param = {
-    ns: 'auth',
-    vs: '1.0',
-    op: 'hasAccess',
-    pl:{
-      headers:req.headers
-    }
-  };
-
-  handler(param)
-      .then(function (r) {
-        console.log("user has accesss--",r);
-         helpers.sendResponse(res, 200, r);
-      })
-      .fail(function (r) {
-        console.log(r.er);
-        var r = {pl: null, er: r.er};
-        helpers.sendResponse(res, 501, r);
-  });
-
-
-});
+// router.get('/admin.json', passport.authenticate('jwt', { session: false}), function(req, res) {
+//
+//   var param = {
+//     ns: 'auth',
+//     vs: '1.0',
+//     op: 'hasAccess',
+//     pl:{
+//       headers:req.headers
+//     }
+//   };
+//
+//   handler(param)
+//       .then(function (r) {
+//         console.log("user has accesss--",r);
+//          helpers.sendResponse(res, 200, r);
+//       })
+//       .fail(function (r) {
+//         console.log(r.er);
+//         var r = {pl: null, er: r.er};
+//         helpers.sendResponse(res, 501, r);
+//   });
+//
+//
+// });
 
   return router;
 };

@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 //incomming plc data
 var iPlcSchema = mongoose.Schema({
+                    oID:String,
+                    cuID:String, //created user id
+                    muID:String, //modified user id
                     cd:String,// created date
                     y:String,//year
                     m:String,//month
@@ -29,5 +32,12 @@ var iPlcSchema = mongoose.Schema({
                     er2:String,// error report 2
                     tank:String
               });
+
+    iPlcSchema.methods.setOwner = function (user, cb) {
+        this.oID = user.oID;
+        this.cuID = user.an;
+        this.muID = user.an;
+        cb(null, this);
+    };
 
 module.exports = mongoose.model('iplc',iPlcSchema);

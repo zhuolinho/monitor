@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 
 var shipmentSchema = mongoose.Schema({
+
+                    oID:String,
+                    cuID:String, //created user id
+                    muID:String, //modified user id
                     sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
                     dest:String,
                     cd:String, //created date
@@ -18,6 +22,16 @@ var shipmentSchema = mongoose.Schema({
                     ed:String,  //estimated duration
                     pa:String, //processing agent
                     status:{type:Number,default:0} //0 ongoing , 1 done
+              },
+              {
+                timestamps:true
               });
 //
+shipmentSchema.methods.setOwner = function (user, cb) {
+    this.oID = user.oID;
+    this.cuID = user.an;
+    this.muID = user.an;
+    cb(null, this);
+};
+
 module.exports = mongoose.model('shipment',shipmentSchema);

@@ -495,17 +495,29 @@ plc.addNewAddress =  function(m) {
                           plcaddr2:m.pl.address.plcaddr2
                           });
 
-               newAddress.save(function (error, address){
-                   if (!error){
-                     r.pl.address = address;
-                     deferred.resolve(r);
-                   }
-                   else{
-                     r.er = error;
-                     r.em = 'could not save. already exist?';
-                     deferred.reject(r);
-                   }
-               });
+            newAddress.setOwner(m.pl.user,function(err,doc){
+                if(!err){
+                  doc.save(function (error, address){
+                      if (!error){
+                        r.pl.address = address;
+                        deferred.resolve(r);
+                      }
+                      else{
+                        r.er = error;
+                        r.em = 'could not save. already exist?';
+                        deferred.reject(r);
+                      }
+                  });
+                }
+                else{
+                  r.er = err;
+                  r.em = 'update before save';
+                  deferred.reject(r);
+                }
+
+            })
+
+
       }
       else {
         r.er =  "no address or address code provided";
@@ -798,7 +810,7 @@ var _extractPlcData = function(data,index){
                          cdct:chanelDate, //chanel data collection time
                          addr1:parseInt(addr1.toString('hex'), 16),
                          iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
-                         isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex')),//instantaneous standard conditions 1
+                         isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
                          p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
                          temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
                          pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1

@@ -170,7 +170,7 @@ module.exports = function (handler)
 
 
   //gps Connection
-  _tcpCLient(handler);
+  // _tcpCLient(handler);
 
   return router;
 };
