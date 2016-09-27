@@ -165,10 +165,6 @@
               <a (click)="veProcessed(alert)" *ngIf="!alert.status" class="waves-effect  waves-light btn-large monitor-gray-button helper-font-double" style="display:block; width:160px; height:80px; margin:auto; text-align:center; line-height:80px;"> 已接报 </a>
             </div>
 
-            <!-- modal goes here -->
-            <!-- <home-alerts-detail *ngIf ='(alert.atype != "拉回报警") && (alert.atype != "进场报警") ' [data]="{id:'homealert'+i,alert:alert}"> </home-alerts-detail>
-            <home-return-alerts-detail *ngIf ='(alert.atype == "拉回报警") || (alert.atype == "进场报警")' [data]="{id:'homereturnalert'+i,alert:alert}"> </home-return-alerts-detail> -->
-
           </div>
         </div>
 
@@ -201,7 +197,7 @@
                   </div>
                   <div class="col s3">
 
-                      <a (click)="detailmodal.selectedtab = 3;" [class.monitor-tab-selected]="detailmodal.selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+                      <a (click)="detailmodal.selectedtab = 3; downloadData();" [class.monitor-tab-selected]="detailmodal.selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
                   </div>
                   <div class="col s3">
                       <a (click)="detailmodal.selectedtab = 4;" [class.monitor-tab-selected]="detailmodal.selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>

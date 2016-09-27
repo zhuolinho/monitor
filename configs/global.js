@@ -6,8 +6,8 @@ var globalConf = {
                 name:'System'
               },
               orgs:[
-                  {name:'yozaii',
-                    id:''
+                  { name:'test',
+                    oID:10000000001
                   }
                 ]
             }

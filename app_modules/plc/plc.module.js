@@ -211,7 +211,7 @@ plc.handleIncommingData =  function(m) {
   // console.log("plc: handleIncommingData",m.pl);
   var deferred = q.defer();
 
-var incommingData = m.pl.data;
+  var incommingData = m.pl.data;
 
   if(incommingData){
 
@@ -225,7 +225,18 @@ var incommingData = m.pl.data;
                break;
              }
 
-             pchain.push(_saveIncommingData(dataToSave));
+
+             if(m.pl.org){
+               dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
+                      pchain.push(_saveIncommingData(setDoc));
+               });
+             }
+             else{
+               throw 'plc org not provided';
+             }
+
+
+
       }
 
       var result =  q({length:pchain.length});
@@ -269,18 +280,29 @@ plc.getData =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  iPlc.find(function (err, plc) {
-      if (err){
-        r.er = err;
-        r.status = false;
-        deferred.reject(r);
-      }
-      else{
-        r.pl.plc = plc;
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+
+
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+    iPlc.find({oID:m.pl.user.oID},function (err, plc) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.plc = plc;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
   return deferred.promise;
 }
 
@@ -291,18 +313,29 @@ plc.getLatestData =  function(m) {
   var deferred = q.defer();
   var length = m.pl.length||1;
 
-  iPlc.find().sort({cd:-1}).limit(length).exec(function (err, plc) {
-      if (err){
-        r.er = err;
-        r.status = false;
-        deferred.reject(r);
-      }
-      else{
-        r.pl.plc = plc;
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+    iPlc.find({oID:m.pl.user.oID}).sort({cd:-1}).limit(length).exec(function (err, plc) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.plc = plc;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+
 
   return deferred.promise;
 }
@@ -316,139 +349,149 @@ plc.getPlcStats = function(m){
     var deferred = q.defer();
     var computedValues = [];
 
-    if(m && m.pl && m.pl.year){
-      if(m && m.pl && m.pl.month && m.pl.month != '0'){
 
-        iPlc.aggregate([
-            {
-                $match: {y:m.pl.year, m:m.pl.month},
-            },
-            {
-                $group: {
-                    _id:"$d",
-                    maxVal:{ $max: "$psc2" },
-                    date:{$max:"$cd"},
-                    count: {$sum: 1}
-                }
-            }
-        ]).sort({date:1}).exec(function (err, plc) {
 
-                console.log("got group plc>>>>>>>---",plc);
-            if (err){
-              r.er = err;
-              r.status = false;
-              deferred.reject(r);
-            }
-            else{
-              if(plc && plc.length){
+    if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-                var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
-                iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+          if(m && m.pl && m.pl.year){
+            if(m && m.pl && m.pl.month && m.pl.month != '0'){
 
-                        console.log("got previous plc",plc2);
-                    if (err2){
-                      r.er = err2;
+              iPlc.aggregate([
+                  {
+                      $match: {y:m.pl.year, m:m.pl.month,oID:m.pl.user.oID},
+                  },
+                  {
+                      $group: {
+                          _id:"$d",
+                          maxVal:{ $max: "$psc2" },
+                          date:{$max:"$cd"},
+                          count: {$sum: 1}
+                      }
+                  }
+              ]).sort({date:1}).exec(function (err, plc) {
+
+                      console.log("got group plc>>>>>>>---",plc);
+                  if (err){
+                    r.er = err;
+                    r.status = false;
+                    deferred.reject(r);
+                  }
+                  else{
+                    if(plc && plc.length){
+
+                      var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
+                      iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                              console.log("got previous plc",plc2);
+                          if (err2){
+                            r.er = err2;
+                            r.status = false;
+                            deferred.reject(r);
+                          }
+                          else{
+                            if(plc2.length){
+                                plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                            }
+                            else{
+                                plc[0].usage  =  plc[0].maxVal;
+                            }
+
+                              plc[0].date = plc[0].date.slice(0,10);
+
+                            for (var i = 1; i < plc.length; i++) {
+                              plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                              plc[i].date = plc[i].date.slice(0,10);
+                            }
+                            r.pl.plc = plc;
+                            r.status = true;
+                            deferred.resolve(r);
+                          }
+                      })
+
+                    }else{
+                      r.pl.plc = [];
                       r.status = false;
-                      deferred.reject(r);
-                    }
-                    else{
-                      if(plc2.length){
-                          plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
-                      }
-                      else{
-                          plc[0].usage  =  plc[0].maxVal;
-                      }
-
-                        plc[0].date = plc[0].date.slice(0,10);
-
-                      for (var i = 1; i < plc.length; i++) {
-                        plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
-                        plc[i].date = plc[i].date.slice(0,10);
-                      }
-                      r.pl.plc = plc;
-                      r.status = true;
                       deferred.resolve(r);
                     }
-                })
+                  }
+              });
 
-              }else{
-                r.pl.plc = [];
-                r.status = false;
-                deferred.resolve(r);
-              }
-            }
-        });
-
-      }
-      else{
-
-        iPlc.aggregate([
-            {
-                $match: {y:m.pl.year},
-            },
-            {
-                $group: {
-                    _id:"$m",
-                    maxVal:{ $max: "$psc2" },
-                    date:{$max:"$cd"},
-                    count: {$sum: 1}
-                }
-            }
-        ]).sort({date:1}).exec(function (err, plc) {
-          // console.log("got group plc",plc);
-            if (err){
-              r.er = err;
-              r.status = false;
-              deferred.reject(r);
             }
             else{
 
-              if(plc && plc.length){
-                var previousDate = lib.getMonthBefore(m.pl.year,1);
-                iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+              iPlc.aggregate([
+                  {
+                      $match: {y:m.pl.year},
+                  },
+                  {
+                      $group: {
+                          _id:"$m",
+                          maxVal:{ $max: "$psc2" },
+                          date:{$max:"$cd"},
+                          count: {$sum: 1}
+                      }
+                  }
+              ]).sort({date:1}).exec(function (err, plc) {
+                // console.log("got group plc",plc);
+                  if (err){
+                    r.er = err;
+                    r.status = false;
+                    deferred.reject(r);
+                  }
+                  else{
 
-                    // console.log("got previous plc",plc2);
-                    if (err2){
-                      r.er = err2;
+                    if(plc && plc.length){
+                      var previousDate = lib.getMonthBefore(m.pl.year,1);
+                      iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                          // console.log("got previous plc",plc2);
+                          if (err2){
+                            r.er = err2;
+                            r.status = false;
+                            deferred.reject(r);
+                          }
+                          else{
+                            if(plc2.length){
+                                plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                            }
+                            else{
+                                plc[0].usage  =  plc[0].maxVal;
+                            }
+
+                            plc[0].date = plc[0].date.slice(0,7);
+
+                            for (var i = 1; i < plc.length; i++) {
+                              plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                              plc[i].date = plc[i].date.slice(0,7);
+                            }
+                            r.pl.plc = plc;
+                            r.status = true;
+                            deferred.resolve(r);
+                          }
+                      })
+                    }else {
+                      r.pl.plc = [];
                       r.status = false;
-                      deferred.reject(r);
-                    }
-                    else{
-                      if(plc2.length){
-                          plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
-                      }
-                      else{
-                          plc[0].usage  =  plc[0].maxVal;
-                      }
-
-                      plc[0].date = plc[0].date.slice(0,7);
-
-                      for (var i = 1; i < plc.length; i++) {
-                        plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
-                        plc[i].date = plc[i].date.slice(0,7);
-                      }
-                      r.pl.plc = plc;
-                      r.status = true;
                       deferred.resolve(r);
                     }
-                })
-              }else {
-                r.pl.plc = [];
-                r.status = false;
-                deferred.resolve(r);
-              }
+
+                  }
+              });
 
             }
-        });
+          }
+          else{
+              r.er = "no year passed";
+              r.status = false;
+              deferred.reject(r);
+          }
 
-      }
     }
     else{
-        r.er = "no year passed";
-        r.status = false;
-        deferred.reject(r);
+      r.er = 'no org provided';
+      r.status = false;
+      deferred.reject(r);
     }
-
 
     return deferred.promise;
 
@@ -460,18 +503,28 @@ plc.getAddress =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  Address.find(function (err, address) {
-      if (err){
-        r.er = err;
-        r.status = false;
-        deferred.reject(r);
-      }
-      else{
-        r.pl.address = address;
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+    Address.find({oID:m.pl.user.oID},function (err, address) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.address = address;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+
   return deferred.promise;
 }
 
@@ -533,24 +586,35 @@ plc.updateAddress =  function(m) {
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.address){
 
-      Address.findOneAndUpdate({_id:m.pl.address._id}, m.pl.address, { new: true }, function(err, address) {
-                if (err){
-                  r.er = err;
-                  r.em = 'problem finding address';
-                  deferred.reject(r);
-                }
-                else{
-                  r.pl.address = address;
-                  deferred.resolve(r);
-                }
-      });
+
+      if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+        if(m.pl && m.pl.address){
+
+          Address.findOneAndUpdate({_id:m.pl.address._id,oID:m.pl.user.oID}, m.pl.address, { new: true }, function(err, address) {
+                    if (err){
+                      r.er = err;
+                      r.em = 'problem finding address';
+                      deferred.reject(r);
+                    }
+                    else{
+                      r.pl.address = address;
+                      deferred.resolve(r);
+                    }
+          });
+          }
+          else {
+            r.er =  "no address or address code provided";
+            deferred.reject(r);
+          }
       }
-      else {
-        r.er =  "no address or address code provided";
+      else{
+        r.er = 'no org provided';
+        r.status = false;
         deferred.reject(r);
       }
+
     return deferred.promise;
 }
 
@@ -609,18 +673,30 @@ plc.getPlcAlerts =  function(m) {
   }
  }
 
-  PlcAlert.find(query).sort({atime:-1}).exec(function (err, resp) {
-      if (err){
-        r.er = err;
-        r.status = false;
-        deferred.reject(r);
-      }
-      else{
-        r.pl.alerts = resp;
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+ if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+    query.oID = m.pl.user.oID;
+     PlcAlert.find(query).sort({atime:-1}).exec(function (err, resp) {
+         if (err){
+           r.er = err;
+           r.status = false;
+           deferred.reject(r);
+         }
+         else{
+           r.pl.alerts = resp;
+           r.status = true;
+           deferred.resolve(r);
+         }
+     })
+
+
+ }
+ else{
+   r.er = 'no org provided';
+   r.status = false;
+   deferred.reject(r);
+ }
+
   return deferred.promise;
 }
 
@@ -632,18 +708,31 @@ plc.getShipmentList =  function(m) {
  var r = {pl: null, status:false , er:''};
  var deferred = q.defer();
 
- PlcAlert.find().$where('(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))').exec(
-   function (err, resp) {
-       if (err){
-         r.er = err;
-         deferred.reject(r);
-       }
-       else{
-         r.pl = {shipmentList:resp};
-         r.status = true;
-         deferred.resolve(r);
-       }
-   });
+
+
+ if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+     PlcAlert.find({oID:m.pl.user.oID}).$where('(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))').exec(
+       function (err, resp) {
+           if (err){
+             r.er = err;
+             deferred.reject(r);
+           }
+           else{
+             r.pl = {shipmentList:resp};
+             r.status = true;
+             deferred.resolve(r);
+           }
+       });
+
+
+ }
+ else{
+   r.er = 'no org provided';
+   r.status = false;
+   deferred.reject(r);
+ }
+
   return deferred.promise;
 }
 
@@ -654,29 +743,41 @@ plc.updatePlcAlert =  function(m) {
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.data && m.pl.data._id){
 
-      PlcAlert.findOneAndUpdate({_id:m.pl.data._id}, m.pl.data, { new: true }, function(err, resp) {
-                if (err){
-                  r.er = err;
-                  r.em = 'problem finding alert';
-                  deferred.reject(r);
-                }
-                else{
-                  if(resp){
-                    r.pl.alert = resp;
-                    deferred.resolve(r);
-                  }else {
-                    r.er =  "alert not found!..";
-                    deferred.reject(r);
-                  }
-                }
-      });
-      }
-      else {
-        r.er =  "no alert or alert _id provided";
-        deferred.reject(r);
-      }
+    if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+          if(m.pl && m.pl.data && m.pl.data._id){
+
+            PlcAlert.findOneAndUpdate({_id:m.pl.data._id,oID:m.pl.user.oID}, m.pl.data, { new: true }, function(err, resp) {
+                      if (err){
+                        r.er = err;
+                        r.em = 'problem finding alert';
+                        deferred.reject(r);
+                      }
+                      else{
+                        if(resp){
+                          r.pl.alert = resp;
+                          deferred.resolve(r);
+                        }else {
+                          r.er =  "alert not found!..";
+                          deferred.reject(r);
+                        }
+                      }
+            });
+            }
+            else {
+              r.er =  "no alert or alert _id provided";
+              deferred.reject(r);
+            }
+
+
+    }
+    else{
+      r.er = 'no org provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
     return deferred.promise;
 }
 
@@ -686,11 +787,20 @@ plc.downloadData = function(m){
   var r = {pl:null , er:'',em:''};
   var deferred = q.defer();
 
-    lib.procesDownload().then(function(res){
-      console.log("file res----",res);
-      r.pl = {file:res.path};
-      deferred.resolve(r);
-    });
+    if(m && m.pl && m.pl.user){
+
+          lib.procesDownload().then(function(res){
+            console.log("file res----",res);
+            r.pl = {file:res.path};
+            deferred.resolve(r);
+          });
+    }
+    else{
+      r.er = 'no user/org provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
 
 
     return deferred.promise;
@@ -698,6 +808,31 @@ plc.downloadData = function(m){
 
 
 
+
+plc.downloadStats = function(m){
+  console.log(" downloadStats----");
+
+  var r = {pl:null , er:'',em:''};
+  var deferred = q.defer();
+
+    if(m && m.pl && m.pl.data){
+
+          lib.procesDownloadStats(m.pl.data).then(function(res){
+            console.log("file res----",res);
+            r.pl = {file:res.path};
+            deferred.resolve(r);
+          });
+    }
+    else{
+      r.er = 'no data provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
+
+
+    return deferred.promise;
+}
 
 
 var _extractPlcData = function(data,index){

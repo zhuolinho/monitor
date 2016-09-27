@@ -223,6 +223,20 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         _this.initSelect();
                     });
                 };
+                // downloadData(){
+                //
+                //   this.request.post('/plc/download.json', this.statsData).subscribe(resp => {
+                //     console.log("plc downdload-----",resp);
+                //     if(resp&&resp.pl&&resp.pl.plc){
+                //         this.statsData = resp.pl.plc;
+                //     }
+                //   });
+                HomeAlerts.prototype.downloadData = function () {
+                    this.request.post('/plc/stats/download.json', this.statsData).subscribe(function (res) {
+                        console.log("res-----", res);
+                        window.location = res.pl.file;
+                    });
+                };
                 HomeAlerts.prototype.initGrapth = function () {
                     var that = this;
                 };

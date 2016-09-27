@@ -21,8 +21,8 @@ var gpsAlertSchema = mongoose.Schema({
 
 gpsAlertSchema.methods.setOwner = function (user, cb) {
     this.oID = user.oID;
-    this.cuID = user.an;
-    this.muID = user.an;
+    this.cuID = user.an||'system';
+    this.muID = user.an||'system';
     cb(null, this);
 };
 

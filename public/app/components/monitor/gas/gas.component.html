@@ -77,30 +77,30 @@
 
                                 <div class="table-row">
                                   <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.addr1}}</span></div>
                                 </div>
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
                                   <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.psc1}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
                                   <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.isc1}}</span></div>
                                 </div>
 
                                 <div class="table-row">
                                   <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.temp1}}</span></div>
                                 </div>
 
 
                                 <div class="table-row">
                                   <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.p1}}</span></div>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -124,30 +124,30 @@
 
                                 <div class="table-row">
                                   <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].addr2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.addr2}}</span></div>
                                 </div>
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
                                   <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].psc2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.psc2}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
                                   <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].isc2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.isc2}}</span></div>
                                 </div>
 
                                 <div class="table-row">
                                   <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].temp2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.temp2}}</span></div>
                                 </div>
 
 
                                 <div class="table-row">
                                   <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0].p2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.p2}}</span></div>
                                 </div>
 
               </div>
@@ -276,7 +276,7 @@
             </div>
             <div class="col s3">
 
-                <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+                <a (click)="selectedtab=3; downloadData();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
             </div>
             <div class="col s3">
                 <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
@@ -329,15 +329,15 @@
               </div>
 
 
-              <div class="col s2 m2 ">
+              <div class="col s2 m2">
                     <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="computeStats();">
-                      统计
+                      查看
                     </a>
               </div>
 
 
               <div class="col s3 m3">
-                <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5">
+                <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
                   下载数据
                 </a>
               </div>

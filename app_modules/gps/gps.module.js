@@ -44,18 +44,27 @@ gps.getData =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  gpsModel.find(function (err, gps) {
-      if (err){
-        r.er = err;
-        r.status = false;
-        deferred.reject(r);
-      }
-      else{
-        r.pl.gps = gps;
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+  if(m && m.user && m.user.oID){
+    gpsModel.find({oID:m.user.oID},function (err, gps) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.gps = gps;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+
   return deferred.promise;
 
 }
@@ -67,17 +76,25 @@ gps.getAllShipments =  function(m) {
  var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  Shiment.find(function (err, resp) {
-      if (err){
-        r.er = JSON.stringify(err);
-        deferred.reject(r);
-      }
-      else{
-        r.pl = {shipments:resp};
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+    if(m && m.user && m.user.oID){
+      Shiment.find({oID:m.user.oID},function (err, resp) {
+          if (err){
+            r.er = JSON.stringify(err);
+            deferred.reject(r);
+          }
+          else{
+            r.pl = {shipments:resp};
+            r.status = true;
+            deferred.resolve(r);
+          }
+      })
+    }
+    else{
+      r.er = 'no org provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
   return deferred.promise;
 
 }
@@ -90,17 +107,25 @@ gps.getCompletedShipments =  function(m) {
  var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  Shiment.find({status:1},function (err, resp) {
-      if (err){
-        r.er = err;
-        deferred.reject(r);
-      }
-      else{
-        r.pl = {shipments:resp};
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+  if(m && m.user && m.user.oID){
+      Shiment.find({oID:m.user.oID,status:1},function (err, resp) {
+          if (err){
+            r.er = err;
+            deferred.reject(r);
+          }
+          else{
+            r.pl = {shipments:resp};
+            r.status = true;
+            deferred.resolve(r);
+          }
+      })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
   return deferred.promise;
 
 }
@@ -111,34 +136,46 @@ gps.getAllCars =  function(m) {
   var r = {pl: null, status:false , ec:'',em:''};
    var deferred = q.defer();
 
-   gpsModel.aggregate(
-           [
-             { $sort: { sim: 1, time: 1}},
-             {
-               $group:
-                 {
-                   _id:"$sim",
-                   time: { $last: "$time" },
-                   lng: { $last: "$lng" },
-                   lat: { $last: "$lat" },
-                   speed: { $last: "$speed"},
-                   lp:{$last: "$lp"}
-                 }
-             }
-           ]
-        ).exec(function(err,resp){
-            if (err){
-              console.log("err-----gps mod-----",err);
-              r.ec = JSON.stringify(err.ec);
-              r.em = JSON.stringify(err.em);
-              deferred.reject(r);
-            }
-            else{
-              r.pl = {cars:resp};
-              r.status = true;
-              deferred.resolve(r);
-            }
-        });
+
+
+   if(m && m.user && m.user.oID){
+
+     gpsModel.aggregate(
+             [
+               {$match:{oID:m.user.oID}},
+               { $sort: { sim: 1, time: 1}},
+               {
+                 $group:
+                   {
+                     _id:"$sim",
+                     time: { $last: "$time" },
+                     lng: { $last: "$lng" },
+                     lat: { $last: "$lat" },
+                     speed: { $last: "$speed"},
+                     lp:{$last: "$lp"}
+                   }
+               }
+             ]
+          ).exec(function(err,resp){
+              if (err){
+                console.log("err-----gps mod-----",err);
+                r.ec = JSON.stringify(err.ec);
+                r.em = JSON.stringify(err.em);
+                deferred.reject(r);
+              }
+              else{
+                r.pl = {cars:resp};
+                r.status = true;
+                deferred.resolve(r);
+              }
+          });
+
+   }
+   else{
+     r.er = 'no org provided';
+     r.status = false;
+     deferred.reject(r);
+   }
    return deferred.promise;
 
 }
@@ -182,10 +219,13 @@ gps.processIncommingData = function(m){
       var toSave = {sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp};
 
       var gpsData = new gpsModel(toSave);
-        global.allCars[sim] = gpsData;  //save latest position of each car;
-        r.pl =  {gps:gpsData};
-        r.status = true;
-        deferred.resolve(r);
+      gpsData.setOwner(m.pl.org,function(setErr,setDoc){
+          global.allCars[sim] = setDoc;  //save latest position of each car;
+          r.pl =  {gps:setDoc};
+          r.status = true;
+          deferred.resolve(r);
+      });
+
     }
   }
   else{
@@ -301,18 +341,25 @@ gps.newGpsAlert =  function(m) {
                                                   lat:data.lat,
                                               });
 
+                                if(m.pl.org){
+                                  gpsAlert.setOwner(m.pl.org,function(setError,setDoc){
+                                    setDoc.save(function (err, resp) {
+                                        if (err){
+                                          r.er = err;
+                                          deferred.reject(r);
+                                        }
+                                        else{
+                                          r.pl = {shipment:resp};
+                                          r.status = true;
+                                          deferred.resolve(r);
+                                        }
+                                    })
 
-                              gpsAlert.save(function (err, resp) {
-                                  if (err){
-                                    r.er = err;
-                                    deferred.reject(r);
-                                  }
-                                  else{
-                                    r.pl = {shipment:resp};
-                                    r.status = true;
-                                    deferred.resolve(r);
-                                  }
-                              })
+                                  });
+                                }
+                                else{
+                                  throw 'plc org not provided';
+                                }
 
                 }
                 else {
@@ -343,17 +390,27 @@ gps.gpsAlerts =  function(m) {
  var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  gpsAlertModel.find(function (err, resp) {
-      if (err){
-        r.er = JSON.stringify(err);
-        deferred.reject(r);
-      }
-      else{
-        r.pl = {alerts:resp};
-        r.status = true;
-        deferred.resolve(r);
-      }
-  })
+
+  if(m && m.user && m.user.oID){
+
+      gpsAlertModel.find({oID:m.user.oID},function (err, resp) {
+          if (err){
+            r.er = JSON.stringify(err);
+            deferred.reject(r);
+          }
+          else{
+            r.pl = {alerts:resp};
+            r.status = true;
+            deferred.resolve(r);
+          }
+      })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
   return deferred.promise;
 
 }
@@ -369,15 +426,16 @@ gps.shipmentComplete = function(m){
   var deferred = q.defer();
 
   var shipment = m.pl.data;
+  var user =  m.pl.user;
 
-  if(shipment && shipment.sim ){
+  if(shipment && shipment.sim && user && user.oID){
 
     shipment.at = lib.dateTime();
     shipment.status = 1;
 
     // console.log("shipment to update----",shipment);
 
-    Shiment.findOneAndUpdate({ _id: shipment._id }, shipment, { new: true }, function(err, resp) {
+    Shiment.findOneAndUpdate({ _id: shipment._id, oID:user.oID}, shipment, { new: true }, function(err, resp) {
               if (err){
                 r.er = err;
                 r.em = 'problem finding shipment';
@@ -430,7 +488,6 @@ gps.saveIncommingData =  function(m) {
   return deferred.promise;
 
 }
-
 
 //save gps data periodically
 var timer = setInterval(function(){

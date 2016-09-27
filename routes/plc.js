@@ -3,6 +3,7 @@ var helpers = require('../utilities/helpers');
 var bufferConcat = require('buffer-concat');
 var lib = require('../lib/lib');
 var plcConf = require('../configs/plc');
+var globalConf = require('../configs/global');
 var express = require('express');
 var net = require('net');
 var plcApp = require('express')();
@@ -18,7 +19,6 @@ var chunks = [];
 var sTimer = 5*60000; //5min.
 var size = 0;
 server.listen(3003);
-
 
 
 var q = require('q');
@@ -247,6 +247,28 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
   });
 
 
+  router.post('/stats/download.json', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'downloadStats',
+          pl:{data:req.body,user:lib.reqUser(req)}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
+
+
 
 
 
@@ -270,8 +292,8 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
   // });
 
   //plc Connection
-  // _tcpSerever(handler);
-  // _checkInterruption(handler);
+  _tcpSerever(handler);
+  _checkInterruption(handler);
 
   return router;
 };
@@ -387,12 +409,11 @@ var _tcpSerever = function(handler){
 
 function saveData(handler,data){
 
-  var user = lib.reqUser(req);
   var param = {
         ns: 'plc',
         vs: '1.0',
         op: 'handleIncommingData',
-        pl:{data:data,user:user}
+        pl:{data:data,org:globalConf.orgs[0]}
   }
 
   handler(param)

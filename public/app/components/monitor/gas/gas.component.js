@@ -288,6 +288,12 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.computeStats = function () {
                     this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
                 };
+                Gas.prototype.downloadData = function () {
+                    this.request.post('/plc/stats/download.json', this.statsData).subscribe(function (res) {
+                        console.log("res-----", res);
+                        window.location = res.pl.file;
+                    });
+                };
                 // code for detail modal
                 Gas.prototype.showByDay = function () {
                     var _this = this;

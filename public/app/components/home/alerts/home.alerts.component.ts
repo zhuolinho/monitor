@@ -255,6 +255,23 @@ export class HomeAlerts implements AfterViewInit{
           });
       }
 
+      // downloadData(){
+      //
+      //   this.request.post('/plc/download.json', this.statsData).subscribe(resp => {
+      //     console.log("plc downdload-----",resp);
+      //     if(resp&&resp.pl&&resp.pl.plc){
+      //         this.statsData = resp.pl.plc;
+      //     }
+      //   });
+
+
+    downloadData(){
+          this.request.post('/plc/stats/download.json',this.statsData).subscribe(res => {
+            console.log("res-----",res);
+            window.location = res.pl.file;
+          });
+        }
+
       initGrapth(){
 
         var that = this;

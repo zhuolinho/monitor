@@ -332,6 +332,15 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
 
+
+    downloadData(){
+        this.request.post('/plc/stats/download.json',this.statsData).subscribe(res => {
+          console.log("res-----",res);
+          window.location = res.pl.file;
+        });
+      }
+
+
     // code for detail modal
     showByDay(){
         // alert('by day');

@@ -1,6 +1,7 @@
 
 var helpers = require('../utilities/helpers');
 var gpsConf = require('../configs/gps');
+var globalConf = require('../configs/global');
 var lib = require('../lib/lib');
 var express = require('express');
 var net = require('net');
@@ -94,7 +95,7 @@ module.exports = function (handler)
           vs: '1.0',
           op: 'newGpsAlert',
           pl:{
-            data:req.body, user:lib.reqUser(req)}
+            data:req.body, org:globalConf.orgs[0]}
         };
 
         handler(param)
@@ -170,7 +171,7 @@ module.exports = function (handler)
 
 
   //gps Connection
-  // _tcpCLient(handler);
+  _tcpCLient(handler);
 
   return router;
 };
@@ -218,7 +219,7 @@ function processIncommingData(handler,stream){
         ns: 'gps',
         vs: '1.0',
         op: 'processIncommingData',
-        pl:{stream:stream}
+        pl:{stream:stream,org:globalConf.orgs[0]}
   }
 
   handler(param)
