@@ -7,7 +7,7 @@ var globalConf = {
               },
               orgs:[
                   { name:'test',
-                    oID:10000000001
+                    oID:'10000000001'
                   }
                 ]
             }

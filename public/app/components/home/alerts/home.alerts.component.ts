@@ -5,6 +5,7 @@ import {config} from '../../../config';
 import {AlertModel} from '../../../models/alert-model';
 import {RequestService} from '../../../services/request.service';
 import {UserService} from '../../../services/user.service';
+import {RTMessagesService} from '../../../services/rt-messages.service';
 // import {CORE_DIRECTIVES} from '@angular/common';
 import {LibService} from '../../../services/lib.service';
 declare var jQuery:any;
@@ -49,7 +50,10 @@ export class HomeAlerts implements AfterViewInit{
     isShowByDay:boolean;
     statsData:any[];
 
-    constructor(private request:RequestService, private userSrvc:UserService, private lib:LibService){
+    constructor(private request:RequestService,
+                private userSrvc:UserService,
+                private rtmgs:RTMessagesService,
+                private lib:LibService){
     console.log("Home alerts is up and running");
       var self = this;
       this.user = this.userSrvc.getUser();
@@ -116,18 +120,34 @@ export class HomeAlerts implements AfterViewInit{
         });
     }
 
-    iniSocket(){
-         var that = this;
-          var url = 'http://'+window.location.hostname+':3003';
-          var socket = io(url);
-         socket.on('newPlcAlert', function(data){
-           console.log("got new alert---",data);
-           if(data && data.pl && data.pl.alert){
-               that.alertsList.unshift(data.pl.alert);
-               that.alertGroups =  _.groupBy(that.alertsList,'atype');
-           }
-         });
-      }
+    // iniSocket(){
+    //      var that = this;
+    //       var url = 'http://'+window.location.hostname+':3003/10000000001';
+    //       var socket = io(url);
+    //      socket.on('newPlcAlert', function(data){
+    //        console.log("got new alert---",data);
+    //        if(data && data.pl && data.pl.alert){
+    //            that.alertsList.unshift(data.pl.alert);
+    //            that.alertGroups =  _.groupBy(that.alertsList,'atype');
+    //            that.hasData = true;
+    //        }
+    //      });
+    //   }
+
+
+
+      iniSocket(){
+          var that = this;
+           this.rtmgs.connect(3003);
+           this.rtmgs.on('newPlcAlert', function(data){
+             console.log("got new alert---",data);
+             if(data && data.pl && data.pl.alert){
+                 that.alertsList.unshift(data.pl.alert);
+                 that.alertGroups =  _.groupBy(that.alertsList,'atype');
+                 that.hasData = true;
+             }
+           });
+        }
 
 
 

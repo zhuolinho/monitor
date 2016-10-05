@@ -1,4 +1,4 @@
-System.register(['@angular/core', '../../../services/lib.service', '../../../config', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../services/lib.service', '../../../config', '../../../services/rt-messages.service', '../../../services/request.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, lib_service_1, config_1, request_service_1;
+    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1;
     var Gas;
     return {
         setters:[
@@ -23,14 +23,18 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
             function (config_1_1) {
                 config_1 = config_1_1;
             },
+            function (rt_messages_service_1_1) {
+                rt_messages_service_1 = rt_messages_service_1_1;
+            },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
             }],
         execute: function() {
             Gas = (function () {
-                function Gas(request, lib) {
+                function Gas(request, rtmgs, lib) {
                     var _this = this;
                     this.request = request;
+                    this.rtmgs = rtmgs;
                     this.lib = lib;
                     // tableByday:any[] = [{code:'C002',date:'1月1号', if:0.0000, af:0.0000, mf:0.0000},  // Instantaneous flow,average flow,max flow
                     //                     {code:'C002',date:'1月2号', if:0.0000, af:0.0000, mf:0.0000},
@@ -203,11 +207,33 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         });
                     }
                 };
+                //  iniSocket(){
+                //       var that = this;
+                //        var url = 'http://'+window.location.hostname+':3003';
+                //        var socket = io(url);
+                //       socket.on('realTimePlc', function(data){
+                //
+                //         if(!that.goodConnection){
+                //           that.goodConnection = true;
+                //         }
+                //
+                //         console.log("realTimePlc-----",data);
+                //         if(data&&data.pl&& data.pl.plc){
+                //             that.realTimeData = data.pl.plc;
+                //         }
+                //
+                //       });
+                //
+                //
+                //       socket.on('plcDataInterruption', function(data){
+                //             console.log('plcDataInterruption', data);
+                //             that.goodConnection = false;
+                //       });
+                //    }
                 Gas.prototype.iniSocket = function () {
                     var that = this;
-                    var url = 'http://' + window.location.hostname + ':3003';
-                    var socket = io(url);
-                    socket.on('realTimePlc', function (data) {
+                    this.rtmgs.connect(3003);
+                    this.rtmgs.on('realTimePlc', function (data) {
                         if (!that.goodConnection) {
                             that.goodConnection = true;
                         }
@@ -215,12 +241,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         if (data && data.pl && data.pl.plc) {
                             that.realTimeData = data.pl.plc;
                         }
-                        // if(data.interval){
-                        //   that.dataTimer = data.interval;
-                        //   // that.lastDataTime = Date.now();
-                        // }
                     });
-                    socket.on('plcDataInterruption', function (data) {
+                    this.rtmgs.on('plcDataInterruption', function (data) {
                         console.log('plcDataInterruption', data);
                         that.goodConnection = false;
                     });
@@ -393,7 +415,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         selector: 'gas',
                         templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
                     }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService, lib_service_1.LibService])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, rt_messages_service_1.RTMessagesService, lib_service_1.LibService])
                 ], Gas);
                 return Gas;
             }());

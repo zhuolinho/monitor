@@ -16,7 +16,8 @@ var gotInOnePiece = false;
 var goodConnection = true;
 var lastDataTime = 0;
 var chunks = [];
-var sTimer = 5*60000; //5min.
+// var sTimer = 5*60000; //5min.
+var sTimer = 60000; //5min.
 var size = 0;
 server.listen(3003);
 
@@ -128,19 +129,21 @@ router.get('/stats/:year/:month.json', function(req, res, next) {
 
   router.post('/alert.json', function(req, res, next) {
 
+      var user = lib.reqUser(req);
+
         var param = {
           ns: 'plc',
           vs: '1.0',
           op: 'addNewAlert',
           pl:{
             alert:req.body,
-            user:lib.reqUser(req)
+            user:user
           }
         };
 
         handler(param)
             .then(function (r) {
-              io.emit("newPlcAlert",r);
+              io.emit("newPlcAlert:"+user.oID,r);
                helpers.sendResponse(res, 200, r);
             })
             .fail(function (r) {
@@ -438,7 +441,7 @@ function _getLatest(handler,length,user){
   handler(param)
       .then(function (r) {
         console.log("plc route save data successful---",r);
-              io.emit("realTimePlc",r);
+              io.emit("realTimePlc:"+user.oID,r);
       })
       .fail(function (r) {
           console.log("plc save data fail----",r);
@@ -458,7 +461,8 @@ function _checkInterruption(handler){
                   atype:'信号中断'
             }
             _createPlcAlert(alert,handler);
-            io.emit("plcDataInterruption",{interuptionTime:lib.dateTime()});
+            io.emit("plcDataInterruption:"+globalConf.orgs[0].oID,{interuptionTime:lib.dateTime()});
+
         }
       }
 
@@ -466,18 +470,21 @@ function _checkInterruption(handler){
   }
 
   function _createPlcAlert(alert,handler){
+    var user = globalConf.orgs[0];
     var param = {
       ns: 'plc',
       vs: '1.0',
       op: 'addNewAlert',
       pl:{
-        alert:alert
+        alert:alert,
+        user:user  //call it user to be consistent with the user created post alert
       }
     };
 
     handler(param)
         .then(function (r) {
-              io.emit("newPlcAlert",r);
+              console.log("route: plc alert created-----",r);
+              io.emit("newPlcAlert:"+user.oID,r);
         })
         .fail(function (r) {
           //

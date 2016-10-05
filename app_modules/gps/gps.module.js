@@ -138,11 +138,11 @@ gps.getAllCars =  function(m) {
 
 
 
-   if(m && m.user && m.user.oID){
+   if(m && m.pl && m.pl.user && m.pl.user.oID){
 
      gpsModel.aggregate(
              [
-               {$match:{oID:m.user.oID}},
+               {$match:{oID:m.pl.user.oID}},
                { $sort: { sim: 1, time: 1}},
                {
                  $group:

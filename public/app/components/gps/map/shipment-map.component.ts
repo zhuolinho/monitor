@@ -5,6 +5,7 @@ import {config} from '../../../config';
 import {gpsAlert} from '../../../../models/gpsAlert';
 import {RequestService} from '../../../services/request.service';
 import {UserService} from '../../../services/user.service';
+import {RTMessagesService} from '../../../services/rt-messages.service';
 
 declare var BMAP_ANCHOR_TOP_LEFT:any;
 declare var BMAP_NAVIGATION_CONTROL_LARGE:any;
@@ -13,7 +14,7 @@ declare var BMAP_NAVIGATION_CONTROL_LARGE:any;
 declare var BMap:any;
 declare var jQuery:any;
 declare var window:any;
-declare var io:any;
+// declare var io:any;
 declare var Array:any;
 
 @Component({
@@ -57,7 +58,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   constructor(
               private route:ActivatedRoute,
               private request:RequestService,
-              private userSrvc:UserService
+              private userSrvc:UserService,
+              private rtmgs:RTMessagesService
 
             ){
         this.user = this.userSrvc.getUser();
@@ -256,12 +258,14 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
   iniSocket(){
       var _this = this;
-        var url = 'http://'+window.location.hostname+':3001';
-        // if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-        //   url = 'http://localhost:3001';
-        // }
-        var socket = io(url);
-       socket.on('carMove', function(data){
+
+      // this.rtmgs.
+        // var url = 'http://'+window.location.hostname+':3001';
+        //
+        // var socket = io(url);
+
+       this.rtmgs.connect(3001);
+       this.rtmgs.on('carMove', function(data){
          console.log("carMove-----",data);
            if(data.pl&&data.pl.gps){
               var cardata = data.pl.gps;

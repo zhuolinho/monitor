@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../config', '../../../services/request.service', '../../../services/user.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/rt-messages.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, config_1, request_service_1, user_service_1;
+    var core_1, router_1, config_1, request_service_1, user_service_1, rt_messages_service_1;
     var ShipmentMap;
     return {
         setters:[
@@ -28,13 +28,17 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
+            },
+            function (rt_messages_service_1_1) {
+                rt_messages_service_1 = rt_messages_service_1_1;
             }],
         execute: function() {
             ShipmentMap = (function () {
-                function ShipmentMap(route, request, userSrvc) {
+                function ShipmentMap(route, request, userSrvc, rtmgs) {
                     this.route = route;
                     this.request = request;
                     this.userSrvc = userSrvc;
+                    this.rtmgs = rtmgs;
                     this.allCars = [];
                     this.selectedtab = 1;
                     this.delevered = false;
@@ -209,12 +213,12 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                 };
                 ShipmentMap.prototype.iniSocket = function () {
                     var _this = this;
-                    var url = 'http://' + window.location.hostname + ':3001';
-                    // if(window.location.hostname.indexOf('localhost')>=0){  // reset url for local developement;
-                    //   url = 'http://localhost:3001';
-                    // }
-                    var socket = io(url);
-                    socket.on('carMove', function (data) {
+                    // this.rtmgs.
+                    // var url = 'http://'+window.location.hostname+':3001';
+                    //
+                    // var socket = io(url);
+                    this.rtmgs.connect(3001);
+                    this.rtmgs.on('carMove', function (data) {
                         console.log("carMove-----", data);
                         if (data.pl && data.pl.gps) {
                             var cardata = data.pl.gps;
@@ -514,7 +518,7 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                         templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
                         styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
                     }), 
-                    __metadata('design:paramtypes', [router_1.ActivatedRoute, request_service_1.RequestService, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_1.ActivatedRoute, request_service_1.RequestService, user_service_1.UserService, rt_messages_service_1.RTMessagesService])
                 ], ShipmentMap);
                 return ShipmentMap;
             }());

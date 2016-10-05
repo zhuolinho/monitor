@@ -537,7 +537,7 @@ plc.addNewAddress =  function(m) {
     var deferred = q.defer();
 
 
-    if(m.pl && m.pl.address && m.pl.address.addr){
+    if(m.pl && m.pl.address && m.pl.address.addr && m.pl.user){
         var newAddress = new Address({
                           cd:lib.dateTime(),
                           code:m.pl.address.code,
@@ -573,7 +573,7 @@ plc.addNewAddress =  function(m) {
 
       }
       else {
-        r.er =  "no address or address code provided";
+        r.er =  "no address or address code or user provided";
         deferred.reject(r);
       }
     return deferred.promise;
@@ -626,33 +626,44 @@ plc.addNewAlert = function(m){
   var deferred = q.defer();
 
 
-  if(m.pl && m.pl.alert){
-      var newAlert = new PlcAlert({
-                          atime:lib.dateTime(),
-                          atype:m.pl.alert.atype,
-                          tank:m.pl.alert.addr,
-                          am:m.pl.alert.am,
-                          rt:m.pl.alert.remainingTime,
-                          st:m.pl.alert.st
-                        });
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+    if(m.pl.alert){
+        var newAlert = new PlcAlert({
+                            atime:lib.dateTime(),
+                            atype:m.pl.alert.atype,
+                            tank:m.pl.alert.addr,
+                            am:m.pl.alert.am,
+                            rt:m.pl.alert.remainingTime,
+                            st:m.pl.alert.st
+                          });
 
-             newAlert.save(function (error, alert){
-               console.log("new alert saved----",alert);
-                 if (!error){
-                   r.pl.alert = alert;
-                   deferred.resolve(r);
-                 }
-                 else{
-                   r.er = error;
-                   r.em = 'invalid alert. already exist?';
-                   deferred.reject(r);
-                 }
-             });
-    }
-    else {
-      r.er =  "no alert or alert code provided";
-      deferred.reject(r);
-    }
+              newAlert.setOwner(m.pl.user, function(setErr,setDoc){
+                setDoc.save(function (error, alert){
+                  console.log("new alert saved----",alert);
+                    if (!error){
+                      r.pl.alert = alert;
+                      deferred.resolve(r);
+                    }
+                    else{
+                      r.er = error;
+                      r.em = 'invalid alert. already exist?';
+                      deferred.reject(r);
+                    }
+                });
+              });
+
+      }
+      else {
+        r.er =  "no alert or alert code provided";
+        deferred.reject(r);
+      }
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
   return deferred.promise;
 
 }

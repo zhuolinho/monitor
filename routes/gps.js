@@ -47,6 +47,7 @@ module.exports = function (handler)
 
   router.get('/cars/all.json', function(req, res, next) {
 
+        console.log("user---for cars----: ",lib.reqUser(req));
         var param = {
           ns: 'gps',
           vs: '1.0',
@@ -225,7 +226,7 @@ function processIncommingData(handler,stream){
   handler(param)
       .then(function (r) {
         // console.log("route: process data successful",r);
-        io.emit("carMove",r);
+        io.emit("carMove:"+globalConf.orgs[0].oID,r);
       })
       .fail(function (r) {
           console.log("route: gps process data  fail");

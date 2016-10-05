@@ -13,6 +13,7 @@ import {UserService} from './services/user.service';
 import {RequestService} from './services/request.service';
 import {SettingsService} from './services/settings.service';
 import {LibService} from './services/lib.service';
+import {RTMessagesService} from './services/rt-messages.service';
 
 //layout
 import {Header} from './layout_components/header/header';
@@ -90,6 +91,7 @@ import {SettingsOfflineUsers} from './components/settings/offline_users/settings
     UserService,
     RequestService,
     SettingsService,
+    RTMessagesService,
     LibService
   ],
   bootstrap:    [ MainComponent ]

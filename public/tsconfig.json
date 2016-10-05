@@ -61,6 +61,7 @@
     "app/services/lib.service.ts",
     "app/services/request.service.ts",
     "app/services/router.service.ts",
+    "app/services/rt-messages.service.ts",
     "app/services/settings.service.ts",
     "app/services/user.service.ts",
     "models/gpsAlert.ts",

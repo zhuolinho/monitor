@@ -1,4 +1,4 @@
-System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/lib.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/rt-messages.service', '../../../services/lib.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1, user_service_1, lib_service_1;
+    var core_1, config_1, request_service_1, user_service_1, rt_messages_service_1, lib_service_1;
     var HomeAlerts;
     return {
         setters:[
@@ -26,15 +26,19 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
             },
+            function (rt_messages_service_1_1) {
+                rt_messages_service_1 = rt_messages_service_1_1;
+            },
             function (lib_service_1_1) {
                 lib_service_1 = lib_service_1_1;
             }],
         execute: function() {
             HomeAlerts = (function () {
-                function HomeAlerts(request, userSrvc, lib) {
+                function HomeAlerts(request, userSrvc, rtmgs, lib) {
                     var _this = this;
                     this.request = request;
                     this.userSrvc = userSrvc;
+                    this.rtmgs = rtmgs;
                     this.lib = lib;
                     this.currentSort = 'all';
                     this.alertsList = [];
@@ -109,15 +113,28 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         //  alert('getting models up');
                     });
                 };
+                // iniSocket(){
+                //      var that = this;
+                //       var url = 'http://'+window.location.hostname+':3003/10000000001';
+                //       var socket = io(url);
+                //      socket.on('newPlcAlert', function(data){
+                //        console.log("got new alert---",data);
+                //        if(data && data.pl && data.pl.alert){
+                //            that.alertsList.unshift(data.pl.alert);
+                //            that.alertGroups =  _.groupBy(that.alertsList,'atype');
+                //            that.hasData = true;
+                //        }
+                //      });
+                //   }
                 HomeAlerts.prototype.iniSocket = function () {
                     var that = this;
-                    var url = 'http://' + window.location.hostname + ':3003';
-                    var socket = io(url);
-                    socket.on('newPlcAlert', function (data) {
+                    this.rtmgs.connect(3003);
+                    this.rtmgs.on('newPlcAlert', function (data) {
                         console.log("got new alert---", data);
                         if (data && data.pl && data.pl.alert) {
                             that.alertsList.unshift(data.pl.alert);
                             that.alertGroups = _.groupBy(that.alertsList, 'atype');
+                            that.hasData = true;
                         }
                     });
                 };
@@ -245,7 +262,7 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         selector: 'home-alerts',
                         templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
                     }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService, lib_service_1.LibService])
+                    __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService, rt_messages_service_1.RTMessagesService, lib_service_1.LibService])
                 ], HomeAlerts);
                 return HomeAlerts;
             }());

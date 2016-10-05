@@ -3,6 +3,7 @@ import {Component,AfterViewInit, OnDestroy} from '@angular/core';
 import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';
+import {RTMessagesService} from '../../../services/rt-messages.service';
 import {RequestService} from '../../../services/request.service';
 
 declare var jQuery:any;
@@ -118,7 +119,9 @@ export class Gas  implements AfterViewInit,OnDestroy{
       atype:'',
       addr:''
     };
-    constructor(private request:RequestService,
+    constructor(
+        private request:RequestService,
+        private rtmgs:RTMessagesService,
         private lib:LibService){
       console.log("gas is up and running");
 
@@ -226,33 +229,52 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
    }
 
-   iniSocket(){
-        var that = this;
-         var url = 'http://'+window.location.hostname+':3003';
-         var socket = io(url);
-        socket.on('realTimePlc', function(data){
+  //  iniSocket(){
+  //       var that = this;
+  //        var url = 'http://'+window.location.hostname+':3003';
+  //        var socket = io(url);
+  //       socket.on('realTimePlc', function(data){
+   //
+  //         if(!that.goodConnection){
+  //           that.goodConnection = true;
+  //         }
+   //
+  //         console.log("realTimePlc-----",data);
+  //         if(data&&data.pl&& data.pl.plc){
+  //             that.realTimeData = data.pl.plc;
+  //         }
+   //
+  //       });
+   //
+   //
+  //       socket.on('plcDataInterruption', function(data){
+  //             console.log('plcDataInterruption', data);
+  //             that.goodConnection = false;
+  //       });
+  //    }
 
-          if(!that.goodConnection){
-            that.goodConnection = true;
-          }
-
-          console.log("realTimePlc-----",data);
-          if(data&&data.pl&& data.pl.plc){
-              that.realTimeData = data.pl.plc;
-          }
-
-          // if(data.interval){
-          //   that.dataTimer = data.interval;
-          //   // that.lastDataTime = Date.now();
-          // }
-        });
 
 
-        socket.on('plcDataInterruption', function(data){
+     iniSocket(){
+         var that = this;
+          this.rtmgs.connect(3003);
+          this.rtmgs.on('realTimePlc', function(data){
+
+            if(!that.goodConnection){
+              that.goodConnection = true;
+            }
+
+            console.log("realTimePlc-----",data);
+            if(data&&data.pl&& data.pl.plc){
+                that.realTimeData = data.pl.plc;
+            }
+          });
+
+          this.rtmgs.on('plcDataInterruption', function(data){
               console.log('plcDataInterruption', data);
               that.goodConnection = false;
-        });
-     }
+          });
+       }
 
 
      initSelect(){
