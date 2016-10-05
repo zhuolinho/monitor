@@ -16,8 +16,7 @@ var gotInOnePiece = false;
 var goodConnection = true;
 var lastDataTime = 0;
 var chunks = [];
-// var sTimer = 5*60000; //5min.
-var sTimer = 60000; //5min.
+var sTimer = 5*60000; //5min.
 var size = 0;
 server.listen(3003);
 
