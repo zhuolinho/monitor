@@ -86,6 +86,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.goodConnection = false;
                     this.dataTimer = 300000;
                     this.lastDataTime = 0;
+                    this.chartData = ['瞬时流量'];
                     this.availableTanks = [
                         { id: '12345', selected: false },
                         { id: '62545', selected: false },
@@ -134,6 +135,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.iniSocket();
                     this.initSelect();
                     this.updateTime();
+                    this.getChartdata();
                     // this.checkInterruption();
                 };
                 Gas.prototype.ngOnDestroy = function () {
@@ -293,6 +295,16 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
                             that.initGrapth();
+                            that.initChart();
+                        }
+                    });
+                };
+                Gas.prototype.getChartdata = function () {
+                    var _this = this;
+                    this.request.get('/plc/forlasthours.json').subscribe(function (resp) {
+                        console.log("plc stats chart data-----", resp);
+                        if (resp && resp.pl && resp.pl.plc) {
+                            _this.chartData = resp.pl.plc;
                         }
                     });
                 };
@@ -304,6 +316,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         console.log("plc stats-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.statsData = resp.pl.plc;
+                            _this.initChart(_this.statsData);
                         }
                     });
                 };
@@ -408,6 +421,18 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                             }
                         });
                     }
+                };
+                Gas.prototype.initChart = function (arg) {
+                    var that = this;
+                    console.log("init grapth");
+                    var statsChart = c3.generate({
+                        bindto: '#statsChart',
+                        data: {
+                            columns: [
+                                that.chartData,
+                            ]
+                        }
+                    });
                 };
                 Gas.graphIsRunning = false;
                 Gas = __decorate([

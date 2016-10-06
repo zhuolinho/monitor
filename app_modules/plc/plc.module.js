@@ -341,6 +341,49 @@ plc.getLatestData =  function(m) {
 }
 
 
+
+
+
+plc.getAlertForTimeInterval =  function(m) {
+
+  console.log("plc mod: getLatestDataForTimeInterval ");
+  var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+
+
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+        iPlc.find({oID: m.pl.user.oID}).$where(
+                function () {
+                    return (Date.now() - this._id.getTimestamp() < (48 * 60 * 60 * 1000))
+
+          }
+        ).sort({cd:-1}).exec(function (err, plc) {
+            if (err){
+              r.er = err;
+              r.status = false;
+              deferred.reject(r);
+            }
+            else{
+              for (var i = 0; i < plc.length; i++) {
+                plc[i] = plc[i].isc2;  // return only instantaneous standard conditions
+              }
+              r.pl.plc = plc;
+              r.status = true;
+              deferred.resolve(r);
+            }
+        })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+  return deferred.promise;
+}
+
+
 plc.getPlcStats = function(m){
 
 

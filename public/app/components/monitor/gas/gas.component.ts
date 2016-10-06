@@ -10,6 +10,7 @@ declare var jQuery:any;
 declare var _:any;
 declare var io:any;
 declare var d3:any;
+declare var c3:any;
 
 @Component({
   selector:'gas',
@@ -77,6 +78,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
   dateTimer:any;
   dataTimer:number = 300000;
   lastDataTime:number =  0;
+  chartData = ['瞬时流量'];
   checkInterruptionTimer:any;
   static graphIsRunning:boolean = false;
 
@@ -139,6 +141,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.iniSocket();
       this.initSelect();
       this.updateTime();
+      this.getChartdata();
       // this.checkInterruption();
     }
 
@@ -334,7 +337,17 @@ export class Gas  implements AfterViewInit,OnDestroy{
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
                 that.initGrapth();
+                that.initChart();
             }
+      });
+    }
+
+    getChartdata(){
+      this.request.get('/plc/forlasthours.json').subscribe(resp => {
+        console.log("plc stats chart data-----",resp);
+        if(resp&&resp.pl&&resp.pl.plc){
+            this.chartData = resp.pl.plc;
+        }
       });
     }
 
@@ -345,6 +358,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         console.log("plc stats-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.statsData = resp.pl.plc;
+            this.initChart(this.statsData);
         }
       });
     }
@@ -474,5 +488,19 @@ export class Gas  implements AfterViewInit,OnDestroy{
         });
       }
 
+    }
+
+    initChart(arg?){
+      var that = this;
+      console.log("init grapth");
+
+      var statsChart = c3.generate({
+              bindto: '#statsChart',
+              data: {
+                  columns: [
+                    that.chartData,
+                  ]
+              }
+          });
     }
  }
