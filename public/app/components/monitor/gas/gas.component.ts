@@ -346,8 +346,10 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.request.get('/plc/forlasthours.json').subscribe(resp => {
         console.log("plc stats chart data-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
-            this.chartData = resp.pl.plc;
+            this.chartData = this.chartData.concat(resp.pl.plc);
         }
+
+          console.log("plc stats chart data-----",  this.chartData);
       });
     }
 
@@ -358,7 +360,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
         console.log("plc stats-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.statsData = resp.pl.plc;
-            this.initChart(this.statsData);
         }
       });
     }
@@ -490,16 +491,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     }
 
-    initChart(arg?){
+    initChart(){
       var that = this;
-      console.log("init grapth");
+      console.log("init grapth",  that.chartData);
 
       var statsChart = c3.generate({
               bindto: '#statsChart',
               data: {
-                  columns: [
-                    that.chartData,
-                  ]
+                  columns:that.chartData
               }
           });
     }

@@ -304,8 +304,9 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.request.get('/plc/forlasthours.json').subscribe(function (resp) {
                         console.log("plc stats chart data-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
-                            _this.chartData = resp.pl.plc;
+                            _this.chartData = _this.chartData.concat(resp.pl.plc);
                         }
+                        console.log("plc stats chart data-----", _this.chartData);
                     });
                 };
                 Gas.prototype.getPlcStats = function (year, month) {
@@ -316,7 +317,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         console.log("plc stats-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.statsData = resp.pl.plc;
-                            _this.initChart(_this.statsData);
                         }
                     });
                 };
@@ -422,15 +422,13 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         });
                     }
                 };
-                Gas.prototype.initChart = function (arg) {
+                Gas.prototype.initChart = function () {
                     var that = this;
-                    console.log("init grapth");
+                    console.log("init grapth", that.chartData);
                     var statsChart = c3.generate({
                         bindto: '#statsChart',
                         data: {
-                            columns: [
-                                that.chartData,
-                            ]
+                            columns: that.chartData
                         }
                     });
                 };
