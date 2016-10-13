@@ -86,7 +86,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.goodConnection = false;
                     this.dataTimer = 300000;
                     this.lastDataTime = 0;
-                    this.chartData = ['瞬时流量'];
+                    this.chartData = [];
                     this.availableTanks = [
                         { id: '12345', selected: false },
                         { id: '62545', selected: false },
@@ -304,7 +304,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.request.get('/plc/forlasthours.json').subscribe(function (resp) {
                         console.log("plc stats chart data-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
-                            _this.chartData = _this.chartData.concat(resp.pl.plc);
+                            _this.chartData = resp.pl.plc;
                         }
                         console.log("plc stats chart data-----", _this.chartData);
                     });
@@ -425,10 +425,12 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.initChart = function () {
                     var that = this;
                     console.log("init grapth", that.chartData);
+                    var col = that.chartData;
+                    col.unshift("瞬时流量");
                     var statsChart = c3.generate({
                         bindto: '#statsChart',
                         data: {
-                            columns: that.chartData
+                            columns: [col]
                         }
                     });
                 };

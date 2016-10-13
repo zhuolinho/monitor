@@ -78,7 +78,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
   dateTimer:any;
   dataTimer:number = 300000;
   lastDataTime:number =  0;
-  chartData = ['瞬时流量'];
+  chartData = [];
   checkInterruptionTimer:any;
   static graphIsRunning:boolean = false;
 
@@ -270,6 +270,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             console.log("realTimePlc-----",data);
             if(data&&data.pl&& data.pl.plc){
                 that.realTimeData = data.pl.plc;
+                // that.getChartdata();
             }
           });
 
@@ -346,9 +347,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.request.get('/plc/forlasthours.json').subscribe(resp => {
         console.log("plc stats chart data-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
-            this.chartData = this.chartData.concat(resp.pl.plc);
+            this.chartData = resp.pl.plc;
         }
-
           console.log("plc stats chart data-----",  this.chartData);
       });
     }
@@ -494,11 +494,12 @@ export class Gas  implements AfterViewInit,OnDestroy{
     initChart(){
       var that = this;
       console.log("init grapth",  that.chartData);
-
+      var col = that.chartData;
+      col.unshift("瞬时流量");
       var statsChart = c3.generate({
               bindto: '#statsChart',
               data: {
-                  columns:that.chartData
+                  columns:[col]
               }
           });
     }

@@ -358,7 +358,7 @@ plc.getAlertForTimeInterval =  function(m) {
                     return (Date.now() - this._id.getTimestamp() < (48 * 60 * 60 * 1000))
 
           }
-        ).sort({cd:-1}).exec(function (err, plc) {
+        ).sort({cd:1}).exec(function (err, plc) {
             if (err){
               r.er = err;
               r.status = false;
@@ -366,7 +366,7 @@ plc.getAlertForTimeInterval =  function(m) {
             }
             else{
               for (var i = 0; i < plc.length; i++) {
-                plc[i] = plc[i].isc2;  // return only instantaneous standard conditions
+                plc[i] = parseFloat(plc[i].isc2);  // return only instantaneous standard conditions
               }
               r.pl.plc = plc;
               r.status = true;
