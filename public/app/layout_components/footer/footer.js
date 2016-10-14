@@ -28,7 +28,7 @@ System.register(['@angular/core', '../../config'], function(exports_1, context_1
                 Footer = __decorate([
                     core_1.Component({
                         selector: 'footer',
-                        templateUrl: config_1.config.prefix + 'layout_components/header/header.html'
+                        templateUrl: config_1.config.prefix + 'layout_components/footer/footer.html'
                     }), 
                     __metadata('design:paramtypes', [])
                 ], Footer);

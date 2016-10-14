@@ -78,7 +78,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
   dateTimer:any;
   dataTimer:number = 300000;
   lastDataTime:number =  0;
-  chartData = [];
+  chartData:any = [];
   checkInterruptionTimer:any;
   static graphIsRunning:boolean = false;
 
@@ -270,7 +270,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
             console.log("realTimePlc-----",data);
             if(data&&data.pl&& data.pl.plc){
                 that.realTimeData = data.pl.plc;
-                // that.getChartdata();
             }
           });
 
@@ -379,7 +378,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
 
     // code for detail modal
-    showByDay(){
+    showByDay(fromModal){
         // alert('by day');
         console.log("by day");
         this.isShowByDay = true;
@@ -391,6 +390,9 @@ export class Gas  implements AfterViewInit,OnDestroy{
        // re-initialize material-select
         this.setDaysOfMonth(null,null);
         this.computeStats();
+        if(fromModal){
+          this.initChart();
+        }
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
           jQuery('.select-month').val(this.currentStatSelectedMonth);
@@ -399,7 +401,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     }
 
-    showByMonth(){
+    showByMonth(fromModal){
         // alert('by month');
         console.log("by month");
 
@@ -411,6 +413,9 @@ export class Gas  implements AfterViewInit,OnDestroy{
        // re-initialize material-select
         this.currentSelect = this.years;
         this.computeStats();
+        if(fromModal){
+          this.initChart();
+        }
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
           this.initSelect();
@@ -494,13 +499,28 @@ export class Gas  implements AfterViewInit,OnDestroy{
     initChart(){
       var that = this;
       console.log("init grapth",  that.chartData);
-      var col = that.chartData;
-      col.unshift("瞬时流量");
+      var Y = that.chartData.values||[];
+      Y.unshift("瞬时流量");
+      var X = that.chartData.dates||[];
+      X.unshift('x');
+
       var statsChart = c3.generate({
               bindto: '#statsChart',
               data: {
-                  columns:[col]
+                  x: 'x',
+                  xFormat: '%Y-%m-%d %H:%M:%S', // how the date is parsed
+                  columns:[X,Y]
+              },
+              axis : {
+                    x: {
+                    type: 'timeseries',
+                   tick: {
+                       count: 12,
+                       format:'%H:%M' //how the date is displayed
+                   }
+                  }
               }
           });
     }
+
  }

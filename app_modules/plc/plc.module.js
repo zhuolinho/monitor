@@ -349,13 +349,16 @@ plc.getAlertForTimeInterval =  function(m) {
   console.log("plc mod: getLatestDataForTimeInterval ");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
+  var isc = [];
+  var dates = [];
+
 
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
 
         iPlc.find({oID: m.pl.user.oID}).$where(
                 function () {
-                    return (Date.now() - this._id.getTimestamp() < (48 * 60 * 60 * 1000))
+                    return (Date.now() - this._id.getTimestamp() < (8 * 60 * 60 * 1000))
 
           }
         ).sort({cd:1}).exec(function (err, plc) {
@@ -366,9 +369,10 @@ plc.getAlertForTimeInterval =  function(m) {
             }
             else{
               for (var i = 0; i < plc.length; i++) {
-                plc[i] = parseFloat(plc[i].isc2);  // return only instantaneous standard conditions
+                  isc[i] = parseFloat(plc[i].isc2);  // return only instantaneous standard conditions
+                  dates[i] = plc[i].cd;
               }
-              r.pl.plc = plc;
+              r.pl.plc = {values:isc,dates:dates};
               r.status = true;
               deferred.resolve(r);
             }

@@ -330,7 +330,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     });
                 };
                 // code for detail modal
-                Gas.prototype.showByDay = function () {
+                Gas.prototype.showByDay = function (fromModal) {
                     var _this = this;
                     // alert('by day');
                     console.log("by day");
@@ -341,13 +341,16 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     // re-initialize material-select
                     this.setDaysOfMonth(null, null);
                     this.computeStats();
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         jQuery('.select-month').val(_this.currentStatSelectedMonth);
                         _this.initSelect();
                     });
                 };
-                Gas.prototype.showByMonth = function () {
+                Gas.prototype.showByMonth = function (fromModal) {
                     var _this = this;
                     // alert('by month');
                     console.log("by month");
@@ -358,6 +361,9 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     // re-initialize material-select
                     this.currentSelect = this.years;
                     this.computeStats();
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         _this.initSelect();
@@ -425,12 +431,25 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.initChart = function () {
                     var that = this;
                     console.log("init grapth", that.chartData);
-                    var col = that.chartData;
-                    col.unshift("瞬时流量");
+                    var Y = that.chartData.values || [];
+                    Y.unshift("瞬时流量");
+                    var X = that.chartData.dates || [];
+                    X.unshift('x');
                     var statsChart = c3.generate({
                         bindto: '#statsChart',
                         data: {
-                            columns: [col]
+                            x: 'x',
+                            xFormat: '%Y-%m-%d %H:%M:%S',
+                            columns: [X, Y]
+                        },
+                        axis: {
+                            x: {
+                                type: 'timeseries',
+                                tick: {
+                                    count: 12,
+                                    format: '%H:%M' //how the date is displayed
+                                }
+                            }
                         }
                     });
                 };

@@ -4,7 +4,7 @@ import {config} from '../../config';
 
 @Component({
     selector: 'footer',
-    templateUrl:  config.prefix + 'layout_components/header/header.html'
+    templateUrl:  config.prefix + 'layout_components/footer/footer.html'
 })
 
 //

@@ -31,14 +31,12 @@
           </div>
           <div class="col s3">
 
-              <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+              <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
           </div>
           <div class="col s3">
               <a (click)="selectedtab=4; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
           </div>
-
         </div>
-
       </div>
   </div>
 
@@ -268,15 +266,15 @@
 
           <div class="row modal-nav monitor-tabs">
             <div class="col s3">
-                <a (click)="showByDay(); selectedtab=1; " [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+                <a (click)="showByDay(true); selectedtab=1; " [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均用量 </a>
             </div>
 
             <div class="col s3">
-                <a  (click)="showByMonth(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均用量</a>
+                <a  (click)="showByMonth(true); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均用量</a>
             </div>
             <div class="col s3">
 
-                <a (click)="selectedtab=3; downloadData();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载全部 </a>
+                <a (click)="selectedtab=3; downloadData();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
             </div>
             <div class="col s3">
                 <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
@@ -340,12 +338,12 @@
                     </a>
               </div>
 
-
+<!--
               <div class="col s3 m3">
                 <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
                   下载数据
                 </a>
-              </div>
+              </div> -->
             </div>
 
 
