@@ -334,6 +334,9 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     var _this = this;
                     // alert('by day');
                     console.log("by day");
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     this.isShowByDay = true;
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
@@ -341,9 +344,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     // re-initialize material-select
                     this.setDaysOfMonth(null, null);
                     this.computeStats();
-                    if (fromModal) {
-                        this.initChart();
-                    }
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         jQuery('.select-month').val(_this.currentStatSelectedMonth);
@@ -354,6 +354,9 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     var _this = this;
                     // alert('by month');
                     console.log("by month");
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     this.isShowByDay = false;
                     var d = new Date();
                     this.currentStatSelectedYear = d.getFullYear();
@@ -361,9 +364,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     // re-initialize material-select
                     this.currentSelect = this.years;
                     this.computeStats();
-                    if (fromModal) {
-                        this.initChart();
-                    }
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         _this.initSelect();
@@ -430,7 +430,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 };
                 Gas.prototype.initChart = function () {
                     var that = this;
-                    console.log("init grapth", that.chartData);
+                    console.log("init grapth----", that.chartData);
                     var Y = that.chartData.values || [];
                     Y.unshift("瞬时流量");
                     var X = that.chartData.dates || [];

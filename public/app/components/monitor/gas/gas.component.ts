@@ -381,6 +381,10 @@ export class Gas  implements AfterViewInit,OnDestroy{
     showByDay(fromModal){
         // alert('by day');
         console.log("by day");
+        if(fromModal){
+          this.initChart();
+        }
+
         this.isShowByDay = true;
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
@@ -390,9 +394,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
        // re-initialize material-select
         this.setDaysOfMonth(null,null);
         this.computeStats();
-        if(fromModal){
-          this.initChart();
-        }
+
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
           jQuery('.select-month').val(this.currentStatSelectedMonth);
@@ -405,6 +407,10 @@ export class Gas  implements AfterViewInit,OnDestroy{
         // alert('by month');
         console.log("by month");
 
+        if(fromModal){
+          this.initChart();
+        }
+
         this.isShowByDay = false;
         var d = new Date();
         this.currentStatSelectedYear = d.getFullYear();
@@ -413,9 +419,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
        // re-initialize material-select
         this.currentSelect = this.years;
         this.computeStats();
-        if(fromModal){
-          this.initChart();
-        }
+
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
           this.initSelect();
@@ -498,7 +502,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     initChart(){
       var that = this;
-      console.log("init grapth",  that.chartData);
+      console.log("init grapth----",  that.chartData);
       var Y = that.chartData.values||[];
       Y.unshift("瞬时流量");
       var X = that.chartData.dates||[];

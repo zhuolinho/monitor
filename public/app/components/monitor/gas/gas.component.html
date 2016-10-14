@@ -298,8 +298,6 @@
 
                 <!-- <p class="helper-padding-left-15">瞬时流量 {{date}}</p> -->
 
-                  <!-- <h4 class="helper-padding-left-15 helper-padding-right-15 " style="text-align:right;">{{date}}</h4> -->
-
                 <div  class="helper-padding-left-15" id="statsChart">
                 </div>
 
@@ -309,7 +307,7 @@
 
             <div class="row valign-wrapper">
 
-              <div class="col s3 m3 ">
+              <div class="col s2 ">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-year">
                       <option *ngFor="let item of years; let i = index;" [value]="item">
@@ -320,7 +318,18 @@
                   </div>
               </div>
 
-              <div class="col s3 m3 " *ngIf="isShowByDay">
+              <div class="col s2 " *ngIf="isShowByDay">
+                <div class="input-field">
+                    <select class="monitor-short-dropdown select-month">
+                      <option *ngFor="let item of months; let i = index;" [value]="item">
+                        {{item}}月
+                      </option>
+                    </select>
+                    <!-- <label>选在时间</label> -->
+                  </div>
+              </div>
+
+              <div class="col s2 " *ngIf="isShowByDay">
                 <div class="input-field">
                     <select class="monitor-short-dropdown select-month">
                       <option *ngFor="let item of months; let i = index;" [value]="item">
