@@ -353,6 +353,7 @@ plc.getAlertForTimeInterval =  function(m) {
   var dates = [];
 
 
+
   if(m && m.pl && m.pl.user && m.pl.user.oID){
 
         iPlc.find({oID: m.pl.user.oID}).$where(
@@ -396,17 +397,15 @@ plc.getPlcStats = function(m){
     var computedValues = [];
 
 
-    var start = m.pl.start+' 00:00:00';
-    var end = m.pl.end+' 23:59:59';
 
     if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-          if(m && m.pl && m.pl.start){
-            if(m && m.pl && m.pl.end){
+          if(m && m.pl && m.pl.year){
+            if(m && m.pl && m.pl.month && m.pl.month != '0'){
 
               iPlc.aggregate([
                   {
-                        $match: {oID:m.pl.user.oID,cd:{$gte:start,$lte:end}}
+                      $match: {y:m.pl.year, m:m.pl.month,oID:m.pl.user.oID},
                   },
                   {
                       $group: {

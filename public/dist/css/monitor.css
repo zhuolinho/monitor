@@ -258,7 +258,7 @@ body, html{
 
 
 
-select{
+select.simple-select{
   display: block !important ; /*override lib*/
 }
 

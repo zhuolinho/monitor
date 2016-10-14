@@ -68,7 +68,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
   //                   '25日','26日','27日','28日','29日','30日','31日'
   //                 ];
 
-  days:number[] = [];
+  startDays:number[] = [];
+  endDays:number[] = [];
 
   selectedtab:number;  //to switch tabs, the rest is controlled on the page
   currentTable:any;
@@ -110,8 +111,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
     selectedTanks:any[] = [];
     realTimeData:any;
     date:any;
-    currentStatSelectedYear:number = 2016;
-    currentStatSelectedMonth:number = 1;
+    // statSelectedStartYear:number = 2016;
+    // statSelectedStartMonth:number = 1;
+    // statSelectedStartDay:number = 1;
+    // statSelectedEndYear:number = 2016;
+    // statSelectedEndMonth:number = 2;
+    // statSelecteEndDay:number = 1;
+    statsStartDate:any;
+    statsEndDate:any;
     isShowByDay:boolean;
     statsData:any[];
     newAlert:any = {
@@ -284,14 +291,14 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
        var that = this;
        setTimeout(_=>{
-            jQuery('select').material_select();
-            jQuery('select.select-year').change(function(e){
-                      that.statYearSelected(e);
-            });
-
-            jQuery('select.select-month').change(function(e){
-                that.statMothSelected(e);
-            });
+            jQuery('select:not(simple-select)').material_select();
+            // jQuery('select.select-year').change(function(e){
+            //           that.statYearSelected(e);
+            // });
+            //
+            // jQuery('select.select-month').change(function(e){
+            //     that.statMothSelected(e);
+            // });
        });
      }
 
@@ -305,42 +312,64 @@ export class Gas  implements AfterViewInit,OnDestroy{
      }
 
      setDaysOfMonth(year,month){
-       this.days = [];
+       this.startDays = [];
        var y = year||new Date().getFullYear();
        var m = month || new Date().getMonth() + 1;
        var numDays = this.lib.daysInMonth(y,m);
        for (let i = 0; i <numDays; i++) {
-           this.days.push(i+1);
+           this.startDays.push(i+1);
        }
 
-       console.log("this.days----",this.days);
+       console.log("this.days----",this.startDays);
      }
 
-     statYearSelected(event){
-
-       console.log('year changed1----',event.target.value);
-           this.currentStatSelectedYear = event.target.value;
-     }
+    //  statYearSelected(event){
+     //
+    //    console.log('year changed1----',event.target.value);
+    //        this.currentStatSelectedYear = event.target.value;
+    //  }
 
      statMothSelected(event){
-           console.log('month changed1----',event.target.value);
-           this.currentStatSelectedMonth = event.target.value;
-           this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
+          //  console.log('month changed1----',event.target.value);
+          //  this.currentStatSelectedMonth = event.target.value;
+          //  this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
      }
 
     showDetailModal(param){
       var that = this;
-      var d = new Date();
-      this.currentStatSelectedYear = d.getFullYear();
-      this.currentStatSelectedMonth = d.getMonth()+1;
+
+      this.setStatsInitValues();
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
-                // that.initGrapth();
                 that.initChart();
             }
       });
     }
+
+    setStatsInitValues(){
+
+
+      var d = new Date();
+      this.statsEndDate = d.toISOString().slice(0,10);
+      d.setMonth(d.getMonth() - 1);//last month date;
+      this.statsStartDate = d.toISOString().slice(0,10);
+
+
+      console.log('set stats date value-----', this.statsStartDate,this.statsEndDate);
+
+
+      //
+      // var d = new Date();
+      // this.statSelectedStartYear = d.getFullYear();
+      // this.statSelectedEndYear = d.getFullYear();
+      // this.statSelectedStartMonth = d.getMonth();
+      // this.statSelectedEndMonth = d.getMonth()+1;
+      // this.statSelecteEndDay = 1;
+      // this.statSelectedStartDay = 1;
+    }
+
+
 
     getChartdata(){
       this.request.get('/plc/forlasthours.json').subscribe(resp => {
@@ -352,10 +381,20 @@ export class Gas  implements AfterViewInit,OnDestroy{
       });
     }
 
-    getPlcStats(year,month){
+    getPlcStats(){
       this.statsData = [];
-      console.log('get plc stats----', year,month);
-      this.request.get('/plc/stats/'+year+'/'+month+'.json').subscribe(resp => {
+      console.log('get plc stats----', this.statsStartDate, this.statsEndDate);
+      // var starty = '';
+      // var startm = '';
+      // var startd = '';
+      // var endy = '';
+      // var endm = '';
+      // var endd = '';
+      var mode = false;
+      if(this.showByDay){
+        mode = true;
+      }
+      this.request.get('/plc/stats/'+this.statsStartDate+'/'+this.statsEndDate+'/'+mode+'.json').subscribe(resp => {
         console.log("plc stats-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.statsData = resp.pl.plc;
@@ -364,7 +403,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
 
     computeStats(){
-        this.getPlcStats(this.currentStatSelectedYear,this.currentStatSelectedMonth);
+      console.log('this.statsStartDate,this.statsEndDate------',this.statsStartDate,this.statsEndDate);
+        this.getPlcStats();
     }
 
 
@@ -386,18 +426,18 @@ export class Gas  implements AfterViewInit,OnDestroy{
         }
 
         this.isShowByDay = true;
-        var d = new Date();
-        this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth = d.getMonth()+1;
+        // var d = new Date();
+        // this.currentStatSelectedYear = d.getFullYear();
+        // this.currentStatSelectedMonth = d.getMonth()+1;
 
 
        // re-initialize material-select
-        this.setDaysOfMonth(null,null);
+        // this.setDaysOfMonth(null,null);
         this.computeStats();
 
         setTimeout(_=>{
-          jQuery('.select-year').val(this.currentStatSelectedYear);
-          jQuery('.select-month').val(this.currentStatSelectedMonth);
+          // jQuery('.select-year').val(this.currentStatSelectedYear);
+          // jQuery('.select-month').val(this.currentStatSelectedMonth);
           // this.initSelect();
         });
 
@@ -412,92 +452,18 @@ export class Gas  implements AfterViewInit,OnDestroy{
         }
 
         this.isShowByDay = false;
-        var d = new Date();
-        this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth =  0;
+        // var d = new Date();
+        // this.currentStatSelectedYear = d.getFullYear();
+        // this.currentStatSelectedMonth =  0;
 
        // re-initialize material-select
         this.currentSelect = this.years;
         this.computeStats();
 
         setTimeout(_=>{
-          jQuery('.select-year').val(this.currentStatSelectedYear);
+          // jQuery('.select-year').val(this.currentStatSelectedYear);
           // this.initSelect();
         });
-    }
-
-    initGrapth(){
-
-      var that = this;
-
-      if(!Gas.graphIsRunning){
-         Gas.graphIsRunning = true;
-         var INTERVAL = Math.PI / 30;
-
-        // Precompute wave
-        var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
-            sinWave = d.map(Math.sin);
-
-        var w = 900, h = 150,
-            x = d3.scale.linear().domain([-5, 15]).range([0, w]),
-            y = x,
-            r = (function(a, b) {
-          return Math.sqrt(a * a + b * b);
-        })(x.invert(w), y.invert(h));
-
-        var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
-            .attr("width", w).attr("height", h);
-
-        realTimeSigStatus.append("g")
-            .attr("id", "sinwave")
-            .attr("width", w)
-            .attr("height", h)
-            .attr("transform", "translate("+x(-11.2)+","+y(-8)+")")
-          .selectAll("path")
-            .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
-          .enter().append("path")
-            .attr("class", "wave")
-            .attr("d", d3.svg.line()
-              .x(function(d, i) { return x(i * INTERVAL) - x(0) })
-              .y(function(d) { return y(d) }));
-
-        var line = function(e, x1, y1, x2, y2) {
-          return e.append("line")
-              .attr("class", "line")
-              .attr("x1", x1)
-              .attr("y1", y1)
-              .attr("x2", x2)
-              .attr("y2", y2);
-        }
-        var axes = function(cx, cy, cls) {
-          cx = x(cx); cy = y(cy);
-          line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
-          line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
-        }
-
-        axes(3, -2, "edge");
-        axes(3, -3, "axis");
-
-        var offset = -4*Math.PI, last = 0;
-
-        d3.timer(function(elapsed) {
-          if(that.goodConnection){
-            offset += (elapsed - last) / 1000;
-            last = elapsed;
-            if (offset > -2*Math.PI) offset = -4*Math.PI;
-            realTimeSigStatus.selectAll("#sinwave")
-              .attr("transform", "translate(" + x(offset+Math.PI/20) + "," + y(-8)+ ")")
-            var xline = x(Math.sin(offset)) - x(0);
-            var yline = x(-Math.cos(offset)) - y(0);
-
-            realTimeSigStatus.select("#xline")
-              .attr("transform", "translate(0," + xline + ")");
-            realTimeSigStatus.select("#yline")
-              .attr("transform", "translate(" + yline + ",0)");
-          }
-        });
-      }
-
     }
 
     initChart(){
@@ -526,5 +492,83 @@ export class Gas  implements AfterViewInit,OnDestroy{
               }
           });
     }
+
+
+
+
+
+    // initGrapth(){
+    //
+    //   var that = this;
+    //
+    //   if(!Gas.graphIsRunning){
+    //      Gas.graphIsRunning = true;
+    //      var INTERVAL = Math.PI / 30;
+    //
+    //     // Precompute wave
+    //     var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
+    //         sinWave = d.map(Math.sin);
+    //
+    //     var w = 900, h = 150,
+    //         x = d3.scale.linear().domain([-5, 15]).range([0, w]),
+    //         y = x,
+    //         r = (function(a, b) {
+    //       return Math.sqrt(a * a + b * b);
+    //     })(x.invert(w), y.invert(h));
+    //
+    //     var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
+    //         .attr("width", w).attr("height", h);
+    //
+    //     realTimeSigStatus.append("g")
+    //         .attr("id", "sinwave")
+    //         .attr("width", w)
+    //         .attr("height", h)
+    //         .attr("transform", "translate("+x(-11.2)+","+y(-8)+")")
+    //       .selectAll("path")
+    //         .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
+    //       .enter().append("path")
+    //         .attr("class", "wave")
+    //         .attr("d", d3.svg.line()
+    //           .x(function(d, i) { return x(i * INTERVAL) - x(0) })
+    //           .y(function(d) { return y(d) }));
+    //
+    //     var line = function(e, x1, y1, x2, y2) {
+    //       return e.append("line")
+    //           .attr("class", "line")
+    //           .attr("x1", x1)
+    //           .attr("y1", y1)
+    //           .attr("x2", x2)
+    //           .attr("y2", y2);
+    //     }
+    //     var axes = function(cx, cy, cls) {
+    //       cx = x(cx); cy = y(cy);
+    //       line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
+    //       line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
+    //     }
+    //
+    //     axes(3, -2, "edge");
+    //     axes(3, -3, "axis");
+    //
+    //     var offset = -4*Math.PI, last = 0;
+    //
+    //     d3.timer(function(elapsed) {
+    //       if(that.goodConnection){
+    //         offset += (elapsed - last) / 1000;
+    //         last = elapsed;
+    //         if (offset > -2*Math.PI) offset = -4*Math.PI;
+    //         realTimeSigStatus.selectAll("#sinwave")
+    //           .attr("transform", "translate(" + x(offset+Math.PI/20) + "," + y(-8)+ ")")
+    //         var xline = x(Math.sin(offset)) - x(0);
+    //         var yline = x(-Math.cos(offset)) - y(0);
+    //
+    //         realTimeSigStatus.select("#xline")
+    //           .attr("transform", "translate(0," + xline + ")");
+    //         realTimeSigStatus.select("#yline")
+    //           .attr("transform", "translate(" + yline + ",0)");
+    //       }
+    //     });
+    //   }
+    //
+    // }
 
  }

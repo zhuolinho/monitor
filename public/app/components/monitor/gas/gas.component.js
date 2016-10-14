@@ -81,7 +81,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
                     //                   '25日','26日','27日','28日','29日','30日','31日'
                     //                 ];
-                    this.days = [];
+                    this.startDays = [];
+                    this.endDays = [];
                     this.detailmodal = {};
                     this.goodConnection = false;
                     this.dataTimer = 300000;
@@ -111,8 +112,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     ];
                     this.allTankSelected = false;
                     this.selectedTanks = [];
-                    this.currentStatSelectedYear = 2016;
-                    this.currentStatSelectedMonth = 1;
                     this.newAlert = {
                         st: [],
                         atime: '',
@@ -252,13 +251,14 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.initSelect = function () {
                     var that = this;
                     setTimeout(function (_) {
-                        jQuery('select').material_select();
-                        jQuery('select.select-year').change(function (e) {
-                            that.statYearSelected(e);
-                        });
-                        jQuery('select.select-month').change(function (e) {
-                            that.statMothSelected(e);
-                        });
+                        jQuery('select:not(simple-select)').material_select();
+                        // jQuery('select.select-year').change(function(e){
+                        //           that.statYearSelected(e);
+                        // });
+                        //
+                        // jQuery('select.select-month').change(function(e){
+                        //     that.statMothSelected(e);
+                        // });
                     });
                 };
                 Gas.prototype.setYears = function (startYear) {
@@ -269,35 +269,48 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     }
                 };
                 Gas.prototype.setDaysOfMonth = function (year, month) {
-                    this.days = [];
+                    this.startDays = [];
                     var y = year || new Date().getFullYear();
                     var m = month || new Date().getMonth() + 1;
                     var numDays = this.lib.daysInMonth(y, m);
                     for (var i = 0; i < numDays; i++) {
-                        this.days.push(i + 1);
+                        this.startDays.push(i + 1);
                     }
-                    console.log("this.days----", this.days);
+                    console.log("this.days----", this.startDays);
                 };
-                Gas.prototype.statYearSelected = function (event) {
-                    console.log('year changed1----', event.target.value);
-                    this.currentStatSelectedYear = event.target.value;
-                };
+                //  statYearSelected(event){
+                //
+                //    console.log('year changed1----',event.target.value);
+                //        this.currentStatSelectedYear = event.target.value;
+                //  }
                 Gas.prototype.statMothSelected = function (event) {
-                    console.log('month changed1----', event.target.value);
-                    this.currentStatSelectedMonth = event.target.value;
-                    this.setDaysOfMonth(this.currentStatSelectedYear, this.currentStatSelectedMonth);
+                    //  console.log('month changed1----',event.target.value);
+                    //  this.currentStatSelectedMonth = event.target.value;
+                    //  this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
                 };
                 Gas.prototype.showDetailModal = function (param) {
                     var that = this;
-                    var d = new Date();
-                    this.currentStatSelectedYear = d.getFullYear();
-                    this.currentStatSelectedMonth = d.getMonth() + 1;
+                    this.setStatsInitValues();
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
-                            // that.initGrapth();
                             that.initChart();
                         }
                     });
+                };
+                Gas.prototype.setStatsInitValues = function () {
+                    var d = new Date();
+                    this.statsEndDate = d.toISOString().slice(0, 10);
+                    d.setMonth(d.getMonth() - 1); //last month date;
+                    this.statsStartDate = d.toISOString().slice(0, 10);
+                    console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
+                    //
+                    // var d = new Date();
+                    // this.statSelectedStartYear = d.getFullYear();
+                    // this.statSelectedEndYear = d.getFullYear();
+                    // this.statSelectedStartMonth = d.getMonth();
+                    // this.statSelectedEndMonth = d.getMonth()+1;
+                    // this.statSelecteEndDay = 1;
+                    // this.statSelectedStartDay = 1;
                 };
                 Gas.prototype.getChartdata = function () {
                     var _this = this;
@@ -309,11 +322,21 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         console.log("plc stats chart data-----", _this.chartData);
                     });
                 };
-                Gas.prototype.getPlcStats = function (year, month) {
+                Gas.prototype.getPlcStats = function () {
                     var _this = this;
                     this.statsData = [];
-                    console.log('get plc stats----', year, month);
-                    this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(function (resp) {
+                    console.log('get plc stats----', this.statsStartDate, this.statsEndDate);
+                    // var starty = '';
+                    // var startm = '';
+                    // var startd = '';
+                    // var endy = '';
+                    // var endm = '';
+                    // var endd = '';
+                    var mode = false;
+                    if (this.showByDay) {
+                        mode = true;
+                    }
+                    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + mode + '.json').subscribe(function (resp) {
                         console.log("plc stats-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.statsData = resp.pl.plc;
@@ -321,7 +344,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     });
                 };
                 Gas.prototype.computeStats = function () {
-                    this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
+                    console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
+                    this.getPlcStats();
                 };
                 Gas.prototype.downloadData = function () {
                     this.request.post('/plc/stats/download.json', this.statsData).subscribe(function (res) {
@@ -331,102 +355,41 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 };
                 // code for detail modal
                 Gas.prototype.showByDay = function (fromModal) {
-                    var _this = this;
                     // alert('by day');
                     console.log("by day");
                     if (fromModal) {
                         this.initChart();
                     }
                     this.isShowByDay = true;
-                    var d = new Date();
-                    this.currentStatSelectedYear = d.getFullYear();
-                    this.currentStatSelectedMonth = d.getMonth() + 1;
+                    // var d = new Date();
+                    // this.currentStatSelectedYear = d.getFullYear();
+                    // this.currentStatSelectedMonth = d.getMonth()+1;
                     // re-initialize material-select
-                    this.setDaysOfMonth(null, null);
+                    // this.setDaysOfMonth(null,null);
                     this.computeStats();
                     setTimeout(function (_) {
-                        jQuery('.select-year').val(_this.currentStatSelectedYear);
-                        jQuery('.select-month').val(_this.currentStatSelectedMonth);
+                        // jQuery('.select-year').val(this.currentStatSelectedYear);
+                        // jQuery('.select-month').val(this.currentStatSelectedMonth);
                         // this.initSelect();
                     });
                 };
                 Gas.prototype.showByMonth = function (fromModal) {
-                    var _this = this;
                     // alert('by month');
                     console.log("by month");
                     if (fromModal) {
                         this.initChart();
                     }
                     this.isShowByDay = false;
-                    var d = new Date();
-                    this.currentStatSelectedYear = d.getFullYear();
-                    this.currentStatSelectedMonth = 0;
+                    // var d = new Date();
+                    // this.currentStatSelectedYear = d.getFullYear();
+                    // this.currentStatSelectedMonth =  0;
                     // re-initialize material-select
                     this.currentSelect = this.years;
                     this.computeStats();
                     setTimeout(function (_) {
-                        jQuery('.select-year').val(_this.currentStatSelectedYear);
+                        // jQuery('.select-year').val(this.currentStatSelectedYear);
                         // this.initSelect();
                     });
-                };
-                Gas.prototype.initGrapth = function () {
-                    var that = this;
-                    if (!Gas.graphIsRunning) {
-                        Gas.graphIsRunning = true;
-                        var INTERVAL = Math.PI / 30;
-                        // Precompute wave
-                        var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL), sinWave = d.map(Math.sin);
-                        var w = 900, h = 150, x = d3.scale.linear().domain([-5, 15]).range([0, w]), y = x, r = (function (a, b) {
-                            return Math.sqrt(a * a + b * b);
-                        })(x.invert(w), y.invert(h));
-                        var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
-                            .attr("width", w).attr("height", h);
-                        realTimeSigStatus.append("g")
-                            .attr("id", "sinwave")
-                            .attr("width", w)
-                            .attr("height", h)
-                            .attr("transform", "translate(" + x(-11.2) + "," + y(-8) + ")")
-                            .selectAll("path")
-                            .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
-                            .enter().append("path")
-                            .attr("class", "wave")
-                            .attr("d", d3.svg.line()
-                            .x(function (d, i) { return x(i * INTERVAL) - x(0); })
-                            .y(function (d) { return y(d); }));
-                        var line = function (e, x1, y1, x2, y2) {
-                            return e.append("line")
-                                .attr("class", "line")
-                                .attr("x1", x1)
-                                .attr("y1", y1)
-                                .attr("x2", x2)
-                                .attr("y2", y2);
-                        };
-                        var axes = function (cx, cy, cls) {
-                            cx = x(cx);
-                            cy = y(cy);
-                            line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line");
-                            line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line");
-                        };
-                        axes(3, -2, "edge");
-                        axes(3, -3, "axis");
-                        var offset = -4 * Math.PI, last = 0;
-                        d3.timer(function (elapsed) {
-                            if (that.goodConnection) {
-                                offset += (elapsed - last) / 1000;
-                                last = elapsed;
-                                if (offset > -2 * Math.PI)
-                                    offset = -4 * Math.PI;
-                                realTimeSigStatus.selectAll("#sinwave")
-                                    .attr("transform", "translate(" + x(offset + Math.PI / 20) + "," + y(-8) + ")");
-                                var xline = x(Math.sin(offset)) - x(0);
-                                var yline = x(-Math.cos(offset)) - y(0);
-                                realTimeSigStatus.select("#xline")
-                                    .attr("transform", "translate(0," + xline + ")");
-                                realTimeSigStatus.select("#yline")
-                                    .attr("transform", "translate(" + yline + ",0)");
-                            }
-                        });
-                    }
                 };
                 Gas.prototype.initChart = function () {
                     var that = this;

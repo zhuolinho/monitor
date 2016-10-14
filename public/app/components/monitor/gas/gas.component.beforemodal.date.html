@@ -23,11 +23,11 @@
       <div class="col m7">
         <div class="row modal-nav monitor-tabs">
           <div class="col s3">
-              <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; showDetailModal(); showByDay();" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button  helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+              <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; showByDay(); showDetailModal();" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button  helper-font-bigger helper-display-block center-align"> 日均用量 </a>
           </div>
 
           <div class="col s3">
-              <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  showDetailModal(); showByMonth();" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align "> 月均用量</a>
+              <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  showByMonth(); showDetailModal();" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align "> 月均用量</a>
           </div>
           <div class="col s3">
 
@@ -307,7 +307,7 @@
 
 
 
-
+                            <input type="date" [(ngModel)]="statSelectedStartYear"/>
             <div class="row valign-wrapper">
 
 
@@ -316,15 +316,85 @@
                 从
               </div>
 
-              <div class="col m2  s12 helper-margin-bottom-15 helper-margin-left-0">
-                  <input type="date" [(ngModel)]="statsStartDate"/>
+              <div class="col m4  s12 helper-margin-bottom-15 helper-margin-left-0">
+
+                  <div class="row">
+
+                        <div class="col s4 ">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-year simple-select"  [(ngModel)]="statSelectedStartYear" name="statSelectedStartYear">
+                                <option *ngFor="let item of years; let i = index;" [value]="item">
+                                  {{item}}年
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+
+                        <div class="col s4 " *ngIf="isShowByDay">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-month simple-select" [(ngModel)]="statSelectedStartMonth" name="statSelectedStartMonth">
+                                <option *ngFor="let item of months; let i = index;" [value]="item">
+                                  {{item}}月
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+
+                        <div class="col s4 " *ngIf="isShowByDay">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-month simple-select"  [(ngModel)]="statSelectedStartDay" name="statSelectedStartDay">
+                                <option *ngFor="let item of startDays; let i = index;" [value]="item">
+                                  {{item}}日
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+                </div>
 
               </div>
               <div class="col m1  s12  helper-margin-left-0" style="max-width:60px;font-size:1.3em;">
                 -到-
               </div>
-              <div class="col m2  s12  helper-margin-bottom-15 helper-margin-left-0">
-                  <input type="date" [(ngModel)]="statsEndDate"/>
+              <div class="col m4  s12  helper-margin-bottom-15 helper-margin-left-0">
+
+                <div class="row">
+                        <div class="col s4 ">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-year simple-select">
+                                <option *ngFor="let item of years; let i = index;" [value]="item">
+                                  {{item}}年
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+
+                        <div class="col s4 " *ngIf="isShowByDay">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-month simple-select">
+                                <option *ngFor="let item of months; let i = index;" [value]="item">
+                                  {{item}}月
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+
+                        <div class="col s4 " *ngIf="isShowByDay">
+                          <div class="input-field">
+                              <select class="monitor-short-dropdown select-month simple-select">
+                                <option *ngFor="let item of months; let i = index;" [value]="item">
+                                  {{item}}月
+                                </option>
+                              </select>
+                              <!-- <label>选在时间</label> -->
+                            </div>
+                        </div>
+                </div>
+
               </div>
 
 
