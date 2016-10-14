@@ -336,7 +336,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
-                that.initGrapth();
+                // that.initGrapth();
                 that.initChart();
             }
       });
@@ -398,7 +398,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
           jQuery('.select-month').val(this.currentStatSelectedMonth);
-          this.initSelect();
+          // this.initSelect();
         });
 
     }
@@ -422,7 +422,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
         setTimeout(_=>{
           jQuery('.select-year').val(this.currentStatSelectedYear);
-          this.initSelect();
+          // this.initSelect();
         });
     }
 

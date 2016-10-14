@@ -258,6 +258,11 @@ body, html{
 
 
 
+select{
+  display: block !important ; /*override lib*/
+}
+
+
 
 /*graph css*/
 

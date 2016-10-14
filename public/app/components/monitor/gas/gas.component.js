@@ -294,7 +294,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.currentStatSelectedMonth = d.getMonth() + 1;
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
-                            that.initGrapth();
+                            // that.initGrapth();
                             that.initChart();
                         }
                     });
@@ -347,7 +347,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         jQuery('.select-month').val(_this.currentStatSelectedMonth);
-                        _this.initSelect();
+                        // this.initSelect();
                     });
                 };
                 Gas.prototype.showByMonth = function (fromModal) {
@@ -366,7 +366,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.computeStats();
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
-                        _this.initSelect();
+                        // this.initSelect();
                     });
                 };
                 Gas.prototype.initGrapth = function () {
