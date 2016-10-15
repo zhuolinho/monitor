@@ -344,45 +344,57 @@
 
 
               <div class="">
-                <div class="monitor-table stripped" *ngIf="isShowByDay">
-                  <div class="table-row  helper-gray-bg-light">
-                    <div class="table-cell"> 罐号 </div>
-                    <div class="table-cell">日期  </div>
-                    <div class="table-cell">累计流量 </div>
-                    <div class="table-cell">用量  </div>
+                <div *ngIf="isShowByDay">
+                  <div class="monitor-table stripped">
+                    <div class="table-row  helper-gray-bg-light">
+                      <div class="table-cell"> 罐号 </div>
+                      <div class="table-cell">日期  </div>
+                      <div class="table-cell">累计流量 </div>
+                      <div class="table-cell">用量  </div>
+                    </div>
+
+                    <div class="table-row"  *ngFor="let data of statsData; let i=index;">
+                      <div class="table-cell"> L001 </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+                      <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                    </div>
+
+                  </div>  <!-- end of table -->
+
+                  <div  *ngIf="!statsData.length">
+                    <div style="text-align:center; margin-top: 20px;"> 数据未满一天 </div>
                   </div>
 
-
-                  <div class="table-row"  *ngFor="let data of statsData; let i=index;">
-                    <div class="table-cell"> L001 </div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
-                    <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
-                  </div>
                 </div>
 
-                <!-- end of table -->
+
+                <div *ngIf="!isShowByDay">
+
+                  <div class="monitor-table stripped" >
+                    <div class="table-row  helper-gray-bg-light">
+                      <div class="table-cell"> 罐号 </div>
+                      <div class="table-cell">日期  </div>
+                      <div class="table-cell">累计流量 </div>
+                      <div class="table-cell">用量  </div>
+                    </div>
 
 
-                <div class="monitor-table stripped" *ngIf="!isShowByDay">
-                  <div class="table-row  helper-gray-bg-light">
-                    <div class="table-cell"> 罐号 </div>
-                    <div class="table-cell">日期  </div>
-                    <div class="table-cell">累计流量 </div>
-                    <div class="table-cell">用量  </div>
+                    <div class="table-row" *ngFor="let data of statsData" >
+                      <div class="table-cell"> L001 </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+                      <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                    </div>
+                  </div>   <!-- end of table -->
+
+                  <div  *ngIf="!statsData.length">
+                    <div  style="text-align:center; margin-top: 20px;"> 数据未满一个月! </div>
                   </div>
 
-
-                  <div class="table-row" *ngFor="let data of statsData" >
-                    <div class="table-cell"> L001 </div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
-                    <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
-                    <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
-                  </div>
                 </div>
-                <!-- end of table -->
+
               </div>
-
 
               <!-- padding div -->
               <div style="height:80px;"></div>
