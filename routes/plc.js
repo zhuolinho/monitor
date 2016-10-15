@@ -269,16 +269,38 @@ router.get('/stats/:start/:end/:mode.json', function(req, res, next) {
 
   router.post('/stats/download.json', function(req, res, next) {
 
-        var param = {
+    which = req.body.which;
+      var param1 = {
+        ns: 'plc',
+        vs: '1.0',
+        op: 'getPlcStats',
+        pl:{start:req.body.start, end:req.body.end,mode:req.body.mode, user:lib.reqUser(req)}
+      };
+
+
+        var param2 = {
           ns: 'plc',
           vs: '1.0',
           op: 'downloadStats',
-          pl:{data:req.body,user:lib.reqUser(req)}
+          pl:{data:null}
         };
 
-        handler(param)
+
+        if(which ==='instantaneous'){
+          param1.op = 'getInstantaniousPlcData';
+          param2.op = 'downloadInstantPlcData';
+        }
+
+        handler(param1)
             .then(function (r) {
-               helpers.sendResponse(res, 200, r);
+              param2.pl.data = r.pl.plc;
+              handler(param2)
+                  .then(function (r) {
+                     helpers.sendResponse(res, 200, r);
+                  })
+                  .fail(function (r) {
+                    helpers.sendResponse(res, 404, r);
+                  });
             })
             .fail(function (r) {
               helpers.sendResponse(res, 404, r);

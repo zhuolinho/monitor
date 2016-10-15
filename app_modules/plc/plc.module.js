@@ -396,13 +396,13 @@ plc.getPlcStats = function(m){
     var computedValues = [];
 
 
-    var start = m.pl.start+' 00:00:00';
-    var end = m.pl.end+' 23:59:59';
-
     if(m && m.pl && m.pl.user && m.pl.user.oID){
+          if(m && m.pl && m.pl.start && m.pl.end){
 
-          if(m && m.pl && m.pl.start){
-            if(m && m.pl && m.pl.end){
+            var start = m.pl.start+' 00:00:00';
+            var end = m.pl.end+' 23:59:59';
+
+            if( m.pl.mode && m.pl.mode === 'day' ){
 
               iPlc.aggregate([
                   {
@@ -427,8 +427,8 @@ plc.getPlcStats = function(m){
                   else{
                     if(plc && plc.length){
 
-                      var previousDate = lib.getMonthBefore(m.pl.year,m.pl.month);
-                      iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+                      var previousDate = lib.getPreviousMonthDate(m.pl.start)+' 00:00:00'; // shift back one month
+                      iPlc.find({oID:m.pl.user.oID,cd:{$gte:previousDate,$lt:start}}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
 
                               console.log("got previous plc",plc2);
                           if (err2){
@@ -441,7 +441,8 @@ plc.getPlcStats = function(m){
                                 plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
                             }
                             else{
-                                plc[0].usage  =  plc[0].maxVal;
+                                // plc[0].usage  =  plc[0].maxVal;
+                                plc[0].usage  = null;
                             }
 
                               plc[0].date = plc[0].date.slice(0,10);
@@ -450,6 +451,11 @@ plc.getPlcStats = function(m){
                               plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
                               plc[i].date = plc[i].date.slice(0,10);
                             }
+
+                            if(!plc[0].usage){
+                              plc.shift(); //remove first element;
+                            }
+
                             r.pl.plc = plc;
                             r.status = true;
                             deferred.resolve(r);
@@ -467,9 +473,12 @@ plc.getPlcStats = function(m){
             }
             else{
 
+              var startMonth = m.pl.start.slice(0,8)+'01 00:00:00';
+              var endMonth = m.pl.end.slice(0,8)+'31 23:59:59';  //31th will cover all cases(even february) since it's string comparison
+
               iPlc.aggregate([
                   {
-                      $match: {y:m.pl.year},
+                      $match: {oID:m.pl.user.oID,cd:{$gte:startMonth,$lte:endMonth}}
                   },
                   {
                       $group: {
@@ -489,8 +498,9 @@ plc.getPlcStats = function(m){
                   else{
 
                     if(plc && plc.length){
-                      var previousDate = lib.getMonthBefore(m.pl.year,1);
-                      iPlc.find({y:previousDate.y, m:previousDate.m}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
+
+                      var previousDate = lib.getPreviousMonthDate(m.pl.start)+' 00:00:00'; // shift back one month
+                      iPlc.find({oID:m.pl.user.oID,cd:{$gte:previousDate,$lt:start}}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
 
                           // console.log("got previous plc",plc2);
                           if (err2){
@@ -503,7 +513,8 @@ plc.getPlcStats = function(m){
                                 plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
                             }
                             else{
-                                plc[0].usage  =  plc[0].maxVal;
+                                // plc[0].usage  =  plc[0].maxVal;
+                                plc[0].usage  = null;
                             }
 
                             plc[0].date = plc[0].date.slice(0,7);
@@ -511,6 +522,10 @@ plc.getPlcStats = function(m){
                             for (var i = 1; i < plc.length; i++) {
                               plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
                               plc[i].date = plc[i].date.slice(0,7);
+                            }
+
+                            if(!plc[0].usage){
+                              plc.shift(); //remove first element;
                             }
                             r.pl.plc = plc;
                             r.status = true;
@@ -529,7 +544,57 @@ plc.getPlcStats = function(m){
             }
           }
           else{
-              r.er = "no year passed";
+              r.er = "no start or end date provided";
+              r.status = false;
+              deferred.reject(r);
+          }
+
+    }
+    else{
+      r.er = 'no org provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
+    return deferred.promise;
+
+}
+
+
+
+
+plc.getInstantaniousPlcData = function(m){
+
+
+    console.log("plc module: getInstantaniousPlcData FUNCTION",m.pl);
+    var r = {pl: {}, status:false , er:''};
+    var deferred = q.defer();
+
+
+    if(m && m.pl && m.pl.user && m.pl.user.oID){
+          if(m && m.pl && m.pl.start && m.pl.end){
+
+            var start = m.pl.start+' 00:00:00';
+            var end = m.pl.end+' 23:59:59';
+
+              iPlc.find({oID:m.pl.user.oID,cd:{$gte:start,$lte:end}}).sort({date:1}).exec(function (err, plc) {
+
+                  if (err){
+                    r.er = err;
+                    r.status = false;
+                    deferred.reject(r);
+                  }
+                  else{
+                    r.pl.plc = plc;
+                    r.status = true;
+                    deferred.resolve(r);
+                  }
+              });
+
+
+          }
+          else{
+              r.er = "no start or end date provided";
               r.status = false;
               deferred.reject(r);
           }
@@ -860,8 +925,6 @@ plc.downloadData = function(m){
       deferred.reject(r);
     }
 
-
-
     return deferred.promise;
 }
 
@@ -888,11 +951,32 @@ plc.downloadStats = function(m){
       deferred.reject(r);
     }
 
-
-
     return deferred.promise;
 }
 
+
+plc.downloadInstantPlcData = function(m){
+  console.log(" downloadStats----");
+
+  var r = {pl:null , er:'',em:''};
+  var deferred = q.defer();
+
+    if(m && m.pl && m.pl.data){
+
+          lib.procesDownloadInstantPlc(m.pl.data).then(function(res){
+            console.log("file res----",res);
+            r.pl = {file:res.path};
+            deferred.resolve(r);
+          });
+    }
+    else{
+      r.er = 'no data provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
+    return deferred.promise;
+}
 
 var _extractPlcData = function(data,index){
 
