@@ -255,6 +255,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.setStatsInitValues();
                     jQuery("#gasUsageDetailModal").openModal({
                         ready: function () {
+                            that.initChart();
                         }
                     });
                 };
@@ -307,46 +308,32 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.showByDay = function (fromModal) {
                     // alert('by day');
                     console.log("by day");
-                    this.initChart();
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     this.isShowByDay = true;
-                    // var d = new Date();
-                    // this.currentStatSelectedYear = d.getFullYear();
-                    // this.currentStatSelectedMonth = d.getMonth()+1;
-                    // re-initialize material-select
-                    // this.setDaysOfMonth(null,null);
                     this.computeStats();
-                    setTimeout(function (_) {
-                        // jQuery('.select-year').val(this.currentStatSelectedYear);
-                        // jQuery('.select-month').val(this.currentStatSelectedMonth);
-                        // this.initSelect();
-                    });
                 };
                 Gas.prototype.showByMonth = function (fromModal) {
                     // alert('by month');
                     console.log("by month");
-                    this.initChart();
+                    if (fromModal) {
+                        this.initChart();
+                    }
                     this.isShowByDay = false;
-                    // var d = new Date();
-                    // this.currentStatSelectedYear = d.getFullYear();
-                    // this.currentStatSelectedMonth =  0;
                     // re-initialize material-select
                     this.currentSelect = this.years;
                     this.computeStats();
-                    setTimeout(function (_) {
-                        // jQuery('.select-year').val(this.currentStatSelectedYear);
-                        // this.initSelect();
-                    });
                 };
                 Gas.prototype.initChart = function () {
                     var _this = this;
                     var that = this;
                     this.request.get('/plc/forlasthours.json').subscribe(function (resp) {
-                        console.log("plc stats chart data-----", resp);
+                        console.log("plc stats chart data-->>>:---", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.chartData = resp.pl.plc;
                             _this.generateChart();
                         }
-                        console.log("plc stats chart data-----", _this.chartData);
                     });
                 };
                 Gas.prototype.generateChart = function () {

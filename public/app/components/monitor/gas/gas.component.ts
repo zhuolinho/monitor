@@ -302,6 +302,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
       jQuery("#gasUsageDetailModal").openModal({
            ready: function() {
+               that.initChart();
             }
       });
     }
@@ -371,59 +372,37 @@ export class Gas  implements AfterViewInit,OnDestroy{
     showByDay(fromModal){
         // alert('by day');
         console.log("by day");
+        if(fromModal){
+            this.initChart();
+        }
 
-        this.initChart();
         this.isShowByDay = true;
-        // var d = new Date();
-        // this.currentStatSelectedYear = d.getFullYear();
-        // this.currentStatSelectedMonth = d.getMonth()+1;
-
-
-       // re-initialize material-select
-        // this.setDaysOfMonth(null,null);
         this.computeStats();
-
-        setTimeout(_=>{
-          // jQuery('.select-year').val(this.currentStatSelectedYear);
-          // jQuery('.select-month').val(this.currentStatSelectedMonth);
-          // this.initSelect();
-        });
-
     }
 
     showByMonth(fromModal){
         // alert('by month');
         console.log("by month");
 
-
-        this.initChart();
-
+        if(fromModal){
+            this.initChart();
+        }
         this.isShowByDay = false;
-        // var d = new Date();
-        // this.currentStatSelectedYear = d.getFullYear();
-        // this.currentStatSelectedMonth =  0;
 
        // re-initialize material-select
         this.currentSelect = this.years;
         this.computeStats();
-
-        setTimeout(_=>{
-          // jQuery('.select-year').val(this.currentStatSelectedYear);
-          // this.initSelect();
-        });
     }
 
     initChart(){
       var that = this;
 
-
       this.request.get('/plc/forlasthours.json').subscribe(resp => {
-        console.log("plc stats chart data-----",resp);
+        console.log("plc stats chart data-->>>:---",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.chartData = resp.pl.plc;
             this.generateChart();
         }
-          console.log("plc stats chart data-----",  this.chartData);
       });
 
     }
