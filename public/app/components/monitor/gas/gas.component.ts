@@ -109,7 +109,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.iniSocket();
       this.initSelect();
       this.updateTime();
-      // this.checkInterruption();
     }
 
 

@@ -369,23 +369,9 @@ var _tcpSerever = function(handler){
       console.log("got plc data-----");
       goodConnection = true;
       lastDataTime = Date.now();
-      // var patern1 = data.slice(0,6);
-      // var patern2 = data.slice(-4);
-      // var strPatern1 = patern1.toString('hex');
-      // var strPatern2 = patern2.toString('hex');
-
-      // size += data.length;
-
-      // console.log('plc data size and buffer size----',size, socket.bufferSize);
-      // console.log("plcConf----",plcConf);
-      // console.log("patern1---patern2---",patern1,patern2);
-      // console.log("strPatern1---strPatern2---",strPatern1,strPatern2);
-
-
 
       if(lib.isPlcBegin(data) && lib.isPlcEnd(data)){ //check if both begin and end
-
-            console.log('got both ends of  plc data----',plcConf.start,plcConf.end);
+            console.log('got both ends of  plc data----');
           gotInOnePiece = true;
       }
       else  if(!gotStart && lib.isPlcBegin(data)){  ///check begin
@@ -461,10 +447,10 @@ function saveData(handler,data){
   handler(param)
       .then(function (r) {
         console.log("plc route save data successful---",r);
-        _getLatest(handler,r.length,user);
+        _getLatest(handler,r.length, globalConf.orgs[0]);
       })
       .fail(function (r) {
-          console.log("plc save data fail----",r);
+          console.log("plc save data fail-->>>----",r);
       });
 }
 
@@ -483,7 +469,7 @@ function _getLatest(handler,length,user){
               io.emit("realTimePlc:"+user.oID,r);
       })
       .fail(function (r) {
-          console.log("plc save data fail----",r);
+          console.log("plc get lates data fail----",r);
       });
 }
 

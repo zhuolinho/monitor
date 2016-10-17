@@ -97,7 +97,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.iniSocket();
                     this.initSelect();
                     this.updateTime();
-                    // this.checkInterruption();
                 };
                 Gas.prototype.ngOnDestroy = function () {
                     clearInterval(this.dateTimer);
