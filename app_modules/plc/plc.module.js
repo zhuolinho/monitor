@@ -218,12 +218,15 @@ plc.handleIncommingData =  function(m) {
      var pchain = [];
 
       for (var i = 0; i < 100; i++) {
-            //  console.log("loop----",i);
+
              var dataToSave = _extractPlcData(incommingData,i);
-            //  console.log("dataToSave-----",dataToSave);
+
              if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '1970-1-1 0:0:0') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
-               break;
+               continue;
              }
+
+              console.log("loop----",i);
+              console.log("dataToSave-----",dataToSave);
 
 
              if(m.pl.org){
@@ -1106,7 +1109,7 @@ var _extractPlcData = function(data,index){
                          rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
                          cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
                          er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
-                         tank:''
+                         tank:'L'+lib.padNum(i,3)
                       });
 
   // console.log("extracted plc data result----",result);
