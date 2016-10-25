@@ -1109,7 +1109,7 @@ var _extractPlcData = function(data,index){
                          rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
                          cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
                          er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
-                         tank:'L'+lib.padNum(i,3)
+                         tank:'L'+lib.padNum(i+1,3)
                       });
 
   // console.log("extracted plc data result----",result);
