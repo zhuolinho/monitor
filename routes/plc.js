@@ -65,13 +65,13 @@ module.exports = function (handler)
             });
   });
 
-  router.get('/forlasthours.json', function(req, res, next) {
+  router.get('/forlasthours/:tank.json', function(req, res, next) {
 
       var param = {
             ns: 'plc',
             vs: '1.0',
             op: 'getAlertForTimeInterval',
-            pl:{user:lib.reqUser(req)}
+            pl:{user:lib.reqUser(req),tank:req.params.tank}
       }
 
         handler(param)
@@ -269,12 +269,14 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
 
   router.post('/stats/download.json', function(req, res, next) {
 
-    which = req.body.which;
+    var which = req.body.which;
+    var tank = req.body.tank;
+
       var param1 = {
         ns: 'plc',
         vs: '1.0',
         op: 'getPlcStats',
-        pl:{start:req.body.start, end:req.body.end,mode:req.body.mode,tank:req.body.tank, user:lib.reqUser(req)}
+        pl:{start:req.body.start, end:req.body.end,mode:req.body.mode,tank:tank, user:lib.reqUser(req)}
       };
 
 
@@ -282,7 +284,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'downloadStats',
-          pl:{data:null}
+          pl:{data:null,tank:tank}
         };
 
 
@@ -290,6 +292,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
           param1.op = 'getInstantaniousPlcData';
           param2.op = 'downloadInstantPlcData';
         }
+
 
         handler(param1)
             .then(function (r) {

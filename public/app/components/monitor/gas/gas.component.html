@@ -173,7 +173,7 @@
             <div class="helper-white-bg" style="overflow-x:hidden;">
               <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block">
 
-                 L001-金山枫湾路777号 ({{availableTanks.length}}个储罐)
+                 {{currentPlcTank}}-金山枫湾路777号 ({{availableTanks.length}}个储罐)
 
                 <a  class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veToggleSelectAllTanks()">
                   <span *ngIf="!allTankSelected">
@@ -259,7 +259,7 @@
 
           <!-- <h4>Modal Header</h4> -->
           <div class="helper-font-double center-align helper-padding-30">
-                  L001-金山枫湾路777号
+                  {{currentPlcTank}}-金山枫湾路777号
           </div>
 
           <div class="row modal-nav monitor-tabs">
@@ -352,7 +352,7 @@
                     </div>
 
                     <div class="table-row"  *ngFor="let data of statsData; let i=index;">
-                      <div class="table-cell"> L001 </div>
+                      <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
                       <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
@@ -379,7 +379,7 @@
 
 
                     <div class="table-row" *ngFor="let data of statsData" >
-                      <div class="table-cell"> L001 </div>
+                      <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
                       <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>

@@ -226,7 +226,7 @@ plc.handleIncommingData =  function(m) {
              }
 
               console.log("loop----",i);
-              console.log("dataToSave-----",dataToSave);
+              // console.log("dataToSave-----",dataToSave);
 
 
              if(m.pl.org){
@@ -358,7 +358,7 @@ plc.getAlertForTimeInterval =  function(m) {
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-        iPlc.find({oID: m.pl.user.oID}).$where(
+        iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank}).$where(
                 function () {
                     return (Date.now() - this._id.getTimestamp() < (8 * 60 * 60 * 1000))
 
@@ -481,7 +481,7 @@ plc.getPlcStats = function(m){
 
               iPlc.aggregate([
                   {
-                      $match: {oID:m.pl.user.oID,cd:{$gte:startMonth,$lte:endMonth}}
+                      $match: {oID:m.pl.user.oID,tank:m.pl.tank,cd:{$gte:startMonth,$lte:endMonth}}
                   },
                   {
                       $group: {
@@ -580,7 +580,9 @@ plc.getInstantaniousPlcData = function(m){
             var start = m.pl.start+' 00:00:00';
             var end = m.pl.end+' 23:59:59';
 
-              iPlc.find({oID:m.pl.user.oID,cd:{$gte:start,$lte:end}}).sort({date:1}).exec(function (err, plc) {
+              iPlc.find({oID:m.pl.user.oID,tank:m.pl.tank,cd:{$gte:start,$lte:end}}).sort({date:1}).exec(function (err, plc) {
+
+                console.log("getting instantaneous plc for downlaod-------",m.pl.tank);
 
                   if (err){
                     r.er = err;
@@ -942,7 +944,7 @@ plc.downloadStats = function(m){
 
     if(m && m.pl && m.pl.data){
 
-          lib.procesDownloadStats(m.pl.data).then(function(res){
+          lib.procesDownloadStats(m.pl.data,m.pl.tank).then(function(res){
             console.log("file res----",res);
             r.pl = {file:res.path};
             deferred.resolve(r);
@@ -959,14 +961,14 @@ plc.downloadStats = function(m){
 
 
 plc.downloadInstantPlcData = function(m){
-  console.log(" downloadStats----");
+  console.log(" downloadStats----",m.pl.tank);
 
   var r = {pl:null , er:'',em:''};
   var deferred = q.defer();
 
     if(m && m.pl && m.pl.data){
 
-          lib.procesDownloadInstantPlc(m.pl.data).then(function(res){
+          lib.procesDownloadInstantPlc(m.pl.data,m.pl.tank).then(function(res){
             console.log("file res----",res);
             r.pl = {file:res.path};
             deferred.resolve(r);

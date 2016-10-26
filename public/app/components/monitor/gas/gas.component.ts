@@ -347,6 +347,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             this.realTimeData = _.keyBy(resp.pl.plc,'tank');
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
+            this.initSelect();
             console.log('got real time data',this.realTimeData);
             console.log("this.connectedPlcs",this.connectedPlcs);
         }
@@ -354,7 +355,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
     }
     ngAfterViewInit(){
       this.iniSocket();
-      this.initSelect();
       this.updateTime();
     }
 
@@ -485,6 +485,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
                 // that.realTimeData = data.pl.plc;
                 that.realTimeData = _.keyBy(data.pl.plc,'tank');
                 that.connectedPlcs = Object.keys(that.realTimeData);
+                that.initSelect();
             }
           });
 
@@ -621,7 +622,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
         }
 
 
-        this.request.post('/plc/stats/download.json',{start:this.statsStartDate,end:this.statsEndDate,which:which,mode:mode,tank:this.setCurrentPlc}).subscribe(res => {
+        this.request.post('/plc/stats/download.json',{start:this.statsStartDate,end:this.statsEndDate,which:which,mode:mode,tank:this.currentPlcTank}).subscribe(res => {
           console.log("res-----",res);
           window.location = res.pl.file;
         });
@@ -657,7 +658,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     initChart(){
       var that = this;
 
-      this.request.get('/plc/forlasthours.json').subscribe(resp => {
+      this.request.get('/plc/forlasthours/'+this.currentPlcTank+'.json').subscribe(resp => {
         console.log("plc stats chart data-->>>:---",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.chartData = resp.pl.plc;

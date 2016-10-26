@@ -334,6 +334,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                             _this.realTimeData = _.keyBy(resp.pl.plc, 'tank');
                             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
                             _this.connectedPlcs = Object.keys(_this.realTimeData);
+                            _this.initSelect();
                             console.log('got real time data', _this.realTimeData);
                             console.log("this.connectedPlcs", _this.connectedPlcs);
                         }
@@ -341,7 +342,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 }
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
-                    this.initSelect();
                     this.updateTime();
                 };
                 Gas.prototype.ngOnDestroy = function () {
@@ -450,6 +450,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                             // that.realTimeData = data.pl.plc;
                             that.realTimeData = _.keyBy(data.pl.plc, 'tank');
                             that.connectedPlcs = Object.keys(that.realTimeData);
+                            that.initSelect();
                         }
                     });
                     this.rtmgs.on('plcDataInterruption', function (data) {
@@ -554,7 +555,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         which = 'monthly-usage';
                         mode = 'month';
                     }
-                    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.setCurrentPlc }).subscribe(function (res) {
+                    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(function (res) {
                         console.log("res-----", res);
                         window.location = res.pl.file;
                     });
@@ -583,7 +584,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                 Gas.prototype.initChart = function () {
                     var _this = this;
                     var that = this;
-                    this.request.get('/plc/forlasthours.json').subscribe(function (resp) {
+                    this.request.get('/plc/forlasthours/' + this.currentPlcTank + '.json').subscribe(function (resp) {
                         console.log("plc stats chart data-->>>:---", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.chartData = resp.pl.plc;
