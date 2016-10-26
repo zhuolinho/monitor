@@ -30,7 +30,8 @@ var iPlcSchema = mongoose.Schema({
                     rsc2:String,// reverse standard conditions 2
                     cf2:String,//communication failure 2
                     er2:String,// error report 2
-                    tank:String
+                    tank:String,
+                    laddr:String, //location address
               });
 
     iPlcSchema.methods.setOwner = function (user, cb) {

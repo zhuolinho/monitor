@@ -45,6 +45,246 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     //                 ];
                     this.startDays = [];
                     this.endDays = [];
+                    this.testPlcs = [
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e6b",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-27 0:5:23",
+                            "addr1": "0",
+                            "iwc1": "0",
+                            "isc1": "0",
+                            "p1": "0",
+                            "temp1": "0",
+                            "pwc1": "0",
+                            "psc1": "0",
+                            "rsc1": "0",
+                            "cf1": "1",
+                            "er1": "0",
+                            "addr2": "3",
+                            "iwc2": "13.8",
+                            "isc2": "55.1",
+                            "p2": "398.1",
+                            "temp2": "17.5",
+                            "pwc2": "164633.0",
+                            "psc2": "2522930.0",
+                            "rsc2": "61.0",
+                            "cf2": "0",
+                            "er2": "0",
+                            "tank": "L001",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e6c",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-27 0:4:32",
+                            "addr1": "2",
+                            "iwc1": "0",
+                            "isc1": "0",
+                            "p1": "365.7",
+                            "temp1": "22.6",
+                            "pwc1": "346385.0",
+                            "psc1": "6374181.0",
+                            "rsc1": "653.0",
+                            "cf1": "0",
+                            "er1": "0",
+                            "addr2": "0",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "0",
+                            "temp2": "0",
+                            "pwc2": "0",
+                            "psc2": "0",
+                            "rsc2": "0",
+                            "cf2": "1",
+                            "er2": "0",
+                            "tank": "L002",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e6d",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-27 0:5:27",
+                            "addr1": "2",
+                            "iwc1": "28.2",
+                            "isc1": "107",
+                            "p1": "372.0",
+                            "temp1": "23.2",
+                            "pwc1": "37889.0",
+                            "psc1": "1649238.0",
+                            "rsc1": "0",
+                            "cf1": "0",
+                            "er1": "0",
+                            "addr2": "0",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "0",
+                            "temp2": "0",
+                            "pwc2": "0",
+                            "psc2": "0",
+                            "rsc2": "0",
+                            "cf2": "1",
+                            "er2": "0",
+                            "tank": "L003",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e6e",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-26 11:26:9",
+                            "addr1": "0",
+                            "iwc1": "0",
+                            "isc1": "0",
+                            "p1": "0",
+                            "temp1": "0",
+                            "pwc1": "0",
+                            "psc1": "0",
+                            "rsc1": "0",
+                            "cf1": "1",
+                            "er1": "0",
+                            "addr2": "0",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "0",
+                            "temp2": "0",
+                            "pwc2": "0",
+                            "psc2": "0",
+                            "rsc2": "0",
+                            "cf2": "1",
+                            "er2": "0",
+                            "tank": "L004",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e6f",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-27 0:5:10",
+                            "addr1": "2",
+                            "iwc1": "83.5",
+                            "isc1": "298",
+                            "p1": "362.9",
+                            "temp1": "21.1",
+                            "pwc1": "605653.0",
+                            "psc1": "12117552.0",
+                            "rsc1": "545.0",
+                            "cf1": "0",
+                            "er1": "0",
+                            "addr2": "3",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "97.9",
+                            "temp2": "20.3",
+                            "pwc2": "0",
+                            "psc2": "141222.0",
+                            "rsc2": "0",
+                            "cf2": "0",
+                            "er2": "0",
+                            "tank": "L005",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e78",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-26 14:51:52",
+                            "addr1": "0",
+                            "iwc1": "0",
+                            "isc1": "0",
+                            "p1": "0",
+                            "temp1": "0",
+                            "pwc1": "0",
+                            "psc1": "0",
+                            "rsc1": "0",
+                            "cf1": "1",
+                            "er1": "0",
+                            "addr2": "0",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "0",
+                            "temp2": "0",
+                            "pwc2": "0",
+                            "psc2": "0",
+                            "rsc2": "0",
+                            "cf2": "1",
+                            "er2": "0",
+                            "tank": "L014",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5810d7cfa7d1a71e69621e7b",
+                            "muID": "system",
+                            "cuID": "system",
+                            "oID": "10000000001",
+                            "cd": "2016-10-27 00:20:31",
+                            "y": "2016",
+                            "m": "10",
+                            "d": "27",
+                            "dct": "2016-10-27 0:5:2",
+                            "cdct": "2016-10-27 0:5:19",
+                            "addr1": "2",
+                            "iwc1": "28.0",
+                            "isc1": "103",
+                            "p1": "372.6",
+                            "temp1": "22.9",
+                            "pwc1": "460190.0",
+                            "psc1": "7104624.0",
+                            "rsc1": "0",
+                            "cf1": "0",
+                            "er1": "0",
+                            "addr2": "3",
+                            "iwc2": "0",
+                            "isc2": "0",
+                            "p2": "94.6",
+                            "temp2": "22.8",
+                            "pwc2": "22693.0",
+                            "psc2": "440.0",
+                            "rsc2": "334.0",
+                            "cf2": "0",
+                            "er2": "0",
+                            "tank": "L017",
+                            "__v": 0
+                        }
+                    ];
                     this.detailmodal = {};
                     this.goodConnection = false;
                     this.dataTimer = 300000;
@@ -74,6 +314,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     ];
                     this.allTankSelected = false;
                     this.selectedTanks = [];
+                    this.currentPlcTank = 'L001';
+                    this.connectedPlcs = [];
                     this.selectedDownloadTab = 1;
                     this.newAlert = {
                         st: [],
@@ -89,7 +331,11 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.request.get('/plc/latest.json').subscribe(function (resp) {
                         console.log("latest plc-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
-                            _this.realTimeData = resp.pl.plc;
+                            _this.realTimeData = _.keyBy(resp.pl.plc, 'tank');
+                            // this.realTimeData = _.keyBy(this.testPlcs,'tank');
+                            _this.connectedPlcs = Object.keys(_this.realTimeData);
+                            console.log('got real time data', _this.realTimeData);
+                            console.log("this.connectedPlcs", _this.connectedPlcs);
                         }
                     });
                 }
@@ -201,7 +447,9 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         }
                         console.log("realTimePlc-----", data);
                         if (data && data.pl && data.pl.plc) {
-                            that.realTimeData = data.pl.plc;
+                            // that.realTimeData = data.pl.plc;
+                            that.realTimeData = _.keyBy(data.pl.plc, 'tank');
+                            that.connectedPlcs = Object.keys(that.realTimeData);
                         }
                     });
                     this.rtmgs.on('plcDataInterruption', function (data) {
@@ -213,6 +461,10 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     var that = this;
                     setTimeout(function (_) {
                         jQuery('select:not(simple-select)').material_select();
+                        jQuery('select.current-plc').change(function (e) {
+                            console.log('changed');
+                            that.setCurrentPlc(e);
+                        });
                         // jQuery('select.select-year').change(function(e){
                         //           that.statYearSelected(e);
                         // });
@@ -221,6 +473,10 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         //     that.statMothSelected(e);
                         // });
                     });
+                };
+                Gas.prototype.setCurrentPlc = function (event) {
+                    this.currentPlcTank = event.target.value;
+                    console.log('this.currentPlcTank---', this.currentPlcTank);
                 };
                 Gas.prototype.setYears = function (startYear) {
                     var sY = startYear || 2009;
@@ -273,7 +529,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         mode = 'day';
                     }
                     console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-                    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + mode + '.json').subscribe(function (resp) {
+                    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(function (resp) {
                         console.log("plc stats-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.statsData = resp.pl.plc;
@@ -298,7 +554,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         which = 'monthly-usage';
                         mode = 'month';
                     }
-                    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode }).subscribe(function (res) {
+                    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.setCurrentPlc }).subscribe(function (res) {
                         console.log("res-----", res);
                         window.location = res.pl.file;
                     });

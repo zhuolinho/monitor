@@ -3,14 +3,11 @@
   <div class="row helper-margin-bottom-5 valign-wrapper">
     <div class="col s7  helper-white-bg">
       <div class="input-field">
-          <select class="helper-select-font-bigger ">
-            <option value="0"  selected> L001-金山枫湾路777号</option>
-            <!-- <option value="1"> 母站</option>
-            <option  value="中转站1号">中转站1号</option>
-           <option  value="中转站2号">中转站2号</option>
-           <option  value="中转站3号">中转站3号</option> -->
 
-          </select>
+        <select class="helper-select-font-bigger current-plc">
+          <option *ngFor="let addr of connectedPlcs" [value]="addr" > {{addr}}-金山枫湾路777号</option>
+
+        </select>
           <label >选择地址</label>
         </div>
     </div>
@@ -55,7 +52,7 @@
               </div> -->
 
 
-              <div class="row">
+            <div class="row">
 
 
                               <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" *ngIf="realTimeData">
@@ -75,30 +72,30 @@
 
                                 <div class="table-row">
                                   <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.addr1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.addr1}}</span></div>
                                 </div>
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
                                   <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.psc1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.psc1}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
                                   <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.isc1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.isc1}}</span></div>
                                 </div>
 
                                 <div class="table-row">
                                   <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.temp1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.temp1}}</span></div>
                                 </div>
 
 
                                 <div class="table-row">
                                   <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.p1}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.p1}}</span></div>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -122,30 +119,30 @@
 
                                 <div class="table-row">
                                   <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.addr2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.addr2}}</span></div>
                                 </div>
 
                                 <!-- 标况累计 -->
                                 <div class="table-row">
                                   <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.psc2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.psc2}}</span></div>
                                 </div>
 
                                 <!-- 瞬时标况 -->
                                 <div class="table-row">
                                   <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.isc2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.isc2}}</span></div>
                                 </div>
 
                                 <div class="table-row">
                                   <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.temp2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.temp2}}</span></div>
                                 </div>
 
 
                                 <div class="table-row">
                                   <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[0]?.p2}}</span></div>
+                                    <div class="table-cell"> <span *ngIf="realTimeData">{{realTimeData[currentPlcTank]?.p2}}</span></div>
                                 </div>
 
               </div>
@@ -154,6 +151,7 @@
                 <div class="clearfix"></div>
 
               </div>
+
 
 
             </div>

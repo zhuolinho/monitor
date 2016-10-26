@@ -409,7 +409,7 @@ plc.getPlcStats = function(m){
 
               iPlc.aggregate([
                   {
-                        $match: {oID:m.pl.user.oID,cd:{$gte:start,$lte:end}}
+                        $match: {oID:m.pl.user.oID,tank:m.pl.tank,cd:{$gte:start,$lte:end}}
                   },
                   {
                       $group: {

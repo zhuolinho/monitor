@@ -101,7 +101,7 @@ module.exports = function (handler)
             });
   });
 
-router.get('/stats/:start/:end/:mode.json', function(req, res, next) {
+router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
 
 
     //which = all, processed, unprocessed.
@@ -109,7 +109,7 @@ router.get('/stats/:start/:end/:mode.json', function(req, res, next) {
         ns: 'plc',
         vs: '1.0',
         op: 'getPlcStats',
-        pl:{start:req.params.start, end:req.params.end,mode:req.params.mode, user:lib.reqUser(req)}
+        pl:{start:req.params.start, end:req.params.end,mode:req.params.mode,tank:req.params.tank, user:lib.reqUser(req)}
       };
 
       handler(param)
@@ -274,7 +274,7 @@ router.get('/stats/:start/:end/:mode.json', function(req, res, next) {
         ns: 'plc',
         vs: '1.0',
         op: 'getPlcStats',
-        pl:{start:req.body.start, end:req.body.end,mode:req.body.mode, user:lib.reqUser(req)}
+        pl:{start:req.body.start, end:req.body.end,mode:req.body.mode,tank:req.body.tank, user:lib.reqUser(req)}
       };
 
 
