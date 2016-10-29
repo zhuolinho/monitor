@@ -1,4 +1,5 @@
 var express = require('express');
+var lib = require('./lib/lib')
 var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
