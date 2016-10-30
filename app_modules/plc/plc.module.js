@@ -623,7 +623,7 @@ plc.getAddress =  function(m) {
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-    Address.find({oID:m.pl.user.oID},function (err, address) {
+    Address.find({oID:m.pl.user.oID}).sort({cd:-1}).exec(function (err, address) {
         if (err){
           r.er = err;
           r.status = false;
@@ -662,19 +662,20 @@ plc.addNewAddress =  function(m) {
                           addr:m.pl.address.addr,
                           cn:m.pl.address.cn,
                           at:m.pl.address.at,
-                          plcaddr1:m.pl.address.plcaddr1,
-                          plcaddr2:m.pl.address.plcaddr2
+                          plcip1:m.pl.address.plcip1,
+                          plcip2:m.pl.address.plcip2,
+                          tank:m.pl.address.tank
                           });
 
             newAddress.setOwner(m.pl.user,function(err,doc){
                 if(!err){
-                  doc.save(function (error, address){
-                      if (!error){
+                  doc.save(function (serr, address){
+                      if (!serr){
                         r.pl.address = address;
                         deferred.resolve(r);
                       }
                       else{
-                        r.er = error;
+                        r.er = JSON.stringify(serr);
                         r.em = 'could not save. already exist?';
                         deferred.reject(r);
                       }
@@ -682,7 +683,7 @@ plc.addNewAddress =  function(m) {
                 }
                 else{
                   r.er = err;
-                  r.em = 'update before save';
+                  r.em = 'set owner failled';
                   deferred.reject(r);
                 }
 

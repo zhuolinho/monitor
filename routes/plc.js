@@ -195,8 +195,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'getAddress',
-          pl:{user:lib.reqUser(req)
-          }
+          pl:{user:lib.reqUser(req)}
         };
 
         handler(param)

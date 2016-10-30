@@ -30,14 +30,14 @@
                     <div class="table-row  helper-gray-bg-light">
                       <div class="table-cell"> 编号 </div>
                       <div class="table-cell">厂区地址 </div>
-                      <div class="table-cell">PLC地址1 </div>
-                      <div class="table-cell">PLC地址2 </div>
+                      <div class="table-cell">公司名称 </div>
+                      <!-- <div class="table-cell">PLC地址1 </div>
+                      <div class="table-cell">PLC地址2 </div> -->
                     </div>
                     <div class="table-row" *ngFor="let address of addressGroup.data">
-                      <div class="table-cell"> {{address.code}} </div>
+                      <div class="table-cell"> {{address.tank}} </div>
                       <div class="table-cell"> {{address.addr}} </div>
-                      <div class="table-cell"> {{address.plcaddr1}}</div>
-                      <div class="table-cell"> {{address.plcaddr2}} <a  class="right " (click) = "showDetailModal({addr:address,addressType:addressGroup.type.value});"  >  编辑</a></div>
+                      <div class="table-cell"> {{address.cn}} <a  class="right " (click) = "showDetailModal({addr:address,addressType:addressGroup.type.value});"  >  编辑</a></div>
                     </div>
                   </div>
 
@@ -65,6 +65,22 @@
                 <h4 *ngIf="editMode">  编辑 {{addressType}}</h4>
 
 
+
+                <div class="col s12 m12 helper-margin-bottom-20">
+                      <div class="input-field">
+                        <select id="plcAddrTank" >
+                            <<option value="">选择plc</option>
+                            <option *ngFor="let t of plcAddrTanks" [value]="t">
+                              {{t}}
+                            </option>
+                        </select>
+                        <label for="plcip1">
+                        PLC 编号。
+                        </label>
+                      </div>
+                </div>
+
+
                <div class="col s12 m12 helper-margin-bottom-20">
                  <div class="input-field">
                    <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.addr">
@@ -83,9 +99,9 @@
                </div>
 
 
-              <div class="col s12 m12 helper-margin-bottom-20">
+              <!-- <div class="col s12 m12 helper-margin-bottom-20">
                     <div class="input-field">
-                      <select id="plcAddr1" >
+                      <select id="plcip1" >
                           <option value="192.167.0.1">
                           192.167.0.1
                           </option>
@@ -98,15 +114,15 @@
                           </option>
 
                       </select>
-                      <label for="plcAddr1">
+                      <label for="plcip1">
                       选择 PLC 地址1。
                       </label>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="col s12 m12 helper-margin-bottom-20">
+                <!-- <div class="col s12 m12 helper-margin-bottom-20">
                       <div class="input-field">
-                        <select id="plcAddr2" >
+                        <select id="plcip2" >
                             <option value="192.167.0.5">
                             192.167.0.5
                             </option>
@@ -119,19 +135,19 @@
                             </option>
 
                         </select>
-                        <label for="plcAddr2">
+                        <label for="plcip2">
                         选择 PLC 地址2。
                         </label>
                       </div>
-                  </div>
+                  </div> -->
 
 
 
               </div>
 
               <div class="modal-footer">
-               <a *ngIf="!editTarget" (click)="addNewAddress()" class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
-               <a *ngIf="editTarget" (click)="updateAddress()" class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+               <a *ngIf="!editTarget" (click)="addNewAddress()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+               <a *ngIf="editTarget" (click)="updateAddress()" class=" modal-action monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
              </div>
 
               <!-- for the select -->

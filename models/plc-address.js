@@ -9,9 +9,9 @@ var plcAddressSchema = mongoose.Schema({
                       addr:{type:String,required:true},
                       cn:{type:String, default:"无"}, // company name
                       at:{type:String,required:true}, //address type
-                      plcaddr1:{type:String, default:"无"},
-                      plcaddr2:{type:String, default:"无"},
-                      tanks: [{ code: String, cd: Date}] //created date
+                      plcip1:{type:String, default:"无"},
+                      plcip2:{type:String, default:"无"},
+                      tank: {type:String, required:true}
               }
               ,{
               timestamps:true
