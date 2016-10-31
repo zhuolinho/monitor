@@ -323,6 +323,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     statsEndDate:any;
     isShowByDay:boolean;
     statsData:any[];
+    plcAddresses:any[] = [];
     selectedDownloadTab:number = 1;
     newAlert:any = {
       st:[],
@@ -340,11 +341,12 @@ export class Gas  implements AfterViewInit,OnDestroy{
       // realTimeData
       this.date = lib.dateTime();
       this.setYears(null);
-      this.request.get('/plc/latest.json').subscribe(resp => {
+      this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
         console.log("latest plc-----",resp);
-        if(resp&&resp.pl&&resp.pl.plc){
+        if(resp&&resp.pl&&resp.pl.plc&&resp.pl.address){
 
             this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+            this.plcAddresses = _.keyBy(resp.pl.address,'tank');
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
             this.initSelect();

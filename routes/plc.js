@@ -65,6 +65,42 @@ module.exports = function (handler)
             });
   });
 
+
+  router.get('/latest/withaddress.json', function(req, res, next) {
+
+
+      var param1 = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'getAddress',
+            pl:{user:lib.reqUser(req)}
+      };
+
+      var param2 = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'getLatestData',
+            pl:{length:100, user:lib.reqUser(req)}
+      };
+
+        handler(param1)
+            .then(function (r1) {
+              handler(param2)
+                  .then(function (r2) {
+
+                    r2.pl.address = r1.pl.address;
+                     helpers.sendResponse(res, 200, r2);
+                  })
+                  .fail(function (r2) {
+                    helpers.sendResponse(res, 404, r2);
+                  });
+
+            })
+            .fail(function (r1) {
+              helpers.sendResponse(res, 404, r1);
+            });
+  });
+
   router.get('/forlasthours/:tank.json', function(req, res, next) {
 
       var param = {

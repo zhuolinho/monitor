@@ -316,6 +316,7 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.selectedTanks = [];
                     this.currentPlcTank = 'L001';
                     this.connectedPlcs = [];
+                    this.plcAddresses = [];
                     this.selectedDownloadTab = 1;
                     this.newAlert = {
                         st: [],
@@ -328,10 +329,11 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     // realTimeData
                     this.date = lib.dateTime();
                     this.setYears(null);
-                    this.request.get('/plc/latest.json').subscribe(function (resp) {
+                    this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
                         console.log("latest plc-----", resp);
-                        if (resp && resp.pl && resp.pl.plc) {
+                        if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                             _this.realTimeData = _.keyBy(resp.pl.plc, 'tank');
+                            _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
                             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
                             _this.connectedPlcs = Object.keys(_this.realTimeData);
                             _this.initSelect();

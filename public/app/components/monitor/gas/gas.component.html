@@ -5,7 +5,7 @@
       <div class="input-field">
 
         <select class="helper-select-font-bigger current-plc">
-          <option *ngFor="let addr of connectedPlcs" [value]="addr" > {{addr}}-金山枫湾路777号</option>
+          <option *ngFor="let plc of connectedPlcs" [value]="addr" > {{plc}}-{{plcAddresses[plc]?.addr}}</option>
 
         </select>
           <label >选择地址</label>
