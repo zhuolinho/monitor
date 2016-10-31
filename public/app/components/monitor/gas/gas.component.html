@@ -5,7 +5,7 @@
       <div class="input-field">
 
         <select class="helper-select-font-bigger current-plc">
-          <option *ngFor="let plc of connectedPlcs" [value]="addr" > {{plc}}-{{plcAddresses[plc]?.addr}}</option>
+          <option *ngFor="let plc of connectedPlcs" [value]="addr" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
 
         </select>
           <label >选择地址</label>
@@ -173,7 +173,7 @@
             <div class="helper-white-bg" style="overflow-x:hidden;">
               <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block">
 
-                 {{currentPlcTank}}-金山枫湾路777号 ({{availableTanks.length}}个储罐)
+                 {{currentPlcTank}}  {plcAddresses[currentPlcTank]?.addr}} ({{availableTanks.length}}个储罐)
 
                 <a  class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veToggleSelectAllTanks()">
                   <span *ngIf="!allTankSelected">
@@ -259,7 +259,7 @@
 
           <!-- <h4>Modal Header</h4> -->
           <div class="helper-font-double center-align helper-padding-30">
-                  {{currentPlcTank}}-金山枫湾路777号
+                  {{currentPlcTank}} {plcAddresses[currentPlcTank]?.addr}}
           </div>
 
           <div class="row modal-nav monitor-tabs">

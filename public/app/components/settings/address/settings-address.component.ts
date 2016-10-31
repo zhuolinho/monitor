@@ -4,6 +4,7 @@ import {config} from '../../../config';
 // import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {SettingsService} from '../../../services/settings.service';
 import {RequestService} from '../../../services/request.service';
+import {plcAddress} from '../../../../models/plcAddress';
 import {CanActivate} from '@angular/router';
 declare var jQuery:any;
 declare var _:any;
@@ -300,15 +301,7 @@ export class SettingsAddress{
   editMode:boolean = false;
   editTarget:any;
   plcAddrTanks:string[] = [];
-  newAddress:any = {
-    code:'',
-    cn:'',
-    addr:'',
-    at:'',
-    plcip1:'',
-    plcip2:'',
-    tank:''
-  };
+  newAddress:any = new plcAddress();
 
     constructor(private settingsSrvc:SettingsService, private request:RequestService){
 
@@ -392,6 +385,7 @@ export class SettingsAddress{
      else{
        this.editMode = false;
        this.editTarget = null;
+       this.newAddress = new plcAddress();
        this.newAddress.at = arg.addressType;
        jQuery('select#plcAddrTank').val(null);
        jQuery('select#plcAddrTank').attr('disabled',null);

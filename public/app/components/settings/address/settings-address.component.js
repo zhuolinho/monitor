@@ -1,4 +1,4 @@
-System.register(['@angular/core', '../../../config', '../../../services/settings.service', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '../../../config', '../../../services/settings.service', '../../../services/request.service', '../../../../models/plcAddress'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_service_1, request_service_1;
+    var core_1, config_1, settings_service_1, request_service_1, plcAddress_1;
     var SettingsAddress;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
+            },
+            function (plcAddress_1_1) {
+                plcAddress_1 = plcAddress_1_1;
             }],
         execute: function() {
             SettingsAddress = (function () {
@@ -296,15 +299,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     this.currentTanks = [];
                     this.editMode = false;
                     this.plcAddrTanks = [];
-                    this.newAddress = {
-                        code: '',
-                        cn: '',
-                        addr: '',
-                        at: '',
-                        plcip1: '',
-                        plcip2: '',
-                        tank: ''
-                    };
+                    this.newAddress = new plcAddress_1.plcAddress();
                     console.log("SettingsAddress is up and running");
                     var self = this;
                     this.request.get("/plc/address/all.json").subscribe(function (res) {
@@ -371,6 +366,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     else {
                         this.editMode = false;
                         this.editTarget = null;
+                        this.newAddress = new plcAddress_1.plcAddress();
                         this.newAddress.at = arg.addressType;
                         jQuery('select#plcAddrTank').val(null);
                         jQuery('select#plcAddrTank').attr('disabled', null);
