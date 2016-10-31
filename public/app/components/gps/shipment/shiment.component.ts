@@ -13,45 +13,45 @@ declare var jQuery:any;
 
 export class Shipment{
 
-  // shipmentList:any[]=[
-  //
-  //     {
-  //       name:'C002-闸北区大宁路335号XX站',
-  //       id:'6848',
-  //       remainingTime:'2小时02分',
-  //       upTime:'15.5.3-13:02/----',
-  //       processed:false,
-  //       alertTime:'5.5.3-13:02',
-  //       alertValue:'6%/12kg/hps'
-  //     },
-  //     {
-  //       name:'L002-闸北区大宁路335号XX站',
-  //       id:'2848',
-  //       remainingTime:'2小时02分',
-  //       upTime:'15.5.3-13:02/----',
-  //       processed:false,
-  //       alertTime:'5.5.3-13:02',
-  //       alertValue:'6%/12kg/hps'
-  //     },
-  //     {
-  //       name:'C002-闸北区大宁路335号XX站',
-  //       id:'4845',
-  //       remainingTime:'2小时02分',
-  //       upTime:'15.5.3-13:02/----',
-  //       processed:true,
-  //       alertTime:'5.5.3-13:02',
-  //       alertValue:'6%/12kg/hps'
-  //     },
-  //     {
-  //       name:'C002-闸北区大宁路335号XX站',
-  //       id:'4845',
-  //       remainingTime:'2小时02分',
-  //       upTime:'15.5.3-13:02/----',
-  //       processed:false,
-  //       alertTime:'5.5.3-13:02',
-  //       alertValue:'6%/12kg/hps'
-  //     }
-  //];  //todo user flag and ng if to hide when filtering;
+  testShipmentList:any[]=[
+
+      {
+        name:'C002-闸北区大宁路335号XX站',
+        id:'6848',
+        remainingTime:'2小时02分',
+        upTime:'15.5.3-13:02/----',
+        processed:false,
+        alertTime:'5.5.3-13:02',
+        alertValue:'6%/12kg/hps'
+      },
+      {
+        name:'L002-闸北区大宁路335号XX站',
+        id:'2848',
+        remainingTime:'2小时02分',
+        upTime:'15.5.3-13:02/----',
+        processed:false,
+        alertTime:'5.5.3-13:02',
+        alertValue:'6%/12kg/hps'
+      },
+      {
+        name:'C002-闸北区大宁路335号XX站',
+        id:'4845',
+        remainingTime:'2小时02分',
+        upTime:'15.5.3-13:02/----',
+        processed:true,
+        alertTime:'5.5.3-13:02',
+        alertValue:'6%/12kg/hps'
+      },
+      {
+        name:'C002-闸北区大宁路335号XX站',
+        id:'4845',
+        remainingTime:'2小时02分',
+        upTime:'15.5.3-13:02/----',
+        processed:false,
+        alertTime:'5.5.3-13:02',
+        alertValue:'6%/12kg/hps'
+      }
+  ];  //todo user flag and ng if to hide when filtering;
 
   shipmentList:any[] = [];
 
@@ -60,10 +60,14 @@ export class Shipment{
     console.log("Shipment is up and running");
 
     this.request.get("/plc/shipments.json").subscribe(res => {
-          // console.log("res------", res);
-          if(res.pl && res.pl.shipmentList){
-              this.shipmentList = res.pl.shipmentList;
-          }
+          console.log("shipment res------", res);
+
+
+            this.shipmentList = this.testShipmentList;
+          // if(res.pl && res.pl.shipmentList){
+          //     this.shipmentList = res.pl.shipmentList;
+          //
+          // }
 
     })
 

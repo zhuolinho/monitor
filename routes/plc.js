@@ -243,6 +243,24 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
             });
   });
 
+  // router.get('/sms/users.json', function(req, res, next) {
+  //
+  //       var param = {
+  //         ns: 'plc',
+  //         vs: '1.0',
+  //         op: '_sendAlertNotification',
+  //         pl:{user:globalConf.orgs[0]}
+  //       };
+  //
+  //       handler(param)
+  //           .then(function (r) {
+  //              helpers.sendResponse(res, 200, r);
+  //           })
+  //           .fail(function (r) {
+  //             helpers.sendResponse(res, 404, r);
+  //           });
+  // });
+
 
 
 

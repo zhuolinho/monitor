@@ -417,29 +417,6 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         });
                     }
                 };
-                //  iniSocket(){
-                //       var that = this;
-                //        var url = 'http://'+window.location.hostname+':3003';
-                //        var socket = io(url);
-                //       socket.on('realTimePlc', function(data){
-                //
-                //         if(!that.goodConnection){
-                //           that.goodConnection = true;
-                //         }
-                //
-                //         console.log("realTimePlc-----",data);
-                //         if(data&&data.pl&& data.pl.plc){
-                //             that.realTimeData = data.pl.plc;
-                //         }
-                //
-                //       });
-                //
-                //
-                //       socket.on('plcDataInterruption', function(data){
-                //             console.log('plcDataInterruption', data);
-                //             that.goodConnection = false;
-                //       });
-                //    }
                 Gas.prototype.iniSocket = function () {
                     var that = this;
                     this.rtmgs.connect(3003);

@@ -43,10 +43,18 @@ var UserSchema = new Schema({
       default:0
     },
     anc:{  //alert notification access
+      a:{type:Boolean, default:false},   //all alert 所有报警
+      sia:{type:Boolean, default:false}, //signal interruption alert 信号中断
+      iaa:{type:Boolean, default:false}, //insufficient amout  alert 余量报警
       la:{type:Boolean, default:false},   //leakage alert  泄漏报警
+      ap:{type:Boolean, default:false},   //all alert processed所有报警
+      siap:{type:Boolean, default:false}, //signal interruption alert processed 信号中断
+      iaap:{type:Boolean, default:false}, //insufficient amout  alert processed余量报警
+      lap:{type:Boolean, default:false},   //leakage alert processed 泄漏报警
+
       sa:{type:Boolean, default:false},   //shipment alert 配送短信
       sca:{type:Boolean, default:false}, //shipment complete alert 送达短信
-      sia:{type:Boolean, default:false}, //signal interruption alert 信号中断
+
     }
 },
 {

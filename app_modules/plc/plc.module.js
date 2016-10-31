@@ -10,6 +10,7 @@ var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
 var iPlc = require('../../models/iplc');  //incomming plc data
 var Address = require('../../models/plc-address');
+var User   = require('../../models/user');
 var plcConfig = require('../../configs/plc');
 var lib = require('../../lib/lib');
 
@@ -744,17 +745,18 @@ plc.addNewAlert = function(m){
   var r = {pl: {}, er:'',em:''};
   var deferred = q.defer();
 
-
   if(m && m.pl && m.pl.user && m.pl.user.oID){
+    _sendAlertNotification(m);
+    
     if(m.pl.alert){
-        var newAlert = new PlcAlert({
-                            atime:lib.dateTime(),
-                            atype:m.pl.alert.atype,
-                            tank:m.pl.alert.addr,
-                            am:m.pl.alert.am,
-                            rt:m.pl.alert.remainingTime,
-                            st:m.pl.alert.st
-                          });
+            var newAlert = new PlcAlert({
+                              atime:lib.dateTime(),
+                              atype:m.pl.alert.atype,
+                              tank:m.pl.alert.addr,
+                              am:m.pl.alert.am,
+                              rt:m.pl.alert.remainingTime,
+                              st:m.pl.alert.st
+                            });
 
               newAlert.setOwner(m.pl.user, function(setErr,setDoc){
                 setDoc.save(function (error, alert){
@@ -784,6 +786,49 @@ plc.addNewAlert = function(m){
   }
 
   return deferred.promise;
+
+}
+
+
+plc._sendAlertNotification = function(m){
+
+
+  console.log("plc module: send alert notification");
+ var r = {pl: {}, status:false , er:''};
+ var deferred = q.defer();
+ var query = {};
+
+ if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+     User.find({oID:m.pl.user.oID,'$or':[{'anc.a':true},{'anc.sia':true},{'anc.iaa':true},{'anc.la':true}]}).sort({atime:-1}).exec(function (err, resp) {
+         if (err){
+           r.er = err;
+           r.status = false;
+           deferred.reject(r);
+         }
+         else{
+
+           r.pl.users = resp;
+           deferred.resolve(r);
+
+           for (var i = 0; i < resp.length; i++) {
+             if (resp[i].phone){
+               lib.sendSms(resp[i].phone);
+             };
+           }
+         }
+     })
+
+
+ }
+ else{
+   r.er = 'no org provided';
+   r.status = false;
+   deferred.reject(r);
+ }
+
+  return deferred.promise;
+
 
 }
 

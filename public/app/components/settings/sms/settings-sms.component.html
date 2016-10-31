@@ -70,15 +70,14 @@
            <div class="row">
 
                <div class="input-field col s12">
-                 <select>
+                 <select class="sms-users-select">
                    <option value="" disabled selected>请选择账号/姓名</option>
-                   <option value="1">201/皮良波</option>
-                   <option value="1">201/皮良波</option>
+                   <option *ngFor="let user of users" [value]="user.an">{{user.an}}/{{user.name}}</option>
                  </select>
                  <label>账号/姓名:</label>
                </div>
 
-
+<!--
                <div class="input-field col s12">
                  <select>
                    <option value="" disabled selected>请选择身份/等级</option>
@@ -87,10 +86,10 @@
                    <option value="1">接警员/2</option>
                  </select>
                  <label>身份/等级:</label>
-               </div>
+               </div> -->
 
               <div class="input-field col s12">
-                <input disabled id="phone" type="text" class="validate"  value="13917208893">
+                <input disabled id="phone" type="text" class="validate"  [value]="editTarget?.phone">
                 <label for="phone" style="top:-.5rem">手机:</label>
               </div>
             </div>
@@ -110,51 +109,70 @@
                <div class="row">
                  <div class="col m3">
 
+
                    <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box11" checked="checked" />
-                     <label for="filled-in-box">报警短信</label>
+                     <input (click)="veToggleSelectPermission('a')" *ngIf="editTarget?.anc?.a" type="checkbox" class="filled-in" id="filled-in-box11" checked="checked"/>
+                     <input (click)="veToggleSelectPermission('a')" *ngIf="!editTarget?.anc?.a" type="checkbox" class="filled-in" id="filled-in-box11" >
+                     <label for="filled-in-box11">所有报警短信</label>
                    </h6>
                    <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box12" checked="checked" />
-                     <label for="filled-in-box">余量报警</label>
+                     <input (click)="veToggleSelectPermission('iaa')" *ngIf="editTarget?.anc?.iaa"  type="checkbox" class="filled-in iaa" id="filled-in-box12" checked="checked" />
+                      <input  (click)="veToggleSelectPermission('iaa')" *ngIf="!editTarget?.anc?.iaa"  type="checkbox" class="filled-in iaa" id="filled-in-box12"/>
+                     <label for="filled-in-box12">余量报警</label>
                    </h6>
                    <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box13" checked="checked" />
-                     <label for="filled-in-box">泄漏报警</label>
+                     <input  (click)="veToggleSelectPermission('la')"  *ngIf="editTarget?.anc?.la"  type="checkbox" class="filled-in la" id="filled-in-box13" checked="checked" />
+                     <input   (click)="veToggleSelectPermission('la')"  *ngIf="!editTarget?.anc?.la"  type="checkbox" class="filled-in la" id="filled-in-box13" />
+                     <label for="filled-in-box13">泄漏报警</label>
                    </h6>
                    <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box14" checked="checked" />
-                     <label for="filled-in-box">信号中断</label>
+                     <input  (click)="veToggleSelectPermission('sia')"  *ngIf="editTarget?.anc?.sia" type="checkbox" class="filled-in sia" id="filled-in-box14" checked="checked" />
+                     <input  (click)="veToggleSelectPermission('sia')"  *ngIf="!editTarget?.anc?.sia" type="checkbox" class="filled-in sia" id="filled-in-box14" />
+                     <label for="filled-in-box14">信号中断</label>
+                   </h6>
+                 </div>
+
+
+                 <div class="col m3">
+
+
+                   <h6>
+                     <input (click)="veToggleSelectPermission('ap')"  *ngIf="editTarget?.anc?.ap" type="checkbox" class="filled-in" id="filled-in-box21" checked="checked"/>
+                     <input  (click)="veToggleSelectPermission('ap')"  *ngIf="!editTarget?.anc?.ap" type="checkbox" class="filled-in" id="filled-in-box21" >
+                     <label for="filled-in-box21">所有接警短信</label>
+                   </h6>
+                   <h6>
+                     <input (click)="veToggleSelectPermission('iaap')" *ngIf="editTarget?.anc?.iaap"  type="checkbox" class="filled-in iaap" id="filled-in-box22" checked="checked" />
+                      <input (click)="veToggleSelectPermission('iaap')" *ngIf="!editTarget?.anc?.iaap"  type="checkbox" class="filled-in iaap" id="filled-in-box22"/>
+                     <label for="filled-in-box22">余量报警</label>
+                   </h6>
+                   <h6>
+                     <input  (click)="veToggleSelectPermission('lap')" *ngIf="editTarget?.anc?.lap"  type="checkbox" class="filled-in lap" id="filled-in-box23" checked="checked" />
+                     <input   (click)="veToggleSelectPermission('lap')" *ngIf="!editTarget?.anc?.lap"  type="checkbox" class="filled-in lap" id="filled-in-box23" />
+                     <label for="filled-in-box23">泄漏报警</label>
+                   </h6>
+                   <h6>
+                     <input (click)="veToggleSelectPermission('siap')" *ngIf="editTarget?.anc?.siap" type="checkbox" class="filled-in siap" id="filled-in-box24" checked="checked" />
+                     <input  (click)="veToggleSelectPermission('siap')" *ngIf="!editTarget?.anc?.siap" type="checkbox" class="filled-in siap" id="filled-in-box24" />
+                     <label for="filled-in-box24">信号中断</label>
+                   </h6>
+                 </div>
+
+                 <div class="col m3">
+                   <h6>
+                     <input (click)="veToggleSelectPermission('sa')" *ngIf="editTarget?.anc?.sa"  type="checkbox" class="filled-in" id="filled-in-box31" checked="checked" />
+                    <input  (click)="veToggleSelectPermission('sa')" *ngIf="!editTarget?.anc?.sa"  type="checkbox" class="filled-in" id="filled-in-box31" />
+                     <label for="filled-in-box31">配送短信</label>
                    </h6>
                  </div>
                  <div class="col m3">
                    <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box21" checked="checked" />
-                     <label for="filled-in-box">接警短信</label>
-                   </h6>
-                   <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box22" checked="checked" />
-                     <label for="filled-in-box">余量报警</label>
-                   </h6>
-                   <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box23" checked="checked" />
-                     <label for="filled-in-box">泄漏报警</label>
-                   </h6>
-                   <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box24" checked="checked" />
-                     <label for="filled-in-box">信号中断</label>
-                   </h6>
-                 </div>
-                 <div class="col m3">
-                   <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box31" checked="checked" />
-                     <label for="filled-in-box">配送短信</label>
-                   </h6>
-                 </div>
-                 <div class="col m3">
-                   <h6>
-                     <input type="checkbox" class="filled-in" id="filled-in-box41" checked="checked" />
-                     <label for="filled-in-box">送达短信</label>
+
+                     <!-- <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
+                     <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" /> -->
+                     <input (click)="veToggleSelectPermission('sca')" *ngIf="editTarget?.anc?.sca"  type="checkbox" class="filled-in" id="filled-in-box41" checked="checked" />
+                      <input (click)="veToggleSelectPermission('sca')"  *ngIf="!editTarget?.anc?.sca"  type="checkbox" class="filled-in" id="filled-in-box41" />
+                     <label for="filled-in-box41">送达短信</label>
                    </h6>
                  </div>
                </div>
@@ -167,7 +185,7 @@
           </div>
 
           <div class="modal-footer">
-           <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+           <a (click)='updateUser()' class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
          </div>
 
           <!-- for the select -->

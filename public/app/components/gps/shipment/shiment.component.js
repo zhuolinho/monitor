@@ -32,52 +32,53 @@ System.register(['@angular/core', '../../../config', '@angular/router', '../../.
                     var _this = this;
                     this.router = router;
                     this.request = request;
-                    // shipmentList:any[]=[
-                    //
-                    //     {
-                    //       name:'C002-闸北区大宁路335号XX站',
-                    //       id:'6848',
-                    //       remainingTime:'2小时02分',
-                    //       upTime:'15.5.3-13:02/----',
-                    //       processed:false,
-                    //       alertTime:'5.5.3-13:02',
-                    //       alertValue:'6%/12kg/hps'
-                    //     },
-                    //     {
-                    //       name:'L002-闸北区大宁路335号XX站',
-                    //       id:'2848',
-                    //       remainingTime:'2小时02分',
-                    //       upTime:'15.5.3-13:02/----',
-                    //       processed:false,
-                    //       alertTime:'5.5.3-13:02',
-                    //       alertValue:'6%/12kg/hps'
-                    //     },
-                    //     {
-                    //       name:'C002-闸北区大宁路335号XX站',
-                    //       id:'4845',
-                    //       remainingTime:'2小时02分',
-                    //       upTime:'15.5.3-13:02/----',
-                    //       processed:true,
-                    //       alertTime:'5.5.3-13:02',
-                    //       alertValue:'6%/12kg/hps'
-                    //     },
-                    //     {
-                    //       name:'C002-闸北区大宁路335号XX站',
-                    //       id:'4845',
-                    //       remainingTime:'2小时02分',
-                    //       upTime:'15.5.3-13:02/----',
-                    //       processed:false,
-                    //       alertTime:'5.5.3-13:02',
-                    //       alertValue:'6%/12kg/hps'
-                    //     }
-                    //];  //todo user flag and ng if to hide when filtering;
+                    this.testShipmentList = [
+                        {
+                            name: 'C002-闸北区大宁路335号XX站',
+                            id: '6848',
+                            remainingTime: '2小时02分',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '6%/12kg/hps'
+                        },
+                        {
+                            name: 'L002-闸北区大宁路335号XX站',
+                            id: '2848',
+                            remainingTime: '2小时02分',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '6%/12kg/hps'
+                        },
+                        {
+                            name: 'C002-闸北区大宁路335号XX站',
+                            id: '4845',
+                            remainingTime: '2小时02分',
+                            upTime: '15.5.3-13:02/----',
+                            processed: true,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '6%/12kg/hps'
+                        },
+                        {
+                            name: 'C002-闸北区大宁路335号XX站',
+                            id: '4845',
+                            remainingTime: '2小时02分',
+                            upTime: '15.5.3-13:02/----',
+                            processed: false,
+                            alertTime: '5.5.3-13:02',
+                            alertValue: '6%/12kg/hps'
+                        }
+                    ]; //todo user flag and ng if to hide when filtering;
                     this.shipmentList = [];
                     console.log("Shipment is up and running");
                     this.request.get("/plc/shipments.json").subscribe(function (res) {
-                        // console.log("res------", res);
-                        if (res.pl && res.pl.shipmentList) {
-                            _this.shipmentList = res.pl.shipmentList;
-                        }
+                        console.log("shipment res------", res);
+                        _this.shipmentList = _this.testShipmentList;
+                        // if(res.pl && res.pl.shipmentList){
+                        //     this.shipmentList = res.pl.shipmentList;
+                        //
+                        // }
                     });
                     // this.initUi();
                 }
