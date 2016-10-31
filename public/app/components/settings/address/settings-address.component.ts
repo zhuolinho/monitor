@@ -4,7 +4,6 @@ import {config} from '../../../config';
 // import {hasSettingsAcess} from '../../../services/has-settings-access';
 import {SettingsService} from '../../../services/settings.service';
 import {RequestService} from '../../../services/request.service';
-import {plcAddress} from '../../../../models/plcAddress';
 import {CanActivate} from '@angular/router';
 declare var jQuery:any;
 declare var _:any;
@@ -557,3 +556,28 @@ export class SettingsAddress{
           }
         }
 }
+
+
+
+
+
+
+export class plcAddress  {
+  code:string;
+  cn:string;
+  addr:string;
+  at:string;
+  plcip1:string;
+  plcip2:string;
+  tank:string;
+  constructor(){
+
+      this.code='';
+      this.cn='';
+      this.addr='';
+      this.at='';
+      this.plcip1='';
+      this.plcip2='';
+      this.tank='';
+  }
+};
