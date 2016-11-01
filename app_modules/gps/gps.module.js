@@ -107,8 +107,8 @@ gps.getCompletedShipments =  function(m) {
  var r = {pl: null, status:false , er:''};
   var deferred = q.defer();
 
-  if(m && m.user && m.user.oID){
-      Shiment.find({oID:m.user.oID,status:1},function (err, resp) {
+  if(m && m.pl &&  m.pl.user && m.pl.user.oID){
+      Shiment.find({oID:m.pl.user.oID,status:1},function (err, resp) {
           if (err){
             r.er = err;
             deferred.reject(r);

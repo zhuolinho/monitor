@@ -12,169 +12,170 @@ declare var _:any;
 
 export class ProcessedShipment{
 
-    // shipments:any[]=[{
-    //   groupId:1,
-    //   groupName:"CNG",
-    //   data:[{
-    //     oti:'C002-6328',
-    //     nti:'6328',
-    //     dt:'5.2-14:33',
-    //     at:'5.2-23:10',
-    //     lp:'2632',
-    //     driver:'761',
-    //     s:'822',
-    //     pa:'310',
-    //     dist:'12.2'
-    //   },
-    //   {
-    //     oti:'C002-6328',
-    //     nti:'6328',
-    //     dt:'5.2-14:33',
-    //     at:'5.2-23:10',
-    //     lp:'2632',
-    //     driver:'761',
-    //     s:'822',
-    //     pa:'310',
-    //     dist:'12.2'
-    //   }
-    //   ]},
-    //
-    //   {
-    //     groupId:2,
-    //     groupName:"LNG",
-    //     data:[{
-    //       oti:'C002-6328',
-    //       nti:'6328',
-    //       dt:'5.2-14:33',
-    //       at:'5.2-23:10',
-    //       lp:'2632',
-    //       driver:'761',
-    //       s:'822',
-    //       pa:'310',
-    //       dist:'12.2'
-    //     },
-    //     {
-    //       oti:'C002-6328',
-    //       nti:'6328',
-    //       dt:'5.2-14:33',
-    //       at:'5.2-23:10',
-    //       lp:'2632',
-    //       driver:'761',
-    //       s:'822',
-    //       pa:'310',
-    //       dist:'12.2'
-    //     }
-    //     ]},
-    //
-    //     {
-    //       groupId:3,
-    //       groupName:'集格',
-    //       data:[{
-    //         oti:'C002-6328',
-    //         nti:'6328',
-    //         dt:'5.2-14:33',
-    //         at:'5.2-23:10',
-    //         lp:'2632',
-    //         driver:'761',
-    //         s:'822',
-    //         pa:'310',
-    //         dist:'12.2'
-    //       },
-    //       {
-    //         oti:'C002-6328',
-    //         nti:'6328',
-    //         dt:'5.2-14:33',
-    //         at:'5.2-23:10',
-    //         lp:'2632',
-    //         driver:'761',
-    //         s:'822',
-    //         pa:'310',
-    //         dist:'12.2'
-    //       }
-    //       ]},
-    //
-    //       {
-    //         groupId:4,
-    //         groupName:'杜瓦瓶',
-    //         data:[{
-    //           oti:'C002-6328',
-    //           nti:'6328',
-    //           dt:'5.2-14:33',
-    //           at:'5.2-23:10',
-    //           lp:'2632',
-    //           driver:'761',
-    //           s:'822',
-    //           pa:'310',
-    //           dist:'12.2'
-    //         },
-    //         {
-    //           oti:'C002-6328',
-    //           nti:'6328',
-    //           dt:'5.2-14:33',
-    //           at:'5.2-23:10',
-    //           lp:'2632',
-    //           driver:'761',
-    //           s:'822',
-    //           pa:'310',
-    //           dist:'12.2'
-    //         }
-    //         ]},
-    //
-    //         {
-    //           groupId:5,
-    //           groupName:'进场',
-    //           data:[{
-    //             oti:'C002-6328',
-    //             nti:'6328',
-    //             dt:'5.2-14:33',
-    //             at:'5.2-23:10',
-    //             lp:'2632',
-    //             driver:'761',
-    //             s:'822',
-    //             pa:'310',
-    //             dist:'12.2'
-    //           },
-    //           {
-    //             oti:'C002-6328',
-    //             nti:'6328',
-    //             dt:'5.2-14:33',
-    //             at:'5.2-23:10',
-    //             lp:'2632',
-    //             driver:'761',
-    //             s:'822',
-    //             pa:'310',
-    //             dist:'12.2'
-    //           }
-    //           ]},
-    //
-    //           {
-    //             groupId:6,
-    //             groupName:'拉回',
-    //             data:[{
-    //               oti:'C002-6328',
-    //               nti:'6328',
-    //               dt:'5.2-14:33',
-    //               at:'5.2-23:10',
-    //               lp:'2632',
-    //               driver:'761',
-    //               s:'822',
-    //               pa:'310',
-    //               dist:'12.2'
-    //             },
-    //             {
-    //               oti:'C002-6328',
-    //               nti:'6328',
-    //               dt:'5.2-14:33',
-    //               at:'5.2-23:10',
-    //               lp:'2632',
-    //               driver:'761',
-    //               s:'822',
-    //               pa:'310',
-    //               dist:'12.2'
-    //             }
-    //             ]}
-    //
-    // ];  //todo user flag and ng if to hide when filtering;
+    testShipments:any[]=[{
+      groupId:1,
+      groupName:"CNG",
+      data:[{
+        oti:'C002-6328',
+        nti:'6328',
+        dt:'5.2-14:33',
+        at:'5.2-23:10',
+        lp:'2632',
+        driver:'761',
+        s:'822',
+        pa:'310',
+        dist:'12.2'
+      },
+      {
+        oti:'C002-6328',
+        nti:'6328',
+        dt:'5.2-14:33',
+        at:'5.2-23:10',
+        lp:'2632',
+        driver:'761',
+        s:'822',
+        pa:'310',
+        dist:'12.2'
+      }
+      ]},
+
+      {
+        groupId:2,
+        groupName:"LNG",
+        data:[{
+          oti:'C002-6328',
+          nti:'6328',
+          dt:'5.2-14:33',
+          at:'5.2-23:10',
+          lp:'2632',
+          driver:'761',
+          s:'822',
+          pa:'310',
+          dist:'12.2'
+        },
+        {
+          oti:'C002-6328',
+          nti:'6328',
+          dt:'5.2-14:33',
+          at:'5.2-23:10',
+          lp:'2632',
+          driver:'761',
+          s:'822',
+          pa:'310',
+          dist:'12.2'
+        }
+        ]},
+
+        {
+          groupId:3,
+          groupName:'集格',
+          data:[{
+            oti:'C002-6328',
+            nti:'6328',
+            dt:'5.2-14:33',
+            at:'5.2-23:10',
+            lp:'2632',
+            driver:'761',
+            s:'822',
+            pa:'310',
+            dist:'12.2'
+          },
+          {
+            oti:'C002-6328',
+            nti:'6328',
+            dt:'5.2-14:33',
+            at:'5.2-23:10',
+            lp:'2632',
+            driver:'761',
+            s:'822',
+            pa:'310',
+            dist:'12.2'
+          }
+          ]},
+
+          {
+            groupId:4,
+            groupName:'杜瓦瓶',
+            data:[{
+              oti:'C002-6328',
+              nti:'6328',
+              dt:'5.2-14:33',
+              at:'5.2-23:10',
+              lp:'2632',
+              driver:'761',
+              s:'822',
+              pa:'310',
+              dist:'12.2'
+            },
+            {
+              oti:'C002-6328',
+              nti:'6328',
+              dt:'5.2-14:33',
+              at:'5.2-23:10',
+              lp:'2632',
+              driver:'761',
+              s:'822',
+              pa:'310',
+              dist:'12.2'
+            }
+            ]},
+
+            {
+              groupId:5,
+              groupName:'进场',
+              data:[{
+                oti:'C002-6328',
+                nti:'6328',
+                dt:'5.2-14:33',
+                at:'5.2-23:10',
+                lp:'2632',
+                driver:'761',
+                s:'822',
+                pa:'310',
+                dist:'12.2'
+              },
+              {
+                oti:'C002-6328',
+                nti:'6328',
+                dt:'5.2-14:33',
+                at:'5.2-23:10',
+                lp:'2632',
+                driver:'761',
+                s:'822',
+                pa:'310',
+                dist:'12.2'
+              }
+              ]},
+
+              {
+                groupId:6,
+                groupName:'拉回',
+                data:[{
+                  oti:'C002-6328',
+                  nti:'6328',
+                  dt:'5.2-14:33',
+                  at:'5.2-23:10',
+                  lp:'2632',
+                  driver:'761',
+                  s:'822',
+                  pa:'310',
+                  dist:'12.2'
+                },
+                {
+                  oti:'C002-6328',
+                  nti:'6328',
+                  dt:'5.2-14:33',
+                  at:'5.2-23:10',
+                  lp:'2632',
+                  driver:'761',
+                  s:'822',
+                  pa:'310',
+                  dist:'12.2'
+                }
+                ]}
+
+    ];
+     //todo user flag and ng if to hide when filtering;
 
     shipments:any[] =[];
 
@@ -186,18 +187,17 @@ export class ProcessedShipment{
     console.log("processed-shipment is up and running");
     this.request.get('/gps/shipments/done.json').subscribe(res => {
           console.log("res ---",res);
-          if(res && res.pl && res.pl.shipments){
-
-
-              var groupObj =  _.groupBy(res.pl.shipments,'ntt');
-
-             config.shipmentTanks.forEach(function(key,index){
-                var group = {groupName:key,groupId:index+1,data:groupObj[key]||[]};
-                self.shipments.push(group);
-              });
-              console.log("self.shipments---",self.shipments);
-            this.initUi();
-          }
+            self.shipments = this.testShipments;
+            this.initUi(); //todo remove when you uncomment below
+          // if(res && res.pl && res.pl.shipments){
+          //     var groupObj =  _.groupBy(res.pl.shipments,'ntt');
+          //    config.shipmentTanks.forEach(function(key,index){
+          //       var group = {groupName:key,groupId:index+1,data:groupObj[key]||[]};
+          //       self.shipments.push(group);
+          //     });
+          //     console.log("self.shipments---",self.shipments);
+          //   this.initUi();
+          // }
     });
 
     }

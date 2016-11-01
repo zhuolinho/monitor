@@ -9,7 +9,7 @@ var plcAlertSchema = mongoose.Schema({
                     atype:{      //alert type  -- {余量报警,001},{压力报警,002},{信号中断,003},{泄漏报警,004},{拉回报警,005},{拉回报警,005}
                       type:String
                     },
-                    // addr:String, //tank address
+                    addr:String, //tank address
                     tank:{
                       type:String
                       // required:true

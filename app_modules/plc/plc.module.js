@@ -746,13 +746,14 @@ plc.addNewAlert = function(m){
   var deferred = q.defer();
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
-    _sendAlertNotification(m);
-    
+    plc._sendAlertNotification(m);
+
     if(m.pl.alert){
             var newAlert = new PlcAlert({
                               atime:lib.dateTime(),
                               atype:m.pl.alert.atype,
-                              tank:m.pl.alert.addr,
+                              addr:m.pl.alert.addr,
+                              tank:m.pl.tank||'L001-',   //todo dynamically set tank id
                               am:m.pl.alert.am,
                               rt:m.pl.alert.remainingTime,
                               st:m.pl.alert.st
@@ -913,7 +914,7 @@ plc.getShipmentList =  function(m) {
 
 plc.updatePlcAlert =  function(m) {
 
-    console.log(" update updatePlcAlert----");
+    console.log(" update updatePlcAlert----",m);
 
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
