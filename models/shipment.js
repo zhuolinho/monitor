@@ -28,10 +28,16 @@ var shipmentSchema = mongoose.Schema({
               });
 //
 shipmentSchema.methods.setOwner = function (user, cb) {
-    this.oID = user.oID;
-    this.cuID = user.an;
-    this.muID = user.an;
-    cb(null, this);
+    if(user){
+      this.oID = user.oID;
+      this.cuID = user.an;
+      this.muID = user.an;
+      cb(null, this);
+    }
+    else{
+      throw 'onwer cannot be null';
+    }
+
 };
 
 module.exports = mongoose.model('shipment',shipmentSchema);

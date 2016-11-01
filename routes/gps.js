@@ -151,6 +151,42 @@ module.exports = function (handler)
   });
 
 
+
+  router.post('/shipment/complete/download.json', function(req, res, next) {
+
+
+      var param1 = {
+        ns: 'gps',
+        vs: '1.0',
+        op: 'getCompletedShipments',
+        pl:{start:req.body.start, end:req.body.end, user:lib.reqUser(req)}
+      };
+
+
+        var param2 = {
+          ns: 'gps',
+          vs: '1.0',
+          op: 'downloadCompletedShipments',
+          pl:{data:null}
+        };
+
+        handler(param1)
+            .then(function (r) {
+              param2.pl.data = r.pl.shipments;
+              handler(param2)
+                  .then(function (r) {
+                     helpers.sendResponse(res, 200, r);
+                  })
+                  .fail(function (r) {
+                    helpers.sendResponse(res, 404, r);
+                  });
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
   router.put('/shipment/done.json', function(req, res, next) {
 
         var param = {
