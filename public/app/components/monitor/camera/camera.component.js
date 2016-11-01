@@ -23,12 +23,22 @@ System.register(['@angular/core', '../../../config'], function(exports_1, contex
         execute: function() {
             Camera = (function () {
                 function Camera() {
+                    this.currentCamera = '1';
                     console.log("camera is up and running");
                     this.initUi();
                 }
+                Camera.prototype.veCameraChanged = function (event) {
+                    this.currentCamera = event.target.value;
+                    console.log('this.currentPlcTank---', this.currentCamera);
+                };
                 Camera.prototype.initUi = function () {
+                    var that = this;
                     setTimeout(function (_) {
-                        jQuery('select').material_select();
+                        jQuery('select:not(simple-select)').material_select();
+                        jQuery('select.select-camera').change(function (e) {
+                            console.log('changed');
+                            that.veCameraChanged(e);
+                        });
                     });
                 };
                 Camera = __decorate([
