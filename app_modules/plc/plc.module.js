@@ -319,7 +319,7 @@ plc.getLatestData =  function(m) {
 
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
-    iPlc.find({oID:m.pl.user.oID,cd:{$lte:lib.deductTimeFromDate(plcConfig.sTimer+1000)}})
+    iPlc.find({oID:m.pl.user.oID,cd:{$gt:lib.deductTimeFromDate(plcConfig.sTimer+1000)}})
     .sort({cd:-1}).limit(length).exec(function (err, plc) {
         if (err){
           r.er = err;
