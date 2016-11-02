@@ -16,7 +16,7 @@ var gotInOnePiece = false;
 var goodConnection = true;
 var lastDataTime = 0;
 var chunks = [];
-var sTimer = 5*60000; //5min.
+var sTimer = plcConf.sTimer;
 var size = 0;
 server.listen(3003);
 
