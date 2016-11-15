@@ -209,7 +209,7 @@ plc.init = function(m) {
 
 
 plc.handleIncommingData =  function(m) {
-  // console.log("plc: handleIncommingData",m.pl);
+  console.log("plc: handleIncommingData");
   var deferred = q.defer();
 
   var incommingData = m.pl.data;
@@ -226,7 +226,7 @@ plc.handleIncommingData =  function(m) {
                continue;
              }
 
-              console.log("loop----",i);
+              // console.log("loop----",i);
               // console.log("dataToSave-----",dataToSave);
 
 
@@ -254,7 +254,7 @@ plc.handleIncommingData =  function(m) {
 
 
 var _saveIncommingData =  function(m) {
-  console.log("plc saveIncommingData");
+  // console.log("plc saveIncommingData");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
   if(m){
@@ -394,7 +394,7 @@ plc.getAlertForTimeInterval =  function(m) {
 plc.getPlcStats = function(m){
 
 
-    console.log("plc module: getPlcStats FUNCTION",m.pl);
+    console.log("plc module: getPlcStats FUNCTION");
     var r = {pl: {}, status:false , er:''};
     var deferred = q.defer();
     var computedValues = [];
@@ -422,7 +422,7 @@ plc.getPlcStats = function(m){
                   }
               ]).sort({date:1}).exec(function (err, plc) {
 
-                      console.log("got group plc>>>>>>>---",plc);
+                      console.log("got group plc>>>>>>>---");
                   if (err){
                     r.er = err;
                     r.status = false;
@@ -814,7 +814,7 @@ plc._sendAlertNotification = function(m){
 
            for (var i = 0; i < resp.length; i++) {
              if (resp[i].phone){
-               lib.sendSms(resp[i].phone);
+               lib.sendSms(resp[i].phone,m.pl.alert.am);
              };
            }
          }

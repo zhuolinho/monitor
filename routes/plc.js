@@ -18,6 +18,8 @@ var lastDataTime = 0;
 var chunks = [];
 var sTimer = plcConf.sTimer;
 var size = 0;
+
+//socket io
 server.listen(3003);
 
 
@@ -439,7 +441,7 @@ var _tcpSerever = function(handler){
           }
 
       else  if(gotStart && !lib.isPlcBegin(data) && !lib.isPlcEnd(data)){//check middle
-            console.log('got middle plc data----',data);
+            console.log('got middle plc data----');
             var temp2 = data;
             size += temp2.length;
             chunks.push(temp2);
@@ -502,7 +504,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---",r);
+        console.log("plc route save data successful---");
         _getLatest(handler,r.length, globalConf.orgs[0]);
       })
       .fail(function (r) {
