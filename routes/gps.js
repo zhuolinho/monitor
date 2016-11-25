@@ -22,7 +22,6 @@ var count = 1000;
 module.exports = function (handler)
 {
 
-
   router.get('/all.json', function(req, res, next) {
 
         var param = {

@@ -1241,18 +1241,18 @@ var _extractCngData =  function(data,shift){
   var cumfow = data.slice(68+shift,72+shift);
 
   var result = {
-      inputP1 :lib.getPlcFloat(inputP1.toString('hex')),
-      inputP2 :lib.getPlcFloat(inputP2.toString('hex')),
-      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex')),
-      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex')),
-      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex')),
-      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex')),
-      outputP1 :lib.getPlcFloat(outputP1.toString('hex')),
-      outputP2 :lib.getPlcFloat(outputP2.toString('hex')),
-      outputP: lib.getPlcFloat(outputP.toString('hex')),
-      fmot :lib.getPlcFloat(fmot.toString('hex')),
-      instfow: lib.getPlcFloat(instfow.toString('hex')),
-      instfow: lib.getPlcFloat(instfow.toString('hex'))
+      inputP1 :lib.getPlcFloat(inputP1.toString('hex'))*plcConfig.coef,
+      inputP2 :lib.getPlcFloat(inputP2.toString('hex'))*plcConfig.coef,
+      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'))*plcConfig.coef,
+      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'))*plcConfig.coef,
+      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'))*plcConfig.coef,
+      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'))*plcConfig.coef,
+      outputP1 :lib.getPlcFloat(outputP1.toString('hex'))*plcConfig.coef,
+      outputP2 :lib.getPlcFloat(outputP2.toString('hex'))*plcConfig.coef,
+      outputP: lib.getPlcFloat(outputP.toString('hex'))*plcConfig.coef,
+      fmot :lib.getPlcFloat(fmot.toString('hex'))*plcConfig.coef,
+      instfow: lib.getPlcFloat(instfow.toString('hex'))*plcConfig.coef,
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'))*plcConfig.coef
   }
 
   return result;
@@ -1269,13 +1269,13 @@ var _extractLngData = function(data,shift){
   var cumfow = data.slice(48+shift,52+shift);
 
   var result = {
-      tankp :lib.getPlcFloat(tankp.toString('hex')),
-      azip :lib.getPlcFloat(azip.toString('hex')),
-      tanklavel :lib.getPlcFloat(tanklavel.toString('hex')),
-      outputP: lib.getPlcFloat(outputP.toString('hex')),
-      fmot :lib.getPlcFloat(fmot.toString('hex')),
-      instfow: lib.getPlcFloat(instfow.toString('hex')),
-      instfow: lib.getPlcFloat(instfow.toString('hex'))
+      tankp :lib.getPlcFloat(tankp.toString('hex'))*plcConfig.coef,
+      azip :lib.getPlcFloat(azip.toString('hex'))*plcConfig.coef,
+      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'))*plcConfig.coef,
+      outputP: lib.getPlcFloat(outputP.toString('hex'))*plcConfig.coef,
+      fmot :lib.getPlcFloat(fmot.toString('hex'))*plcConfig.coef,
+      instfow: lib.getPlcFloat(instfow.toString('hex'))*plcConfig.coef,
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'))*plcConfig.coef
   }
 
   return result;

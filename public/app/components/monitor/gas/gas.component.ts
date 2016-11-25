@@ -309,7 +309,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
     allTankSelected:boolean = false;
     selectedTanks:any[] = [];
-    realTimeData:any;
+    realTimeData:any = {};
     currentPlcTank:string = 'L001';
     connectedPlcs:string[] = [];
     date:any;

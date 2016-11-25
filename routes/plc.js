@@ -37,27 +37,26 @@ var q = require('q');
 module.exports = function (handler)
 {
 
+  router.get('/all.json', function(req, res, next) {
 
-  // router.get('/all.json', function(req, res, next) {
-  //
-  //
-  //       var param = {
-  //         ns: 'plc',
-  //         vs: '1.0',
-  //         op: 'getData',
-  //         pl:{
-  //           user:lib.reqUser(req)
-  //         }
-  //       };
-  //
-  //       handler(param)
-  //           .then(function (r) {
-  //              helpers.sendResponse(res, 200, r);
-  //           })
-  //           .fail(function (r) {
-  //             helpers.sendResponse(res, 404, r);
-  //           });
-  // });
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'getData',
+          pl:{
+            user:lib.reqUser(req)
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
 
 
   router.get('/latest.json', function(req, res, next) {
@@ -167,6 +166,7 @@ module.exports = function (handler)
   });
 
   router.get('/alerts/:which.json', function(req, res, next) {
+    console.log("getting alerts------");
 
         var param = {
           ns: 'plc',
@@ -636,11 +636,6 @@ function _checkInterruption(handler){
           console.log('plc route:  error creating new alert',r);
         });
   }
-
-module.exports = function (handler){
-  return router;
-}
-
 
 
 
