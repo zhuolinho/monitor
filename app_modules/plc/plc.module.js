@@ -1330,7 +1330,7 @@ _exractGuanwangData(data,shift){
 // cumfow:String //cummulative flow 累计流量 Nm3
 
 _extractCngData(data,shift){
-  
+
   var inputP1 = data.slice(24+shift,28+shift);
   var inputP2 = data.slice(28+shift,32+shift);
   var paflpa1 = data.slice(32+shift,36+shift);
@@ -1363,11 +1363,31 @@ _extractCngData(data,shift){
 }
 
 _extractLngData(data,shift){
+
+  var tankp = data.slice(24+shift,28+shift);
+  var azip = data.slice(28+shift,32+shift);
+  var tanklavel = data.slice(32+shift,36+shift);
+  var outputP = data.slice(36+shift,40+shift);
+  var fmot = data.slice(40+shift,44+shift);
+  var instfow = data.slice(44+shift,48+shift);
+  var cumfow = data.slice(48+shift,52+shift);
+
+  var result = {
+      tankp :lib.getPlcFloat(tankp.toString('hex')),
+      azip :lib.getPlcFloat(azip.toString('hex')),
+      tanklavel :lib.getPlcFloat(tanklavel.toString('hex')),
+      outputP: lib.getPlcFloat(outputP.toString('hex')),
+      fmot :lib.getPlcFloat(fmot.toString('hex')),
+      instfow: lib.getPlcFloat(instfow.toString('hex')),
+      instfow: lib.getPlcFloat(instfow.toString('hex'))
+  }
+
+  return result;
 }
 
 _getPlcType(data,shift){
     var type  = data.slice(84+shift,86+shift);
-    return lib.getPlcFloat(type.toString('hex'));
+    return parseInt(type.toString('hex'), 16);
 }
 
 
