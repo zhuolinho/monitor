@@ -310,7 +310,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
     allTankSelected:boolean = false;
     selectedTanks:any[] = [];
     realTimeData:any = {};
-    currentPlcTank:string = 'L001';
+    currentPlcTank:string = 'G001';
     connectedPlcs:string[] = [];
     date:any;
     // statSelectedStartYear:number = 2016;
@@ -350,6 +350,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             this.plcAddresses = _.keyBy(resp.pl.address,'tank');
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
+            this.currentPlcTank = this.connectedPlcs[0];
             this.initSelect();
             console.log('got real time data',this.realTimeData);
             console.log("this.connectedPlcs",this.connectedPlcs);
