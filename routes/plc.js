@@ -69,7 +69,7 @@ module.exports = function (handler)
         var temp = {};
         temp[user.oID] = {};
         var latestIncommingData = JSON.parse(result)||temp;
-          r.pl.plc = Object.keys(latestIncommingData[user.oID]);
+          r.pl.plc = latestIncommingData[user.oID];
           helpers.sendResponse(res, 200, r);
       });
 
@@ -107,18 +107,15 @@ module.exports = function (handler)
             pl:{user:user}
       };
 
-      // var param2 = {
-      //       ns: 'plc',
-      //       vs: '1.0',
-      //       op: 'getLatestData',
-      //       pl:{length:100, user:lib.reqUser(req)}
-      // };
+      var param2 = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'getLatestData',
+            pl:{length:100, user:user}
+      };
 
         handler(param1)
             .then(function (r1) {
-
-
-
 
                 var r = {pl:{}};
 
@@ -127,10 +124,10 @@ module.exports = function (handler)
                   temp[user.oID] = {};
                   var latestIncommingData = JSON.parse(result)||temp;
                   r.pl.address = r1.pl.address;
-                  r.pl.plc = Object.keys(latestIncommingData[user.oID]);
+                  r.pl.plc = latestIncommingData[user.oID];
                   helpers.sendResponse(res, 200, r);
                 });
-
+              //
               // handler(param2)
               //     .then(function (r2) {
               //
@@ -527,7 +524,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---");
+        console.log("plc route save data successful---",r.pl);
         // _getLatest(handler,r.length, globalConf.orgs[0]);
         _getLatest(handler,globalConf.orgs[0]);
 
@@ -541,7 +538,8 @@ function saveData(handler,data){
                 atype:'信号中断',
                 tank:r.pl.alerts[i].tank
           }
-          pchain.push(_createPlcAlert(alert));
+          console.log("alert----to---create----",r.pl.alerts[i])
+          pchain.push(_createPlcAlert(alert,handler));
         }
 
         var result =  q({});
@@ -563,7 +561,7 @@ redisClient.get("lastestPlc", function(err, result) {
     var temp = {};
     temp[user.oID] = {};
     var latestIncommingData = JSON.parse(result)||temp;
-    r.pl.plc = Object.keys(latestIncommingData[user.oID]);
+    r.pl.plc = latestIncommingData[user.oID];
     io.emit("realTimePlc:"+user.oID,r);
 });
 
@@ -748,7 +746,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---");
+        console.log("plc route save data successful---",r.pl);
         // _getLatest(handler,r.length, globalConf.orgs[0]);
         _getLatest(handler,globalConf.orgs[0]);
 
@@ -786,25 +784,9 @@ redisClient.get("lastestPlc", function(err, result) {
     var temp = {};
     temp[user.oID] = {};
     var latestIncommingData = JSON.parse(result)||temp;
-    r.pl.plc = Object.keys(latestIncommingData[user.oID]);
+    r.pl.plc = latestIncommingData[user.oID];
     io.emit("realTimePlc:"+user.oID,r);
 });
-
-// var param = {
-//       ns: 'plc',
-//       vs: '1.0',
-//       op: 'getLatestData',
-//       pl:{length:length,user:user}
-// }
-
-  // handler(param)
-  //     .then(function (r) {
-  //       console.log("plc route save data successful---",r);
-  //             io.emit("realTimePlc:"+user.oID,r);
-  //     })
-  //     .fail(function (r) {
-  //         console.log("plc get lates data fail----",r);
-  //     });
 }
 
 

@@ -353,11 +353,20 @@ plc.getAlertForTimeInterval =  function(m) {
   console.log("plc mod: getLatestDataForTimeInterval ");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
-  var isc = [];
+  var instantaneousValues = [];
   var dates = [];
 
 
-  if(m && m.pl && m.pl.user && m.pl.user.oID){
+  if(m && m.pl && m.pl.user && m.pl.user.oID && m.pl.tank){
+
+    var flow = '';
+
+      if (tank =='Guanwang'){
+            flow = 'isc2';
+      }
+      else{
+            flow = 'instfow';
+      }
 
         iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank}).$where(
                 function () {
@@ -372,17 +381,17 @@ plc.getAlertForTimeInterval =  function(m) {
             }
             else{
               for (var i = 0; i < plc.length; i++) {
-                  isc[i] = parseFloat(plc[i].isc2);  // return only instantaneous standard conditions
+                  instantaneousValues[i] = parseFloat(plc[i][flow]);  // return only instantaneous standard conditions
                   dates[i] = plc[i].cd;
               }
-              r.pl.plc = {values:isc,dates:dates};
+              r.pl.plc = {values:instantaneousValues,dates:dates};
               r.status = true;
               deferred.resolve(r);
             }
         })
   }
   else{
-    r.er = 'no org provided';
+    r.er = 'no org or tank provided';
     r.status = false;
     deferred.reject(r);
   }

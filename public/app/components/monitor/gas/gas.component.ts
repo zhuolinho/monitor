@@ -345,7 +345,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
         console.log("latest plc-----",resp);
         if(resp&&resp.pl&&resp.pl.plc&&resp.pl.address){
 
-            this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+            // this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+            this.realTimeData = resp.pl.plc;
             this.plcAddresses = _.keyBy(resp.pl.address,'tank');
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
@@ -460,7 +461,8 @@ export class Gas  implements AfterViewInit,OnDestroy{
             console.log("realTimePlc-----",data);
             if(data&&data.pl&& data.pl.plc){
                 // that.realTimeData = data.pl.plc;
-                that.realTimeData = _.keyBy(data.pl.plc,'tank');
+                // that.realTimeData = _.keyBy(data.pl.plc,'tank');
+                that.realTimeData = data.pl.plc
                 that.connectedPlcs = Object.keys(that.realTimeData);
                 that.initSelect();
             }
