@@ -15,8 +15,10 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "hjs": "~0.0.6",
+    "ioredis": "^2.4.0",
     "jwt-simple": "^0.3.1",
     "less-middleware": "1.0.x",
+    "lodash": "^4.17.2",
     "mongoose": "^4.4.7",
     "morgan": "~1.6.1",
     "node-uuid": "^1.4.7",
@@ -28,8 +30,7 @@
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.4.5",
     "sticky-session": "^1.1.2",
-    "verbose": "^0.2.3",
-    "yunpian-sms-client": "^1.0.3"
+    "verbose": "^0.2.3"
   },
   "devDependencies": {
     "flightplan": "^0.6.14"

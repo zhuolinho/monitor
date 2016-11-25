@@ -40,7 +40,6 @@ var iPlcSchema = mongoose.Schema({
                     cf2:String,//communication failure 2
                     er2:String,// error report 2
 
-
                     //cng -- raw val*10
                     inputP1:String, //inut presure1 入口压力1 MPa
                     inputP2:String, //inut presure2 入口压力2 MPa

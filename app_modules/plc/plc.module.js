@@ -2,9 +2,9 @@
 'use strict';
 
 var mongoose = null ; //mongoose object
+var _ = require('lodash');
 var message = null;   // message function
 var plc = {};
-
 
 var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
@@ -170,46 +170,78 @@ plc.init = function(m) {
 
 plc.handleIncommingData =  function(m) {
   console.log("plc: handleIncommingData");
-  var deferred = q.defer();
+  var r = {pl: {alerts:null}, status:true , er:''};
+  var latestIncommingData = null;
+  var latestInteruptedChanels = null;
 
-  var incommingData = m.pl.data;
 
-  if(incommingData){
+  if (m.pl.org){
 
-     var pchain = [];
+    m.redisClient.get("lastestPlc", function(err, result) {
+      var temp = {};
+      temp[m.pl.org.oID] = {};
+      latestIncommingData = JSON.parse(result)||temp;
+    });
 
-      for (var i = 0; i < 100; i++) {
+    m.redisClient.get("lastestInterupts", function(err, result) {
+       var temp = {};
+       temp[m.pl.org.oID] = {};
+       latestInteruptedChanels = JSON.parse(result)||temp;
+    });
 
-             var dataToSave = _extractPlcData(incommingData,i);
+   var deferred = q.defer();
+   var newInterupts = [];
 
-             if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
-               continue;
+   var incommingData = m.pl.data;
+
+   if(incommingData){
+
+      var pchain = [];
+
+       for (var i = 0; i < 100; i++) {
+
+              var dataToSave = _extractPlcData(incommingData,i);
+
+              if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+                continue;
+              }
+
+               // console.log("loop----",i);
+               console.log("--dataToSave-->>>---",dataToSave);
+
+             var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
+
+             m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
+             m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
+
+             if (chanelCheck.createAlert){
+                 newInterupts.push(dataToSave);
              }
-
-              // console.log("loop----",i);
-              console.log("--dataToSave-->>>---",dataToSave);
-
-
-             if(m.pl.org){
-               dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
-                      pchain.push(_saveIncommingData(setDoc));
-               });
+             else if (chanelCheck.save){
+                   dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
+                          pchain.push(_saveIncommingData(setDoc));
+                   });
              }
-             else{
-               throw 'plc org not provided';
-             }
+       }
 
 
 
-      }
+       var result =  q({length:pchain.length});
+       pchain.forEach(function (f) {
+           result = result.then(f);
+       });
 
-      var result =  q({length:pchain.length});
-      pchain.forEach(function (f) {
-          result = result.then(f);
-      });
+       r.pl.alerts = newInterupts;
+       deferred.resolve(r);
 
-      return result;
-    }
+       // return result;
+       return deferred.promise;
+     }
+  }
+  else{
+    throw 'plc org not provided';
+  }
+
 }
 
 
@@ -713,7 +745,7 @@ plc.addNewAlert = function(m){
                               atime:lib.dateTime(),
                               atype:m.pl.alert.atype,
                               addr:m.pl.alert.addr,
-                              tank:m.pl.tank||'L001-',   //todo dynamically set tank id
+                              tank:m.pl.tank||'无',   //todo dynamically set tank id
                               am:m.pl.alert.am,
                               rt:m.pl.alert.remainingTime,
                               st:m.pl.alert.st
@@ -990,142 +1022,6 @@ plc.downloadInstantPlcData = function(m){
     return deferred.promise;
 }
 
-// var _extractPlcData = function(data,index){
-//
-//   var i = index?index:0;
-//   var shift = i*76;
-//   var date = '';
-//   var year = data.slice(0,2);
-//   var month = data.slice(2,3);
-//   var day = data.slice(3,4);
-//   var weekday = data.slice(4,5);
-//   var hour = data.slice(5,6);
-//   var minute = data.slice(6,7);
-//   var second = data.slice(7,8);
-//   var nanosecond = data.slice(8,12);
-//
-//   //var strYear = year.toString('hex')
-//   //parseInt(strYear, 16);
-//
-//   date = parseInt(year.toString('hex'), 16) +"-"+
-//          parseInt(month.toString('hex'), 16) +"-"+
-//          parseInt(day.toString('hex'), 16) +" "+
-//          parseInt(hour.toString('hex'), 16) +":"+
-//          parseInt(minute.toString('hex'), 16) +":"+
-//          parseInt(second.toString('hex'), 16);
-//
-//      //依次是   year（2字节）
-//      // month（1字节）
-//      // day（1字节）
-//      // weekday（1字节）
-//      // hour（1字节）
-//      // minute（1字节）
-//      // second（1字节）
-//      // nanosecond（4字节）
-//
-//      var chanelDate = '';
-//      var cyear = data.slice(12+shift,14+shift);
-//      var cmonth = data.slice(14+shift,15+shift);
-//      var cday = data.slice(15+shift,16+shift);
-//      var cweekday = data.slice(16+shift,17+shift);
-//      var chour = data.slice(17+shift,18+shift);
-//      var cminute = data.slice(18+shift,19+shift);
-//      var csecond = data.slice(19+shift,20+shift);
-//      var cnanosecond = data.slice(20+shift,24+shift); //not needed
-//
-//      //var strYear = year.toString('hex')
-//      //parseInt(strYear, 16);
-//  //not needed
-//      chanelDate = parseInt(cyear.toString('hex'), 16) +"-"+
-//             parseInt(cmonth.toString('hex'), 16) +"-"+
-//             parseInt(cday.toString('hex'), 16) +" "+
-//             parseInt(chour.toString('hex'), 16) +":"+
-//             parseInt(cminute.toString('hex'), 16) +":"+
-//             parseInt(csecond.toString('hex'), 16);
-//
-//   //数据	64 bits
-//   //表1站地址	2
-//   //表1瞬时工况	4
-//   // 表1瞬时标况	4
-//   // 表1压力	4
-//   // 表1温度	4
-//   // 表1正工况累计	4
-//   // 表1正标况累计	4
-//   // 表1逆标况累计	4
-//   // 表1通讯故障	1
-//   // 表1错误情报	1
-//   // 表2站地址	2
-//   // 表2瞬时工况	4
-//   // 表2瞬时标况	4
-//   // 表2压力	4
-//   // 表2温度	4
-//   // 表2正工况累计	4
-//   // 表2正标况累计	4
-//   // 表2逆标况累计	4
-//   // 表2通讯故障	1
-//   // 表2错误情报	1
-//
-//
-//
-//   var addr1 = data.slice(24+shift,26+shift);
-//   var instantaneousWorkingCond1 = data.slice(26+shift,30+shift);
-//   var instantaneousStandardCond1 = data.slice(30+shift,34+shift);
-//   var pressure1 = data.slice(34+shift,38+shift);
-//   var temp1 = data.slice(38+shift,42+shift);
-//   var positiveWorkingCond1  = data.slice(42+shift,46+shift);
-//   var positiveStandardCond1  = data.slice(46+shift,50+shift);
-//   var reverseStandardCond1  = data.slice(50+shift,54+shift);
-//   var comminucationFailure1 = data.slice(54+shift,55+shift);
-//   var errorReport1 = data.slice(55+shift,56+shift);
-//
-//   var addr2 = data.slice(56+shift,58+shift);
-//   var instantaneousWorkingCond2 = data.slice(58+shift,62+shift);
-//   var instantaneousStandardCond2 = data.slice(62+shift,66+shift);
-//   var pressure2 = data.slice(66+shift,70+shift);
-//   var temp2 = data.slice(70+shift,74+shift);
-//   var positiveWorkingCond2  = data.slice(74+shift,78+shift);
-//   var positiveStandardCond2  = data.slice(78+shift,82+shift);
-//   var reverseStandardCond2  = data.slice(82+shift,86+shift);
-//   var comminucationFailure2 = data.slice(86+shift,87+shift);
-//   var errorReport2 = data.slice(87+shift,88+shift);
-//
-//   var d = new Date();
-//
-//   var result = new iPlc({
-//                          cd:lib.dateTime(),
-//                          y:d.getFullYear(),
-//                          m:d.getMonth()+1,
-//                          d:d.getDate(),
-//                          dct:date, //data collection time
-//                          cdct:chanelDate, //chanel data collection time
-//                          addr1:parseInt(addr1.toString('hex'), 16),
-//                          iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
-//                          isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
-//                          p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
-//                          temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
-//                          pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
-//                          psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
-//                          rsc1:lib.getPlcFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
-//                          cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
-//                          er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
-//                          addr2:parseInt(addr2.toString('hex'), 16),
-//                          iwc2:lib.getPlcFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
-//                          isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
-//                          p2:lib.getPlcFloat(pressure2.toString('hex')),// pressure 2
-//                          temp2:lib.getPlcFloat(temp2.toString('hex')),//temperature 2
-//                          pwc2:lib.getPlcFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
-//                          psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
-//                          rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
-//                          cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
-//                          er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
-//                          tank:'L'+lib.padNum(i+1,3)
-//                       });
-//
-//   // console.log("extracted plc data result----",result);
-//
-//   return result;
-// }
-
 
 var _extractPlcData = function(data,index){
 
@@ -1176,7 +1072,7 @@ var _extractPlcData = function(data,index){
 }
 
 
-_extractDates(data,shift){
+var _extractDates = function(data,shift){
 
   var date = '';
   var year = data.slice(0,2);
@@ -1234,7 +1130,7 @@ _extractDates(data,shift){
 
 }
 
-_exractGuanwangData(data,shift){
+var _exractGuanwangData = function(data,shift){
 
   //数据	64 bits
   //表1站地址	2
@@ -1329,7 +1225,7 @@ _exractGuanwangData(data,shift){
 // instfow:String, //instantaneous flow 瞬时流量 Nm3/h
 // cumfow:String //cummulative flow 累计流量 Nm3
 
-_extractCngData(data,shift){
+var _extractCngData =  function(data,shift){
 
   var inputP1 = data.slice(24+shift,28+shift);
   var inputP2 = data.slice(28+shift,32+shift);
@@ -1362,7 +1258,7 @@ _extractCngData(data,shift){
   return result;
 }
 
-_extractLngData(data,shift){
+var _extractLngData = function(data,shift){
 
   var tankp = data.slice(24+shift,28+shift);
   var azip = data.slice(28+shift,32+shift);
@@ -1385,9 +1281,32 @@ _extractLngData(data,shift){
   return result;
 }
 
-_getPlcType(data,shift){
+var _getPlcType = function(data,shift){
     var type  = data.slice(84+shift,86+shift);
     return parseInt(type.toString('hex'), 16);
+}
+
+var _checkChanelInterruption = function(data,oID,latestIncommingData,latestInteruptedChanels){
+    var result = {createAlert:false,save:false, latestIncommingData:latestIncommingData,latestInteruptedChanels:latestInteruptedChanels};
+
+    if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
+      if (latestIncommingData[oID][data.tank].cdct == data.cdct){
+          latestInteruptedChanels[oID][data.tank] = data;
+          //keep to create interuption alert
+          result.createAlert = true;
+      }
+      else{
+        result.save = true;
+      }
+    }
+    else {
+        if (latestIncommingData[oID][data.tank].cdct != data.cdct){  //normal flow restored
+            delete latestInteruptedChanels[oID][data.tank];
+            result.save = true;
+        }
+    }
+
+    return result;
 }
 
 
