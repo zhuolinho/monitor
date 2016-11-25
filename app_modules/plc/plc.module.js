@@ -1195,21 +1195,21 @@ var _exractGuanwangData = function(data,shift){
   var processedData = {
                         addr1:parseInt(addr1.toString('hex'), 16),
                         iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
-                        isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
+                        isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),1),//instantaneous standard conditions 1
                         p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
                         temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
                         pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
-                        psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
+                        psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex'),true),// positive standard conditions 1
                         rsc1:lib.getPlcFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
                         cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
                         er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
                         addr2:parseInt(addr2.toString('hex'), 16),
                         iwc2:lib.getPlcFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
-                        isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
+                        isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex'),1),//instantaneous standard conditions 2
                         p2:lib.getPlcFloat(pressure2.toString('hex')),// pressure 2
                         temp2:lib.getPlcFloat(temp2.toString('hex')),//temperature 2
                         pwc2:lib.getPlcFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
-                        psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
+                        psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex'),true),// positive standard conditions 2
                         rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
                         cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
                         er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
@@ -1257,18 +1257,18 @@ var _extractCngData =  function(data,shift){
   var cumfow = data.slice(68+shift,72+shift);
 
   var result = {
-      inputP1 :lib.getPlcFloat(inputP1.toString('hex'))*plcConfig.coef,
-      inputP2 :lib.getPlcFloat(inputP2.toString('hex'))*plcConfig.coef,
-      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'))*plcConfig.coef,
-      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'))*plcConfig.coef,
-      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'))*plcConfig.coef,
-      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'))*plcConfig.coef,
-      outputP1 :lib.getPlcFloat(outputP1.toString('hex'))*plcConfig.coef,
-      outputP2 :lib.getPlcFloat(outputP2.toString('hex'))*plcConfig.coef,
-      outputP: lib.getPlcFloat(outputP.toString('hex'))*plcConfig.coef,
-      fmot :lib.getPlcFloat(fmot.toString('hex'))*plcConfig.coef,
-      instfow: lib.getPlcFloat(instfow.toString('hex'))*plcConfig.coef,
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'))*plcConfig.coef
+      inputP1 :lib.getPlcFloat(inputP1.toString('hex'),1)*plcConfig.coef,
+      inputP2 :lib.getPlcFloat(inputP2.toString('hex'),1)*plcConfig.coef,
+      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'),1)*plcConfig.coef,
+      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1)*plcConfig.coef,
+      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1)*plcConfig.coef,
+      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1)*plcConfig.coef,
+      outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1)*plcConfig.coef,
+      outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1)*plcConfig.coef,
+      outputP: lib.getPlcFloat(outputP.toString('hex'),1)*plcConfig.coef,
+      fmot :lib.getPlcFloat(fmot.toString('hex'),1)*plcConfig.coef,
+      instfow: lib.getPlcFloat(instfow.toString('hex'),2)*plcConfig.coef,
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),1)*plcConfig.coef
   }
 
   return result;
@@ -1285,13 +1285,13 @@ var _extractLngData = function(data,shift){
   var cumfow = data.slice(48+shift,52+shift);
 
   var result = {
-      tankp :lib.getPlcFloat(tankp.toString('hex'))*plcConfig.coef,
-      azip :lib.getPlcFloat(azip.toString('hex'))*plcConfig.coef,
-      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'))*plcConfig.coef,
-      outputP: lib.getPlcFloat(outputP.toString('hex'))*plcConfig.coef,
-      fmot :lib.getPlcFloat(fmot.toString('hex'))*plcConfig.coef,
-      instfow: lib.getPlcFloat(instfow.toString('hex'))*plcConfig.coef,
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'))*plcConfig.coef
+      tankp :lib.getPlcFloat(tankp.toString('hex'),1)*plcConfig.coef,
+      azip :lib.getPlcFloat(azip.toString('hex'),1)*plcConfig.coef,
+      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'),1)*plcConfig.coef,
+      outputP: lib.getPlcFloat(outputP.toString('hex'),1)*plcConfig.coef,
+      fmot :lib.getPlcFloat(fmot.toString('hex'),1)*plcConfig.coef,
+      instfow: lib.getPlcFloat(instfow.toString('hex'),2)*plcConfig.coef,
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),1)*plcConfig.coef
   }
 
   return result;
