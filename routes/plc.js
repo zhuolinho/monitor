@@ -762,7 +762,9 @@ function saveData(handler,data){
                 atype:'信号中断',
                 tank:r.pl.alerts[i].tank
           }
-          pchain.push(_createPlcAlert(alert));
+          pchain.push(_createPlcAlert(alert,handler));
+
+
         }
 
         var result =  q({});

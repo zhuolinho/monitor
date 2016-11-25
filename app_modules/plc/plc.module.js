@@ -1054,7 +1054,7 @@ var _extractPlcData = function(data,index){
   }
   else{
       var type = _getPlcType(data,shift);
-      console.log("----extracted type----",type)
+      // console.log("----extracted type----",type)
       if (type==0){
         extractedData = _extractCngData(data,shift);
         plcType='CNG';
