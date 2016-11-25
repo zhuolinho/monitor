@@ -393,10 +393,18 @@ plc.getPlcStats = function(m){
 
 
     if(m && m.pl && m.pl.user && m.pl.user.oID){
-          if(m && m.pl && m.pl.start && m.pl.end){
+          if(m && m.pl && m.pl.start && m.pl.end && m.pl.tank){
 
             var start = m.pl.start+' 00:00:00';
             var end = m.pl.end+' 23:59:59';
+            var flow = ''
+
+            if (m.pl.tank=='Guanwang'){
+                  flow = 'psc2';
+            }
+            else{
+                  flow = 'cumfow';
+            }
 
             if( m.pl.mode && m.pl.mode === 'day' ){
 
@@ -407,7 +415,7 @@ plc.getPlcStats = function(m){
                   {
                       $group: {
                           _id:"$d",
-                          maxVal:{ $max: "$psc2" },
+                          maxVal:{ $max: "$"+flow },
                           date:{$max:"$cd"},
                           count: {$sum: 1}
                       }
@@ -434,7 +442,7 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                                plc[0].usage  =  plc[0].maxVal-plc2[0][flow];
                             }
                             else{
                                 // plc[0].usage  =  plc[0].maxVal;
@@ -479,7 +487,7 @@ plc.getPlcStats = function(m){
                   {
                       $group: {
                           _id:"$m",
-                          maxVal:{ $max: "$psc2" },
+                          maxVal:{ $max: "$"+flow },
                           date:{$max:"$cd"},
                           count: {$sum: 1}
                       }
@@ -506,7 +514,7 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  plc[0].maxVal-plc2[0].psc2;
+                                plc[0].usage  =  plc[0].maxVal-plc2[0][flow];
                             }
                             else{
                                 // plc[0].usage  =  plc[0].maxVal;
@@ -540,7 +548,7 @@ plc.getPlcStats = function(m){
             }
           }
           else{
-              r.er = "no start or end date provided";
+              r.er = "no start, end date or tank provided";
               r.status = false;
               deferred.reject(r);
           }
