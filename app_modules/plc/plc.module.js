@@ -361,12 +361,12 @@ plc.getAlertForTimeInterval =  function(m) {
 
     var flow = '';
 
-      if (tank =='Guanwang'){
-            flow = 'isc2';
-      }
-      else{
-            flow = 'instfow';
-      }
+        if (m.pl.tank[0] == 'G'){
+              flow = 'psc2';
+        }
+        else{
+              flow = 'cumfow';
+        }
 
         iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank}).$where(
                 function () {
@@ -381,7 +381,7 @@ plc.getAlertForTimeInterval =  function(m) {
             }
             else{
               for (var i = 0; i < plc.length; i++) {
-                  instantaneousValues[i] = parseFloat(plc[i][flow]);  // return only instantaneous standard conditions
+                  instantaneousValues[i] = parseFloat(plc[i][flow]);  // return only instantaneous data
                   dates[i] = plc[i].cd;
               }
               r.pl.plc = {values:instantaneousValues,dates:dates};
@@ -414,9 +414,9 @@ plc.getPlcStats = function(m){
 
             var start = m.pl.start+' 00:00:00';
             var end = m.pl.end+' 23:59:59';
-            var flow = ''
+            var flow = '';
 
-            if (m.pl.tank=='Guanwang'){
+            if (m.pl.tank[0] == 'G'){
                   flow = 'psc2';
             }
             else{
@@ -439,7 +439,7 @@ plc.getPlcStats = function(m){
                   }
               ]).sort({date:1}).exec(function (err, plc) {
 
-                      console.log("got group plc>>>>>>>---");
+                      console.log("got group plc>>>>>>>---",plc);
                   if (err){
                     r.er = err;
                     r.status = false;
@@ -451,7 +451,7 @@ plc.getPlcStats = function(m){
                       var previousDate = lib.getPreviousMonthDate(m.pl.start)+' 00:00:00'; // shift back one month
                       iPlc.find({oID:m.pl.user.oID,cd:{$gte:previousDate,$lt:start}}).sort({cd:-1}).limit(1).exec(function (err2, plc2) {
 
-                              console.log("got previous plc",plc2);
+                              console.log("got previous plc------",plc2);
                           if (err2){
                             r.er = err2;
                             r.status = false;
