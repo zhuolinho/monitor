@@ -177,17 +177,7 @@ plc.handleIncommingData =  function(m) {
 
   if (m.pl.org){
 
-    m.redisClient.get("lastestPlc", function(err, result) {
-      var temp = {};
-      temp[m.pl.org.oID] = {};
-      latestIncommingData = JSON.parse(result)||temp;
-    });
 
-    m.redisClient.get("lastestInterupts", function(err, result) {
-       var temp = {};
-       temp[m.pl.org.oID] = {};
-       latestInteruptedChanels = JSON.parse(result)||temp;
-    });
 
    var deferred = q.defer();
    var newInterupts = [];
@@ -198,41 +188,59 @@ plc.handleIncommingData =  function(m) {
 
       var pchain = [];
 
-       for (var i = 0; i < 100; i++) {
+      m.redisClient.get("lastestPlc", function(err, result) {
+        var temp = {};
+        temp[m.pl.org.oID] = {};
+        latestIncommingData = JSON.parse(result)||temp;
 
-              var dataToSave = _extractPlcData(incommingData,i);
 
-              if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
-                continue;
-              }
-
-               // console.log("loop----",i);
-               console.log("--dataToSave-->>>---",dataToSave);
-
-             var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
-
-             m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
-             m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
-
-             if (chanelCheck.createAlert){
-                 newInterupts.push(dataToSave);
-             }
-             else if (chanelCheck.save){
-                   dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
-                          pchain.push(_saveIncommingData(setDoc));
-                   });
-             }
-       }
+        m.redisClient.get("lastestInterupts", function(err, result) {
+           var temp = {};
+           temp[m.pl.org.oID] = {};
+           latestInteruptedChanels = JSON.parse(result)||temp;
 
 
 
-       var result =  q({length:pchain.length});
-       pchain.forEach(function (f) {
-           result = result.then(f);
-       });
+            for (var i = 0; i < 100; i++) {
 
-       r.pl.alerts = newInterupts;
-       deferred.resolve(r);
+                   var dataToSave = _extractPlcData(incommingData,i);
+
+                   if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+                     continue;
+                   }
+
+                    // console.log("loop----",i);
+                    console.log("--dataToSave-->>>---",dataToSave);
+
+                  var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
+
+                  m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
+                  m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
+
+                  if (chanelCheck.createAlert){
+                      newInterupts.push(dataToSave);
+                  }
+                  else if (chanelCheck.save){
+                        dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
+                               pchain.push(_saveIncommingData(setDoc));
+                        });
+                  }
+            }
+
+
+
+            var result =  q({length:pchain.length});
+            pchain.forEach(function (f) {
+                result = result.then(f);
+            });
+
+            r.pl.alerts = newInterupts;
+            deferred.resolve(r);
+
+
+
+        });
+      });
 
        // return result;
        return deferred.promise;
@@ -1294,23 +1302,31 @@ var _getPlcType = function(data,shift){
     return parseInt(type.toString('hex'), 16);
 }
 
-var _checkChanelInterruption = function(data,oID,latestIncommingData,latestInteruptedChanels){
+var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInteruptedChanels){
     var result = {createAlert:false,save:false, latestIncommingData:latestIncommingData,latestInteruptedChanels:latestInteruptedChanels};
 
-    if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
-      if (latestIncommingData[oID][data.tank].cdct == data.cdct){
-          latestInteruptedChanels[oID][data.tank] = data;
-          //keep to create interuption alert
-          result.createAlert = true;
+    if (!(latestInteruptedChanels[oID]&&latestInteruptedChanels[oID][data.tank])){ //make sure the interuption has not been registered yet
+      if (latestIncommingData[oID][data.tank]){
+          if (latestIncommingData[oID][data.tank].cdct == data.cdct){  //if same as previous value
+              latestInteruptedChanels[oID][data.tank] = data;
+              //keep to create interuption alert
+              result.createAlert = true;
+          }
+          else{
+            result.save = true;
+            latestIncommingData[oID][data.tank] = data; //update latest data
+          }
       }
       else{
         result.save = true;
+        latestIncommingData[oID][data.tank] = data; //save in latest data
       }
     }
     else {
         if (latestIncommingData[oID][data.tank].cdct != data.cdct){  //normal flow restored
             delete latestInteruptedChanels[oID][data.tank];
             result.save = true;
+            latestIncommingData[oID][data.tank] = data;  //update latest data
         }
     }
 
