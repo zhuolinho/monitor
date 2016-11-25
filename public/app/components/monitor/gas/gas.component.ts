@@ -351,6 +351,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
             this.currentPlcTank = this.connectedPlcs[0];
+            console.log("this.currentPlcTank------",this.currentPlcTank);
             this.initSelect();
             console.log('got real time data',this.realTimeData);
             console.log("this.connectedPlcs",this.connectedPlcs);
