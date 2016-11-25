@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 //incomming plc data
 var iPlcSchema = mongoose.Schema({
+
+                    //comon fields
                     oID:String,
                     cuID:String, //created user id
                     muID:String, //modified user id
@@ -10,6 +12,13 @@ var iPlcSchema = mongoose.Schema({
                     d:String,//day
                     dct:String, //data collection time
                     cdct:String, //chanel data collection time
+                    plcCode:{type:String,required:true},
+                    tank:String,
+                    plcType:{type:String,required:true}, //guanwang, cng, lng
+                    laddr:String, //location address
+
+
+                    //guanwang ((S7-200 Smart plc)
                     addr1:String,
                     iwc1:String,// instantaneous working conditions 1
                     isc1:String,//instantaneous standard conditions 1
@@ -30,8 +39,29 @@ var iPlcSchema = mongoose.Schema({
                     rsc2:String,// reverse standard conditions 2
                     cf2:String,//communication failure 2
                     er2:String,// error report 2
-                    tank:String,
-                    laddr:String, //location address
+
+
+                    //cng -- raw val*10
+                    inputP1:String, //inut presure1 入口压力1 MPa
+                    inputP2:String, //inut presure2 入口压力2 MPa
+                    paflpa1:String, //presure after first level presure ajustment 一级调压后压力1 Bar
+                    paflpa2:String, //presure after first level presure ajustment 一级调压后压力2 Bar
+                    taflpa1:String, //temperature after first level presure ajustment 一级调压后温度1 ℃
+                    taflpa2:String, //temperature after first level presure ajustment 一级调压后温度2 ℃
+                    outputP1:String, //output presure1 一号出口压力 Bar
+                    outputP2:String, //output presure2 二号出口压力 Bar
+
+                    //lng -- raw val*10
+                    tankp:String, //tankpresure 储罐压力 Bar
+                    azip:String, //ajustment zone input presure 调压区入口压力 Bar
+                    tanklavel:String, //(remaining amount) 储罐液位 %
+
+                    //both lng and cng  -- raw val*10
+                    outputP:String, //output presure 出口压力 KPa
+                    fmot:String, //flowmeter ouput temperature 流量计出口温度 ℃
+                    instfow:String, //instantaneous flow 瞬时流量 Nm3/h
+                    cumfow:String //cummulative flow 累计流量 Nm3
+
               });
 
     iPlcSchema.methods.setOwner = function (user, cb) {

@@ -166,46 +166,6 @@ plc.init = function(m) {
     return q(r);
 }
 
-// plc.handleIncommingData =  function(m) {
-//   // console.log("plc: handleIncommingData",m.pl);
-//   var deferred = q.defer();
-//
-// var incommingData = m.pl;
-//
-//   if(incommingData){
-//
-//      var pchain = [];
-//
-//       for (var i = 0; i < 100; i++) {
-//             //  console.log("loop----",i);
-//              var dataToSave = _extractPlcData(incommingData,i);
-//              if((dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
-//                break;
-//              }
-//              pchain.push(_saveIncommingData(dataToSave));
-//       }
-//
-//       var result =  q();
-//       var allResults = [];
-//       pchain.forEach(function (f) {
-//           result = result.then(f);
-//           if(allResults.length === pchain.length){
-//               deferred.resolve(allResults);
-//           }
-//
-//       });
-//
-//     }
-//     else {
-//       r.er =  "empty data";
-//       r.status = false
-//       deferred.reject(r);
-//     }
-//   return deferred.promise;
-//
-// }
-
-
 
 
 plc.handleIncommingData =  function(m) {
@@ -222,12 +182,12 @@ plc.handleIncommingData =  function(m) {
 
              var dataToSave = _extractPlcData(incommingData,i);
 
-             if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '1970-1-1 0:0:0') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+             if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
                continue;
              }
 
               // console.log("loop----",i);
-              // console.log("dataToSave-----",dataToSave);
+              console.log("--dataToSave-->>>---",dataToSave);
 
 
              if(m.pl.org){
@@ -1030,10 +990,194 @@ plc.downloadInstantPlcData = function(m){
     return deferred.promise;
 }
 
+// var _extractPlcData = function(data,index){
+//
+//   var i = index?index:0;
+//   var shift = i*76;
+//   var date = '';
+//   var year = data.slice(0,2);
+//   var month = data.slice(2,3);
+//   var day = data.slice(3,4);
+//   var weekday = data.slice(4,5);
+//   var hour = data.slice(5,6);
+//   var minute = data.slice(6,7);
+//   var second = data.slice(7,8);
+//   var nanosecond = data.slice(8,12);
+//
+//   //var strYear = year.toString('hex')
+//   //parseInt(strYear, 16);
+//
+//   date = parseInt(year.toString('hex'), 16) +"-"+
+//          parseInt(month.toString('hex'), 16) +"-"+
+//          parseInt(day.toString('hex'), 16) +" "+
+//          parseInt(hour.toString('hex'), 16) +":"+
+//          parseInt(minute.toString('hex'), 16) +":"+
+//          parseInt(second.toString('hex'), 16);
+//
+//      //依次是   year（2字节）
+//      // month（1字节）
+//      // day（1字节）
+//      // weekday（1字节）
+//      // hour（1字节）
+//      // minute（1字节）
+//      // second（1字节）
+//      // nanosecond（4字节）
+//
+//      var chanelDate = '';
+//      var cyear = data.slice(12+shift,14+shift);
+//      var cmonth = data.slice(14+shift,15+shift);
+//      var cday = data.slice(15+shift,16+shift);
+//      var cweekday = data.slice(16+shift,17+shift);
+//      var chour = data.slice(17+shift,18+shift);
+//      var cminute = data.slice(18+shift,19+shift);
+//      var csecond = data.slice(19+shift,20+shift);
+//      var cnanosecond = data.slice(20+shift,24+shift); //not needed
+//
+//      //var strYear = year.toString('hex')
+//      //parseInt(strYear, 16);
+//  //not needed
+//      chanelDate = parseInt(cyear.toString('hex'), 16) +"-"+
+//             parseInt(cmonth.toString('hex'), 16) +"-"+
+//             parseInt(cday.toString('hex'), 16) +" "+
+//             parseInt(chour.toString('hex'), 16) +":"+
+//             parseInt(cminute.toString('hex'), 16) +":"+
+//             parseInt(csecond.toString('hex'), 16);
+//
+//   //数据	64 bits
+//   //表1站地址	2
+//   //表1瞬时工况	4
+//   // 表1瞬时标况	4
+//   // 表1压力	4
+//   // 表1温度	4
+//   // 表1正工况累计	4
+//   // 表1正标况累计	4
+//   // 表1逆标况累计	4
+//   // 表1通讯故障	1
+//   // 表1错误情报	1
+//   // 表2站地址	2
+//   // 表2瞬时工况	4
+//   // 表2瞬时标况	4
+//   // 表2压力	4
+//   // 表2温度	4
+//   // 表2正工况累计	4
+//   // 表2正标况累计	4
+//   // 表2逆标况累计	4
+//   // 表2通讯故障	1
+//   // 表2错误情报	1
+//
+//
+//
+//   var addr1 = data.slice(24+shift,26+shift);
+//   var instantaneousWorkingCond1 = data.slice(26+shift,30+shift);
+//   var instantaneousStandardCond1 = data.slice(30+shift,34+shift);
+//   var pressure1 = data.slice(34+shift,38+shift);
+//   var temp1 = data.slice(38+shift,42+shift);
+//   var positiveWorkingCond1  = data.slice(42+shift,46+shift);
+//   var positiveStandardCond1  = data.slice(46+shift,50+shift);
+//   var reverseStandardCond1  = data.slice(50+shift,54+shift);
+//   var comminucationFailure1 = data.slice(54+shift,55+shift);
+//   var errorReport1 = data.slice(55+shift,56+shift);
+//
+//   var addr2 = data.slice(56+shift,58+shift);
+//   var instantaneousWorkingCond2 = data.slice(58+shift,62+shift);
+//   var instantaneousStandardCond2 = data.slice(62+shift,66+shift);
+//   var pressure2 = data.slice(66+shift,70+shift);
+//   var temp2 = data.slice(70+shift,74+shift);
+//   var positiveWorkingCond2  = data.slice(74+shift,78+shift);
+//   var positiveStandardCond2  = data.slice(78+shift,82+shift);
+//   var reverseStandardCond2  = data.slice(82+shift,86+shift);
+//   var comminucationFailure2 = data.slice(86+shift,87+shift);
+//   var errorReport2 = data.slice(87+shift,88+shift);
+//
+//   var d = new Date();
+//
+//   var result = new iPlc({
+//                          cd:lib.dateTime(),
+//                          y:d.getFullYear(),
+//                          m:d.getMonth()+1,
+//                          d:d.getDate(),
+//                          dct:date, //data collection time
+//                          cdct:chanelDate, //chanel data collection time
+//                          addr1:parseInt(addr1.toString('hex'), 16),
+//                          iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
+//                          isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
+//                          p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
+//                          temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
+//                          pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
+//                          psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
+//                          rsc1:lib.getPlcFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
+//                          cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
+//                          er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
+//                          addr2:parseInt(addr2.toString('hex'), 16),
+//                          iwc2:lib.getPlcFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
+//                          isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
+//                          p2:lib.getPlcFloat(pressure2.toString('hex')),// pressure 2
+//                          temp2:lib.getPlcFloat(temp2.toString('hex')),//temperature 2
+//                          pwc2:lib.getPlcFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
+//                          psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
+//                          rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
+//                          cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
+//                          er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
+//                          tank:'L'+lib.padNum(i+1,3)
+//                       });
+//
+//   // console.log("extracted plc data result----",result);
+//
+//   return result;
+// }
+
+
 var _extractPlcData = function(data,index){
 
   var i = index?index:0;
   var shift = i*76;
+  var plcType = null;
+  var extractedData = null;
+
+  var dates = _extractDates(data,shift);
+
+  if (i<50){
+      extractedData = _exractGuanwangData(data,shift);
+      plcType = 'Guanwang';
+  }
+  else{
+      var type = _getPlcType(data,shift);
+      console.log("----extracted type----",type)
+      if (type==0){
+        extractedData = _extractCngData(data,shift);
+        plcType='CNG';
+      }
+      else if (type==1){
+         extractedData = _extractLngData(data,shift);
+         plcType='LNG';
+      }
+  }
+
+
+  if(plcType){
+      var d = new Date();
+
+      var fullData = extractedData;
+      fullData.cd = lib.dateTime();
+      fullData.y = d.getFullYear();
+      fullData.m = d.getMonth()+1;
+      fullData.d = d.getDate();
+      fullData.dct = dates.date; //data collection time
+      fullData.cdct = dates.chanelDate; //chanel data collection time
+      fullData.plcCode = lib.padNum(i+1,3);
+      fullData.plcType = plcType;
+      fullData.tank = fullData.plcType[0] + fullData.plcCode;
+
+      return new iPlc(fullData);
+    }
+    else {
+      throw "no plc type found!!!----";
+    }
+}
+
+
+_extractDates(data,shift){
+
   var date = '';
   var year = data.slice(0,2);
   var month = data.slice(2,3);
@@ -1083,6 +1227,15 @@ var _extractPlcData = function(data,index){
             parseInt(cminute.toString('hex'), 16) +":"+
             parseInt(csecond.toString('hex'), 16);
 
+
+    return {date:date,chanelDate:chanelDate}
+
+
+
+}
+
+_exractGuanwangData(data,shift){
+
   //数据	64 bits
   //表1站地址	2
   //表1瞬时工况	4
@@ -1104,8 +1257,6 @@ var _extractPlcData = function(data,index){
   // 表2逆标况累计	4
   // 表2通讯故障	1
   // 表2错误情报	1
-
-
 
   var addr1 = data.slice(24+shift,26+shift);
   var instantaneousWorkingCond1 = data.slice(26+shift,30+shift);
@@ -1129,44 +1280,95 @@ var _extractPlcData = function(data,index){
   var comminucationFailure2 = data.slice(86+shift,87+shift);
   var errorReport2 = data.slice(87+shift,88+shift);
 
-  var d = new Date();
+  var processedData = {
+                        addr1:parseInt(addr1.toString('hex'), 16),
+                        iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
+                        isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
+                        p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
+                        temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
+                        pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
+                        psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
+                        rsc1:lib.getPlcFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
+                        cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
+                        er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
+                        addr2:parseInt(addr2.toString('hex'), 16),
+                        iwc2:lib.getPlcFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
+                        isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
+                        p2:lib.getPlcFloat(pressure2.toString('hex')),// pressure 2
+                        temp2:lib.getPlcFloat(temp2.toString('hex')),//temperature 2
+                        pwc2:lib.getPlcFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
+                        psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
+                        rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
+                        cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
+                        er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
+                      };
 
-  var result = new iPlc({
-                         cd:lib.dateTime(),
-                         y:d.getFullYear(),
-                         m:d.getMonth()+1,
-                         d:d.getDate(),
-                         dct:date, //data collection time
-                         cdct:chanelDate, //chanel data collection time
-                         addr1:parseInt(addr1.toString('hex'), 16),
-                         iwc1:lib.getPlcFloat(instantaneousWorkingCond1.toString('hex')),// instantaneous working conditions 1
-                         isc1:lib.getPlcFloat(instantaneousStandardCond1.toString('hex'),true),//instantaneous standard conditions 1
-                         p1:lib.getPlcFloat(pressure1.toString('hex')),// pressure 1
-                         temp1:lib.getPlcFloat(temp1.toString('hex')),//temperature 1
-                         pwc1:lib.getPlcFloat(positiveWorkingCond1.toString('hex')),// positive working conditions 1
-                         psc1:lib.getPlcFloat(positiveStandardCond1.toString('hex')),// positive standard conditions 1
-                         rsc1:lib.getPlcFloat(reverseStandardCond1.toString('hex')),// reverse standard conditions 1
-                         cf1:parseInt(comminucationFailure1.toString('hex'), 16),//communication failure 1
-                         er1:parseInt(errorReport1.toString('hex'), 16),// error report 1
-                         addr2:parseInt(addr2.toString('hex'), 16),
-                         iwc2:lib.getPlcFloat(instantaneousWorkingCond2.toString('hex')),// instantaneous working conditions 2
-                         isc2:lib.getPlcFloat(instantaneousStandardCond2.toString('hex')),//instantaneous standard conditions 2
-                         p2:lib.getPlcFloat(pressure2.toString('hex')),// pressure 2
-                         temp2:lib.getPlcFloat(temp2.toString('hex')),//temperature 2
-                         pwc2:lib.getPlcFloat(positiveWorkingCond2.toString('hex')),// positive working conditions 2
-                         psc2:lib.getPlcFloat(positiveStandardCond2.toString('hex')),// positive standard conditions 2
-                         rsc2:lib.getPlcFloat(reverseStandardCond2.toString('hex')),// reverse standard conditions 2
-                         cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
-                         er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
-                         tank:'L'+lib.padNum(i+1,3)
-                      });
+    return processedData;
+}
 
-  // console.log("extracted plc data result----",result);
+
+
+// //cng -- raw val*10
+// inputP1:String, //inut presure1 入口压力1 MPa
+// inputP2:String, //inut presure2 入口压力2 MPa
+// paflpa1:String, //presure after first level presure ajustment 一级调压后压力1 Bar
+// paflpa2:String, //presure after first level presure ajustment 一级调压后压力2 Bar
+// taflpa1:String, //temperature after first level presure ajustment 一级调压后温度1 ℃
+// taflpa2:String, //temperature after first level presure ajustment 一级调压后温度2 ℃
+// outputP1:String, //output presure1 一号出口压力 Bar
+// outputP2:String, //output presure2 二号出口压力 Bar
+//
+// //lng -- raw val*10
+// tankp:String, //tankpresure 储罐压力 Bar
+// azip:String, //ajustment zone input presure 调压区入口压力 Bar
+// tanklavel:String, //(remaining amount) 储罐液位 %
+//
+// //both lng and cng  -- raw val*10
+// outputP:String, //output presure 出口压力 KPa
+// fmot:String, //flowmeter ouput temperature 流量计出口温度 ℃
+// instfow:String, //instantaneous flow 瞬时流量 Nm3/h
+// cumfow:String //cummulative flow 累计流量 Nm3
+
+_extractCngData(data,shift){
+  
+  var inputP1 = data.slice(24+shift,28+shift);
+  var inputP2 = data.slice(28+shift,32+shift);
+  var paflpa1 = data.slice(32+shift,36+shift);
+  var paflpa2 = data.slice(36+shift,40+shift);
+  var taflpa1 = data.slice(40+shift,44+shift);
+  var taflpa2 = data.slice(44+shift,48+shift);
+  var outputP1 = data.slice(48+shift,52+shift);
+  var outputP2 = data.slice(52+shift,56+shift);
+  var outputP = data.slice(56+shift,60+shift);
+  var fmot = data.slice(60+shift,64+shift);
+  var instfow = data.slice(64+shift,68+shift);
+  var cumfow = data.slice(68+shift,72+shift);
+
+  var result = {
+      inputP1 :lib.getPlcFloat(inputP1.toString('hex')),
+      inputP2 :lib.getPlcFloat(inputP2.toString('hex')),
+      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex')),
+      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex')),
+      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex')),
+      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex')),
+      outputP1 :lib.getPlcFloat(outputP1.toString('hex')),
+      outputP2 :lib.getPlcFloat(outputP2.toString('hex')),
+      outputP: lib.getPlcFloat(outputP.toString('hex')),
+      fmot :lib.getPlcFloat(fmot.toString('hex')),
+      instfow: lib.getPlcFloat(instfow.toString('hex')),
+      instfow: lib.getPlcFloat(instfow.toString('hex'))
+  }
 
   return result;
 }
 
+_extractLngData(data,shift){
+}
 
+_getPlcType(data,shift){
+    var type  = data.slice(84+shift,86+shift);
+    return lib.getPlcFloat(type.toString('hex'));
+}
 
 
 
