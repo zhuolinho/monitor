@@ -12,6 +12,7 @@ var iPlcSchema = mongoose.Schema({
                     d:String,//day
                     dct:String, //data collection time
                     cdct:String, //chanel data collection time
+                    cdcns:String, //Chanel date collections nanosecond
                     plcCode:{type:String,required:true},
                     tank:String,
                     plcType:{type:String,required:true}, //guanwang, cng, lng

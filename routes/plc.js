@@ -524,7 +524,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---",r.pl);
+        console.log("plc route save data successful-----alerts are====",r.pl.alerts);
         // _getLatest(handler,r.length, globalConf.orgs[0]);
         _getLatest(handler,globalConf.orgs[0]);
 

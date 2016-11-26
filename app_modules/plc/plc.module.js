@@ -1085,6 +1085,7 @@ var _extractPlcData = function(data,index){
       fullData.d = d.getDate();
       fullData.dct = dates.date; //data collection time
       fullData.cdct = dates.chanelDate; //chanel data collection time
+      fullData.cdcns = dates.cnanosecond; //chanel data collection time
       fullData.plcCode = lib.padNum(i+1,3);
       fullData.plcType = plcType;
       fullData.tank = fullData.plcType[0] + fullData.plcCode;
@@ -1149,7 +1150,7 @@ var _extractDates = function(data,shift){
             parseInt(csecond.toString('hex'), 16);
 
 
-    return {date:date,chanelDate:chanelDate}
+    return {date:date,chanelDate:chanelDate,cnanosecond:parseInt(cnanosecond.toString('hex'), 16)}
 
 
 
@@ -1314,29 +1315,31 @@ var _getPlcType = function(data,shift){
 var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInteruptedChanels){
     var result = {createAlert:false,save:false, latestIncommingData:latestIncommingData,latestInteruptedChanels:latestInteruptedChanels};
 
-    if (!(latestInteruptedChanels[oID]&&latestInteruptedChanels[oID][data.tank])){ //make sure the interuption has not been registered yet
-      if (latestIncommingData[oID][data.tank]){
-          if (latestIncommingData[oID][data.tank].cdct == data.cdct){  //if same as previous value
-              latestInteruptedChanels[oID][data.tank] = data;
-              //keep to create interuption alert
-              result.createAlert = true;
+    if(latestInteruptedChanels[oID]){  //is always set by default
+          if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
+            if (latestIncommingData[oID][data.tank]){//if not the first time to get this data
+                if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)){  //if same as previous value
+                    latestInteruptedChanels[oID][data.tank] = data;
+                    //keep to create interuption alert
+                    result.createAlert = true;
+                }
+                else{
+                  result.save = true;
+                  latestIncommingData[oID][data.tank] = data; //update latest data
+                }
+            }
+            else{
+              result.save = true;
+              latestIncommingData[oID][data.tank] = data; //save in latest data
+            }
           }
-          else{
-            result.save = true;
-            latestIncommingData[oID][data.tank] = data; //update latest data
+          else {
+              if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) !== (data.cdct+data.cdcns)){  //normal flow restored
+                  delete latestInteruptedChanels[oID][data.tank];
+                  result.save = true;
+                  latestIncommingData[oID][data.tank] = data;  //update latest data
+              }
           }
-      }
-      else{
-        result.save = true;
-        latestIncommingData[oID][data.tank] = data; //save in latest data
-      }
-    }
-    else {
-        if (latestIncommingData[oID][data.tank].cdct != data.cdct){  //normal flow restored
-            delete latestInteruptedChanels[oID][data.tank];
-            result.save = true;
-            latestIncommingData[oID][data.tank] = data;  //update latest data
-        }
     }
 
     return result;
