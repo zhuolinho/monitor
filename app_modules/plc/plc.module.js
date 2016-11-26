@@ -757,12 +757,13 @@ plc.updateAddress =  function(m) {
 
 plc.addNewAlert = function(m){
 
-  console.log("add new alert----",m.pl.alert);
+  // console.log("add new alert----",m.pl.alert);
 
   var r = {pl: {}, er:'',em:''};
   var deferred = q.defer();
 
   if(m && m.pl && m.pl.user && m.pl.user.oID){
+
     plc._sendAlertNotification(m);
 
     if(m.pl.alert){
