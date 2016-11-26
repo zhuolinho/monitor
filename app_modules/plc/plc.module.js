@@ -361,11 +361,11 @@ plc.getAlertForTimeInterval =  function(m) {
 
     var flow = '';
 
-        if (m.pl.tank[0] == 'G'){
-              flow = 'psc2';
+        if (tank[0] =='G'){
+              flow = 'isc2';
         }
         else{
-              flow = 'cumfow';
+              flow = 'instfow';
         }
 
         iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank}).$where(
