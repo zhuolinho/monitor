@@ -1063,8 +1063,8 @@ var _extractPlcData = function(data,index){
   }
   else{
       var type = _getPlcType(data,shift);
-      // console.log("----extracted type----",type)
-      if (type==0){
+      console.log("----extracted type----",type)//todo--->>> this type is also being equal to 2!!!!!
+      if (type==0 || type==2){
         extractedData = _extractCngData(data,shift);
         plcType='CNG';
       }
