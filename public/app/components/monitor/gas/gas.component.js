@@ -1,6 +1,5 @@
-System.register(['@angular/core', '../../../services/lib.service', '../../../config', '../../../services/rt-messages.service', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(["@angular/core", "../../../services/lib.service", "../../../config", "../../../services/rt-messages.service", "../../../services/request.service"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1;
-    var Gas;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1, Gas;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -28,23 +27,15 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             Gas = (function () {
                 function Gas(request, rtmgs, lib) {
                     var _this = this;
                     this.request = request;
                     this.rtmgs = rtmgs;
                     this.lib = lib;
-                    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-                    // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
-                    this.years = [];
-                    // days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
-                    //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
-                    //                   '25日','26日','27日','28日','29日','30日','31日'
-                    //                 ];
-                    this.startDays = [];
-                    this.endDays = [];
                     this.testPlcs = [
                         {
                             "_id": "5810d7cfa7d1a71e69621e6b",
@@ -285,6 +276,10 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                             "__v": 0
                         }
                     ];
+                    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                    this.years = [];
+                    this.startDays = [];
+                    this.endDays = [];
                     this.detailmodal = {};
                     this.goodConnection = false;
                     this.dataTimer = 300000;
@@ -314,7 +309,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     ];
                     this.allTankSelected = false;
                     this.selectedTanks = [];
-                    this.currentPlcTank = 'L001';
+                    this.realTimeData = {};
+                    this.currentPlcTank = 'G001';
                     this.connectedPlcs = [];
                     this.plcAddresses = [];
                     this.selectedDownloadTab = 1;
@@ -330,15 +326,15 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                     this.date = lib.dateTime();
                     this.setYears(null);
                     this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
-                        console.log("latest plc-----", resp);
+                        console.log("latest plc>>>-----", resp);
                         if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-                            _this.realTimeData = _.keyBy(resp.pl.plc, 'tank');
+                            // this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+                            _this.realTimeData = resp.pl.plc;
                             _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
                             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
                             _this.connectedPlcs = Object.keys(_this.realTimeData);
+                            _this.currentPlcTank = _this.connectedPlcs[0];
                             _this.initSelect();
-                            console.log('got real time data', _this.realTimeData);
-                            console.log("this.connectedPlcs", _this.connectedPlcs);
                         }
                     });
                 }
@@ -426,8 +422,8 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         }
                         console.log("realTimePlc-----", data);
                         if (data && data.pl && data.pl.plc) {
-                            // that.realTimeData = data.pl.plc;
-                            that.realTimeData = _.keyBy(data.pl.plc, 'tank');
+                            // that.realTimeData = _.keyBy(data.pl.plc,'tank');
+                            that.realTimeData = data.pl.plc;
                             that.connectedPlcs = Object.keys(that.realTimeData);
                             that.initSelect();
                         }
@@ -595,17 +591,19 @@ System.register(['@angular/core', '../../../services/lib.service', '../../../con
                         }
                     });
                 };
-                Gas.graphIsRunning = false;
-                Gas = __decorate([
-                    core_1.Component({
-                        selector: 'gas',
-                        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
-                    }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService, rt_messages_service_1.RTMessagesService, lib_service_1.LibService])
-                ], Gas);
                 return Gas;
             }());
+            Gas.graphIsRunning = false;
+            Gas = __decorate([
+                core_1.Component({
+                    selector: 'gas',
+                    templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
+                }),
+                __metadata("design:paramtypes", [request_service_1.RequestService,
+                    rt_messages_service_1.RTMessagesService,
+                    lib_service_1.LibService])
+            ], Gas);
             exports_1("Gas", Gas);
         }
-    }
+    };
 });

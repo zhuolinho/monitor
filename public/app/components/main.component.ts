@@ -11,7 +11,6 @@ import {config} from '../config';
 declare var jQuery:any;
 
 
-
 @Component({
   selector:'main',
   template: '<router-outlet></router-outlet>'
