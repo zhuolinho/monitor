@@ -770,7 +770,7 @@ plc.addNewAlert = function(m){
                               atime:lib.dateTime(),
                               atype:m.pl.alert.atype,
                               addr:m.pl.alert.addr,
-                              tank:m.pl.tank||'无',   //todo dynamically set tank id
+                              tank:m.pl.alert.tank,   //todo dynamically set tank id
                               am:m.pl.alert.am,
                               rt:m.pl.alert.remainingTime,
                               st:m.pl.alert.st
@@ -831,7 +831,7 @@ plc._sendAlertNotification = function(m){
 
            for (var i = 0; i < resp.length; i++) {
              if (resp[i].phone){
-               lib.sendSms(resp[i].phone,m.pl.alert.am);
+               lib.sendSms(resp[i].phone,m.pl.alert);
              };
            }
          }
