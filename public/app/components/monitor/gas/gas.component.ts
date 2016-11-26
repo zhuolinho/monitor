@@ -20,17 +20,6 @@ declare var c3:any;
 
 export class Gas  implements AfterViewInit,OnDestroy{
 
-  months:number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
-  // months:string[] = ['2016年1月','2016年2月','2016年3月','2016年4月','2016年5月','2016年6月','2016年7月','2016年8月','2016年9月','2016年10月','2016年11月','2016年12月'];
-  years:number[] = [];
-  // days:string[] = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日',
-  //                   '13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日',
-  //                   '25日','26日','27日','28日','29日','30日','31日'
-  //                 ];
-
-  startDays:number[] = [];
-  endDays:number[] = [];
-
   testPlcs = [
     {
       "_id": "5810d7cfa7d1a71e69621e6b",
@@ -271,6 +260,11 @@ export class Gas  implements AfterViewInit,OnDestroy{
       "__v": 0
     }
   ];
+
+  months:number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
+  years:number[] = [];
+  startDays:number[] = [];
+  endDays:number[] = [];
   selectedtab:number;  //to switch tabs, the rest is controlled on the page
   currentTable:any;
   detailmodal:any = {};
@@ -342,7 +336,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
       this.date = lib.dateTime();
       this.setYears(null);
       this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-        console.log("latest plc-----",resp);
+        console.log("latest plc>>>-----",resp);
         if(resp&&resp.pl&&resp.pl.plc&&resp.pl.address){
 
             // this.realTimeData = _.keyBy(resp.pl.plc,'tank');
@@ -351,10 +345,10 @@ export class Gas  implements AfterViewInit,OnDestroy{
             // this.realTimeData = _.keyBy(this.testPlcs,'tank');
             this.connectedPlcs = Object.keys(this.realTimeData);
             this.currentPlcTank = this.connectedPlcs[0];
-            console.log("this.currentPlcTank------",this.currentPlcTank);
-            this.initSelect();
-            console.log('got real time data',this.realTimeData);
-            console.log("this.connectedPlcs",this.connectedPlcs);
+            console.log("this.currentPlcTank>>>------",this.currentPlcTank);
+            // this.initSelect();
+            console.log('got real time data>>>-----',this.realTimeData);
+            console.log("this.connectedPlcs>>>----",this.connectedPlcs);
         }
       });
     }
@@ -462,7 +456,6 @@ export class Gas  implements AfterViewInit,OnDestroy{
 
             console.log("realTimePlc-----",data);
             if(data&&data.pl&& data.pl.plc){
-                // that.realTimeData = data.pl.plc;
                 // that.realTimeData = _.keyBy(data.pl.plc,'tank');
                 that.realTimeData = data.pl.plc
                 that.connectedPlcs = Object.keys(that.realTimeData);

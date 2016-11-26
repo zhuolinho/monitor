@@ -361,7 +361,7 @@ plc.getAlertForTimeInterval =  function(m) {
 
     var flow = '';
 
-        if (tank[0] =='G'){
+        if (m.pl.tank[0] =='G'){
               flow = 'isc2';
         }
         else{
