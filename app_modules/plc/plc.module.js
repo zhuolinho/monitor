@@ -778,7 +778,7 @@ plc.addNewAlert = function(m){
 
               newAlert.setOwner(m.pl.user, function(setErr,setDoc){
                 setDoc.save(function (error, alert){
-                  console.log("new alert saved----",alert);
+                  // console.log("new alert saved----",alert);
                     if (!error){
                       r.pl.alert = alert;
                       deferred.resolve(r);
