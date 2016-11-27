@@ -92,6 +92,8 @@ export class HomeAlerts implements AfterViewInit{
     veProcessed(alert){
       var self = this;
       alert.pt = this.lib.dateTime();
+
+      
       alert.status = 1;
       alert.pa = this.user.an;
 

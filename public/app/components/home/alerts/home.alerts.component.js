@@ -1,6 +1,5 @@
-System.register(['@angular/core', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/rt-messages.service', '../../../services/lib.service'], function(exports_1, context_1) {
+System.register(["@angular/core", "../../../config", "../../../services/request.service", "../../../services/user.service", "../../../services/rt-messages.service", "../../../services/lib.service"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1, user_service_1, rt_messages_service_1, lib_service_1;
-    var HomeAlerts;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, config_1, request_service_1, user_service_1, rt_messages_service_1, lib_service_1, HomeAlerts;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -31,8 +30,9 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
             },
             function (lib_service_1_1) {
                 lib_service_1 = lib_service_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             HomeAlerts = (function () {
                 function HomeAlerts(request, userSrvc, rtmgs, lib) {
                     var _this = this;
@@ -257,16 +257,19 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                 HomeAlerts.prototype.initGrapth = function () {
                     var that = this;
                 };
-                HomeAlerts = __decorate([
-                    core_1.Component({
-                        selector: 'home-alerts',
-                        templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
-                    }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService, user_service_1.UserService, rt_messages_service_1.RTMessagesService, lib_service_1.LibService])
-                ], HomeAlerts);
                 return HomeAlerts;
             }());
+            HomeAlerts = __decorate([
+                core_1.Component({
+                    selector: 'home-alerts',
+                    templateUrl: config_1.config.prefix + '/components/home/alerts/home.alerts.component.html',
+                }),
+                __metadata("design:paramtypes", [request_service_1.RequestService,
+                    user_service_1.UserService,
+                    rt_messages_service_1.RTMessagesService,
+                    lib_service_1.LibService])
+            ], HomeAlerts);
             exports_1("HomeAlerts", HomeAlerts);
         }
-    }
+    };
 });
