@@ -1066,7 +1066,7 @@ var _extractPlcData = function(data,index){
       var type = _getPlcType(data,shift);
       console.log("----extracted type----",type)//todo--->>> this type is also being equal to 2!!!!!
       if (type==0 || type==2){
-        extractedData = _extractCngData(data,shift);
+        extractedData = _extractCngData(data,shift,type);
         plcType='CNG';
       }
       else if (type==1){
@@ -1252,7 +1252,7 @@ var _exractGuanwangData = function(data,shift){
 // instfow:String, //instantaneous flow 瞬时流量 Nm3/h
 // cumfow:String //cummulative flow 累计流量 Nm3
 
-var _extractCngData =  function(data,shift){
+var _extractCngData =  function(data,shift,type){
 
   var inputP1 = data.slice(24+shift,28+shift);
   var inputP2 = data.slice(28+shift,32+shift);
@@ -1260,12 +1260,26 @@ var _extractCngData =  function(data,shift){
   var paflpa2 = data.slice(36+shift,40+shift);
   var taflpa1 = data.slice(40+shift,44+shift);
   var taflpa2 = data.slice(44+shift,48+shift);
-  var outputP1 = data.slice(48+shift,52+shift);
-  var outputP2 = data.slice(52+shift,56+shift);
+  // var outputP1 = data.slice(48+shift,52+shift);
+  // var outputP2 = data.slice(52+shift,56+shift);
+  var holderVal1 = data.slice(48+shift,52+shift);
+  var holderVal2 = data.slice(52+shift,56+shift);
   var outputP = data.slice(56+shift,60+shift);
   var fmot = data.slice(60+shift,64+shift);
   var instfow = data.slice(64+shift,68+shift);
   var cumfow = data.slice(68+shift,72+shift);
+  var holderKey1 = '';
+  var holderKey2 = '';
+
+  if(type==0){
+      holderKey1 = 'outputP1';
+      holderKey2 = 'outputP2';
+  }
+  else{
+      holderKey1 = 'hxt1';
+      holderKey2 = 'hxt2';
+  }
+
 
   var result = {
       inputP1 :lib.getPlcFloat(inputP1.toString('hex'),1,plcConfig.coef),
@@ -1274,13 +1288,18 @@ var _extractCngData =  function(data,shift){
       paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1,plcConfig.coef),
       taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1,plcConfig.coef),
       taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1,plcConfig.coef),
-      outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1,plcConfig.coef),
-      outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1,plcConfig.coef),
+      // outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1,plcConfig.coef),
+      // outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1,plcConfig.coef),
       outputP: lib.getPlcFloat(outputP.toString('hex'),1,plcConfig.coef),
       fmot :lib.getPlcFloat(fmot.toString('hex'),1,plcConfig.coef),
       instfow: lib.getPlcFloat(instfow.toString('hex'),1,plcConfig.coef),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.coef)
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.coef),
+      cngType:type
   }
+
+  result[holderKey1] =  lib.getPlcFloat(holderVal1.toString('hex'),1,plcConfig.coef);
+  result[holderKey2] =  lib.getPlcFloat(holderVal2.toString('hex'),1,plcConfig.coef);
+
 
   return result;
 }
@@ -1320,7 +1339,7 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
                 if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
                   if (latestIncommingData[oID][data.tank]){//if not the first time to get this data
                       if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)){  //if same as previous value
-                            if(Math.abs(data.dct-data.cdct)>(plcConfig.sTimer/2)){   //check difference betwen sample and transmition times.
+                            if(Math.abs((new Date(data.dct))-(new Date(data.cdct)))>(plcConfig.sTimer/2)){   //check difference betwen sample and transmition times.
                                 latestInteruptedChanels[oID][data.tank] = data;
                                 //keep to create interuption alert
                                 result.createAlert = true;
