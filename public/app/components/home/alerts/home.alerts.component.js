@@ -89,6 +89,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     var _this = this;
                     var self = this;
                     alert.pt = this.lib.dateTime();
+                    console.log("alert.pt------", alert.pt);
                     alert.status = 1;
                     alert.pa = this.user.an;
                     console.log("alert------", alert);

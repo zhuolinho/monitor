@@ -213,16 +213,27 @@
                                   </div>
 
 
-                                  <div class="table-row">
+
+                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0" >
                                     <div class="table-cell"> 一号出口压力(Bar)</div>
                                       <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP1}}</span></div>
                                   </div>
 
-                                  <div class="table-row">
+                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0">
                                     <div class="table-cell"> 二号出口压力(Bar)</div>
                                       <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP2}}</span></div>
                                   </div>
 
+
+                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
+                                    <div class="table-cell"> 一号换热器温度 (℃)</div>
+                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt1}}</span></div>
+                                  </div>
+
+                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
+                                    <div class="table-cell"> 二号换热器温度 (℃)</div>
+                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt2}}</span></div>
+                                  </div>
 
 
                                   <div class="clearfix"></div>
