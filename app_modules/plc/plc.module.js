@@ -1231,7 +1231,7 @@ var _exractGuanwangData = function(data,shift){
 
 
 
-// //cng -- raw val*10
+// //cng
 // inputP1:String, //inut presure1 入口压力1 MPa
 // inputP2:String, //inut presure2 入口压力2 MPa
 // paflpa1:String, //presure after first level presure ajustment 一级调压后压力1 Bar
@@ -1241,16 +1241,16 @@ var _exractGuanwangData = function(data,shift){
 // outputP1:String, //output presure1 一号出口压力 Bar
 // outputP2:String, //output presure2 二号出口压力 Bar
 //
-// //lng -- raw val*10
+// //lng
 // tankp:String, //tankpresure 储罐压力 Bar
 // azip:String, //ajustment zone input presure 调压区入口压力 Bar
 // tanklavel:String, //(remaining amount) 储罐液位 %
 //
-// //both lng and cng  -- raw val*10
+// //both lng and cng
 // outputP:String, //output presure 出口压力 KPa
 // fmot:String, //flowmeter ouput temperature 流量计出口温度 ℃
 // instfow:String, //instantaneous flow 瞬时流量 Nm3/h
-// cumfow:String //cummulative flow 累计流量 Nm3
+// cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
 
 var _extractCngData =  function(data,shift,type){
 
@@ -1282,23 +1282,23 @@ var _extractCngData =  function(data,shift,type){
 
 
   var result = {
-      inputP1 :lib.getPlcFloat(inputP1.toString('hex'),1,plcConfig.coef),
-      inputP2 :lib.getPlcFloat(inputP2.toString('hex'),1,plcConfig.coef),
-      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'),1,plcConfig.coef),
-      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1,plcConfig.coef),
-      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1,plcConfig.coef),
-      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1,plcConfig.coef),
-      // outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1,plcConfig.coef),
-      // outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1,plcConfig.coef),
-      outputP: lib.getPlcFloat(outputP.toString('hex'),1,plcConfig.coef),
-      fmot :lib.getPlcFloat(fmot.toString('hex'),1,plcConfig.coef),
-      instfow: lib.getPlcFloat(instfow.toString('hex'),1,plcConfig.coef),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.coef),
+      inputP1 :lib.getPlcFloat(inputP1.toString('hex'),1),
+      inputP2 :lib.getPlcFloat(inputP2.toString('hex'),1),
+      paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'),1),
+      paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1),
+      taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1),
+      taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1),
+      // outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1),
+      // outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1),
+      outputP: lib.getPlcFloat(outputP.toString('hex'),1),
+      fmot :lib.getPlcFloat(fmot.toString('hex'),1),
+      instfow: lib.getPlcFloat(instfow.toString('hex'),1),
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef),
       cngType:type
   }
 
-  result[holderKey1] =  lib.getPlcFloat(holderVal1.toString('hex'),1,plcConfig.coef);
-  result[holderKey2] =  lib.getPlcFloat(holderVal2.toString('hex'),1,plcConfig.coef);
+  result[holderKey1] =  lib.getPlcFloat(holderVal1.toString('hex'),1);
+  result[holderKey2] =  lib.getPlcFloat(holderVal2.toString('hex'),1);
 
 
   return result;
@@ -1315,13 +1315,13 @@ var _extractLngData = function(data,shift){
   var cumfow = data.slice(48+shift,52+shift);
 
   var result = {
-      tankp :lib.getPlcFloat(tankp.toString('hex'),1,plcConfig.coef),
-      azip :lib.getPlcFloat(azip.toString('hex'),1,plcConfig.coef),
-      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'),1,plcConfig.coef),
-      outputP: lib.getPlcFloat(outputP.toString('hex'),1,plcConfig.coef),
-      fmot :lib.getPlcFloat(fmot.toString('hex'),1,plcConfig.coef),
-      instfow: lib.getPlcFloat(instfow.toString('hex'),1,plcConfig.coef),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.coef)
+      tankp :lib.getPlcFloat(tankp.toString('hex'),1),
+      azip :lib.getPlcFloat(azip.toString('hex'),1),
+      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'),1),
+      outputP: lib.getPlcFloat(outputP.toString('hex'),1),
+      fmot :lib.getPlcFloat(fmot.toString('hex'),1),
+      instfow: lib.getPlcFloat(instfow.toString('hex'),1),
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef)
   }
 
   return result;
@@ -1339,7 +1339,7 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
                 if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
                   if (latestIncommingData[oID][data.tank]){//if not the first time to get this data
                       if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)){  //if same as previous value
-                            if(Math.abs((new Date(data.dct))-(new Date(data.cdct)))>(plcConfig.sTimer/2)){   //check difference betwen sample and transmition times.
+                            if(Math.abs((new Date(data.dct))-(new Date(data.cdct)))>(plcConfig.sTimer-10000)){   //check difference betwen sample and transmition times.
                                 latestInteruptedChanels[oID][data.tank] = data;
                                 //keep to create interuption alert
                                 result.createAlert = true;

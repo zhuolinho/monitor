@@ -1,10 +1,10 @@
-System.register([], function(exports_1, context_1) {
+System.register([], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var config;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {
             exports_1("config", config = {
                 prefix: 'app/',
                 color: '#1288C1',
@@ -20,11 +20,11 @@ System.register([], function(exports_1, context_1) {
                     '6': '司机',
                     '8': '押运员'
                 },
-                addresses: ['CNG', 'LNG', '集格', '杜瓦瓶', '官网', '中转站'],
+                addresses: [{ en: 'CNG', cn: 'CNG' }, { en: 'LNG', cn: 'LNG' }, { en: 'Jige', cn: '集格' }, { en: 'Duwaping', cn: '杜瓦瓶' }, { en: 'Guanwang', cn: '管网' }, { en: 'Zhongzhuanzhan', cn: '中转站' }],
                 shipmentTanks: ['CNG', 'LNG', '集格', '杜瓦瓶', '进场', '拉回'],
                 alertTypes: ['余量报警', '压力报警', '信号中断', '泄漏报警', '拉回报警', '进场报警'],
                 gpsError: { lng: 0.011139, lat: 0.004028 },
             });
         }
-    }
+    };
 });

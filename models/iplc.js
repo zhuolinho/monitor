@@ -42,7 +42,7 @@ var iPlcSchema = mongoose.Schema({
                     er2:String,// error report 2
 
 
-                    //cng 0, 2-- raw val*10
+                    //cng 0, 2
                     inputP1:String, //inut presure1 入口压力1 MPa
                     inputP2:String, //inut presure2 入口压力2 MPa
                     paflpa1:String, //presure after first level presure ajustment 一级调压后压力1 Bar
@@ -59,17 +59,17 @@ var iPlcSchema = mongoose.Schema({
 
 
 
-                    //lng -- raw val*10
+                    //lng
                     tankp:String, //tankpresure 储罐压力 Bar
                     azip:String, //ajustment zone input presure 调压区入口压力 Bar
                     tanklavel:String, //(remaining amount) 储罐液位 %
 
 
-                    //both lng and cng  -- raw val*10
+                    //both lng and cng
                     outputP:String, //output presure 出口压力 KPa
                     fmot:String, //flowmeter ouput temperature 流量计出口温度 ℃
                     instfow:String, //instantaneous flow 瞬时流量 Nm3/h
-                    cumfow:String //cummulative flow 累计流量 Nm3
+                    cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
 
               });
 

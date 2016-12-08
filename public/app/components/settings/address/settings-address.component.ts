@@ -300,6 +300,7 @@ export class SettingsAddress{
   editMode:boolean = false;
   editTarget:any;
   plcAddrTanks:string[] = [];
+  targetTanks:any = [];
   newAddress:any = new plcAddress();
 
     constructor(private settingsSrvc:SettingsService, private request:RequestService){
@@ -314,23 +315,6 @@ export class SettingsAddress{
           }
 
       this._processAddr(this.addresses);
-
-        //  this.settingsSrvc.newAddressAdded$.subscribe(newAddr => {
-        //     console.log("here is the new newAddr----", newAddr);
-        //     var correspondingGroup =  _.find(self.addressArray,function(o){
-        //         return o.type.value == newAddr.at;
-        //       });
-         //
-        //     if(correspondingGroup){
-        //       correspondingGroup.data.unshift(newAddr);
-        //       self.initModal();
-        //     }
-        //  });
-
-
-        //  this.settingsSrvc.addressUpdated$.subscribe(addr => {
-        //     console.log("here is the updated addr----", addr);
-        //  });
         this.initUi();
 
           // console.log("key by", self.userArray)
@@ -341,9 +325,10 @@ export class SettingsAddress{
         console.log("latest plc-----",resp);
         if(resp&&resp.pl&&resp.pl.plc){
             this.plcAddrTanks = _.map(resp.pl.plc,function(plc){
-               return plc.tank;
-            })
-            console.log('got this.plcAddrTanks ',this.plcAddrTanks);
+               return plc;
+            });
+            this.targetTanks = this.plcAddrTanks;
+          console.log('got this.plcAddrTanks ',this.plcAddrTanks);
         }
       });
 
@@ -352,12 +337,11 @@ export class SettingsAddress{
   _processAddr(addr){
 
     var that = this;
-
-      var groupAddressesObj =  _.groupBy(addr,'at');
+    var groupAddressesObj =  _.groupBy(addr,'at');
 
       console.log("groupaddressesObj--",groupAddressesObj);
-     config.addresses.forEach(function(key,index){
-          var group = {type:{id:index+1,value:key},data:groupAddressesObj[key]||[]};
+     config.addresses.forEach(function(key,index){  //set type and data for each group of addresses
+          var group = {type:{id:index+1,value:key},data:groupAddressesObj[key.en]||[]};
           that.addressArray.push(group);
       });
   }
@@ -373,7 +357,7 @@ export class SettingsAddress{
    }
 
    showDetailModal(arg){
-     console.log("selected item----",arg);
+     console.log("selected item----",arg,this.plcAddrTanks);
      var that = this;
      if(arg.addr){
        this.editMode = true;
@@ -385,11 +369,19 @@ export class SettingsAddress{
        this.editMode = false;
        this.editTarget = null;
        this.newAddress = new plcAddress();
-       this.newAddress.at = arg.addressType;
+       this.newAddress.at = arg.addressType.en;
+       this.targetTanks = _.find(this.plcAddrTanks,function(plc){
+         return plc.plcType == arg.addressType.en;
+       });
+
+       console.log("targetTanks----",this.targetTanks);
        jQuery('select#plcAddrTank').val(null);
        jQuery('select#plcAddrTank').attr('disabled',null);
      }
-    this.addressType = arg.addressType;
+
+    this.addressType = arg.addressType.cn;
+
+     console.log("this.addressType ----",this.addressType );
      jQuery("#settinsAddressDetailModal").openModal({
           ready: function() {
                that.initSelect();
@@ -466,7 +458,7 @@ export class SettingsAddress{
                   // that.addressArray.push(group);
 
                   var addrGroup = _.find(this.addressArray,function(addrGrp){
-                      return addrGrp.type.value == res.pl.address.at;
+                      return addrGrp.type.value.en == res.pl.address.at;
                   });
                   addrGroup.data.unshift(res.pl.address);
                     // this.settingsSrvc.addAddress(res.pl.address);
@@ -506,31 +498,31 @@ export class SettingsAddress{
           }
           compRef.initSelect();
         }
-        veSelecedplcip1(event, compRef){
-          if(event && event.target && event.target.value){
-            if(!compRef.editTarget){
-                  compRef.newAddress.plcip1 = event.target.value;
-            }
-            else{
-                  compRef.editTarget.plcip1 = event.target.value;
-            }
-          }
-          compRef.initSelect();
-        }
+        // veSelecedplcip1(event, compRef){
+        //   if(event && event.target && event.target.value){
+        //     if(!compRef.editTarget){
+        //           compRef.newAddress.plcip1 = event.target.value;
+        //     }
+        //     else{
+        //           compRef.editTarget.plcip1 = event.target.value;
+        //     }
+        //   }
+        //   compRef.initSelect();
+        // }
+        //
+        // veSelecedplcip2(event, compRef){
+        //   if(event && event.target && event.target.value){
+        //     if(!compRef.editTarget){
+        //           compRef.newAddress.plcip2 = event.target.value;
+        //     }
+        //     else{
+        //           compRef.editTarget.plcip2 = event.target.value;
+        //     }
+        //     compRef.initSelect();
+        //   }
+        // }
 
-        veSelecedplcip2(event, compRef){
-          if(event && event.target && event.target.value){
-            if(!compRef.editTarget){
-                  compRef.newAddress.plcip2 = event.target.value;
-            }
-            else{
-                  compRef.editTarget.plcip2 = event.target.value;
-            }
-            compRef.initSelect();
-          }
-        }
-
-        setCurrentTanks(addressType){
+        setCurrentTanks(addressType){  //todo--- comment out (not used)
           switch(addressType){
             case 'CNG':
                     this.currentTanks = this.cngTanks;

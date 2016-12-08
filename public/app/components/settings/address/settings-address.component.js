@@ -1,6 +1,5 @@
-System.register(['@angular/core', '../../../config', '../../../services/settings.service', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(["@angular/core", "../../../config", "../../../services/settings.service", "../../../services/request.service"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, settings_service_1, request_service_1;
-    var SettingsAddress, plcAddress;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, config_1, settings_service_1, request_service_1, SettingsAddress, plcAddress;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -25,8 +24,12 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
+            // @CanActivate((to, from) => {
+            //   return hasSettingsAcess();  //working fine.ignore red line warning
+            // })
             SettingsAddress = (function () {
                 function SettingsAddress(settingsSrvc, request) {
                     var _this = this;
@@ -296,6 +299,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     this.currentTanks = [];
                     this.editMode = false;
                     this.plcAddrTanks = [];
+                    this.targetTanks = [];
                     this.newAddress = new plcAddress();
                     console.log("SettingsAddress is up and running");
                     var self = this;
@@ -305,20 +309,6 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                             _this.addresses = res.pl.address;
                         }
                         _this._processAddr(_this.addresses);
-                        //  this.settingsSrvc.newAddressAdded$.subscribe(newAddr => {
-                        //     console.log("here is the new newAddr----", newAddr);
-                        //     var correspondingGroup =  _.find(self.addressArray,function(o){
-                        //         return o.type.value == newAddr.at;
-                        //       });
-                        //
-                        //     if(correspondingGroup){
-                        //       correspondingGroup.data.unshift(newAddr);
-                        //       self.initModal();
-                        //     }
-                        //  });
-                        //  this.settingsSrvc.addressUpdated$.subscribe(addr => {
-                        //     console.log("here is the updated addr----", addr);
-                        //  });
                         _this.initUi();
                         // console.log("key by", self.userArray)
                     });
@@ -326,8 +316,9 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                         console.log("latest plc-----", resp);
                         if (resp && resp.pl && resp.pl.plc) {
                             _this.plcAddrTanks = _.map(resp.pl.plc, function (plc) {
-                                return plc.tank;
+                                return plc;
                             });
+                            _this.targetTanks = _this.plcAddrTanks;
                             console.log('got this.plcAddrTanks ', _this.plcAddrTanks);
                         }
                     });
@@ -337,7 +328,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     var groupAddressesObj = _.groupBy(addr, 'at');
                     console.log("groupaddressesObj--", groupAddressesObj);
                     config_1.config.addresses.forEach(function (key, index) {
-                        var group = { type: { id: index + 1, value: key }, data: groupAddressesObj[key] || [] };
+                        var group = { type: { id: index + 1, value: key }, data: groupAddressesObj[key.en] || [] };
                         that.addressArray.push(group);
                     });
                 };
@@ -352,7 +343,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     }
                 };
                 SettingsAddress.prototype.showDetailModal = function (arg) {
-                    console.log("selected item----", arg);
+                    console.log("selected item----", arg, this.plcAddrTanks);
                     var that = this;
                     if (arg.addr) {
                         this.editMode = true;
@@ -364,11 +355,16 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                         this.editMode = false;
                         this.editTarget = null;
                         this.newAddress = new plcAddress();
-                        this.newAddress.at = arg.addressType;
+                        this.newAddress.at = arg.addressType.en;
+                        this.targetTanks = _.find(this.plcAddrTanks, function (plc) {
+                            return plc.plcType == arg.addressType.en;
+                        });
+                        console.log("targetTanks----", this.targetTanks);
                         jQuery('select#plcAddrTank').val(null);
                         jQuery('select#plcAddrTank').attr('disabled', null);
                     }
-                    this.addressType = arg.addressType;
+                    this.addressType = arg.addressType.cn;
+                    console.log("this.addressType ----", this.addressType);
                     jQuery("#settinsAddressDetailModal").openModal({
                         ready: function () {
                             that.initSelect();
@@ -427,7 +423,7 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                                 // var group = {type:{id:index+1,value:key},data:groupAddressesObj[key]||[]};
                                 // that.addressArray.push(group);
                                 var addrGroup = _.find(_this.addressArray, function (addrGrp) {
-                                    return addrGrp.type.value == res.pl.address.at;
+                                    return addrGrp.type.value.en == res.pl.address.at;
                                 });
                                 addrGroup.data.unshift(res.pl.address);
                                 // this.settingsSrvc.addAddress(res.pl.address);
@@ -462,28 +458,29 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                     }
                     compRef.initSelect();
                 };
-                SettingsAddress.prototype.veSelecedplcip1 = function (event, compRef) {
-                    if (event && event.target && event.target.value) {
-                        if (!compRef.editTarget) {
-                            compRef.newAddress.plcip1 = event.target.value;
-                        }
-                        else {
-                            compRef.editTarget.plcip1 = event.target.value;
-                        }
-                    }
-                    compRef.initSelect();
-                };
-                SettingsAddress.prototype.veSelecedplcip2 = function (event, compRef) {
-                    if (event && event.target && event.target.value) {
-                        if (!compRef.editTarget) {
-                            compRef.newAddress.plcip2 = event.target.value;
-                        }
-                        else {
-                            compRef.editTarget.plcip2 = event.target.value;
-                        }
-                        compRef.initSelect();
-                    }
-                };
+                // veSelecedplcip1(event, compRef){
+                //   if(event && event.target && event.target.value){
+                //     if(!compRef.editTarget){
+                //           compRef.newAddress.plcip1 = event.target.value;
+                //     }
+                //     else{
+                //           compRef.editTarget.plcip1 = event.target.value;
+                //     }
+                //   }
+                //   compRef.initSelect();
+                // }
+                //
+                // veSelecedplcip2(event, compRef){
+                //   if(event && event.target && event.target.value){
+                //     if(!compRef.editTarget){
+                //           compRef.newAddress.plcip2 = event.target.value;
+                //     }
+                //     else{
+                //           compRef.editTarget.plcip2 = event.target.value;
+                //     }
+                //     compRef.initSelect();
+                //   }
+                // }
                 SettingsAddress.prototype.setCurrentTanks = function (addressType) {
                     switch (addressType) {
                         case 'CNG':
@@ -508,15 +505,15 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
                             console.log('default');
                     }
                 };
-                SettingsAddress = __decorate([
-                    core_1.Component({
-                        selector: 'settings-address',
-                        templateUrl: config_1.config.prefix + '/components/settings/address/settings-address.component.html',
-                    }), 
-                    __metadata('design:paramtypes', [settings_service_1.SettingsService, request_service_1.RequestService])
-                ], SettingsAddress);
                 return SettingsAddress;
             }());
+            SettingsAddress = __decorate([
+                core_1.Component({
+                    selector: 'settings-address',
+                    templateUrl: config_1.config.prefix + '/components/settings/address/settings-address.component.html',
+                }),
+                __metadata("design:paramtypes", [settings_service_1.SettingsService, request_service_1.RequestService])
+            ], SettingsAddress);
             exports_1("SettingsAddress", SettingsAddress);
             plcAddress = (function () {
                 function plcAddress() {
@@ -533,5 +530,5 @@ System.register(['@angular/core', '../../../config', '../../../services/settings
             exports_1("plcAddress", plcAddress);
             ;
         }
-    }
+    };
 });

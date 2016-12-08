@@ -19,7 +19,7 @@
 
       <ul class="collapsible row" data-collapsible="accordion">
           <li *ngFor="let addressGroup of addressArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
-            <div *ngIf="(currentSort == addressGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 地址列表 ( {{addressGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
+            <div *ngIf="(currentSort == addressGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 地址列表 ( {{addressGroup.type.value.cn}})</span>  <i class="material-icons right">expand_more</i></div>
             <div *ngIf="(currentSort == addressGroup.type.id) || (currentSort == 'all')" class="collapsible-body helper-padding-10">
 
               <div class="col s12">
@@ -69,9 +69,9 @@
                 <div class="col s12 m12 helper-margin-bottom-20">
                       <div class="input-field">
                         <select id="plcAddrTank" >
-                            <<option value="">选择plc</option>
-                            <option *ngFor="let t of plcAddrTanks" [value]="t">
-                              {{t}}
+                            <option value="">选择plc</option>
+                            <option *ngFor="let t of targetTanks" [value]="t.tank">
+                              {{t.tank}}
                             </option>
                         </select>
                         <label for="plcip1">
