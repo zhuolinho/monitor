@@ -1293,7 +1293,8 @@ var _extractCngData =  function(data,shift,type){
       outputP: lib.getPlcFloat(outputP.toString('hex'),1),
       fmot :lib.getPlcFloat(fmot.toString('hex'),1),
       instfow: lib.getPlcFloat(instfow.toString('hex'),1),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef),
+      // cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef),
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0),
       cngType:type
   }
 
@@ -1321,7 +1322,8 @@ var _extractLngData = function(data,shift){
       outputP: lib.getPlcFloat(outputP.toString('hex'),1),
       fmot :lib.getPlcFloat(fmot.toString('hex'),1),
       instfow: lib.getPlcFloat(instfow.toString('hex'),1),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef)
+      // cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef)
+      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0)
   }
 
   return result;

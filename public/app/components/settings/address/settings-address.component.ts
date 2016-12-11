@@ -268,6 +268,7 @@ export class SettingsAddress{
   currentSort = 'all';
   selectedtab = 1;
   addresses:any;
+  indexedAddresses:any={};
   addressArray:any[] = [];
 
 
@@ -299,8 +300,8 @@ export class SettingsAddress{
   currentTanks:any[] = [];
   editMode:boolean = false;
   editTarget:any;
-  plcAddrTanks:string[] = [];
-  targetTanks:any = [];
+  plcAddrTanks:any[] = [];
+  targetTanks:any[] = [];
   newAddress:any = new plcAddress();
 
     constructor(private settingsSrvc:SettingsService, private request:RequestService){
@@ -312,7 +313,12 @@ export class SettingsAddress{
           console.log("got response--",res);
             if(res.pl && res.pl.address){
               this.addresses = res.pl.address;
+              this.indexedAddresses = _.keyBy(this.addresses,function(o){
+                  return o.tank;
+              })
           }
+
+          console.log("this.indexedAddresses ------",this.indexedAddresses );
 
       this._processAddr(this.addresses);
         this.initUi();
@@ -370,11 +376,16 @@ export class SettingsAddress{
        this.editTarget = null;
        this.newAddress = new plcAddress();
        this.newAddress.at = arg.addressType.en;
-       this.targetTanks = _.find(this.plcAddrTanks,function(plc){
-         return plc.plcType == arg.addressType.en;
-       });
+       this.targetTanks = [];
+       for (let i = 0; i < this.plcAddrTanks.length; i++) {  //take only corresping type tanks
+           if (this.plcAddrTanks[i].plcType == arg.addressType.en){
+                  if (!this.indexedAddresses[this.plcAddrTanks[i].tank]){ // show only tanks that don t have addesses yet
+                      this.targetTanks.push(this.plcAddrTanks[i]);
+                  }
 
-       console.log("targetTanks----",this.targetTanks);
+           };
+       }
+
        jQuery('select#plcAddrTank').val(null);
        jQuery('select#plcAddrTank').attr('disabled',null);
      }
@@ -522,31 +533,31 @@ export class SettingsAddress{
         //   }
         // }
 
-        setCurrentTanks(addressType){  //todo--- comment out (not used)
-          switch(addressType){
-            case 'CNG':
-                    this.currentTanks = this.cngTanks;
-                    break;
-            case 'LNG':
-                    this.currentTanks = this.lngTanks;
-                    break;
-          case '集格':
-                  this.currentTanks = this.jigeTanks;
-                  break;
-          case '杜瓦瓶':
-                  this.currentTanks = this.duwapingTanks;
-                  break;
-          case '管网':
-                  this.currentTanks = this.guanwangTanks;
-                  break;
-
-          case '中转站':
-                  this.currentTanks = this.zhongzhuanTanks;
-                  break;
-            default:
-                  console.log('default');
-          }
-        }
+        // setCurrentTanks(addressType){  //todo--- comment out (not used)
+        //   switch(addressType){
+        //     case 'CNG':
+        //             this.currentTanks = this.cngTanks;
+        //             break;
+        //     case 'LNG':
+        //             this.currentTanks = this.lngTanks;
+        //             break;
+        //   case '集格':
+        //           this.currentTanks = this.jigeTanks;
+        //           break;
+        //   case '杜瓦瓶':
+        //           this.currentTanks = this.duwapingTanks;
+        //           break;
+        //   case '管网':
+        //           this.currentTanks = this.guanwangTanks;
+        //           break;
+        //
+        //   case '中转站':
+        //           this.currentTanks = this.zhongzhuanTanks;
+        //           break;
+        //     default:
+        //           console.log('default');
+        //   }
+        // }
 }
 
 

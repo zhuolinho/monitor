@@ -277,6 +277,7 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                     ];
                     this.currentSort = 'all';
                     this.selectedtab = 1;
+                    this.indexedAddresses = {};
                     this.addressArray = [];
                     this.lngTanks = [
                         'L004', 'L005', 'L006', 'L007'
@@ -307,7 +308,11 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                         console.log("got response--", res);
                         if (res.pl && res.pl.address) {
                             _this.addresses = res.pl.address;
+                            _this.indexedAddresses = _.keyBy(_this.addresses, function (o) {
+                                return o.tank;
+                            });
                         }
+                        console.log("this.indexedAddresses ------", _this.indexedAddresses);
                         _this._processAddr(_this.addresses);
                         _this.initUi();
                         // console.log("key by", self.userArray)
@@ -356,10 +361,15 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                         this.editTarget = null;
                         this.newAddress = new plcAddress();
                         this.newAddress.at = arg.addressType.en;
-                        this.targetTanks = _.find(this.plcAddrTanks, function (plc) {
-                            return plc.plcType == arg.addressType.en;
-                        });
-                        console.log("targetTanks----", this.targetTanks);
+                        this.targetTanks = [];
+                        for (var i = 0; i < this.plcAddrTanks.length; i++) {
+                            if (this.plcAddrTanks[i].plcType == arg.addressType.en) {
+                                if (!this.indexedAddresses[this.plcAddrTanks[i].tank]) {
+                                    this.targetTanks.push(this.plcAddrTanks[i]);
+                                }
+                            }
+                            ;
+                        }
                         jQuery('select#plcAddrTank').val(null);
                         jQuery('select#plcAddrTank').attr('disabled', null);
                     }
@@ -457,53 +467,6 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                         compRef.newAddress.tank = event.target.value;
                     }
                     compRef.initSelect();
-                };
-                // veSelecedplcip1(event, compRef){
-                //   if(event && event.target && event.target.value){
-                //     if(!compRef.editTarget){
-                //           compRef.newAddress.plcip1 = event.target.value;
-                //     }
-                //     else{
-                //           compRef.editTarget.plcip1 = event.target.value;
-                //     }
-                //   }
-                //   compRef.initSelect();
-                // }
-                //
-                // veSelecedplcip2(event, compRef){
-                //   if(event && event.target && event.target.value){
-                //     if(!compRef.editTarget){
-                //           compRef.newAddress.plcip2 = event.target.value;
-                //     }
-                //     else{
-                //           compRef.editTarget.plcip2 = event.target.value;
-                //     }
-                //     compRef.initSelect();
-                //   }
-                // }
-                SettingsAddress.prototype.setCurrentTanks = function (addressType) {
-                    switch (addressType) {
-                        case 'CNG':
-                            this.currentTanks = this.cngTanks;
-                            break;
-                        case 'LNG':
-                            this.currentTanks = this.lngTanks;
-                            break;
-                        case '集格':
-                            this.currentTanks = this.jigeTanks;
-                            break;
-                        case '杜瓦瓶':
-                            this.currentTanks = this.duwapingTanks;
-                            break;
-                        case '管网':
-                            this.currentTanks = this.guanwangTanks;
-                            break;
-                        case '中转站':
-                            this.currentTanks = this.zhongzhuanTanks;
-                            break;
-                        default:
-                            console.log('default');
-                    }
                 };
                 return SettingsAddress;
             }());
