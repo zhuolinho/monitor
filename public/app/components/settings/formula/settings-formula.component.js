@@ -31,7 +31,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     this.selectedtab = 1;
                     this.newFormula = new plcFormula();
                     this.editMode = false;
-                    this.allTanks = [];
+                    this.allFormula = [];
                     this.targetTanks = [];
                     this.formulas = [];
                     this.indexedFormula = {};
@@ -49,13 +49,10 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                         _this.initUi();
                     });
                     this.request.get('/plc/formula/all.json').subscribe(function (resp) {
-                        console.log("latest plc-----", resp);
-                        if (resp && resp.pl && resp.pl.plc) {
-                            _this.allTanks = _.map(resp.pl.plc, function (plc) {
-                                return plc;
-                            });
-                            _this.targetTanks = _this.allTanks;
-                            console.log('got this.allTanks ', _this.allTanks);
+                        console.log("got all formula-----", resp);
+                        if (resp && resp.pl && resp.pl.formula) {
+                            _this.allFormula = resp.pl.formula;
+                            console.log('got this.allFormula ', _this.allFormula);
                         }
                     });
                 }

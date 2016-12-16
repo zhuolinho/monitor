@@ -447,7 +447,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
   //plc Connection
   _tcpSerever(handler);
   _checkInterruption(handler);
-
+  // redisClient.del('lastestFormula');
   return router;
 };
 

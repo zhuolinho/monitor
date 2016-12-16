@@ -20,7 +20,7 @@ export class SettingsFormula{
 
       editMode:boolean = false;
       editTarget:any;
-      allTanks:any[] = [];
+      allFormula:any[] = [];
       targetTanks:any[] = [];
       formulas:any[] = [];
       indexedFormula:any = {};
@@ -45,13 +45,10 @@ export class SettingsFormula{
 
 
         this.request.get('/plc/formula/all.json').subscribe(resp => {
-          console.log("latest plc-----",resp);
-          if(resp&&resp.pl&&resp.pl.plc){
-              this.allTanks = _.map(resp.pl.plc,function(plc){
-                 return plc;
-              });
-              this.targetTanks = this.allTanks;
-            console.log('got this.allTanks ',this.allTanks);
+          console.log("got all formula-----",resp);
+          if(resp&&resp.pl&&resp.pl.formula){
+              this.allFormula = resp.pl.formula;
+            console.log('got this.allFormula ',this.allFormula);
           }
         });
 
