@@ -213,7 +213,7 @@ plc.handleIncommingData =  function(m) {
 
             for (var i = 0; i < 100; i++) {
 
-                   var dataToSave = _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula);
+                   var dataToSave = _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient);
 
                    if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
                      continue;
@@ -1196,7 +1196,7 @@ plc.downloadInstantPlcData = function(m){
 }
 
 
-var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula){
+var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,redisClient){
 
   var i = index?index:0;
   var shift = i*76;
@@ -1232,7 +1232,7 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula)
               console.log("created formula---",resp);
               if (resp && resp.pl && resp.pl.formula){
                   latestFormula[oID][tank] = resp.pl.formula;
-                  m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
+                  redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
                   extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,resp.pl.formula);
               }
             });
@@ -1260,7 +1260,7 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula)
             console.log("created formula---",resp);
             if (resp && resp.pl && resp.pl.formula){
                 latestFormula[oID][tank] = resp.pl.formula;
-                m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
+                redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
                 extractedData = _extractLngData(data,shift,oID,tank,resp.pl.formula);
             }
           });

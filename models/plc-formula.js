@@ -26,4 +26,4 @@ var plcFormulaSchema = mongoose.Schema({
       cb(null, this);
   };
 
-module.exports = mongoose.model('plcformular',plcFormulaSchema);
+module.exports = mongoose.model('plcformula',plcFormulaSchema);
