@@ -21,7 +21,7 @@ var alertsList =[
               {
                 addr:'C002-闸北区大宁路335号XX站',
                 id:'6112',
-                atype:'余量报警',
+                atype:'余量警报',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
@@ -32,7 +32,7 @@ var alertsList =[
               {
                 addr:'C014-闸北区大宁路335号XX站',
                 id:'8000',
-                atype:'余量报警',
+                atype:'余量警报',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
@@ -42,7 +42,7 @@ var alertsList =[
               {
                 addr:'C023-闸北区大宁路335号XX站',
                 id:'8001',
-                atype:'余量报警',
+                atype:'余量警报',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
@@ -52,7 +52,7 @@ var alertsList =[
               {
                 addr:'C333-闸北区大宁路335号XX站',
                 id:'8007',
-                atype:'余量报警',
+                atype:'余量警报',
                 remainingTime:'2小时02分',
                 upTime:'15.5.3-13:02/----',
                 processed:true,
@@ -102,17 +102,17 @@ var alertsList =[
               {
                 addr:'C008-闸北区大宁路335号XX站',
                 id:'5832',
-                atype:'泄漏报警',
+                atype:'泄漏警报',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
                 atime:'5.5.3-13:02',
-                am:'泄漏报警'
+                am:'泄漏警报'
               },
               {
                 addr:'C009-闸北区大宁路335号XX站',
                 id:'9832',
-                atype:'泄漏报警',
+                atype:'泄漏警报',
                 remainingTime:'',
                 upTime:'15.5.3-13:02/----',
                 processed:false,
@@ -1096,7 +1096,7 @@ plc.getShipmentList =  function(m) {
 
  if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-     PlcAlert.find({oID:m.pl.user.oID}).$where('(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))').exec(
+     PlcAlert.find({oID:m.pl.user.oID}).$where('(this.status == 1) && ((this.atype == "余量警报")||(this.atype == "拉回警报")||(this.atype == "进场警报"))').exec(
        function (err, resp) {
            if (err){
              r.er = err;
@@ -1596,8 +1596,8 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   if (rft<formula.tt){
     //create alert
     var alert = {
-          am:'余量报警',
-          atype:'余量报警',
+          am:'余量警报',
+          atype:'余量警报',
           tank:tank,
           rt:rft,
           ra:rfq
@@ -1665,8 +1665,8 @@ var _extractLngData = function(data,shift,oID,tank,formula){
   if (remainingAmount<formula.pt){
     //create alert
     var alert = {
-          am:'余量报警',
-          atype:'余量报警',
+          am:'余量警报',
+          atype:'余量警报',
           tank:tank,
           ra:remainingAmount+'%'
     }

@@ -6,7 +6,7 @@ var plcAlertSchema = mongoose.Schema({
                     muID:String, //modified user id
                     atime:String,//alert time
                     am:String, //alert message  压力报警,泄漏报警,信号中断, 6%/12kg/hps(remaining amount)
-                    atype:{      //alert type  -- {余量报警,001},{压力报警,002},{信号中断,003},{泄漏报警,004},{拉回报警,005},{拉回报警,005}
+                    atype:{      //alert type  -- {余量警报,001},{压力警报,002},{信号中断,003},{泄漏警报,004},{拉回警报,005},{拉回警报,005}
                       type:String
                     },
                     addr:String, //tank address
