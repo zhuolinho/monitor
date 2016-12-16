@@ -13,14 +13,30 @@
           <div class="monitor-table helper-font-bigger">
             <div class="table-row  helper-gray-bg-light">
               <div class="table-cell">地址 </div>
-              <div class="table-cell"> 公式 </div>
-              <div class="table-cell"> 报警值 </div>
+              <div class="table-cell"> 余量公式 </div>
+              <div class="table-cell"> 报警条件 </div>
 
             </div>
             <div class="table-row" *ngFor="let f of allFormula">
-              <div class="table-cell"> {{f.tank}}  -  {{indexedAddresses[f.tank]?.addr}}</div>
-              <div class="table-cell"> {{f.lngParam}}-{{f.cngParam}}-{{f.divisor}}-{{f.factor}} </div>
-              <div class="table-cell"> {{f.tt}}-{{f.pt}}- <a  (click) = "showDetailModal(f);" class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+              <div class="table-cell"> {{f.tank}}   {{indexedAddresses[f.tank]?.addr}}</div>
+              <div class="table-cell">
+                <span *ngIf="f.tankType== 'CNG'">
+                    ({{f.cngParam}} / {{f.divisor}}) x {{f.factor}}
+                </span>
+                <span *ngIf="f.tankType== 'LNG'">
+                    无
+                </span>
+
+              </div>
+              <div class="table-cell">
+                <span *ngIf="f.tankType== 'CNG'">
+                    剩余时间  < {{f.tt}}小时
+                </span>
+                <span *ngIf="f.tankType== 'LNG'">
+                     {{f.lngParam}}  < {{f.pt}}%
+                </span>
+
+                <a  (click) = "showDetailModal(f);" class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
             </div>
         </div>
   </div>
@@ -31,43 +47,67 @@
 
 
       <div  id="settingsFormulaComputeDetailModal" class="modal " style="overflow:auto;">
-        <div class="modal-content">
+        <div class="modal-content"  *ngIf="editTarget">
           <i class="modal-close material-icons right">clear</i>
-          <h4>  编辑计算公式</h4>
+          <h4 class="helper-margin-bottom-30">{{editTarget.tank}} 编辑参数 </h4>
+          <div *ngIf="editTarget.tankType== 'CNG'" class="helper-margin-bottom-30">
 
-        <div class="row">
+            <div>公式:</div>
+            <div class="row">
 
-            <div class="col m12">
+                <div class="col m12">
 
-              <div class="input-field  helper-inline-block" style="width:100px;">
-                <select>
-                  <option value="1">15%</option>
-                  <option value="2">13%</option>
-                  <option value="3">10%</option>
-                </select>
-                <label>公式</label>
-              </div>
 
-              <div class="  helper-inline-block helper-hpadding-10">
+                  (<div class="input-field  helper-inline-block center-align" style="width:100px;">
+                    <span class="text-right">
+                      {{editTarget.cngParam}}
+                    </span>
+                  </div>
+
+                  <div class="  helper-inline-block helper-hpadding-10">
+                      /
+                  </div>
+
+                  <div class="input-field  helper-inline-block center-align" style="width:50px;">
+                      <input type="number" [(ngModel)]="editTarget.divisor">
+                  </div>)
                   x
-              </div>
 
-              <div class="input-field  helper-inline-block" style="width:100px;">
-                <select>
-                  <option value="1">2</option>
-                  <option value="2">3</option>
-                  <option value="3">4</option>
-                </select>
-              </div>
+                  <div class="input-field  helper-inline-block center-align" style="width:50px;">
+                    <input type="number" [(ngModel)]="editTarget.factor">
+                  </div>
+
+                </div>
 
             </div>
+
+
+          </div>
+
+
+        <div class="helper-margin-bottom-30">报警条件:</div>
+        <div class="row">
+
+          <span *ngIf="editTarget.tankType== 'CNG'">
+              剩余时间  <
+              <div class="input-field  helper-inline-block center-align" style="width:50px;">
+                  <input type="number" [(ngModel)]="editTarget.tt">
+              </div>小时
+          </span>
+          <span *ngIf="editTarget.tankType== 'LNG'">
+               {{editTarget.lngParam}}  <
+               <div class="input-field  helper-inline-block center-align" style="width:50px;">
+                  <input type="number" [(ngModel)]="editTarget.pt">
+               </div>
+               %
+          </span>
 
         </div>
 
         </div>
 
         <div class="modal-footer">
-         <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+         <a (click)='submitFormula()' class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
        </div>
 
         <!-- for the select -->

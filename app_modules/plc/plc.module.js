@@ -888,7 +888,7 @@ plc.updateFormula =  function(m) {
 
         if(m.pl && m.pl.formula){
 
-          Address.findOneAndUpdate({_id:m.pl.address._id,oID:m.pl.user.oID}, m.pl.formula, { new: true }, function(err, resp) {
+          PlcFormula.findOneAndUpdate({_id:m.pl.formula._id,oID:m.pl.user.oID}, m.pl.formula, { new: true }, function(err, resp) {
                     if (err){
                       r.er = err;
                       r.em = 'problem finding address';
@@ -896,6 +896,16 @@ plc.updateFormula =  function(m) {
                     }
                     else{
                       r.pl.formula = resp;
+
+                      m.redisClient.get("lastestFormula", function(err, result) {  //all latest formula
+                         var temp = {};
+                         temp[m.pl.user.oID] = {};
+                         var latestFormula = JSON.parse(result)||temp;
+                         console.log("latestFormula[m.pl.formula.tank]----",latestFormula[m.pl.user.oID][m.pl.formula.tank]);
+                         latestFormula[m.pl.user.oID][m.pl.formula.tank] = r.pl.formula;
+                         m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));
+                       });
+
                       deferred.resolve(r);
                     }
           });

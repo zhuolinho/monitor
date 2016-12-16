@@ -82,6 +82,7 @@ export class SettingsFormula{
 
         showDetailModal(arg){
           console.log("selected item----",arg);
+          this.editTarget = arg;
           var that = this;
           jQuery("#settingsFormulaComputeDetailModal").openModal({
                ready: function() {
@@ -92,6 +93,14 @@ export class SettingsFormula{
 
         closeDetailModal(){
               jQuery("#settingsFormulaComputeDetailModal").closeModal();
+        }
+
+        submitFormula(){
+          this.request.put('/plc/formula.json',this.editTarget).subscribe(resp => {
+            console.log("formular edited all formula-----",resp);
+            //binding will update the formula array
+            this.closeDetailModal();
+          });
         }
 
  }

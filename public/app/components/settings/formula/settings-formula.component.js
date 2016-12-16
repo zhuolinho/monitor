@@ -76,6 +76,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                 };
                 SettingsFormula.prototype.showDetailModal = function (arg) {
                     console.log("selected item----", arg);
+                    this.editTarget = arg;
                     var that = this;
                     jQuery("#settingsFormulaComputeDetailModal").openModal({
                         ready: function () {
@@ -85,6 +86,14 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                 };
                 SettingsFormula.prototype.closeDetailModal = function () {
                     jQuery("#settingsFormulaComputeDetailModal").closeModal();
+                };
+                SettingsFormula.prototype.submitFormula = function () {
+                    var _this = this;
+                    this.request.put('/plc/formula.json', this.editTarget).subscribe(function (resp) {
+                        console.log("formular edited all formula-----", resp);
+                        //binding will update the formula array
+                        _this.closeDetailModal();
+                    });
                 };
                 return SettingsFormula;
             }());

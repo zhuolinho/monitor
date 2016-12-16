@@ -370,7 +370,8 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
           ns: 'plc',
           vs: '1.0',
           op: 'updateFormula',
-          pl:{formula:req.body,user:lib.reqUser(req)}
+          pl:{formula:req.body,user:lib.reqUser(req)},
+          redisClient:redisClient
         };
 
         handler(param)
@@ -447,7 +448,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
   //plc Connection
   _tcpSerever(handler);
   _checkInterruption(handler);
-  // redisClient.del('lastestFormula');
+  // redisClient.del('lastestFormula');  
   return router;
 };
 
