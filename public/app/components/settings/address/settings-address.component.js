@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../../config", "../../../services/settings.service", "../../../services/request.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../../config", "../../../services/request.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, config_1, settings_service_1, request_service_1, SettingsAddress, plcAddress;
+    var core_1, config_1, request_service_1, SettingsAddress, plcAddress;
     return {
         setters: [
             function (core_1_1) {
@@ -18,9 +18,6 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (settings_service_1_1) {
-                settings_service_1 = settings_service_1_1;
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
@@ -31,250 +28,9 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
             //   return hasSettingsAcess();  //working fine.ignore red line warning
             // })
             SettingsAddress = (function () {
-                function SettingsAddress(settingsSrvc, request) {
+                function SettingsAddress(request) {
                     var _this = this;
-                    this.settingsSrvc = settingsSrvc;
                     this.request = request;
-                    this.testPlcs = [
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e6b",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-27 0:5:23",
-                            "addr1": "0",
-                            "iwc1": "0",
-                            "isc1": "0",
-                            "p1": "0",
-                            "temp1": "0",
-                            "pwc1": "0",
-                            "psc1": "0",
-                            "rsc1": "0",
-                            "cf1": "1",
-                            "er1": "0",
-                            "addr2": "3",
-                            "iwc2": "13.8",
-                            "isc2": "55.1",
-                            "p2": "398.1",
-                            "temp2": "17.5",
-                            "pwc2": "164633.0",
-                            "psc2": "2522930.0",
-                            "rsc2": "61.0",
-                            "cf2": "0",
-                            "er2": "0",
-                            "tank": "L001",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e6c",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-27 0:4:32",
-                            "addr1": "2",
-                            "iwc1": "0",
-                            "isc1": "0",
-                            "p1": "365.7",
-                            "temp1": "22.6",
-                            "pwc1": "346385.0",
-                            "psc1": "6374181.0",
-                            "rsc1": "653.0",
-                            "cf1": "0",
-                            "er1": "0",
-                            "addr2": "0",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "0",
-                            "temp2": "0",
-                            "pwc2": "0",
-                            "psc2": "0",
-                            "rsc2": "0",
-                            "cf2": "1",
-                            "er2": "0",
-                            "tank": "L002",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e6d",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-27 0:5:27",
-                            "addr1": "2",
-                            "iwc1": "28.2",
-                            "isc1": "107",
-                            "p1": "372.0",
-                            "temp1": "23.2",
-                            "pwc1": "37889.0",
-                            "psc1": "1649238.0",
-                            "rsc1": "0",
-                            "cf1": "0",
-                            "er1": "0",
-                            "addr2": "0",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "0",
-                            "temp2": "0",
-                            "pwc2": "0",
-                            "psc2": "0",
-                            "rsc2": "0",
-                            "cf2": "1",
-                            "er2": "0",
-                            "tank": "L003",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e6e",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-26 11:26:9",
-                            "addr1": "0",
-                            "iwc1": "0",
-                            "isc1": "0",
-                            "p1": "0",
-                            "temp1": "0",
-                            "pwc1": "0",
-                            "psc1": "0",
-                            "rsc1": "0",
-                            "cf1": "1",
-                            "er1": "0",
-                            "addr2": "0",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "0",
-                            "temp2": "0",
-                            "pwc2": "0",
-                            "psc2": "0",
-                            "rsc2": "0",
-                            "cf2": "1",
-                            "er2": "0",
-                            "tank": "L004",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e6f",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-27 0:5:10",
-                            "addr1": "2",
-                            "iwc1": "83.5",
-                            "isc1": "298",
-                            "p1": "362.9",
-                            "temp1": "21.1",
-                            "pwc1": "605653.0",
-                            "psc1": "12117552.0",
-                            "rsc1": "545.0",
-                            "cf1": "0",
-                            "er1": "0",
-                            "addr2": "3",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "97.9",
-                            "temp2": "20.3",
-                            "pwc2": "0",
-                            "psc2": "141222.0",
-                            "rsc2": "0",
-                            "cf2": "0",
-                            "er2": "0",
-                            "tank": "L005",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e78",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-26 14:51:52",
-                            "addr1": "0",
-                            "iwc1": "0",
-                            "isc1": "0",
-                            "p1": "0",
-                            "temp1": "0",
-                            "pwc1": "0",
-                            "psc1": "0",
-                            "rsc1": "0",
-                            "cf1": "1",
-                            "er1": "0",
-                            "addr2": "0",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "0",
-                            "temp2": "0",
-                            "pwc2": "0",
-                            "psc2": "0",
-                            "rsc2": "0",
-                            "cf2": "1",
-                            "er2": "0",
-                            "tank": "L014",
-                            "__v": 0
-                        },
-                        {
-                            "_id": "5810d7cfa7d1a71e69621e7b",
-                            "muID": "system",
-                            "cuID": "system",
-                            "oID": "10000000001",
-                            "cd": "2016-10-27 00:20:31",
-                            "y": "2016",
-                            "m": "10",
-                            "d": "27",
-                            "dct": "2016-10-27 0:5:2",
-                            "cdct": "2016-10-27 0:5:19",
-                            "addr1": "2",
-                            "iwc1": "28.0",
-                            "isc1": "103",
-                            "p1": "372.6",
-                            "temp1": "22.9",
-                            "pwc1": "460190.0",
-                            "psc1": "7104624.0",
-                            "rsc1": "0",
-                            "cf1": "0",
-                            "er1": "0",
-                            "addr2": "3",
-                            "iwc2": "0",
-                            "isc2": "0",
-                            "p2": "94.6",
-                            "temp2": "22.8",
-                            "pwc2": "22693.0",
-                            "psc2": "440.0",
-                            "rsc2": "334.0",
-                            "cf2": "0",
-                            "er2": "0",
-                            "tank": "L017",
-                            "__v": 0
-                        }
-                    ];
                     this.currentSort = 'all';
                     this.selectedtab = 1;
                     this.indexedAddresses = {};
@@ -297,7 +53,6 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                     this.zhongzhuanTanks = [
                         '中转站3号', '中转站4号', '中转站5号'
                     ];
-                    this.currentTanks = [];
                     this.editMode = false;
                     this.plcAddrTanks = [];
                     this.targetTanks = [];
@@ -415,12 +170,6 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                         jQuery('select#plcAddrTank').on('change', function (event) {
                             that.veSelecedPlcTank(event, that);
                         });
-                        jQuery('select#plcip1').on('change', function (event) {
-                            that.veSelecedplcip1(event, that);
-                        });
-                        jQuery('select#plcip2').on('change', function (event) {
-                            that.veSelecedplcip2(event, that);
-                        });
                     });
                 };
                 SettingsAddress.prototype.addNewAddress = function () {
@@ -436,7 +185,6 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                                     return addrGrp.type.value.en == res.pl.address.at;
                                 });
                                 addrGroup.data.unshift(res.pl.address);
-                                // this.settingsSrvc.addAddress(res.pl.address);
                                 jQuery("#settinsAddressDetailModal").closeModal();
                             }
                             else {
@@ -454,12 +202,12 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                     this.request.put('/plc/address.json', this.editTarget).subscribe(function (res) {
                         console.log("sub comp address updated-----", res);
                         _this.closeDetailModal();
-                        if (res.pl && res.pl.address) {
-                            _this.settingsSrvc.updateAddress(res.pl.address);
-                        }
-                        else {
-                            alert("系统错误!");
-                        }
+                        // if(res.pl && res.pl.address){
+                        //     this.settingsSrvc.updateAddress(res.pl.address);
+                        // }
+                        // else{
+                        //   alert("系统错误!");
+                        // }
                     });
                 };
                 SettingsAddress.prototype.veSelecedPlcTank = function (event, compRef) {
@@ -475,7 +223,7 @@ System.register(["@angular/core", "../../../config", "../../../services/settings
                     selector: 'settings-address',
                     templateUrl: config_1.config.prefix + '/components/settings/address/settings-address.component.html',
                 }),
-                __metadata("design:paramtypes", [settings_service_1.SettingsService, request_service_1.RequestService])
+                __metadata("design:paramtypes", [request_service_1.RequestService])
             ], SettingsAddress);
             exports_1("SettingsAddress", SettingsAddress);
             plcAddress = (function () {

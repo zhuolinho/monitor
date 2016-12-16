@@ -50,6 +50,8 @@ var iPlcSchema = mongoose.Schema({
                     taflpa1:String, //temperature after first level presure ajustment 一级调压后温度1 ℃
                     taflpa2:String, //temperature after first level presure ajustment 一级调压后温度2 ℃
                     cngType:Number, //0,2
+                    rft:String, // remaining flow  time -- computed
+                    rfq:String, // remaining flow  quantity -- computed
                     //cng 0 only
                     outputP1:String, //output presure1 一号出口压力 Bar
                     outputP2:String, //output presure2 二号出口压力 Bar

@@ -10,7 +10,9 @@ var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
 var iPlc = require('../../models/iplc');  //incomming plc data
 var Address = require('../../models/plc-address');
+// var PlcFormula = require('../../models/plc-formula');
 var User   = require('../../models/user');
+var PlcFormula   = require('../../models/plc-formula');
 var plcConfig = require('../../configs/plc');
 var lib = require('../../lib/lib');
 
@@ -173,6 +175,7 @@ plc.handleIncommingData =  function(m) {
   var r = {pl: {alerts:null}, status:true , er:''};
   var latestIncommingData = null;
   var latestInteruptedChanels = null;
+  var latestFormula = null;
 
 
   if (m.pl.org){
@@ -188,10 +191,17 @@ plc.handleIncommingData =  function(m) {
 
       var pchain = [];
 
-      m.redisClient.get("lastestPlc", function(err, result) {
+      m.redisClient.get("lastestPlc", function(err, result) {  //all latesd plc
         var temp = {};
         temp[m.pl.org.oID] = {};
         latestIncommingData = JSON.parse(result)||temp;
+
+
+        m.redisClient.get("lastestFormula", function(err, result) {  //all latest formula
+           var temp = {};
+           temp[m.pl.org.oID] = {};
+           latestFormula = JSON.parse(result)||temp;
+         });
 
 
         m.redisClient.get("lastestInterupts", function(err, result) {
@@ -203,14 +213,14 @@ plc.handleIncommingData =  function(m) {
 
             for (var i = 0; i < 100; i++) {
 
-                   var dataToSave = _extractPlcData(incommingData,i);
+                   var dataToSave = _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula);
 
                    if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
                      continue;
                    }
 
                     // console.log("loop----",i);
-                    console.log("--dataToSave-->>>---",dataToSave);
+                    // console.log("--dataToSave-->>>---",dataToSave);
 
                   var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
 
@@ -665,6 +675,40 @@ plc.getAddress =  function(m) {
 }
 
 
+
+
+
+plc.getFormula =  function(m) {
+  console.log("plc module: getFormula FUNCTION");
+ var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+
+  if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+    PlcFormula.find({oID:m.pl.user.oID}).sort({cd:-1}).exec(function (err, resp) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.formula = resp;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  }
+  else{
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+
+  return deferred.promise;
+}
+
+
 plc.addNewAddress =  function(m) {
 
     console.log("add new address----");
@@ -754,6 +798,109 @@ plc.updateAddress =  function(m) {
 
     return deferred.promise;
 }
+
+
+
+
+
+
+var _addNewFormula =  function(user,tank) {
+
+    console.log("add new formula----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+
+    if(user&&tank){
+      var newFormula = new PlcFormula({
+                        cd:lib.dateTime(),
+                        code:tank.slice(1),
+                        tank:tank,
+                        tankType:plcConfig.plcTypeByPrefix[tank[0]]
+                        });
+
+
+          console.log("newFormula------",newFormula);
+
+          newFormula.setOwner(user,function(err,doc){
+              if(!err){
+                doc.save(function (serr, formula){
+                    if (!serr){
+                      r.pl.formula = formula;
+                      deferred.resolve(r);
+                    }
+                    else{
+                      r.er = JSON.stringify(serr);
+                      r.em = 'could not save. already exist?';
+                      deferred.reject(r);
+                    }
+                });
+              }
+              else{
+                r.er = err;
+                r.em = 'set owner failled';
+                deferred.reject(r);
+              }
+
+          })
+
+
+
+      }
+      else {
+        r.er =  "no user or tank provided";
+        deferred.reject(r);
+      }
+    return deferred.promise;
+}
+
+plc.updateFormula =  function(m) {
+
+    console.log(" update formula----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+
+
+      if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+        if(m.pl && m.pl.formula){
+
+          Address.findOneAndUpdate({_id:m.pl.address._id,oID:m.pl.user.oID}, m.pl.formula, { new: true }, function(err, resp) {
+                    if (err){
+                      r.er = err;
+                      r.em = 'problem finding address';
+                      deferred.reject(r);
+                    }
+                    else{
+                      r.pl.formula = resp;
+                      deferred.resolve(r);
+                    }
+          });
+          }
+          else {
+            r.er =  "no address or address code provided";
+            deferred.reject(r);
+          }
+      }
+      else{
+        r.er = 'no org provided';
+        r.status = false;
+        deferred.reject(r);
+      }
+
+    return deferred.promise;
+}
+
+
+
+
+
+
+
+
 
 plc.addNewAlert = function(m){
 
@@ -1049,53 +1196,129 @@ plc.downloadInstantPlcData = function(m){
 }
 
 
-var _extractPlcData = function(data,index){
+var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula){
 
   var i = index?index:0;
   var shift = i*76;
   var plcType = null;
   var extractedData = null;
+  var tank = null;
+  var plcCode = null;
+
 
   var dates = _extractDates(data,shift);
 
   if (i<50){
-      extractedData = _exractGuanwangData(data,shift);
       plcType = 'Guanwang';
+      plcCode = lib.padNum(i+1,3);
+      tank = plcType[0] + plcCode;
+      extractedData = _exractGuanwangData(data,shift,oID,tank);
   }
   else{
       var type = _getPlcType(data,shift);
-      console.log("----extracted type----",type)//todo--->>> this type is also being equal to 2!!!!!
+
       if (type==0 || type==2){
-        extractedData = _extractCngData(data,shift,type);
+
         plcType='CNG';
+        plcCode = lib.padNum(i+1,3);
+        tank = plcType[0] + plcCode;
+        var formula = latestFormula[oID][tank];
+        console.log('formula----',formula);
+
+
+        if (!formula){ //create formula if not already created
+
+            _addNewFormula({oID:oID},tank).then(function(resp){
+              console.log("created formula---",resp);
+              if (resp && resp.pl && resp.pl.formula){
+                  latestFormula[oID][tank] = resp.pl.formula;
+                  m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
+                  extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,resp.pl.formula);
+              }
+            });
+
+
+        }
+        else{
+            extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,formula);
+            return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
+        }
+
+
       }
       else if (type==1){
-         extractedData = _extractLngData(data,shift);
-         plcType='LNG';
+        plcType='LNG';
+        plcCode = lib.padNum(i+1,3);
+        tank = plcType[0] + plcCode;
+        var formula = latestFormula[oID][tank];
+        console.log('formula----',formula);
+
+
+        if (!formula){  //create formula if not already created
+
+          _addNewFormula({oID:oID},tank).then(function(resp){
+            console.log("created formula---",resp);
+            if (resp && resp.pl && resp.pl.formula){
+                latestFormula[oID][tank] = resp.pl.formula;
+                m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
+                extractedData = _extractLngData(data,shift,oID,tank,resp.pl.formula);
+            }
+          });
+
+
+
+        }
+        else{
+            extractedData = _extractLngData(data,shift,oID,tank,formula);
+            return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
+        }
       }
   }
 
 
-  if(plcType){
-      var d = new Date();
+  // if(plcType){
+  //     // var d = new Date();
+  //     //
+  //     // var fullData = extractedData;
+  //     // fullData.cd = lib.dateTime();
+  //     // fullData.y = d.getFullYear();
+  //     // fullData.m = d.getMonth()+1;
+  //     // fullData.d = d.getDate();
+  //     // fullData.dct = dates.date; //data collection time
+  //     // fullData.cdct = dates.chanelDate; //chanel data collection time
+  //     // fullData.cdcns = dates.cnanosecond; //chanel data collection time
+  //     // fullData.plcCode =plcCode;
+  //     // fullData.plcType = plcType;
+  //     // fullData.tank = tank;
+  //     //
+  //     // return new iPlc(fullData);
+  //
+  //     return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
+  //   }
+  //   else {
+  //     throw "no plc type found!!!----";
+  //   }
+}
 
-      var fullData = extractedData;
-      fullData.cd = lib.dateTime();
-      fullData.y = d.getFullYear();
-      fullData.m = d.getMonth()+1;
-      fullData.d = d.getDate();
-      fullData.dct = dates.date; //data collection time
-      fullData.cdct = dates.chanelDate; //chanel data collection time
-      fullData.cdcns = dates.cnanosecond; //chanel data collection time
-      fullData.plcCode = lib.padNum(i+1,3);
-      fullData.plcType = plcType;
-      fullData.tank = fullData.plcType[0] + fullData.plcCode;
 
-      return new iPlc(fullData);
-    }
-    else {
-      throw "no plc type found!!!----";
-    }
+var _setCommonPlcData = function(extractedData,dates,plcCode,plcType,tank){
+
+    var d = new Date();
+
+    var fullData = extractedData;
+    fullData.cd = lib.dateTime();
+    fullData.y = d.getFullYear();
+    fullData.m = d.getMonth()+1;
+    fullData.d = d.getDate();
+    fullData.dct = dates.date; //data collection time
+    fullData.cdct = dates.chanelDate; //chanel data collection time
+    fullData.cdcns = dates.cnanosecond; //chanel data collection time
+    fullData.plcCode =plcCode;
+    fullData.plcType = plcType;
+    fullData.tank = tank;
+
+    return new iPlc(fullData);
+
 }
 
 
@@ -1157,7 +1380,7 @@ var _extractDates = function(data,shift){
 
 }
 
-var _exractGuanwangData = function(data,shift){
+var _exractGuanwangData = function(data,shift,oID,tank){
 
   //数据	64 bits
   //表1站地址	2
@@ -1252,7 +1475,7 @@ var _exractGuanwangData = function(data,shift){
 // instfow:String, //instantaneous flow 瞬时流量 Nm3/h
 // cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
 
-var _extractCngData =  function(data,shift,type){
+var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,formula){
 
   var inputP1 = data.slice(24+shift,28+shift);
   var inputP2 = data.slice(28+shift,32+shift);
@@ -1280,21 +1503,57 @@ var _extractCngData =  function(data,shift,type){
       holderKey2 = 'hxt2';
   }
 
+  cumfow = lib.getPlcFloat(cumfow.toString('hex'),0);
+
+  inputP1 = lib.getPlcFloat(inputP1.toString('hex'),1);
+
+  console.log("i is----",i);
+  console.log("inputP1----",inputP1);
+
+
+
+
+  var rfq = (inputP1/10)*18; //(Nm3)
+
+  var usagePerHour = null;
+
+  if (latestIncommingData[oID]&&latestIncommingData[oID][tank]){
+    usagePerHour = cumfow - parseFloat(latestIncommingData[oID][tank].cumfow);//(Nm3/h)
+  }
+  else{
+    usagePerHour = cumfow;
+  }
+
+  console.log("usagePerHour----",usagePerHour);
+  var dataRecepionIntervalInMinutes = plcConfig.sTimer/(60*1000);  // convert from millisecs to minutes
+  usagePerHour = usagePerHour*(60/dataRecepionIntervalInMinutes);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
+
+  if(usagePerHour<1){  //avoid division by zero
+    usagePerHour = 1;
+  }
+
+  var rft  = rfq/usagePerHour; //remaining time in hours
+
+
+  console.log("rfq,rft---",rfq,rft);
+
 
   var result = {
-      inputP1 :lib.getPlcFloat(inputP1.toString('hex'),1),
+      inputP1 :inputP1,
       inputP2 :lib.getPlcFloat(inputP2.toString('hex'),1),
       paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'),1),
       paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1),
       taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1),
       taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1),
+      rft:rft, // remaining flow  time -- computed
+      rfq:rfq, // remaining flow  quantity -- computed
       // outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1),
       // outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1),
       outputP: lib.getPlcFloat(outputP.toString('hex'),1),
       fmot :lib.getPlcFloat(fmot.toString('hex'),1),
       instfow: lib.getPlcFloat(instfow.toString('hex'),1),
       // cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef),
-      cumfow: lib.getPlcFloat(cumfow.toString('hex'),0),
+      cumfow: cumfow,
       cngType:type
   }
 
@@ -1305,7 +1564,7 @@ var _extractCngData =  function(data,shift,type){
   return result;
 }
 
-var _extractLngData = function(data,shift){
+var _extractLngData = function(data,shift,oID,tank,formula){
 
   var tankp = data.slice(24+shift,28+shift);
   var azip = data.slice(28+shift,32+shift);

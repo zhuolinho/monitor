@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {config} from '../../../config';
 import {CanActivate} from '@angular/router';
-import {RequestService} from '../../../services/request.service';
 
 declare var jQuery:any;
-declare var _:any;
 
 @Component({
   selector:'settings-formula',
@@ -22,46 +20,24 @@ export class SettingsFormula{
       editTarget:any;
       allTanks:any[] = [];
       targetTanks:any[] = [];
-      formulas:any[] = [];
-      indexedFormula:any = {};
-      indexedAddresses:any = {};
 
-      constructor(private request:RequestService){
+      constructor(){
         console.log("SettingsFormula is up and running");
-
-        this.request.get("/plc/address/all.json").subscribe(res => {
-            console.log("got response--",res);
-              if(res.pl && res.pl.address){
-                var addresses = res.pl.address;
-                this.indexedAddresses = _.keyBy(addresses,function(o){
-                    return o.tank;
-                })
-            }
-            console.log("this.indexedFormula ------",this.indexedAddresses );
-
-          this.initUi();
-
-        });
-
-
-        this.request.get('/plc/formula/all.json').subscribe(resp => {
-          console.log("latest plc-----",resp);
-          if(resp&&resp.pl&&resp.pl.plc){
-              this.allTanks = _.map(resp.pl.plc,function(plc){
-                 return plc;
-              });
-              this.targetTanks = this.allTanks;
-            console.log('got this.allTanks ',this.allTanks);
-          }
-        });
-
+        this.initUi();
 
       }
 
+      veCalculateParameter(){
+          this.initUi();
+      }
+
+      veElertParameter(){
+            this.initUi();
+      }
 
       initUi(){
 
-          var that = this;
+          var _this = this;
 
             setTimeout(_=>{
                 jQuery('.modal-trigger').leanModal({
@@ -69,7 +45,7 @@ export class SettingsFormula{
                      opacity: .5, // Opacity of modal background
                      in_duration: 300, // Transition in duration
                      out_duration: 200, // Transition out duration
-                     ready: function() { console.log('Ready');  that.initSelect()}, // Callback for Modal open
+                     ready: function() { console.log('Ready');  _this.initSelect()}, // Callback for Modal open
                      complete: function() { console.log('Closed'); } // Callback for Modal close
                });
             });
@@ -86,7 +62,7 @@ export class SettingsFormula{
         showDetailModal(arg){
           console.log("selected item----",arg);
           var that = this;
-          jQuery("#settingsFormulaComputeDetailModal").openModal({
+          jQuery("#"+arg.modalId).openModal({
                ready: function() {
                     that.initSelect();
                 }
@@ -94,7 +70,7 @@ export class SettingsFormula{
         }
 
         closeDetailModal(){
-              jQuery("#settingsFormulaComputeDetailModal").closeModal();
+              // jQuery("#").closeModal();
         }
 
  }

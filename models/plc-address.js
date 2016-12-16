@@ -19,8 +19,8 @@ var plcAddressSchema = mongoose.Schema({
 
   plcAddressSchema.methods.setOwner = function (user, cb) {
       this.oID = user.oID;
-      this.cuID = user.an;
-      this.muID = user.an;
+      this.cuID = user.an||user.oID;
+      this.muID = user.an||user.oID;
       cb(null, this);
   };
 

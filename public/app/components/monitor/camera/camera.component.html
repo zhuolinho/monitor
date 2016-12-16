@@ -7,9 +7,24 @@
     <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span>
   </div>
   <div class="input-field helper-white-bg col s5">
-      <select class="helper-select-font-bigger select-camera">
+
+    <select class="helper-select-font-bigger select-camera">
+      <option value="1" >日建站1号</option>
+      <option  value="2">日建大门</option>
+      <option  value="3">日建站2号</option>
+      <option  value="4">日建控制室</option>
+
+      <option  value="5">上食站控制室</option>
+      <option  value="6">上食站1号</option>
+      <option  value="7">上食大门</option>
+      <option  value="8">上食站2号</option>
+
+      <option  value="9">宝山万事红调度室</option>
+      <option  value="10">宝山万事红停车场</option>
+    </select>
+      <!-- <select class="helper-select-font-bigger select-camera">
         <option value="1" >日建站1号</option>
-        <option  value="2">宝山万事红</option>
+        <option  value="2">宝山万事红调度室</option>
         <option  value="3">上食站控制室</option>
         <option  value="4">日建大门</option>
         <option  value="5">日建站2号</option>
@@ -17,8 +32,8 @@
         <option  value="7">上食站1号</option>
         <option  value="8">上食大门</option>
         <option  value="9">上食站2号</option>
-        <option  value="10">10号摄像头</option>
-      </select>
+        <option  value="10">宝山万事红停车场</option>
+      </select> -->
       <!-- <label>选在时间</label> -->
     </div>
 
@@ -49,36 +64,7 @@
 
 
 
-
     <div id="videoContainer2" *ngIf="currentCamera=='2'" style="margin-bottom:40px;">
-      <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
-        <param name="allowScriptAccess" value="always">
-        <param name="allowFullScreen" value="true">
-        <param name="quality" value="high">
-        <param name="bgcolor" value="#FFF">
-        <param name="wmode" value="transparent">
-        <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
-        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/b272845e5b5c434eae96bd68b85d8c39.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
-        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/b272845e5b5c434eae96bd68b85d8c39.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
-      </object>
-    </div>
-
-
-    <div id="videoContainer3" *ngIf="currentCamera=='3'" style="margin-bottom:40px;">
-      <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
-        <param name="allowScriptAccess" value="always">
-        <param name="allowFullScreen" value="true">
-        <param name="quality" value="high">
-        <param name="bgcolor" value="#FFF">
-        <param name="wmode" value="transparent">
-        <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
-        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/858fea1ce70641ebb4ae02023fa8056b.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
-        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/858fea1ce70641ebb4ae02023fa8056b.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
-      </object>
-    </div>
-
-
-    <div id="videoContainer4" *ngIf="currentCamera=='4'" style="margin-bottom:40px;">
       <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
         <param name="allowScriptAccess" value="always">
         <param name="allowFullScreen" value="true">
@@ -92,8 +78,7 @@
     </div>
 
 
-
-    <div id="videoContainer5" *ngIf="currentCamera=='5'" style="margin-bottom:40px;">
+    <div id="videoContainer3" *ngIf="currentCamera=='3'" style="margin-bottom:40px;">
       <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
         <param name="allowScriptAccess" value="always">
         <param name="allowFullScreen" value="true">
@@ -107,7 +92,11 @@
     </div>
 
 
-    <div id="videoContainer6" *ngIf="currentCamera=='6'" style="margin-bottom:40px;">
+
+
+
+
+    <div id="videoContainer4" *ngIf="currentCamera=='4'" style="margin-bottom:40px;">
       <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
         <param name="allowScriptAccess" value="always">
         <param name="allowFullScreen" value="true">
@@ -121,7 +110,23 @@
     </div>
 
 
-    <div id="videoContainer7" *ngIf="currentCamera=='7'" style="margin-bottom:40px;">
+
+
+    <div id="videoContainer5" *ngIf="currentCamera=='5'" style="margin-bottom:40px;">
+      <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
+        <param name="allowScriptAccess" value="always">
+        <param name="allowFullScreen" value="true">
+        <param name="quality" value="high">
+        <param name="bgcolor" value="#FFF">
+        <param name="wmode" value="transparent">
+        <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
+        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/858fea1ce70641ebb4ae02023fa8056b.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
+        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/858fea1ce70641ebb4ae02023fa8056b.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+      </object>
+    </div>
+
+
+    <div id="videoContainer6" *ngIf="currentCamera=='6'" style="margin-bottom:40px;">
       <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
         <param name="allowScriptAccess" value="always">
         <param name="allowFullScreen" value="true">
@@ -136,18 +141,35 @@
 
 
 
-    <div id="videoContainer8" *ngIf="currentCamera=='8'" style="margin-bottom:40px;">
-      <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
-        <param name="allowScriptAccess" value="always">
-        <param name="allowFullScreen" value="true">
-        <param name="quality" value="high">
-        <param name="bgcolor" value="#FFF">
-        <param name="wmode" value="transparent">
-        <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
-        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/0a7b6f17214d4a20a55a4f2602e1a9bb.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
-        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/0a7b6f17214d4a20a55a4f2602e1a9bb.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
-      </object>
-    </div>
+
+
+        <div id="videoContainer7" *ngIf="currentCamera=='7'" style="margin-bottom:40px;">
+          <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
+            <param name="allowScriptAccess" value="always">
+            <param name="allowFullScreen" value="true">
+            <param name="quality" value="high">
+            <param name="bgcolor" value="#FFF">
+            <param name="wmode" value="transparent">
+            <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
+            <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/0a7b6f17214d4a20a55a4f2602e1a9bb.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
+            <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/0a7b6f17214d4a20a55a4f2602e1a9bb.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+          </object>
+        </div>
+
+
+        <div id="videoContainer8" *ngIf="currentCamera=='8'" style="margin-bottom:40px;">
+          <object pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
+            <param name="allowScriptAccess" value="always">
+            <param name="allowFullScreen" value="true">
+            <param name="quality" value="high">
+            <param name="bgcolor" value="#FFF">
+            <param name="wmode" value="transparent">
+            <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
+            <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/ef6503a2096d418f9ecd18edd771e88a.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
+            <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/ef6503a2096d418f9ecd18edd771e88a.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+          </object>
+        </div>
+
 
 
     <div id="videoContainer9" *ngIf="currentCamera=='9'" style="margin-bottom:40px;">
@@ -158,10 +180,11 @@
         <param name="bgcolor" value="#FFF">
         <param name="wmode" value="transparent">
         <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
-        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/ef6503a2096d418f9ecd18edd771e88a.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
-        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/ef6503a2096d418f9ecd18edd771e88a.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+        <param name="flashvars" value="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/b272845e5b5c434eae96bd68b85d8c39.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1">
+        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/b272845e5b5c434eae96bd68b85d8c39.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
       </object>
     </div>
+
 
 
     <div id="videoContainer10" *ngIf="currentCamera=='10'" style="margin-bottom:40px;">

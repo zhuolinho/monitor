@@ -345,6 +345,43 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
             });
   });
 
+  router.get('/formula/all.json', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'getFormula',
+          pl:{user:lib.reqUser(req)}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
+
+
+  router.put('/formula.json', function(req, res, next) {
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'updateFormula',
+          pl:{formula:req.body,user:lib.reqUser(req)}
+        };
+
+        handler(param)
+            .then(function (r) {
+               helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
   router.post('/download.json', function(req, res, next) {
 
         var param = {

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../../config", "../../../services/request.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../../config"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, config_1, request_service_1, SettingsFormula, plcFormula;
+    var core_1, config_1, SettingsFormula, plcFormula;
     return {
         setters: [
             function (core_1_1) {
@@ -18,56 +18,34 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            },
-            function (request_service_1_1) {
-                request_service_1 = request_service_1_1;
             }
         ],
         execute: function () {
             SettingsFormula = (function () {
-                function SettingsFormula(request) {
-                    var _this = this;
-                    this.request = request;
+                function SettingsFormula() {
                     this.selectedtab = 1;
                     this.newFormula = new plcFormula();
                     this.editMode = false;
                     this.allTanks = [];
                     this.targetTanks = [];
-                    this.formulas = [];
-                    this.indexedFormula = {};
-                    this.indexedAddresses = {};
                     console.log("SettingsFormula is up and running");
-                    this.request.get("/plc/address/all.json").subscribe(function (res) {
-                        console.log("got response--", res);
-                        if (res.pl && res.pl.address) {
-                            var addresses = res.pl.address;
-                            _this.indexedAddresses = _.keyBy(addresses, function (o) {
-                                return o.tank;
-                            });
-                        }
-                        console.log("this.indexedFormula ------", _this.indexedAddresses);
-                        _this.initUi();
-                    });
-                    this.request.get('/plc/formula/all.json').subscribe(function (resp) {
-                        console.log("latest plc-----", resp);
-                        if (resp && resp.pl && resp.pl.plc) {
-                            _this.allTanks = _.map(resp.pl.plc, function (plc) {
-                                return plc;
-                            });
-                            _this.targetTanks = _this.allTanks;
-                            console.log('got this.allTanks ', _this.allTanks);
-                        }
-                    });
+                    this.initUi();
                 }
+                SettingsFormula.prototype.veCalculateParameter = function () {
+                    this.initUi();
+                };
+                SettingsFormula.prototype.veElertParameter = function () {
+                    this.initUi();
+                };
                 SettingsFormula.prototype.initUi = function () {
-                    var that = this;
+                    var _this = this;
                     setTimeout(function (_) {
                         jQuery('.modal-trigger').leanModal({
                             dismissible: true,
                             opacity: .5,
                             in_duration: 300,
                             out_duration: 200,
-                            ready: function () { console.log('Ready'); that.initSelect(); },
+                            ready: function () { console.log('Ready'); _this.initSelect(); },
                             complete: function () { console.log('Closed'); } // Callback for Modal close
                         });
                     });
@@ -80,14 +58,14 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                 SettingsFormula.prototype.showDetailModal = function (arg) {
                     console.log("selected item----", arg);
                     var that = this;
-                    jQuery("#settingsFormulaComputeDetailModal").openModal({
+                    jQuery("#" + arg.modalId).openModal({
                         ready: function () {
                             that.initSelect();
                         }
                     });
                 };
                 SettingsFormula.prototype.closeDetailModal = function () {
-                    jQuery("#settingsFormulaComputeDetailModal").closeModal();
+                    // jQuery("#").closeModal();
                 };
                 return SettingsFormula;
             }());
@@ -96,7 +74,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     selector: 'settings-formula',
                     templateUrl: config_1.config.prefix + '/components/settings/formula/settings-formula.component.html'
                 }),
-                __metadata("design:paramtypes", [request_service_1.RequestService])
+                __metadata("design:paramtypes", [])
             ], SettingsFormula);
             exports_1("SettingsFormula", SettingsFormula);
             plcFormula = (function () {

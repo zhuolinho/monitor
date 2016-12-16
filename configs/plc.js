@@ -5,7 +5,12 @@ var plc = {
   // stimer:90000,//1.5 min
   sTimer:5*60000, //5min.
   start:'abegin',
-  end:'aend'
+  end:'aend',
+  plcTypeByPrefix:{
+    "C":"CNG",
+    "L":"LNG",
+    "G":"Guanwang"
+  }
 }
 
 

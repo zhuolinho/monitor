@@ -1,8 +1,4 @@
 <div class="helper-border-top helper-relative">
-    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veElertParameter(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 报警参数</a>
-        <a  (click)="veCalculateParameter(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 计算参数 </a>
-    </div>
 
     <div class="space" style="padding-top:60px;">
     </div>
@@ -11,147 +7,33 @@
 
     <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
 
-              <div *ngIf="selectedtab == 1" class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
-                 <div class="col s12 helper-font-bigger helper-vpadding-10">参数列表</div>
-                <div class="monitor-table helper-font-bigger">
-                  <div class="table-row  helper-gray-bg-light">
-                    <div class="table-cell"> 百分比 </div>
-                    <div class="table-cell">地址 </div>
-                  </div>
-                  <div class="table-row">
-                    <div class="table-cell"> 15% </div>
-                    <div class="table-cell"> C001<a  (click) = "showDetailModal({modalId:'settingsFormulaParamDetailModal'});"    class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                  </div>
 
-
-                  <div class="table-row">
-                    <div class="table-cell"> 15% </div>
-                    <div class="table-cell"> C002<a (click) = "showDetailModal({modalId:'settingsFormulaParamDetailModal'});"   class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                  </div>
-
-
-                  <div class="table-row">
-                    <div class="table-cell"> 13% </div>
-                    <div class="table-cell"> C003<a (click) = "showDetailModal({modalId:'settingsFormulaParamDetailModal'});"    class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                  </div>
-
-                  <div class="table-row">
-                    <div class="table-cell"> 13% </div>
-                    <div class="table-cell"> C004<a (click) = "showDetailModal({modalId:'settingsFormulaParamDetailModal'});"    class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                  </div>
-
-                  <div class="table-row">
-                    <div class="table-cell"> 14% </div>
-                    <div class="table-cell"> C005<a (click) = "showDetailModal({modalId:'settingsFormulaParamDetailModal'});"  class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-                  </div>
-              </div>
-        </div>
-
-
-        <div *ngIf='selectedtab == 2' class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
+        <div class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
            <div class="col s12 helper-font-bigger helper-vpadding-10">公式列表</div>
           <div class="monitor-table helper-font-bigger">
             <div class="table-row  helper-gray-bg-light">
-              <div class="table-cell"> 公式 </div>
               <div class="table-cell">地址 </div>
+              <div class="table-cell"> 公式 </div>
+              <div class="table-cell"> 报警值 </div>
+
             </div>
             <div class="table-row">
+              <div class="table-cell"> C001</div>
               <div class="table-cell"> AxBxD/C </div>
-              <div class="table-cell"> C001<a  (click) = "showDetailModal({modalId:'settingsFormulaComputeDetailModal'});" class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-            </div>
-
-
-            <div class="table-row">
-              <div class="table-cell"> AxCxD/B </div>
-              <div class="table-cell"> C002<a (click) = "showDetailModal({modalId:'settingsFormulaComputeDetailModal'});" class="  helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-            </div>
-
-
-            <div class="table-row">
-              <div class="table-cell"> DxBxA/C </div>
-              <div class="table-cell"> C003<a (click) = "showDetailModal({modalId:'settingsFormulaComputeDetailModal'});"  class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-            </div>
-
-            <div class="table-row">
-              <div class="table-cell"> CxBxD/A </div>
-              <div class="table-cell"> C004<a (click) = "showDetailModal({modalId:'settingsFormulaComputeDetailModal'});" class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
-            </div>
-
-            <div class="table-row">
-              <div class="table-cell"> AxCxD/B% </div>
-              <div class="table-cell"> C005<a  (click) = "showDetailModal({modalId:'settingsFormulaComputeDetailModal'});"   class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
+              <div class="table-cell"> 20 <a  (click) = "showDetailModal(arg);" class=" helper-font-bigger helper-padding-right-10 right"> 编辑</a></div>
             </div>
         </div>
   </div>
     </div>
 
 
-   <!-- <settings-edit-formula [data]="{id:'id222'}"> </settings-edit-formula>
-   <settings-edit-formula [data]="{id:'id111'}"> </settings-edit-formula> -->
-
-
 <!-- detail modal -->
-
-
-    <div  id="settingsFormulaParamDetailModal" class="modal " style="overflow:auto;">
-          <div class="modal-content">
-            <i class="modal-close material-icons right">clear</i>
-            <h4>  编辑报警参数</h4>
-
-
-          <div class="input-field col s12" style="margin-top:60px; margin-bottom:50px;">
-            <select>
-              <option value="" disabled selected>请选择地址</option>
-              <option value="1">C002新闸区大宁路335号XX站</option>
-              <option value="1">C002新闸区大宁路335号XX站</option>
-              <option value="1">C002新闸区大宁路335号XX站</option>
-            </select>
-            <label>地址</label>
-          </div>
-
-
-
-            <div class="input-field col s12">
-              <select>
-                <option value="" disabled selected>请选择余量报警</option>
-                <option value="1">15%</option>
-                <option value="2">13%</option>
-                <option value="3">10%</option>
-              </select>
-              <label>余量报警</label>
-            </div>
-
-          </div>
-
-          <div class="modal-footer">
-           <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
-         </div>
-
-          <!-- for the select -->
-         <div style="padding-bottom:80px;"></div>
-      </div>
-
-
-
 
 
       <div  id="settingsFormulaComputeDetailModal" class="modal " style="overflow:auto;">
         <div class="modal-content">
           <i class="modal-close material-icons right">clear</i>
           <h4>  编辑计算公式</h4>
-
-
-        <div class="input-field col s12" style="margin-top:60px; margin-bottom:50px;">
-          <select>
-            <option value="" disabled selected>请选择地址</option>
-            <option value="1">C002新闸区大宁路335号XX站</option>
-            <option value="1">C002新闸区大宁路335号XX站</option>
-            <option value="1">C002新闸区大宁路335号XX站</option>
-          </select>
-          <label>地址</label>
-        </div>
-
-
 
         <div class="row">
 
@@ -175,29 +57,6 @@
                   <option value="1">2</option>
                   <option value="2">3</option>
                   <option value="3">4</option>
-                </select>
-              </div>
-
-              <div class=" helper-inline-block helper-hpadding-10">
-                  x
-              </div>
-              <div class="input-field helper-inline-block" style="width:100px;">
-                <select>
-                  <option value="1">1.5</option>
-                  <option value="2">1.3</option>
-                  <option value="3">1.1</option>
-                </select>
-              </div>
-
-              <div class=" helper-inline-block helper-hpadding-10">
-                /
-              </div>
-
-              <div class="input-field  helper-inline-block" style="width:100px;">
-                <select>
-                  <option value="1">12</option>
-                  <option value="2">17</option>
-                  <option value="3">111</option>
                 </select>
               </div>
 
