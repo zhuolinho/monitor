@@ -962,8 +962,8 @@ plc.addNewAlert = function(m){
                               addr:m.pl.alert.addr,
                               tank:m.pl.alert.tank,   //todo dynamically set tank id
                               am:m.pl.alert.am,
-                              rt:m.pl.alert.remainingTime,
-                              ra:m.pl.alert.remainingAmount,
+                              rt:m.pl.alert.rt,
+                              ra:m.pl.alert.ra,
                               st:m.pl.alert.st
                             });
 
