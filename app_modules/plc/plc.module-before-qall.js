@@ -188,7 +188,7 @@ plc.handleIncommingData =  function(m) {
    var incommingData = m.pl.data;
 
    if(incommingData){
-      var extractDataPchain = [];
+
       var pchain = [];
 
       m.redisClient.get("lastestPlc", function(err, result) {  //all latesd plc
@@ -209,65 +209,51 @@ plc.handleIncommingData =  function(m) {
            temp[m.pl.org.oID] = {};
            latestInteruptedChanels = JSON.parse(result)||temp;
 
-          //  var result = [];
-          //   for(var i=0; i < data.length; i++) (function(i){
-          //       result.push(secondFunc(data[i].item)
-          //       .then(function(data2) {
-          //           data[i].more = data2.item;
-          //           return data[i];
-          //       }));
-          //   })(i); // avoid the closure loop problem
-          //   return Q.all(extractDataPchain)
-
-
 
 
             for (var i = 0; i < 100; i++) {
 
                   //  var dataToSave = _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient);
-                  (function(i){
-                        extractDataPchain.push(
-                          _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient).then(function(dataToSave){
 
-                        // console.log("--dataToSave-->>>---",dataToSave);
-                        if(!(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN)){
+                  _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient).then(function(dataToSave){
 
-                          var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
+                    console.log("--dataToSave-->>>---",dataToSave);
+                    if(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN){
+                      continue;
+                    }
 
-                          m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
-                          m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
+                     // console.log("loop----",i);
 
-                          if (chanelCheck.createAlert){
-                              newInterupts.push(dataToSave);
-                          }
-                          else if (chanelCheck.save){
-                                dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
-                                       pchain.push(_saveIncommingData(setDoc));
-                                });
-                          }
 
-                        }
+                   var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
 
-                      // console.log("loop----",i);
+                   m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
+                   m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
 
-                     })
-                   );
-             })(i);
+                   if (chanelCheck.createAlert){
+                       newInterupts.push(dataToSave);
+                   }
+                   else if (chanelCheck.save){
+                         dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
+                                pchain.push(_saveIncommingData(setDoc));
+                         });
+                   }
+
+                  });
 
             }
 
-             q.all(extractDataPchain).then(function(){
-              // console.log("mass extraced data done------",extractResponse);
 
-                var result =  q({length:pchain.length});
-                pchain.forEach(function (f) {
-                    result = result.then(f);
-                });
 
-                r.pl.alerts = newInterupts;
-                deferred.resolve(r);
-
+            var result =  q({length:pchain.length});
+            pchain.forEach(function (f) {
+                result = result.then(f);
             });
+
+            r.pl.alerts = newInterupts;
+            deferred.resolve(r);
+
+
 
         });
       });
@@ -1244,13 +1230,13 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
         plcCode = lib.padNum(i+1,3);
         tank = plcType[0] + plcCode;
         var formula = latestFormula[oID][tank];
-        // console.log('formula----',formula);
+        console.log('formula----',formula);
 
 
         if (!formula){ //create formula if not already created
 
             return _addNewFormula({oID:oID},tank).then(function(resp){
-              // console.log("created formula---",resp);
+              console.log("created formula---",resp);
               if (resp && resp.pl && resp.pl.formula){
                   latestFormula[oID][tank] = resp.pl.formula;
                   redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
@@ -1273,13 +1259,13 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
         plcCode = lib.padNum(i+1,3);
         tank = plcType[0] + plcCode;
         var formula = latestFormula[oID][tank];
-        // console.log('formula----',formula);
+        console.log('formula----',formula);
 
 
         if (!formula){  //create formula if not already created
 
           return _addNewFormula({oID:oID},tank).then(function(resp){
-            // console.log("created formula---",resp);
+            console.log("created formula---",resp);
             if (resp && resp.pl && resp.pl.formula){
                 latestFormula[oID][tank] = resp.pl.formula;
                 redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
@@ -1622,6 +1608,7 @@ var _getPlcType = function(data,shift){
 
 var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInteruptedChanels){
 
+    console.log("_checkChanelInterruption-----",data);
     var result = {createAlert:false,save:false, latestIncommingData:latestIncommingData,latestInteruptedChanels:latestInteruptedChanels};
 
           if(latestInteruptedChanels[oID]){  //is always set by default
