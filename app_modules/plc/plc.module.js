@@ -183,7 +183,7 @@ plc.handleIncommingData =  function(m) {
 
 
    var deferred = q.defer();
-   var newInterupts = [];
+   var newAlerts = [];
 
    var incommingData = m.pl.data;
 
@@ -224,12 +224,12 @@ plc.handleIncommingData =  function(m) {
 
             for (var i = 0; i < 100; i++) {
 
-                  //  var dataToSave = _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient);
-                  (function(i){
+                  (function(i){ //closure to keep context
                         extractDataPchain.push(
-                          _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient).then(function(dataToSave){
+                          _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient).then(function(resp){
+                         var dataToSave = resp.data;
 
-                        // console.log("--dataToSave-->>>---",dataToSave);
+                        console.log("--resp-->>>---",resp);
                         if(!(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN)){
 
                           var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
@@ -237,8 +237,20 @@ plc.handleIncommingData =  function(m) {
                           m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
                           m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
 
+
+
+
+                          if (resp.alert){  //todo comment out until formula confirmed
+                              // newAlerts.push(resp.alert);
+                          }
+
                           if (chanelCheck.createAlert){
-                              newInterupts.push(dataToSave);
+                              var alert = {
+                                    am:'信号中断',
+                                    atype:'信号中断',
+                                    tank:dataToSave.tank
+                              }
+                              newAlerts.push(alert);
                           }
                           else if (chanelCheck.save){
                                 dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
@@ -264,7 +276,7 @@ plc.handleIncommingData =  function(m) {
                     result = result.then(f);
                 });
 
-                r.pl.alerts = newInterupts;
+                r.pl.alerts = newAlerts;
                 deferred.resolve(r);
 
             });
@@ -901,7 +913,7 @@ plc.updateFormula =  function(m) {
                          var temp = {};
                          temp[m.pl.user.oID] = {};
                          var latestFormula = JSON.parse(result)||temp;
-                         console.log("latestFormula[m.pl.formula.tank]----",latestFormula[m.pl.user.oID][m.pl.formula.tank]);
+                        //  console.log("latestFormula[m.pl.formula.tank]----",latestFormula[m.pl.user.oID][m.pl.formula.tank]);
                          latestFormula[m.pl.user.oID][m.pl.formula.tank] = r.pl.formula;
                          m.redisClient.set("lastestFormula", JSON.stringify(latestFormula));
                        });
@@ -951,6 +963,7 @@ plc.addNewAlert = function(m){
                               tank:m.pl.alert.tank,   //todo dynamically set tank id
                               am:m.pl.alert.am,
                               rt:m.pl.alert.remainingTime,
+                              ra:m.pl.alert.remainingAmount,
                               st:m.pl.alert.st
                             });
 
@@ -1341,18 +1354,19 @@ var _setCommonPlcData = function(extractedData,dates,plcCode,plcType,tank){
 
     var d = new Date();
 
-    var fullData = extractedData;
-    fullData.cd = lib.dateTime();
-    fullData.y = d.getFullYear();
-    fullData.m = d.getMonth()+1;
-    fullData.d = d.getDate();
-    fullData.dct = dates.date; //data collection time
-    fullData.cdct = dates.chanelDate; //chanel data collection time
-    fullData.cdcns = dates.cnanosecond; //chanel data collection time
-    fullData.plcCode =plcCode;
-    fullData.plcType = plcType;
-    fullData.tank = tank;
-    deferred.resolve(new iPlc(fullData));
+    // var fullData = extractedData;
+    extractedData.data.cd = lib.dateTime();
+    extractedData.data.y = d.getFullYear();
+    extractedData.data.m = d.getMonth()+1;
+    extractedData.data.d = d.getDate();
+    extractedData.data.dct = dates.date; //data collection time
+    extractedData.data.cdct = dates.chanelDate; //chanel data collection time
+    extractedData.data.cdcns = dates.cnanosecond; //chanel data collection time
+    extractedData.data.plcCode =plcCode;
+    extractedData.data.plcType = plcType;
+    extractedData.data.tank = tank;
+    extractedData.data = new iPlc(extractedData.data);
+    deferred.resolve(extractedData);
 
     return deferred.promise;   //should return promise because of the case where we first save the the formula
 
@@ -1441,6 +1455,8 @@ var _exractGuanwangData = function(data,shift,oID,tank){
   // 表2通讯故障	1
   // 表2错误情报	1
 
+  var r = {data:null,alert:null};
+
   var addr1 = data.slice(24+shift,26+shift);
   var instantaneousWorkingCond1 = data.slice(26+shift,30+shift);
   var instantaneousStandardCond1 = data.slice(30+shift,34+shift);
@@ -1485,8 +1501,8 @@ var _exractGuanwangData = function(data,shift,oID,tank){
                         cf2:parseInt(comminucationFailure2.toString('hex'), 16),//communication failure 2
                         er2:parseInt(errorReport2.toString('hex'), 16),// error report 2
                       };
-
-    return processedData;
+    r.data = processedData;
+    return r;
 }
 
 
@@ -1513,6 +1529,8 @@ var _exractGuanwangData = function(data,shift,oID,tank){
 // cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
 
 var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,formula){
+
+  var r = {data:null,alert:null};
 
   var inputP1 = data.slice(24+shift,28+shift);
   var inputP2 = data.slice(28+shift,32+shift);
@@ -1574,6 +1592,21 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   var rft  = rfq/usagePerHour; //remaining time in hours
 
 
+
+  if (rft<formula.tt){
+    //create alert
+    var alert = {
+          am:'余量报警',
+          atype:'余量报警',
+          tank:tank,
+          rt:rft,
+          ra:rfq
+    }
+
+    r.alert = alert;
+  }
+
+
   console.log("rfq,rft---",rfq,rft);
 
 
@@ -1599,11 +1632,13 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   result[holderKey1] =  lib.getPlcFloat(holderVal1.toString('hex'),1);
   result[holderKey2] =  lib.getPlcFloat(holderVal2.toString('hex'),1);
 
+  r.data = result;
 
-  return result;
+  return r;
 }
 
 var _extractLngData = function(data,shift,oID,tank,formula){
+  var r = {data:null,alert:null};
 
   var tankp = data.slice(24+shift,28+shift);
   var azip = data.slice(28+shift,32+shift);
@@ -1613,10 +1648,12 @@ var _extractLngData = function(data,shift,oID,tank,formula){
   var instfow = data.slice(44+shift,48+shift);
   var cumfow = data.slice(48+shift,52+shift);
 
+  var remainingAmount = lib.getPlcFloat(tanklavel.toString('hex'),1);
+
   var result = {
       tankp :lib.getPlcFloat(tankp.toString('hex'),1),
       azip :lib.getPlcFloat(azip.toString('hex'),1),
-      tanklavel :lib.getPlcFloat(tanklavel.toString('hex'),1),
+      tanklavel :remainingAmount,
       outputP: lib.getPlcFloat(outputP.toString('hex'),1),
       fmot :lib.getPlcFloat(fmot.toString('hex'),1),
       instfow: lib.getPlcFloat(instfow.toString('hex'),1),
@@ -1624,7 +1661,21 @@ var _extractLngData = function(data,shift,oID,tank,formula){
       cumfow: lib.getPlcFloat(cumfow.toString('hex'),0)
   }
 
-  return result;
+
+  if (remainingAmount<formula.pt){
+    //create alert
+    var alert = {
+          am:'余量报警',
+          atype:'余量报警',
+          tank:tank,
+          ra:remainingAmount+'%'
+    }
+
+    r.alert = alert;
+  }
+
+  r.data = result;
+  return r;
 }
 
 var _getPlcType = function(data,shift){

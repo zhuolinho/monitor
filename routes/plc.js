@@ -448,7 +448,7 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
   //plc Connection
   _tcpSerever(handler);
   _checkInterruption(handler);
-  // redisClient.del('lastestFormula');  
+  // redisClient.del('lastestFormula');
   return router;
 };
 
@@ -792,15 +792,7 @@ function saveData(handler,data){
 
 
         for (var i = 0; i < r.pl.alerts.length; i++) {
-
-          var alert = {
-                am:'信号中断',
-                atype:'信号中断',
-                tank:r.pl.alerts[i].tank
-          }
-          pchain.push(_createPlcAlert(alert,handler));
-
-
+          pchain.push(_createPlcAlert(r.pl.alerts[i],handler));
         }
 
         var result =  q({});
