@@ -1567,7 +1567,6 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
 
 
-
   // var rfq = (inputP1/10)*18; //(Nm3)
   var divisor = formula.divisor||1;
   var rfq = (inputP1/divisor)*formula.factor; //(Nm3)
