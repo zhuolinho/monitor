@@ -1591,6 +1591,7 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
   var rft  = rfq/usagePerHour; //remaining time in hours
 
+  rft=rft.toFixed(3);
 
 
   if (rft<formula.tt){
