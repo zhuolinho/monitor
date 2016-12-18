@@ -843,7 +843,6 @@ plc.updateFormula =  function(m) {
 
 
 
-
 plc.addNewAlert = function(m){
 
   // console.log("add new alert----",m.pl.alert);
