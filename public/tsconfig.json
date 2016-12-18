@@ -43,6 +43,7 @@
     "app/components/settings/access/settings-access.component.ts",
     "app/components/settings/address/settings-address.component.ts",
     "app/components/settings/auth/settings-auth.component.ts",
+    "app/components/settings/formula-before-implementation/settings-formula.component.ts",
     "app/components/settings/formula/settings-formula.component.ts",
     "app/components/settings/offline_users/settings-offline-users.component.ts",
     "app/components/settings/settings.component.ts",

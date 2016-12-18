@@ -83,17 +83,16 @@ plc.init = function(m) {
 plc.handleIncommingData =  function(m) {
   console.log("plc: handleIncommingData");
   var r = {pl: {alerts:null}, status:true , er:''};
-  var latestIncommingData = null; //define these variable so we know what is in the redis server
+  var latestIncommingData = null;
   var latestInteruptedChanels = null;
   var latestFormula = null;
-  var lastestRemainingAmountAlerts = null;
 
 
   if (m.pl.org){
 
 
-   var deferred = q.defer();
 
+   var deferred = q.defer();
    var newAlerts = [];
 
    var incommingData = m.pl.data;
@@ -101,89 +100,88 @@ plc.handleIncommingData =  function(m) {
    if(incommingData){
       var extractDataPchain = [];
       var pchain = [];
-      var pipeline = m.redisClient.pipeline();
-      pipeline.get("lastestPlc");
-      pipeline.get("lastestFormula");
-      pipeline.get("lastestInterupts");
-      pipeline.get("lastestRemainingAmountAlerts");
-      pipeline.exec(function (err, results) {
-          // console.log("redis client data ------", JSON.parse(results[0][1]));
 
-          var temp1 = {};
-          temp1[m.pl.org.oID] = {};
-          latestIncommingData = JSON.parse(results[0][1])||temp1;
-
-          var temp2 = {};
-          temp2[m.pl.org.oID] = {};
-          latestFormula = JSON.parse(results[1][1])||temp2;
-
-          var temp3 = {};
-          temp3[m.pl.org.oID] = {};
-          latestInteruptedChanels = JSON.parse(results[2][1])||temp3;
-
-          var temp4 = {};
-          temp4[m.pl.org.oID] = {};
-          lastestRemainingAmountAlerts = JSON.parse(results[3][1])||temp4;
+      m.redisClient.get("lastestPlc", function(err, result) {  //all latesd plc
+        var temp = {};
+        temp[m.pl.org.oID] = {};
+        latestIncommingData = JSON.parse(result)||temp;
 
 
-          for (var i = 0; i < 100; i++) {
-
-                (function(i){ //closure to keep context
-                      extractDataPchain.push(
-                        _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,lastestRemainingAmountAlerts,m.redisClient).then(function(resp){
-                       var dataToSave = resp.data;
-
-                      // console.log("--resp-->>>---",resp);
-                      if(!(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN)){
-
-                        var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
-
-                        m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
-                        m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
+        m.redisClient.get("lastestFormula", function(err, result) {  //all latest formula
+           var temp = {};
+           temp[m.pl.org.oID] = {};
+           latestFormula = JSON.parse(result)||temp;
+         });
 
 
-                        if (resp.alert){  //TODO the cng alerts are not being added. should first uncomment the conresponding section on extractCngData function after formula confirmation.
-                            newAlerts.push(resp.alert);
+        m.redisClient.get("lastestInterupts", function(err, result) {
+           var temp = {};
+           temp[m.pl.org.oID] = {};
+           latestInteruptedChanels = JSON.parse(result)||temp;
+
+
+            for (var i = 0; i < 100; i++) {
+
+                  (function(i){ //closure to keep context
+                        extractDataPchain.push(
+                          _extractPlcData(incommingData,i,m.pl.org.oID,latestIncommingData,latestFormula,m.redisClient).then(function(resp){
+                         var dataToSave = resp.data;
+
+                        console.log("--resp-->>>---",resp);
+                        if(!(dataToSave.dct == '0-0-0 0:0:0' || dataToSave.dct == 'NaN' ||  (dataToSave.dct == '2') ||  dataToSave.cdct == '0-0-0 0:0:0' || (dataToSave.cdct == '1970-1-1 0:0:0') || dataToSave.cdct == NaN)){
+
+                          var chanelCheck =  _checkChanelInterruption(dataToSave,m.pl.org.oID, latestIncommingData,latestInteruptedChanels);
+
+                          m.redisClient.set("lastestPlc", JSON.stringify(chanelCheck.latestIncommingData));  //save updated data
+                          m.redisClient.set("lastestInterupts", JSON.stringify(chanelCheck.latestInteruptedChanels)); //save updated data
+
+
+
+
+                          if (resp.alert){  //TODO the cng alerts are not being added. should first uncomment the conresponding section on extractCngData function after formula confirmation.
+                              // newAlerts.push(resp.alert);
+                          }
+
+                          if (chanelCheck.createAlert){
+                              var alert = {
+                                    am:'信号中断',
+                                    atype:'信号中断',
+                                    tank:dataToSave.tank
+                              }
+                              newAlerts.push(alert);
+                          }
+                          else if (chanelCheck.save){
+                                dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
+                                       pchain.push(_saveIncommingData(setDoc));
+                                });
+                          }
+
                         }
 
-                        if (chanelCheck.createAlert){
-                            var alert = {
-                                  am:'信号中断',
-                                  atype:'信号中断',
-                                  tank:dataToSave.tank
-                            }
-                            newAlerts.push(alert);
-                        }
-                        else if (chanelCheck.save){
-                              dataToSave.setOwner(m.pl.org, function(setErr, setDoc){
-                                     pchain.push(_saveIncommingData(setDoc));
-                              });
-                        }
+                      // console.log("loop----",i);
 
-                      }
+                     })
+                   );
+             })(i);
 
-                    // console.log("loop----",i);
+            }
 
-                   })
-                 );
-           })(i);
+             q.all(extractDataPchain).then(function(){
+              // console.log("mass extraced data done------",extractResponse);
 
-          }
+                var result =  q({length:pchain.length});
+                pchain.forEach(function (f) {
+                    result = result.then(f);
+                });
 
-           q.all(extractDataPchain).then(function(){
-            // console.log("mass extraced data done------",extractResponse);
+                r.pl.alerts = newAlerts;
+                deferred.resolve(r);
 
-              var result =  q({length:pchain.length});
-              pchain.forEach(function (f) {
-                  result = result.then(f);
-              });
+            });
 
-              r.pl.alerts = newAlerts;
-              deferred.resolve(r);
-
-          });
-
+        });
       });
+
        // return result;
        return deferred.promise;
      }
@@ -1139,7 +1137,7 @@ plc.downloadInstantPlcData = function(m){
 }
 
 
-var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,lastestRemainingAmountAlerts,redisClient){
+var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,redisClient){
 
   var i = index?index:0;
   var shift = i*76;
@@ -1177,7 +1175,7 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
               if (resp && resp.pl && resp.pl.formula){
                   latestFormula[oID][tank] = resp.pl.formula;
                   redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
-                  extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,resp.pl.formula,lastestRemainingAmountAlerts,redisClient);
+                  extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,resp.pl.formula);
                   return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
               }
             });
@@ -1185,7 +1183,7 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
 
         }
         else{
-            extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,formula,lastestRemainingAmountAlerts,redisClient);
+            extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,formula);
             return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
         }
 
@@ -1206,14 +1204,16 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
             if (resp && resp.pl && resp.pl.formula){
                 latestFormula[oID][tank] = resp.pl.formula;
                 redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
-                extractedData = _extractLngData(data,shift,oID,tank,resp.pl.formula,lastestRemainingAmountAlerts,redisClient);
+                extractedData = _extractLngData(data,shift,oID,tank,resp.pl.formula);
                 return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
             }
           });
 
+
+
         }
         else{
-            extractedData = _extractLngData(data,shift,oID,tank,formula,lastestRemainingAmountAlerts,redisClient);
+            extractedData = _extractLngData(data,shift,oID,tank,formula);
             return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
         }
       }
@@ -1426,7 +1426,7 @@ var _exractGuanwangData = function(data,shift,oID,tank){
 // instfow:String, //instantaneous flow 瞬时流量 Nm3/h
 // cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
 
-var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,formula,lastestRemainingAmountAlerts,redisClient){
+var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,formula){
 
   var r = {data:null,alert:null};
 
@@ -1460,8 +1460,8 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
   inputP1 = lib.getPlcFloat(inputP1.toString('hex'),1);
 
-  // console.log("i is----",i);
-  // console.log("inputP1----",inputP1);
+  console.log("i is----",i);
+  console.log("inputP1----",inputP1);
 
 
 
@@ -1479,7 +1479,7 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
     usagePerHour = cumfow;
   }
 
-  // console.log("usagePerHour----",usagePerHour);
+  console.log("usagePerHour----",usagePerHour);
   var dataRecepionIntervalInMinutes = plcConfig.sTimer/(60*1000);  // convert from millisecs to minutes
   usagePerHour = usagePerHour*(60/dataRecepionIntervalInMinutes);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
 
@@ -1493,30 +1493,20 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
 
   // if (rft<formula.tt){ //// TODO: uncoment this once the condition is clear
+  //   //create alert
+  //   var alert = {
+  //         am:'余量警报',
+  //         atype:'余量警报',
+  //         tank:tank,
+  //         rt:rft,
+  //         ra:rfq
+  //   }
   //
-  //   if (!lastestRemainingAmountAlerts[oID][tank]){  //to avoid recreating same alert multiple times
-  //     //create alert
-  //     var alert = {
-  //           am:'余量警报',
-  //           atype:'余量警报',
-  //           tank:tank,
-  //           rt:rft,
-  //           ra:rfq
-  //     }
-  //
-  //     lastestRemainingAmountAlerts[oID][tank]=alert;
-  //     redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
-  //     r.alert = alert;
-  //   };
-  // }
-  // else{
-  //   if (lastestRemainingAmountAlerts[oID][tank]){  //remove remaining amount alert if previously created to this tank
-  //     delete lastestRemainingAmountAlerts[oID][tank];
-  //     redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
-  //   };
+  //   r.alert = alert;
   // }
 
-  // console.log("rfq,rft---",rfq,rft);
+
+  console.log("rfq,rft---",rfq,rft);
 
 
   var result = {
@@ -1546,7 +1536,7 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   return r;
 }
 
-var _extractLngData = function(data,shift,oID,tank,formula,lastestRemainingAmountAlerts,redisClient){
+var _extractLngData = function(data,shift,oID,tank,formula){
   var r = {data:null,alert:null};
 
   var tankp = data.slice(24+shift,28+shift);
@@ -1580,26 +1570,12 @@ var _extractLngData = function(data,shift,oID,tank,formula,lastestRemainingAmoun
           ra:remainingAmount+'%'
     }
 
-    if (!lastestRemainingAmountAlerts[oID][tank]){  //to avoid recreating same alert multiple times
-      lastestRemainingAmountAlerts[oID][tank]=alert;
-      redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
-      r.alert = alert;
-    };
-  }
-  else{
-    if (lastestRemainingAmountAlerts[oID][tank]){  //remove remaining amount alert if previously created to this tank
-      delete lastestRemainingAmountAlerts[oID][tank];
-      redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
-    };
+    r.alert = alert;
   }
 
   r.data = result;
   return r;
 }
-
-
-
-
 
 var _getPlcType = function(data,shift){
     var type  = data.slice(84+shift,86+shift);
@@ -1632,7 +1608,7 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
                 }
                 else {
                     if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) !== (data.cdct+data.cdcns)){  //normal flow restored
-                        delete latestInteruptedChanels[oID][data.tank]; //will be set to redis client above
+                        delete latestInteruptedChanels[oID][data.tank];
                         result.save = true;
                         latestIncommingData[oID][data.tank] = data;  //update latest data
                     }
