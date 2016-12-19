@@ -448,7 +448,7 @@ auth.hasAccess = function(m){
           if (!user) {
               r.pl.success = false;
               r.pl.er = 'Authentication failed. User not found.'
-              defrred.reject(r);
+              deferred.reject(r);
           } else {
             r.pl.success =true;
             r.pl.ms = "vip user---";
