@@ -321,25 +321,22 @@ gps.getAllCars =  function(m) {
 
    if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-     gpsModel.aggregate(
-             [
-               {$match:{oID:m.pl.user.oID}},
-               { $sort: { sim: 1, time: 1}},
-               {
-                 $group:
-                   {
-                     _id:"$sim",
-                     time: { $last: "$time" },
-                     lng: { $last: "$lng" },
-                     lat: { $last: "$lat" },
-                     speed: { $last: "$speed"},
-                     lp:{$last: "$lp"}
-                   }
-               }
-             ]
-          ).exec(function(err,resp){
+     gpsModel.aggregate()
+     .match({oID:m.pl.user.oID})
+     .sort({ sim: 1, time: 1})
+     .group({
+               _id:"$sim",
+               time: { $last: "$time" },
+               lng: { $last: "$lng" },
+               lat: { $last: "$lat" },
+               speed: { $last: "$speed"},
+               lp:{$last: "$lp"}
+             })
+      .allowDiskUse(true)
+      .exec(function(err,resp){
+              // console.log("all cars----",resp)
               if (err){
-                console.log("err-----gps mod-----",err);
+                console.log("MOD::------",err);
                 r.ec = JSON.stringify(err.ec);
                 r.em = JSON.stringify(err.em);
                 deferred.reject(r);
@@ -350,6 +347,7 @@ gps.getAllCars =  function(m) {
                 deferred.resolve(r);
               }
           });
+
 
    }
    else{

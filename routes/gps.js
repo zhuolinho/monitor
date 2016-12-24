@@ -45,8 +45,6 @@ module.exports = function (handler)
 
 
   router.get('/cars/all.json', function(req, res, next) {
-
-        console.log("user---for cars----: ",lib.reqUser(req));
         var param = {
           ns: 'gps',
           vs: '1.0',
