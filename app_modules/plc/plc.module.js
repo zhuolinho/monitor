@@ -916,8 +916,12 @@ plc._sendAlertNotification = function(m){
          }
          else{
 
-           r.pl.users = resp;
+           r.pl.phones = resp;
            deferred.resolve(r);
+
+           resp.push('18939801899');//yaojia.
+           resp.push('15921180831');//zhouze.
+           resp.push('13917207446');//Rolland.
 
            for (var i = 0; i < resp.length; i++) {
              if (resp[i].phone){

@@ -6,7 +6,8 @@ var username = 'webmaster';
 // configuration
 plan.target('production', [
   {
-    host: '139.196.18.222',
+    // host: '139.196.18.222',
+    host:'112.74.53.129',
     username: username,
     agent: process.env.SSH_AUTH_SOCK
   }
