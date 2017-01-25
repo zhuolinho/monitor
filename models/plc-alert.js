@@ -14,6 +14,7 @@ var plcAlertSchema = mongoose.Schema({
                       type:String
                       // required:true
                     },
+                    ttank:String,//transportable tank
                     pt:String, //processed time
                     pa:String, //processed agent
                     rt:String, //remaining time(for 余量报警)

@@ -1,44 +1,24 @@
 <div class="" style="">
 
 
-<div class="row helper-margin-bottom-10" style="width:880px;">
+<div class="container">
+  <div class="row helper-margin-bottom-10" style="width:800px;">
 
-  <div class="col s7 helper-margin-top-15">
-    <!-- <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span> -->
-    <select class="helper-select-font-bigger select-address">
-      <option [value]="cam.id" *ngFor="let cam of allCameras" >{{cam.addr}}</option>
-    </select>
-  </div>
-  <div class="input-field helper-white-bg col s5">
-
-
-
-    <select class="helper-select-font-bigger select-camera">
-      <option [value]="cam.id" *ngFor="let cam of currentCameras" >{{cam.name}}</option>
-    </select>
-
-    <!-- <select class="helper-select-font-bigger select-camera">
-      <option value="1" >日建站1号</option>
-      <option  value="2">日建站大门</option>
-      <option  value="3">日建站2号</option>
-      <option  value="4">日建站控制室</option>
-
-      <option  value="5">上食站控制室</option>
-      <option  value="6">上食站1号</option>
-      <option  value="7">上食站大门</option>
-      <option  value="8">上食站2号</option>
-
-      <option  value="9">宝山万事红调度室</option>
-      <option  value="10">宝山万事红停车场</option>
-      <option  value="11">天源站1号</option>
-      <option  value="12">天源站大门</option>
-      <option  value="13">天源站3号</option>
-      <option  value="14">天源站4号</option>
-    </select> -->
+    <div class="col s8 helper-margin-top-15 helper-padding-left-0">
+      <!-- <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span> -->
+      <select class="helper-select-font-bigger select-address">
+        <option [value]="cam.id" *ngFor="let cam of allCameras" >{{cam.addr}}</option>
+      </select>
+    </div>
+    <div class="input-field  col s4">
+      <select class="helper-select-font-bigger select-camera">
+        <option [value]="cam.id" *ngFor="let cam of currentCameras" >{{cam.name}}</option>
+      </select>
     </div>
 
-    <div class="clearfix"></div>
+      <div class="clearfix"></div>
 
+  </div>
 </div>
 
 

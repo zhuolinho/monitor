@@ -75,6 +75,20 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     this.iniSocket();
                     this.initUi();
                 };
+                HomeAlerts.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
+                        console.log("latest plc>>>-----", resp);
+                        if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+                            // this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+                            _this.realTimeData = resp.pl.plc;
+                            _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+                            // this.realTimeData = _.keyBy(this.testPlcs,'tank');
+                            _this.connectedPlcs = Object.keys(_this.realTimeData);
+                            _this.initSelect();
+                        }
+                    });
+                };
                 HomeAlerts.prototype.veSortBy = function (wich) {
                     var _this = this;
                     if (this.currentSort != wich) {
@@ -84,6 +98,16 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                             _this.initUi();
                         }, 100);
                     }
+                };
+                HomeAlerts.prototype.veSetTransportableTank = function (alert, ttank) {
+                    if (ttank) {
+                        alert.ttank = ttank;
+                    }
+                    console.log("ttank-----", ttank);
+                    console.log("posting alert-----", alert);
+                    this.request.put('/plc/alert.json', alert).subscribe(function (res) {
+                        console.log("alert ttank updated", res);
+                    });
                 };
                 HomeAlerts.prototype.veProcessed = function (alert) {
                     var _this = this;

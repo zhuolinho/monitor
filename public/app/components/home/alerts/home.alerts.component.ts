@@ -1,5 +1,5 @@
 
-import {Component,AfterViewInit} from '@angular/core';
+import {Component,AfterViewInit, OnInit} from '@angular/core';
 import {config} from '../../../config';
 
 import {AlertModel} from '../../../models/alert-model';
@@ -18,7 +18,7 @@ declare var io:any;
   // directives:[CORE_DIRECTIVES]
 })
 
-export class HomeAlerts implements AfterViewInit{
+export class HomeAlerts implements AfterViewInit, OnInit{
 
     currentSort:string = 'all';
 
@@ -48,6 +48,8 @@ export class HomeAlerts implements AfterViewInit{
     currentStatSelectedYear:number = 2016;
     currentStatSelectedMonth:number = 1;
     isShowByDay:boolean;
+    plcAddresses:any;
+    connectedPlcs:any;
     statsData:any[];
 
     constructor(private request:RequestService,
@@ -78,6 +80,21 @@ export class HomeAlerts implements AfterViewInit{
         this.initUi();
     }
 
+    ngOnInit(){
+      this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
+        console.log("latest plc>>>-----",resp);
+        if(resp&&resp.pl&&resp.pl.plc&&resp.pl.address){
+
+            // this.realTimeData = _.keyBy(resp.pl.plc,'tank');
+            this.realTimeData = resp.pl.plc;
+            this.plcAddresses = _.keyBy(resp.pl.address,'tank');
+            // this.realTimeData = _.keyBy(this.testPlcs,'tank');
+            this.connectedPlcs = Object.keys(this.realTimeData);
+            this.initSelect();
+        }
+      });
+    }
+
 
     veSortBy(wich){
       if(this.currentSort != wich){
@@ -88,6 +105,19 @@ export class HomeAlerts implements AfterViewInit{
         },100);
       }
     }
+
+
+    veSetTransportableTank(alert,ttank){
+      if(ttank){
+          alert.ttank = ttank;
+      }
+      console.log("ttank-----",ttank);
+      console.log("posting alert-----",alert);
+      this.request.put('/plc/alert.json', alert).subscribe(res => {
+          console.log("alert ttank updated",res);
+      });
+    }
+
 
     veProcessed(alert){
       var self = this;

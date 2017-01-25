@@ -34,7 +34,12 @@
 
                   </div>
                   <div class="col s8 pull-s4 valign helper-font-bigger helper-padding-left-30">
+                    <!-- {{alert.tank}} -->
                     {{alert.tank}}
+                    <span *ngIf="plcAddresses">
+                     {{plcAddresses[alert.tank]?.addr}}
+                   </span>
+
                   </div>
                 </div>
 
@@ -56,9 +61,17 @@
                   </div> -->
 
                   <div class="table-row" *ngIf ='(alert.am != "拉回报警") && (alert.atype != "进场报警")' >
-                    <div class="table-cell"> 罐号 </div>
-                    <div class="table-cell">
-                        {{alert.tank}}
+                    <div class="table-cell" [style.padding]="alert.ttank ? '15px' : '0 0 0 15px'"  style="vertical-align:middle"> 罐号 </div>
+                    <div class="table-cell"  [style.padding]="alert.ttank ? '15px' : '0 0 0 15px'">
+                        <!-- {{alert.tank}} -->
+                        <span *ngIf="alert.ttank">{{alert.ttank}}  <i class="material-icons">mode_edit</i></span>
+                      <div class="row" *ngIf="!alert.ttank">
+                        <div class=" col s8 m8 valign-wrapper">  <input type="text" class="valign" name="ttank" #tttnk value="" style="margin:0; border-bottom:0;padding:5px;" placeholder="请输入罐号"></div>
+                        <div class="col s4 m4 valign-wrapper">
+                          <a class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">提交</a>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
                     </div>
                   </div>
                   <div class="table-row" *ngIf="alert.atype == '余量报警'">

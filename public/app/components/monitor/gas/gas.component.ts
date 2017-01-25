@@ -347,7 +347,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             this.currentPlcTank = this.connectedPlcs[0];
             this.initSelect();
         }
-      });
+      }); 
     }
     ngAfterViewInit(){
       this.iniSocket();
