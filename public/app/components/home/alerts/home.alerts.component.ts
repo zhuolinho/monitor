@@ -51,6 +51,8 @@ export class HomeAlerts implements AfterViewInit, OnInit{
     plcAddresses:any;
     connectedPlcs:any;
     statsData:any[];
+    tmpEditTtank:any = {};
+    ttankNgModel:any ={};
 
     constructor(private request:RequestService,
                 private userSrvc:UserService,
@@ -106,6 +108,15 @@ export class HomeAlerts implements AfterViewInit, OnInit{
       }
     }
 
+    veEditTransportableTank(alert){
+        this.tmpEditTtank[alert.tank] = alert.ttank; //temporarily keep tank.
+        this.ttankNgModel[alert.tank] = alert.ttank;
+        alert.ttank = null;
+    }
+    veCancelEditTransportableTank(alert){
+        alert.ttank = this.tmpEditTtank[alert.tank];
+        this.tmpEditTtank[alert.tank]= null;
+    }
 
     veSetTransportableTank(alert,ttank){
       if(ttank){
@@ -115,6 +126,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
       console.log("posting alert-----",alert);
       this.request.put('/plc/alert.json', alert).subscribe(res => {
           console.log("alert ttank updated",res);
+          this.tmpEditTtank[alert.tank]= null;
       });
     }
 

@@ -64,11 +64,12 @@
                     <div class="table-cell" [style.padding]="alert.ttank ? '15px' : '0 0 0 15px'"  style="vertical-align:middle"> 罐号 </div>
                     <div class="table-cell"  [style.padding]="alert.ttank ? '15px' : '0 0 0 15px'">
                         <!-- {{alert.tank}} -->
-                        <span *ngIf="alert.ttank">{{alert.ttank}}  <i class="material-icons">mode_edit</i></span>
+                        <span *ngIf="alert.ttank">{{alert.ttank}}  <i class="material-icons right" style="cursor:pointer; padding:5px;" (click)="veEditTransportableTank(alert)">mode_edit</i></span>
                       <div class="row" *ngIf="!alert.ttank">
-                        <div class=" col s8 m8 valign-wrapper">  <input type="text" class="valign" name="ttank" #tttnk value="" style="margin:0; border-bottom:0;padding:5px;" placeholder="请输入罐号"></div>
+                        <div class=" col s8 m8 valign-wrapper">  <input type="text" class="valign" name="ttank" #tttnk [(ngModel)]="ttankNgModel[alert.tank]" value="" style="margin:0; border-bottom:0;padding:5px;" placeholder="请输入罐号"></div>
                         <div class="col s4 m4 valign-wrapper">
-                          <a class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">提交</a>
+                          <a class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">保存</a>
+                          <a *ngIf="tmpEditTtank[alert.tank]" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veCancelEditTransportableTank(alert)">取消</a>
                         </div>
                         <div class="clearfix"></div>
                       </div>

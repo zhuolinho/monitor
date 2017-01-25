@@ -54,6 +54,8 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     this.detailmodal = {};
                     this.currentStatSelectedYear = 2016;
                     this.currentStatSelectedMonth = 1;
+                    this.tmpEditTtank = {};
+                    this.ttankNgModel = {};
                     console.log("Home alerts is up and running");
                     var self = this;
                     this.user = this.userSrvc.getUser();
@@ -99,7 +101,17 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                         }, 100);
                     }
                 };
+                HomeAlerts.prototype.veEditTransportableTank = function (alert) {
+                    this.tmpEditTtank[alert.tank] = alert.ttank; //temporarily keep tank.
+                    this.ttankNgModel[alert.tank] = alert.ttank;
+                    alert.ttank = null;
+                };
+                HomeAlerts.prototype.veCancelEditTransportableTank = function (alert) {
+                    alert.ttank = this.tmpEditTtank[alert.tank];
+                    this.tmpEditTtank[alert.tank] = null;
+                };
                 HomeAlerts.prototype.veSetTransportableTank = function (alert, ttank) {
+                    var _this = this;
                     if (ttank) {
                         alert.ttank = ttank;
                     }
@@ -107,6 +119,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     console.log("posting alert-----", alert);
                     this.request.put('/plc/alert.json', alert).subscribe(function (res) {
                         console.log("alert ttank updated", res);
+                        _this.tmpEditTtank[alert.tank] = null;
                     });
                 };
                 HomeAlerts.prototype.veProcessed = function (alert) {
