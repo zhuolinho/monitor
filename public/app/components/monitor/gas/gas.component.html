@@ -30,9 +30,9 @@
 
               <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
           </div>
-          <div class="col s3">
+          <!-- <div class="col s3">
               <a (click)="selectedtab=4; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
-          </div>
+          </div> -->
         </div>
       </div>
   </div>
@@ -407,7 +407,7 @@
 
 
     <!-- detail modal -->
-    <div id="gasUsageDetailModal" class="modal  fixed helper-padding-bottom-20">
+    <div id="gasUsageDetailModal"  style="max-width:1100px;" class="modal  fixed helper-padding-bottom-20">
       <div class="modal-content helper-overflow-hidden">
         <i class="modal-close material-icons right">clear</i>
 
@@ -428,9 +428,9 @@
 
                 <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
             </div>
-            <div class="col s3">
+            <!-- <div class="col s3">
                 <a (click)="selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
-            </div>
+            </div> -->
 
             <div class="clearfix"></div>
 
@@ -445,12 +445,12 @@
         <div *ngIf="selectedtab==1 || selectedtab==2" class="row modal-table helper-margin-top-20 helper-vscrolling" style="height:40vh;">
 
 
-              <div class="row">
+              <div class="row helper-hscrolling" style="max-width:100% !important;">
                 <!-- <img src="dist/images/chart.jpg" alt="" width="100%; height:200px;"> -->
 
                 <!-- <p class="helper-padding-left-15">瞬时流量 {{date}}</p> -->
 
-                <div  class="helper-padding-left-15" id="statsChart">
+                <div  class="helper-padding-left-15" id="statsChart" style="width:2500px;">
                 </div>
 
                 <!-- <div id="realTimeSigStatus">
@@ -460,7 +460,7 @@
 
 
 
-            <div class="row valign-wrapper">
+            <div class="row valign-wrapper" style="margin-top:20px;">
 
 
 
@@ -600,8 +600,8 @@
           </div>
           </div>
 
-          <h4 *ngIf="selectedtab==4" class="center-align" style="margin:13% 0;">
+          <!-- <h4 *ngIf="selectedtab==4" class="center-align" style="margin:13% 0;">
             在线支付
-          </h4>
+          </h4> -->
       </div>
   </div>

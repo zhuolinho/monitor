@@ -10,7 +10,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1, Gas;
+    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1, Gas, Gas_1;
     return {
         setters: [
             function (core_1_1) {
@@ -30,7 +30,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
             }
         ],
         execute: function () {
-            Gas = (function () {
+            Gas = Gas_1 = (function () {
                 function Gas(request, rtmgs, lib) {
                     var _this = this;
                     this.request = request;
@@ -345,7 +345,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                 Gas.prototype.ngOnDestroy = function () {
                     clearInterval(this.dateTimer);
                     // clearInterval(this.checkInterruptionTimer);
-                    Gas.graphIsRunning = false;
+                    Gas_1.graphIsRunning = false;
                 };
                 Gas.prototype.updateTime = function () {
                     var _this = this;
@@ -584,7 +584,8 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                             x: {
                                 type: 'timeseries',
                                 tick: {
-                                    count: 12,
+                                    count: 24,
+                                    //  format: function (x) { return x.getFullYear(); }
                                     format: '%H:%M' //how the date is displayed
                                 }
                             }
@@ -594,7 +595,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                 return Gas;
             }());
             Gas.graphIsRunning = false;
-            Gas = __decorate([
+            Gas = Gas_1 = __decorate([
                 core_1.Component({
                     selector: 'gas',
                     templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'

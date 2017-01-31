@@ -5,6 +5,8 @@ var mongoose = null ; //mongoose object
 var _ = require('lodash');
 var message = null;   // message function
 var plc = {};
+var moment = require('moment');
+moment().format();
 
 var q = require('q');
 var PlcAlert = require('../../models/plc-alert');
@@ -53,6 +55,7 @@ var alertsList =[
 
 plc.init = function(m) {
     var r = {pl: {status:true} , er:''};
+
 
     // populating plcalerts
 
@@ -302,6 +305,10 @@ plc.getAlertForTimeInterval =  function(m) {
   if(m && m.pl && m.pl.user && m.pl.user.oID && m.pl.tank){
 
     var flow = '';
+    var dateNow = lib.dateTime();
+    var todayZeroHour = dateNow.split(' ')[0]+' 00:00:00';
+
+      iPlc.find({oID:m.pl.user.oID,})
 
         if (m.pl.tank[0] =='G'){
               flow = 'isc2';
@@ -310,12 +317,8 @@ plc.getAlertForTimeInterval =  function(m) {
               flow = 'instfow';
         }
 
-        iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank}).$where(
-                function () {
-                    return (Date.now() - this._id.getTimestamp() < (8 * 60 * 60 * 1000))
-
-          }
-        ).sort({cd:1}).exec(function (err, plc) {
+        iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank,cd:{$gte:todayZeroHour}})
+        .sort({cd:1}).exec(function (err, plc) {
             if (err){
               r.er = err;
               r.status = false;

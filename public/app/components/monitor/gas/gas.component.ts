@@ -347,7 +347,7 @@ export class Gas  implements AfterViewInit,OnDestroy{
             this.currentPlcTank = this.connectedPlcs[0];
             this.initSelect();
         }
-      }); 
+      });
     }
     ngAfterViewInit(){
       this.iniSocket();
@@ -656,17 +656,40 @@ export class Gas  implements AfterViewInit,OnDestroy{
               axis : {
                     x: {
                     type: 'timeseries',
-                   tick: {
-                       count: 12,
-                       format:'%H:%M' //how the date is displayed
-                   }
+                     tick: {
+                         count: 24,
+                        //  format: function (x) { return x.getFullYear(); }
+                         format:'%H:%M' //how the date is displayed
+                     }
                   }
               }
           });
     }
 
 
-
+    // var X = temp;
+    // X.unshift('x');
+    // console.log("X-----",X);
+    // temp = _.uniq(temp);
+    // console.log("temp unique------",temp);
+    // var updatedAxes = [];
+    // if(temp){
+    //       for (let i = 0; i < 24; i++) {
+    //         if(temp[i]){
+    //             updatedAxes[i] = temp[i];
+    //         }
+    //         else{
+    //            if(i<9){
+    //               updatedAxes[i] = temp[0].split(' ')[0]+" "+"0"+i+":00";
+    //           }
+    //           else{
+    //                 updatedAxes[i] = temp[0].split(' ')[0]+" "+i+":00";
+    //           }
+    //         }
+    //
+    //
+    //       }
+    // }
 
 
     // initGrapth(){
