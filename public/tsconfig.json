@@ -9,6 +9,11 @@
     "removeComments": false,
     "noImplicitAny": false
   },
+  "compileOnSave": true,
+  "browserRefreshOnSave": true,
+  "atom": {
+    "rewriteTsconfig": true
+  },
   "exclude": [
     "node_modules",
     "typings/main",
@@ -19,11 +24,6 @@
     "**/*.tsx",
     "!node_modules/**"
   ],
-  "compileOnSave": true,
-  "browserRefreshOnSave": true,
-  "atom": {
-    "rewriteTsconfig": true
-  },
   "files": [
     "app/app.module.ts",
     "app/boot.ts",

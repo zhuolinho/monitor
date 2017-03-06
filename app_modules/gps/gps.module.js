@@ -1,8 +1,8 @@
 
 'use strict';
 
-var mongoose = null ; //mongoose object
 var message = null;   // message function
+var mongoose = require('mongoose');
  global.allCars = {};
 var gps = {};
 
@@ -14,6 +14,7 @@ var Shiment = require('../../models/shipment');
 var gpsConfig = require('../../configs/gps');
 var globalConfig = require('../../configs/global');
 var lib = require('../../lib/lib');
+var scheduler = require('node-schedule');
 
 gps.init = function(m) {
     var r = {pl: {status:true} , er:''};
@@ -171,23 +172,16 @@ gps.init = function(m) {
               pchain.forEach(function (f) {
                   result = result.then(f);
               });
-
          }
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+      var montlyJob  = scheduler.scheduleJob('0 0 2 * * *', function(){
+        console.log('I run every day at 2 am');
+        gpsModel.remove({createdAt: {$lt: new Date((new Date())-30*24*60*60*1000) }}, function(err, resp) {
+              console.log('result.length-----',resp.result.length);
+              console.log('removed-----gps before last months --',err,resp.result);
+        })
+      });
 
 
      return q(r);
