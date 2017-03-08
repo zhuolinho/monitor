@@ -1,6 +1,5 @@
-System.register(['@angular/core', '../../../config', '../../../services/request.service'], function(exports_1, context_1) {
+System.register(["@angular/core", "../../../config", "../../../services/request.service"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, config_1, request_service_1;
-    var HomeProcssedAlerts;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, config_1, request_service_1, HomeProcssedAlerts;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -22,13 +21,14 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
             },
             function (request_service_1_1) {
                 request_service_1 = request_service_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             HomeProcssedAlerts = (function () {
                 function HomeProcssedAlerts(request) {
                     var _this = this;
                     this.request = request;
-                    this.months = ['1月', '2月', '3月', '4月'];
+                    this.months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
                     this.selectedMonth = '';
                     // alertsList:any[]=[{
                     //   groupId:1,
@@ -224,16 +224,16 @@ System.register(['@angular/core', '../../../config', '../../../services/request.
                         window.location = res.pl.file;
                     });
                 };
-                HomeProcssedAlerts = __decorate([
-                    core_1.Component({
-                        selector: 'home-processed-alerts',
-                        templateUrl: config_1.config.prefix + '/components/home/alerts_processed/home.alerts.processed.component.html'
-                    }), 
-                    __metadata('design:paramtypes', [request_service_1.RequestService])
-                ], HomeProcssedAlerts);
                 return HomeProcssedAlerts;
             }());
+            HomeProcssedAlerts = __decorate([
+                core_1.Component({
+                    selector: 'home-processed-alerts',
+                    templateUrl: config_1.config.prefix + '/components/home/alerts_processed/home.alerts.processed.component.html'
+                }),
+                __metadata("design:paramtypes", [request_service_1.RequestService])
+            ], HomeProcssedAlerts);
             exports_1("HomeProcssedAlerts", HomeProcssedAlerts);
         }
-    }
+    };
 });

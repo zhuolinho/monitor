@@ -16,6 +16,7 @@ declare var jQuery:any;
 declare var window:any;
 // declare var io:any;
 declare var Array:any;
+declare var _:any;
 
 @Component({
   selector:'shipment-map',
@@ -39,6 +40,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   isShiping:boolean = false;
   user:any;
   tankId:string;
+  connectedPlcs:any;
+  plcAddresses:any;
   totalCarNumber:number;
   newShipment:any = {
       sim:'',
@@ -72,10 +75,22 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       this.tankId = params['tank'];
         console.log("params['tank']----",this.tankId);
     });
+
+
+    this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
+      console.log("latest plc>>>-----",resp);
+      if(resp&&resp.pl&&resp.pl.plc&&resp.pl.address){
+
+          let plcData = resp.pl.plc;
+          this.plcAddresses = _.keyBy(resp.pl.address,'tank');
+          this.connectedPlcs = Object.keys(plcData);
+          this.initUi();
+          // this.initSelect();
+      }
+    });
 }
 
   ngAfterViewInit(){
-    this.initUi();
     this.loadJScript();
     this.iniSocket();
   }

@@ -13,11 +13,14 @@
       </span>
       <div class=" helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
-            <select class="helper-select-font-bigger select-address">
+            <!-- <select class="">
               <option value="C002-闸北区大宁路355号XX站" > C002-闸北区大宁路355号XX站 </option>
               <option  value="L002-闸北区大宁路311号XX站"> L002-闸北区大宁路311号XX站 </option>
+            </select> -->
+
+            <select class="select-address helper-select-font-bigger">
+              <option *ngFor="let plc of connectedPlcs" [value]="plc" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
             </select>
-            <!-- <label>选在时间</label> -->
           </div>
 
           <div class="clearfix"></div>

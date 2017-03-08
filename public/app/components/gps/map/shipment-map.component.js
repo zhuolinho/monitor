@@ -1,6 +1,5 @@
-System.register(['@angular/core', '@angular/router', '../../../config', '../../../services/request.service', '../../../services/user.service', '../../../services/rt-messages.service'], function(exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "../../../config", "../../../services/request.service", "../../../services/user.service", "../../../services/rt-messages.service"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, config_1, request_service_1, user_service_1, rt_messages_service_1;
-    var ShipmentMap;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, router_1, config_1, request_service_1, user_service_1, rt_messages_service_1, ShipmentMap, ShipmentMap_1;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -31,9 +30,10 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
             },
             function (rt_messages_service_1_1) {
                 rt_messages_service_1 = rt_messages_service_1_1;
-            }],
-        execute: function() {
-            ShipmentMap = (function () {
+            }
+        ],
+        execute: function () {
+            ShipmentMap = ShipmentMap_1 = (function () {
                 function ShipmentMap(route, request, userSrvc, rtmgs) {
                     this.route = route;
                     this.request = request;
@@ -68,18 +68,26 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                         _this.tankId = params['tank'];
                         console.log("params['tank']----", _this.tankId);
                     });
+                    this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
+                        console.log("latest plc>>>-----", resp);
+                        if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+                            var plcData = resp.pl.plc;
+                            _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+                            _this.connectedPlcs = Object.keys(plcData);
+                            _this.initUi();
+                        }
+                    });
                 };
                 ShipmentMap.prototype.ngAfterViewInit = function () {
-                    this.initUi();
                     this.loadJScript();
                     this.iniSocket();
                 };
                 ShipmentMap.prototype.ngOnDestroy = function () {
                     //reset static variables
-                    ShipmentMap.mapLoaded = false;
-                    ShipmentMap.gpsmap = null;
-                    ShipmentMap.allMarkers = {};
-                    ShipmentMap.carsGroups = [];
+                    ShipmentMap_1.mapLoaded = false;
+                    ShipmentMap_1.gpsmap = null;
+                    ShipmentMap_1.allMarkers = {};
+                    ShipmentMap_1.carsGroups = [];
                 };
                 ShipmentMap.prototype.initUi = function () {
                     var _this = this;
@@ -169,14 +177,14 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     document.body.appendChild(script);
                 };
                 ShipmentMap.prototype.mapLoadedCb = function () {
-                    if (!ShipmentMap.mapLoaded) {
-                        ShipmentMap.mapLoaded = true;
+                    if (!ShipmentMap_1.mapLoaded) {
+                        ShipmentMap_1.mapLoaded = true;
                         // 百度地图API功能
-                        ShipmentMap.gpsmap = new BMap.Map("allmap");
+                        ShipmentMap_1.gpsmap = new BMap.Map("allmap");
                     }
                     // var map = new BMap.Map("allmap");
                     var point = new BMap.Point(118.273, 33.779);
-                    ShipmentMap.gpsmap.centerAndZoom(point, 7);
+                    ShipmentMap_1.gpsmap.centerAndZoom(point, 7);
                     // 添加带有定位的导航控件
                     var navigationControl = new BMap.NavigationControl({
                         // 靠左上角位置
@@ -186,7 +194,7 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                         // 启用显示定位
                         enableGeolocation: true
                     });
-                    ShipmentMap.gpsmap.addControl(navigationControl);
+                    ShipmentMap_1.gpsmap.addControl(navigationControl);
                     // function showInfo(e){
                     //   console.log(e.point.lng + ", " + e.point.lat);
                     // }
@@ -197,7 +205,7 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     // var marker = new BMap.Marker(point);
                     if (data.lp) {
                         var point = new BMap.Point(data.lng, data.lat);
-                        ShipmentMap.allMarkers[data._id] = new BMap.Marker(point); //_id = sim;
+                        ShipmentMap_1.allMarkers[data._id] = new BMap.Marker(point); //_id = sim;
                         var opts = {
                             width: 200,
                             height: 100,
@@ -205,10 +213,10 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                             enableMessage: true //设置允许信息窗发送短息
                         };
                         var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + ", 速度:" + data.speed + "km/h " + ", 定位时间:" + data.time, opts); // 创建信息窗口对象
-                        ShipmentMap.allMarkers[data._id].addEventListener("click", function () {
-                            ShipmentMap.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
+                        ShipmentMap_1.allMarkers[data._id].addEventListener("click", function () {
+                            ShipmentMap_1.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
                         });
-                        ShipmentMap.gpsmap.addOverlay(ShipmentMap.allMarkers[data._id]);
+                        ShipmentMap_1.gpsmap.addOverlay(ShipmentMap_1.allMarkers[data._id]);
                     }
                 };
                 ShipmentMap.prototype.iniSocket = function () {
@@ -305,12 +313,12 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     var point = new BMap.Point(cardata.lng, cardata.lat);
                     var marker = new BMap.Marker(point, { icon: myIcon });
                     this.targetMarker = marker;
-                    ShipmentMap.gpsmap.addOverlay(this.targetMarker);
+                    ShipmentMap_1.gpsmap.addOverlay(this.targetMarker);
                 };
                 ShipmentMap.prototype.updateShowAllPosition = function (cardata) {
-                    if (ShipmentMap.allMarkers[cardata.sim]) {
+                    if (ShipmentMap_1.allMarkers[cardata.sim]) {
                         // console.log("cardata.sim----",cardata.sim);
-                        ShipmentMap.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
+                        ShipmentMap_1.allMarkers[cardata.sim].setPosition(new BMap.Point(cardata.lng, cardata.lat));
                     }
                 };
                 ShipmentMap.prototype.updatePosition = function (cardata, dest) {
@@ -353,8 +361,8 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                 };
                 ShipmentMap.prototype.veConfirmShipment = function () {
                     var that = this;
-                    console.log("confirm-----", ShipmentMap.mapLoaded, this.selectedCarId);
-                    if (ShipmentMap.mapLoaded && this.selectedCarId && !this.isShiping) {
+                    console.log("confirm-----", ShipmentMap_1.mapLoaded, this.selectedCarId);
+                    if (ShipmentMap_1.mapLoaded && this.selectedCarId && !this.isShiping) {
                         this.request.get('/gps/cars/all.json').subscribe(function (res) {
                             console.log("got cars----", res);
                             var cars = res.pl.cars;
@@ -397,11 +405,11 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                         // offset: new BMap.Size(0, -5),    //相当于CSS精灵
                         imageOffset: new BMap.Size(0, 10) //图片的偏移量。为了是图片底部中心对准坐标点。
                     });
-                    var route = new BMap.DrivingRoute(ShipmentMap.gpsmap, { renderOptions: { map: ShipmentMap.gpsmap, autoViewport: true } }); //驾车实例
+                    var route = new BMap.DrivingRoute(ShipmentMap_1.gpsmap, { renderOptions: { map: ShipmentMap_1.gpsmap, autoViewport: true } }); //驾车实例
                     route.search(myP1, myP2); //显示一条公交线路
                     route.setSearchCompleteCallback(function () {
                         that.updatePosition(car, dest);
-                        ShipmentMap.gpsmap.centerAndZoom(middle, 12);
+                        ShipmentMap_1.gpsmap.centerAndZoom(middle, 12);
                         var distance = route.getResults().getPlan(0).getDistance(true);
                         var duration = route.getResults().getPlan(0).getDuration(true);
                         that.newShipment.dist = distance;
@@ -437,16 +445,16 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     var _this = this;
                     this.targetCar = null; // stop car moves.
                     var point = new BMap.Point(121.454, 31.153);
-                    ShipmentMap.gpsmap.centerAndZoom(point, 10);
+                    ShipmentMap_1.gpsmap.centerAndZoom(point, 10);
                     this.request.get('/gps/cars/all.json').subscribe(function (res) {
                         var cars = res.pl.cars;
                         console.log("all cars----", cars);
                         _this.allCars = Object.keys(cars).map(function (key) {
                             return cars[key];
                         });
-                        ShipmentMap.carsGroups = _this.groupByTen(_this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
-                        for (var i = 0; i < ShipmentMap.carsGroups.length; i++) {
-                            _this.adjustPoint(ShipmentMap.carsGroups[i], _this.addToMap); //convertor doen'st work for more thatn 10 points
+                        ShipmentMap_1.carsGroups = _this.groupByTen(_this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
+                        for (var i = 0; i < ShipmentMap_1.carsGroups.length; i++) {
+                            _this.adjustPoint(ShipmentMap_1.carsGroups[i], _this.addToMap); //convertor doen'st work for more thatn 10 points
                         }
                         _this.totalCarNumber = _this.allCars.length;
                     });
@@ -456,18 +464,18 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     if (adjusted.status === 0) {
                         if (adjusted.points.length > 4) {
                             for (var i = 0; i < adjusted.points.length; i++) {
-                                ShipmentMap.carsGroups[0][i].lng = adjusted.points[i].lng;
-                                ShipmentMap.carsGroups[0][i].lat = adjusted.points[i].lat;
-                                ShipmentMap.carsGroups[0][i].valid = true;
-                                ShipmentMap.addMarker(ShipmentMap.carsGroups[0][i]);
+                                ShipmentMap_1.carsGroups[0][i].lng = adjusted.points[i].lng;
+                                ShipmentMap_1.carsGroups[0][i].lat = adjusted.points[i].lat;
+                                ShipmentMap_1.carsGroups[0][i].valid = true;
+                                ShipmentMap_1.addMarker(ShipmentMap_1.carsGroups[0][i]);
                             }
                         }
                         else {
                             for (var i = 0; i < adjusted.points.length; i++) {
-                                ShipmentMap.carsGroups[1][i].lng = adjusted.points[i].lng;
-                                ShipmentMap.carsGroups[1][i].lat = adjusted.points[i].lat;
-                                ShipmentMap.carsGroups[1][i].valid = true;
-                                ShipmentMap.addMarker(ShipmentMap.carsGroups[1][i]);
+                                ShipmentMap_1.carsGroups[1][i].lng = adjusted.points[i].lng;
+                                ShipmentMap_1.carsGroups[1][i].lat = adjusted.points[i].lat;
+                                ShipmentMap_1.carsGroups[1][i].valid = true;
+                                ShipmentMap_1.addMarker(ShipmentMap_1.carsGroups[1][i]);
                             }
                         }
                     }
@@ -488,7 +496,7 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                 ShipmentMap.prototype.calculateDistance = function (scrPoint, desPoint) {
                     var p1 = new BMap.Point(scrPoint.lng, scrPoint.lat); //起点
                     var p2 = new BMap.Point(desPoint.lng, desPoint.lat); //终点
-                    var tempDriving = new BMap.DrivingRoute(ShipmentMap.gpsmap); //驾车实例
+                    var tempDriving = new BMap.DrivingRoute(ShipmentMap_1.gpsmap); //驾车实例
                     tempDriving.search(p1, p2);
                     var distance = null;
                     var deferred = jQuery.Deferred();
@@ -509,20 +517,23 @@ System.register(['@angular/core', '@angular/router', '../../../config', '../../.
                     group.push(tempArr);
                     return group;
                 };
-                ShipmentMap.mapLoaded = false;
-                ShipmentMap.carsGroups = [];
-                ShipmentMap.allMarkers = {};
-                ShipmentMap = __decorate([
-                    core_1.Component({
-                        selector: 'shipment-map',
-                        templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
-                        styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
-                    }), 
-                    __metadata('design:paramtypes', [router_1.ActivatedRoute, request_service_1.RequestService, user_service_1.UserService, rt_messages_service_1.RTMessagesService])
-                ], ShipmentMap);
                 return ShipmentMap;
             }());
+            ShipmentMap.mapLoaded = false;
+            ShipmentMap.carsGroups = [];
+            ShipmentMap.allMarkers = {};
+            ShipmentMap = ShipmentMap_1 = __decorate([
+                core_1.Component({
+                    selector: 'shipment-map',
+                    templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
+                    styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
+                }),
+                __metadata("design:paramtypes", [router_1.ActivatedRoute,
+                    request_service_1.RequestService,
+                    user_service_1.UserService,
+                    rt_messages_service_1.RTMessagesService])
+            ], ShipmentMap);
             exports_1("ShipmentMap", ShipmentMap);
         }
-    }
+    };
 });
