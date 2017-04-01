@@ -176,10 +176,18 @@ gps.init = function(m) {
         });
 
       var montlyJob  = scheduler.scheduleJob('0 0 2 * * *', function(){
-        console.log('I run every day at 2 am');
-        gpsModel.remove({createdAt: {$lt: new Date((new Date())-30*24*60*60*1000) }}, function(err, resp) {
-              console.log('result.length-----',resp.result.length);
+        console.log('Job: every day at 2 am');
+        // remove data older than one week.
+        gpsModel.remove({createdAt: {$lt: new Date((new Date())-7*24*60*60*1000) }}, function(err, resp) {
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
               console.log('removed-----gps before last months --',err,resp.result);
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
+              console.log('++++++++++***************++++++++++++++++++')
         })
       });
 
