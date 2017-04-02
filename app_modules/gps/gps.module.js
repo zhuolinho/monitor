@@ -181,11 +181,7 @@ gps.init = function(m) {
         gpsModel.remove({createdAt: {$lt: new Date((new Date())-7*24*60*60*1000) }}, function(err, resp) {
               console.log('++++++++++***************++++++++++++++++++')
               console.log('++++++++++***************++++++++++++++++++')
-              console.log('++++++++++***************++++++++++++++++++')
-              console.log('++++++++++***************++++++++++++++++++')
-              console.log('removed-----gps before last months --',err,resp.result);
-              console.log('++++++++++***************++++++++++++++++++')
-              console.log('++++++++++***************++++++++++++++++++')
+              console.log('removed old gps data --',err,resp.result);
               console.log('++++++++++***************++++++++++++++++++')
               console.log('++++++++++***************++++++++++++++++++')
         })
