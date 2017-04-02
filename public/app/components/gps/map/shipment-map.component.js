@@ -131,7 +131,7 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                             compRef.returnToRefill = false;
                         }
                     }
-                    compRef.initUi();
+                    jQuery('select').material_select();
                 };
                 ShipmentMap.prototype.veSelectedLicensePlate = function (event, compRef) {
                     if (event) {

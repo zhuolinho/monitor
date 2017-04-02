@@ -145,7 +145,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                             opacity: .5,
                             in_duration: 300,
                             out_duration: 200,
-                            ready: function () { console.log('Ready'); self.initSelect(); },
+                            ready: function () { console.log('Ready'); jQuery('select').material_select(); },
                             complete: function () { console.log('Closed'); } // Callback for Modal close
                         });
                         //  alert('getting models up');
@@ -226,7 +226,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     jQuery("#alertDetailsModal").openModal({
                         ready: function () {
                             that.initGrapth();
-                            that.initSelect();
+                            jQuery('select').material_select();
                         }
                     });
                 };
@@ -259,7 +259,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
                         jQuery('.select-month').val(_this.currentStatSelectedMonth);
-                        _this.initSelect();
+                        jQuery('select').material_select();
                     });
                 };
                 HomeAlerts.prototype.showByMonth = function () {
@@ -275,7 +275,7 @@ System.register(["@angular/core", "../../../config", "../../../services/request.
                     this.computeStats();
                     setTimeout(function (_) {
                         jQuery('.select-year').val(_this.currentStatSelectedYear);
-                        _this.initSelect();
+                        jQuery('select').material_select();
                     });
                 };
                 // downloadData(){

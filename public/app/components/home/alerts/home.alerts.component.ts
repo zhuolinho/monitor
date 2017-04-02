@@ -79,7 +79,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
 
     ngAfterViewInit(){
       this.iniSocket();
-        this.initUi();
+      this.initUi();
     }
 
     ngOnInit(){
@@ -146,7 +146,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
       this.request.put('/plc/alert.json', alert).subscribe(res => {
           console.log("alert updated",res);
         var newArray = _.remove(this.alertGroups[alert.atype],function(o){
-              return o._id == alert._id;
+            return o._id == alert._id;
         });
       });
     }
@@ -159,7 +159,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
                  opacity: .5, // Opacity of modal background
                  in_duration: 300, // Transition in duration
                  out_duration: 200, // Transition out duration
-                 ready: function() { console.log('Ready');  self.initSelect()}, // Callback for Modal open
+                 ready: function() { console.log('Ready');    jQuery('select').material_select();}, // Callback for Modal open
                  complete: function() { console.log('Closed'); } // Callback for Modal close
            });
           //  alert('getting models up');
@@ -198,17 +198,16 @@ export class HomeAlerts implements AfterViewInit, OnInit{
 
 
       initSelect(){
-
         var that = this;
         setTimeout(_=>{
-             jQuery('select').material_select();
-             jQuery('select.select-year').change(function(e){
-                       that.statYearSelected(e);
-             });
+          jQuery('select').material_select();
+          jQuery('select.select-year').change(function(e){
+              that.statYearSelected(e);
+           });
 
-             jQuery('select.select-month').change(function(e){
-                 that.statMothSelected(e);
-             });
+           jQuery('select.select-month').change(function(e){
+               that.statMothSelected(e);
+           });
         });
       }
 
@@ -234,15 +233,14 @@ export class HomeAlerts implements AfterViewInit, OnInit{
       }
 
       statYearSelected(event){
-
         console.log('year changed1----',event.target.value);
-            this.currentStatSelectedYear = event.target.value;
+        this.currentStatSelectedYear = event.target.value;
       }
 
       statMothSelected(event){
-            console.log('month changed1----',event.target.value);
-            this.currentStatSelectedMonth = event.target.value;
-            this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
+        console.log('month changed1----',event.target.value);
+        this.currentStatSelectedMonth = event.target.value;
+        this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
       }
 
 
@@ -260,8 +258,8 @@ export class HomeAlerts implements AfterViewInit, OnInit{
 
         jQuery("#alertDetailsModal").openModal({
              ready: function() {
-                  that.initGrapth();
-                  that.initSelect();
+              that.initGrapth();
+              jQuery('select').material_select();
               }
         });
       }
@@ -298,7 +296,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
           setTimeout(_=>{
             jQuery('.select-year').val(this.currentStatSelectedYear);
             jQuery('.select-month').val(this.currentStatSelectedMonth);
-            this.initSelect();
+            jQuery('select').material_select();
           });
 
       }
@@ -317,7 +315,7 @@ export class HomeAlerts implements AfterViewInit, OnInit{
           this.computeStats();
           setTimeout(_=>{
             jQuery('.select-year').val(this.currentStatSelectedYear);
-            this.initSelect();
+            jQuery('select').material_select();
           });
       }
 

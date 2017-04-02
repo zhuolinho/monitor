@@ -425,7 +425,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                             // that.realTimeData = _.keyBy(data.pl.plc,'tank');
                             that.realTimeData = data.pl.plc;
                             that.connectedPlcs = Object.keys(that.realTimeData);
-                            that.initSelect();
+                            jQuery('select:not(simple-select)').material_select();
                         }
                     });
                     this.rtmgs.on('plcDataInterruption', function (data) {

@@ -156,7 +156,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
               compRef.returnToRefill = false;
           }
         }
-        compRef.initUi();
+        jQuery('select').material_select();
   }
 
 
