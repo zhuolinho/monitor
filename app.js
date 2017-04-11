@@ -12,7 +12,7 @@ var app = express();
 var passport	= require('passport');
 
 
-console.log('\nAPP: Loading APP ...');
+console.log('\nAPP: >>>>>>>>>>|||||||||||>>>>>>Loading APP ...');
 
   dispatcher().then(function(r){
 

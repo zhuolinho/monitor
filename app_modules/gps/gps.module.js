@@ -315,9 +315,7 @@ gps.getAllCars =  function(m) {
   var r = {pl: null, status:false , ec:'',em:''};
    var deferred = q.defer();
 
-
-
-   if(m && m.pl && m.pl.user && m.pl.user.oID){
+   if(m && m.pl && m.pl.user && m.pl.user.oID) {
 
      gpsModel.aggregate()
      .match({oID:m.pl.user.oID})
@@ -333,20 +331,18 @@ gps.getAllCars =  function(m) {
       .allowDiskUse(true)
       .exec(function(err,resp){
               // console.log("all cars----",resp)
-              if (err){
-                console.log("MOD::------",err);
-                r.ec = JSON.stringify(err.ec);
-                r.em = JSON.stringify(err.em);
-                deferred.reject(r);
-              }
-              else{
-                r.pl = {cars:resp};
-                r.status = true;
-                deferred.resolve(r);
-              }
-          });
-
-
+          if (err){
+            console.log("MOD::------",err);
+            r.ec = JSON.stringify(err.ec);
+            r.em = JSON.stringify(err.em);
+            deferred.reject(r);
+          }
+          else{
+            r.pl = {cars:resp};
+            r.status = true;
+            deferred.resolve(r);
+          }
+      });
    }
    else{
      r.er = 'no org provided';

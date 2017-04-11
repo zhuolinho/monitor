@@ -464,7 +464,7 @@ var _tcpSerever = function(handler){
 
       var isSaving  = false;
 
-    console.log('plc got new socket-----');
+    // console.log('plc got new socket-----');
     // Identify this client
     socket.name = socket.remoteAddress + ":" + socket.remotePort;
 
@@ -479,24 +479,24 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
-      console.log("got plc data-----");
+      // console.log("got plc data-----");
       goodConnection = true;
       lastDataTime = Date.now();
 
       if(lib.isPlcBegin(data) && lib.isPlcEnd(data)){ //check if both begin and end
-            console.log('got both ends of  plc data----');
+            // console.log('got both ends of  plc data----');
           gotInOnePiece = true;
       }
       else  if(!gotStart && lib.isPlcBegin(data)){  ///check begin
             gotStart = true;
-            console.log('got begin plc data----',plcConf.start);
+            // console.log('got begin plc data----',plcConf.start);
             var temp1 = data.slice(6);
             size += temp1.length;
             chunks.push(temp1);
           }
 
       else  if(gotStart && !lib.isPlcBegin(data) && !lib.isPlcEnd(data)){//check middle
-            console.log('got middle plc data----');
+            // console.log('got middle plc data----');
             var temp2 = data;
             size += temp2.length;
             chunks.push(temp2);
@@ -505,7 +505,7 @@ var _tcpSerever = function(handler){
       if(lib.isPlcEnd(data)){ //check end
 
 
-          console.log('got end plc data----',plcConf.start);
+          // console.log('got end plc data----',plcConf.start);
 
           var temp3 = null;
 
@@ -541,7 +541,7 @@ var _tcpSerever = function(handler){
 
     // Remove the client from the list when it leaves
     socket.on('end', function () {
-      console.log('plc server: client left----', socket.name );
+      // console.log('plc server: client left----', socket.name );
     });
 
   }).listen(3002);
@@ -562,7 +562,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful-----alerts are====",r.pl.alerts);
+        // console.log("plc route save data successful-----alerts are====",r.pl.alerts);
         // _getLatest(handler,r.length, globalConf.orgs[0]);
         _getLatest(handler,globalConf.orgs[0]);
 
@@ -576,7 +576,7 @@ function saveData(handler,data){
                 atype:'信号中断',
                 tank:r.pl.alerts[i].tank
           }
-          console.log("alert----to---create----",r.pl.alerts[i])
+          // console.log("alert----to---create----",r.pl.alerts[i])
           pchain.push(_createPlcAlert(alert,handler));
         }
 
@@ -664,7 +664,7 @@ function _checkInterruption(handler){
 
     handler(param)
         .then(function (r) {
-              console.log("route: plc alert created-----",r);
+              // console.log("route: plc alert created-----",r);
               io.emit("newPlcAlert:"+user.oID,r);
         })
         .fail(function (r) {
@@ -686,7 +686,7 @@ var _tcpSerever = function(handler){
 
       var isSaving  = false;
 
-    console.log('plc got new socket-----');
+    // console.log('plc got new socket-----');
     // Identify this client
     socket.name = socket.remoteAddress + ":" + socket.remotePort;
 
@@ -701,24 +701,24 @@ var _tcpSerever = function(handler){
 
     // Handle incoming messages from clients.
     socket.on('data', function (data) {
-      console.log("got plc data-----");
+      // console.log("got plc data-----");
       goodConnection = true;
       lastDataTime = Date.now();
 
       if(lib.isPlcBegin(data) && lib.isPlcEnd(data)){ //check if both begin and end
-            console.log('got both ends of  plc data----');
+            // console.log('got both ends of  plc data----');
           gotInOnePiece = true;
       }
       else  if(!gotStart && lib.isPlcBegin(data)){  ///check begin
             gotStart = true;
-            console.log('got begin plc data----',plcConf.start);
+            // console.log('got begin plc data----',plcConf.start);
             var temp1 = data.slice(6);
             size += temp1.length;
             chunks.push(temp1);
           }
 
       else  if(gotStart && !lib.isPlcBegin(data) && !lib.isPlcEnd(data)){//check middle
-            console.log('got middle plc data----');
+            // console.log('got middle plc data----');
             var temp2 = data;
             size += temp2.length;
             chunks.push(temp2);
@@ -727,7 +727,7 @@ var _tcpSerever = function(handler){
       if(lib.isPlcEnd(data)){ //check end
 
 
-          console.log('got end plc data----',plcConf.start);
+          // console.log('got end plc data----',plcConf.start);
 
           var temp3 = null;
 
@@ -763,7 +763,7 @@ var _tcpSerever = function(handler){
 
     // Remove the client from the list when it leaves
     socket.on('end', function () {
-      console.log('plc server: client left----', socket.name );
+      // console.log('plc server: client left----', socket.name );
     });
 
   }).listen(3002);
@@ -784,7 +784,7 @@ function saveData(handler,data){
 
   handler(param)
       .then(function (r) {
-        console.log("plc route save data successful---",r.pl);
+        // console.log("plc route save data successful---",r.pl);
         // _getLatest(handler,r.length, globalConf.orgs[0]);
         _getLatest(handler,globalConf.orgs[0]);
 
@@ -863,7 +863,7 @@ function _checkInterruption(handler){
 
     handler(param)
         .then(function (r) {
-              console.log("route: plc alert created-----",r);
+              // console.log("route: plc alert created-----",r);
               io.emit("newPlcAlert:"+user.oID,r);
         })
         .fail(function (r) {

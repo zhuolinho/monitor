@@ -234,7 +234,6 @@ var _tcpCLient = function(handler){
 
             client.on('data', function (data) {
                 var stream = data.toString('utf8');
-                console.log("got gps string------");
                 if(stream.length > 20){
                     processIncommingData(handler,stream);
                 }
@@ -258,7 +257,7 @@ function processIncommingData(handler,stream){
 
   handler(param)
       .then(function (r) {
-        // console.log("route: process data successful",r);
+        // console.log("route: gps process data successful");
         io.emit("carMove:"+globalConf.orgs[0].oID,r);
       })
       .fail(function (r) {
