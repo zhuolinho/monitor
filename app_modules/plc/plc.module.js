@@ -404,7 +404,7 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  plc[0].maxVal-plc2[0][flow];
+                                plc[0].usage  =  Math.abs(parseFloat(plc[0].maxVal-plc2[0][flow]));
                             }
                             else{
                                 // plc[0].usage  =  plc[0].maxVal;
@@ -414,7 +414,7 @@ plc.getPlcStats = function(m){
                               plc[0].date = plc[0].date.slice(0,10);
 
                             for (var i = 1; i < plc.length; i++) {
-                              plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i-1].maxVal));
                               plc[i].date = plc[i].date.slice(0,10);
                             }
 
@@ -476,7 +476,7 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  plc[0].maxVal-plc2[0][flow];
+                                plc[0].usage  =  Math.abs(parseFloat(plc[0].maxVal-plc2[0][flow]));
                             }
                             else{
                                 // plc[0].usage  =  plc[0].maxVal;
@@ -486,7 +486,7 @@ plc.getPlcStats = function(m){
                             plc[0].date = plc[0].date.slice(0,7);
 
                             for (var i = 1; i < plc.length; i++) {
-                              plc[i].usage = plc[i].maxVal - plc[i-1].maxVal;
+                              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i-1].maxVal));
                               plc[i].date = plc[i].date.slice(0,7);
                             }
 
