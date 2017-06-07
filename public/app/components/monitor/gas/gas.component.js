@@ -90,9 +90,9 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                         if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                             _this.realTimeData = resp.pl.plc;
                             _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-                            _this.connectedPlcs = _.sortBy(Object.keys(_this.realTimeData), function (o) {
+                            _this.connectedPlcs = _.orderBy(Object.keys(_this.realTimeData), function (o) {
                                 return parseInt(o.slice(1, 4));
-                            });
+                            }, ['asc']);
                             _this.currentPlcTank = _this.connectedPlcs[0];
                             _this.initSelect();
                         }
