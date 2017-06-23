@@ -93,6 +93,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
   ngAfterViewInit(){
     this.loadJScript();
     this.iniSocket();
+    this.loadCars();
   }
 
   ngOnDestroy(){
@@ -101,6 +102,17 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     ShipmentMap.gpsmap = null;
     ShipmentMap.allMarkers = {};
     ShipmentMap.carsGroups = [];
+  }
+
+  loadCars () {
+    console.log('load cars----');
+    if (ShipmentMap.mapLoaded) {
+      this.showAllCars();
+    } else {
+      setTimeout(() => {
+        this.loadCars();
+      }, 500);
+    }
   }
 
   initUi(){
@@ -121,10 +133,6 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
          jQuery('select.select-address').on('change',function(event){
            _this.veSelectedAddress(event, _this)
-         });
-
-         jQuery('select.select-license-plate').on('change',function(event){
-           _this.veSelectedLicensePlate(event, _this)
          });
 
          jQuery('select.select-tank').on('change',function(event){
@@ -161,15 +169,16 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
 
 
   veSelectedLicensePlate(event, compRef){
-        if(event){
-            compRef.selectedCarId = event.target.value;
-            compRef.newShipment.sim = compRef.selectedCarId;
-        }
+    if(event){
+        compRef.selectedCarId = event.target.value;
+        compRef.newShipment.sim = compRef.selectedCarId;
+        compRef.showCar(compRef.selectedCarId);
+    }
   }
 
   veSelectedTankType(event, compRef){
         if(event){
-            compRef.newShipment.ntt = event.target.value;
+          compRef.newShipment.ntt = event.target.value;
         }
   }
 
@@ -215,7 +224,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     document.body.appendChild(script);
   }
 
-  mapLoadedCb(){
+  mapLoadedCb () {
     if (!ShipmentMap.mapLoaded){   //avoid initializing twice.
           ShipmentMap.mapLoaded = true ;
           // 百度地图API功能
@@ -226,31 +235,27 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       var point = new BMap.Point(118.273, 33.779);
       ShipmentMap.gpsmap.centerAndZoom(point, 7);
 
+      // 添加带有定位的导航控件
+      var navigationControl = new BMap.NavigationControl({
+        // 靠左上角位置
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        // LARGE类型
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        // 启用显示定位
+        enableGeolocation: true
+      });
+      ShipmentMap.gpsmap.addControl(navigationControl);
 
-          // 添加带有定位的导航控件
-          var navigationControl = new BMap.NavigationControl({
-            // 靠左上角位置
-            anchor: BMAP_ANCHOR_TOP_LEFT,
-            // LARGE类型
-            type: BMAP_NAVIGATION_CONTROL_LARGE,
-            // 启用显示定位
-            enableGeolocation: true
-          });
-          ShipmentMap.gpsmap.addControl(navigationControl);
-
-          // function showInfo(e){
-          //   console.log(e.point.lng + ", " + e.point.lat);
-          // }
-          // ShipmentMap.gpsmap.addEventListener("click", showInfo);
+      // function showInfo(e){
+      //   console.log(e.point.lng + ", " + e.point.lat);
+      // }
+      // ShipmentMap.gpsmap.addEventListener("click", showInfo);
   }
 
-  static addMarker(data){
-    // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
-
+  static addMarker (data) {
+      // var point = new BMap.Point(parseFloat(data.lng)+config.gpsError.lng, parseFloat(data.lat)+config.gpsError.lat);
       // var marker = new BMap.Marker(point);
-
-
-      if(data.lp){
+      if (data.lp) {
 
         var point = new BMap.Point(data.lng, data.lat);
         ShipmentMap.allMarkers[data._id] = new BMap.Marker(point);   //_id = sim;
@@ -282,11 +287,12 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
        this.rtmgs.connect(3001);
        this.rtmgs.on('carMove', function(data){
          console.log("carMove-----",data);
-           if(data.pl&&data.pl.gps){
-              var cardata = data.pl.gps;
-              _this.handleAlarm(cardata);
-              _this.updateShowAllPosition(cardata);
-           }
+         // TODO put this back to restore real time
+          //  if(data.pl&&data.pl.gps){
+          //     var cardata = data.pl.gps;
+          //     _this.handleAlarm(cardata);
+          //     _this.updateShowAllPosition(cardata);
+          //  }
        });
     }
 
@@ -399,14 +405,13 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
         }
     }
 
-  updatePosition(cardata,dest){
+  updatePosition(cardata,dest) {
 
     var _this = this;
 
         console.log('updatePosition---');
 
         if(!this.targetCar){
-              // var initPoint = new BMap.Point(parseFloat(cardata.lng).toFixed(3),parseFloat(cardata.lat).toFixed(3));
               // ShipmentMap.gpsmap.centerAndZoom(initPoint, 16);
               this.targetCar = cardata;
               this.addCustomMarker(cardata);
@@ -560,13 +565,25 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
       });
     }
 
-    showAllCars(){
+    showCar (sim: string) {
+      ShipmentMap.gpsmap.clearOverlays();
+      this.targetCar = _.find(this.allCars, {_id: sim});
+      if (this.targetCar) {
+        var point = new BMap.Point(this.targetCar.lng.toFixed(3), this.targetCar.lat.toFixed(3));
+        ShipmentMap.gpsmap.centerAndZoom(point, 19);
+        this.totalCarNumber =  1;
+        this.addSigleMargerToMap(this.targetCar);
+      }
+    }
+
+    showAllCars () {
       //shandong shanghai: 118.273, 33.779  //7
       //shanghai 121.454,31.153   //10
 
       this.targetCar = null;// stop car moves.
+      ShipmentMap.gpsmap.clearOverlays();
 
-      var point = new BMap.Point(121.454,31.153 );
+      var point = new BMap.Point(121.454,31.153);
       ShipmentMap.gpsmap.centerAndZoom(point, 10);
       this.request.get('/gps/cars/all.json').subscribe(res => {
             var cars = res.pl.cars;
@@ -575,12 +592,10 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
                   return cars[key];
               });
 
-
-
             ShipmentMap.carsGroups = this.groupByTen(this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
 
           for (let i = 0; i <   ShipmentMap.carsGroups.length; i++) {
-              this.adjustPoint(ShipmentMap.carsGroups[i],this.addToMap); //convertor doen'st work for more thatn 10 points
+              this.adjustPoint(ShipmentMap.carsGroups[i], this.addToMap); //convertor doen'st work for more thatn 10 points
           }
 
           this.totalCarNumber =  this.allCars.length;
@@ -588,9 +603,17 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
     }
 
 
-    addToMap(adjusted){
-      console.log("processed cars->>>>>>---",adjusted)
-      if(adjusted.status === 0){
+    addSigleMargerToMap(marker) {
+      ShipmentMap.addMarker(marker);
+    }
+
+
+
+
+
+    addToMap(adjusted, sigle: boolean) {
+      // console.log("processed cars->>>>>>---",adjusted)
+      if(adjusted.status === 0) {
         if(adjusted.points.length>4){  //for first ten cars , assuming 14 in total;
           for (let i = 0; i < adjusted.points.length; i++) {
               ShipmentMap.carsGroups[0][i].lng =   adjusted.points[i].lng;
@@ -609,10 +632,9 @@ export class ShipmentMap implements AfterViewInit, OnDestroy{
           }
         }
       }
-
     }
 
-    adjustPoint(param,cb){
+    adjustPoint(param, cb){
 
       var convertor = new BMap.Convertor();
       var pointArr = [];

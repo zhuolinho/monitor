@@ -81,6 +81,7 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                 ShipmentMap.prototype.ngAfterViewInit = function () {
                     this.loadJScript();
                     this.iniSocket();
+                    this.loadCars();
                 };
                 ShipmentMap.prototype.ngOnDestroy = function () {
                     //reset static variables
@@ -88,6 +89,18 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                     ShipmentMap_1.gpsmap = null;
                     ShipmentMap_1.allMarkers = {};
                     ShipmentMap_1.carsGroups = [];
+                };
+                ShipmentMap.prototype.loadCars = function () {
+                    var _this = this;
+                    console.log('load cars----');
+                    if (ShipmentMap_1.mapLoaded) {
+                        this.showAllCars();
+                    }
+                    else {
+                        setTimeout(function () {
+                            _this.loadCars();
+                        }, 500);
+                    }
                 };
                 ShipmentMap.prototype.initUi = function () {
                     var _this = this;
@@ -104,9 +117,6 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                         });
                         jQuery('select.select-address').on('change', function (event) {
                             _this.veSelectedAddress(event, _this);
-                        });
-                        jQuery('select.select-license-plate').on('change', function (event) {
-                            _this.veSelectedLicensePlate(event, _this);
                         });
                         jQuery('select.select-tank').on('change', function (event) {
                             _this.veSelectedTank(event, _this);
@@ -137,6 +147,7 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                     if (event) {
                         compRef.selectedCarId = event.target.value;
                         compRef.newShipment.sim = compRef.selectedCarId;
+                        compRef.showCar(compRef.selectedCarId);
                     }
                 };
                 ShipmentMap.prototype.veSelectedTankType = function (event, compRef) {
@@ -228,11 +239,12 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                     this.rtmgs.connect(3001);
                     this.rtmgs.on('carMove', function (data) {
                         console.log("carMove-----", data);
-                        if (data.pl && data.pl.gps) {
-                            var cardata = data.pl.gps;
-                            _this.handleAlarm(cardata);
-                            _this.updateShowAllPosition(cardata);
-                        }
+                        // TODO put this back to restore real time
+                        //  if(data.pl&&data.pl.gps){
+                        //     var cardata = data.pl.gps;
+                        //     _this.handleAlarm(cardata);
+                        //     _this.updateShowAllPosition(cardata);
+                        //  }
                     });
                 };
                 ShipmentMap.prototype.handleAlarm = function (param) {
@@ -325,7 +337,6 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                     var _this = this;
                     console.log('updatePosition---');
                     if (!this.targetCar) {
-                        // var initPoint = new BMap.Point(parseFloat(cardata.lng).toFixed(3),parseFloat(cardata.lat).toFixed(3));
                         // ShipmentMap.gpsmap.centerAndZoom(initPoint, 16);
                         this.targetCar = cardata;
                         this.addCustomMarker(cardata);
@@ -439,11 +450,22 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                         });
                     });
                 };
+                ShipmentMap.prototype.showCar = function (sim) {
+                    ShipmentMap_1.gpsmap.clearOverlays();
+                    this.targetCar = _.find(this.allCars, { _id: sim });
+                    if (this.targetCar) {
+                        var point = new BMap.Point(this.targetCar.lng.toFixed(3), this.targetCar.lat.toFixed(3));
+                        ShipmentMap_1.gpsmap.centerAndZoom(point, 19);
+                        this.totalCarNumber = 1;
+                        this.addSigleMargerToMap(this.targetCar);
+                    }
+                };
                 ShipmentMap.prototype.showAllCars = function () {
                     //shandong shanghai: 118.273, 33.779  //7
                     //shanghai 121.454,31.153   //10
                     var _this = this;
                     this.targetCar = null; // stop car moves.
+                    ShipmentMap_1.gpsmap.clearOverlays();
                     var point = new BMap.Point(121.454, 31.153);
                     ShipmentMap_1.gpsmap.centerAndZoom(point, 10);
                     this.request.get('/gps/cars/all.json').subscribe(function (res) {
@@ -459,8 +481,11 @@ System.register(["@angular/core", "@angular/router", "../../../config", "../../.
                         _this.totalCarNumber = _this.allCars.length;
                     });
                 };
-                ShipmentMap.prototype.addToMap = function (adjusted) {
-                    console.log("processed cars->>>>>>---", adjusted);
+                ShipmentMap.prototype.addSigleMargerToMap = function (marker) {
+                    ShipmentMap_1.addMarker(marker);
+                };
+                ShipmentMap.prototype.addToMap = function (adjusted, sigle) {
+                    // console.log("processed cars->>>>>>---",adjusted)
                     if (adjusted.status === 0) {
                         if (adjusted.points.length > 4) {
                             for (var i = 0; i < adjusted.points.length; i++) {
