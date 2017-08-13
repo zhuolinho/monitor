@@ -55,7 +55,7 @@ var iPlcSchema = mongoose.Schema({
                     //cng 0 only
                     outputP1:String, //output presure1 一号出口压力 Bar
                     outputP2:String, //output presure2 二号出口压力 Bar
-                    //cng 2 only
+                    //cng 2 and 3 only
                     hxt1:String, //#1 Heat exchanger temperature一号换热器温度 ℃
                     hxt2:String, //#2 Heat exchanger temperature一号换热器温度 ℃
 
@@ -71,7 +71,11 @@ var iPlcSchema = mongoose.Schema({
                     outputP:String, //output presure 出口压力 KPa
                     fmot:String, //flowmeter ouput temperature 流量计出口温度 ℃
                     instfow:String, //instantaneous flow 瞬时流量 Nm3/h
-                    cumfow:String //cummulative flow 累计流量 Nm3 -- raw val*10
+                    cumfow:String, //cummulative flow 累计流量 Nm3 -- raw val*10
+
+                    // double meter cng -- 双表专用
+                    instfow0:String, //instantaneous flow 瞬时流量 Nm3/h
+                    cumfow0:String //cummulative flow 累计流量 Nm3
 
               });
 

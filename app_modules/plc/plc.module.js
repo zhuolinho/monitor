@@ -1163,11 +1163,10 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
       tank = plcType[0] + plcCode;
       extractedData = _exractGuanwangData(data,shift,oID,tank);
       return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
-  }
-  else{
+  } else {
       var type = _getPlcType(data,shift);
 
-      if (type==0 || type==2){
+      if (type==0 || type==2) {
 
         plcType='CNG';
         plcCode = lib.padNum(i+1,3);
@@ -1196,8 +1195,7 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
         }
 
 
-      }
-      else if (type==1){
+      } else if (type==1) {
         plcType='LNG';
         plcCode = lib.padNum(i+1,3);
         tank = plcType[0] + plcCode;
@@ -1220,6 +1218,30 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
         }
         else{
             extractedData = _extractLngData(data,shift,oID,tank,formula,lastestRemainingAmountAlerts,redisClient);
+            return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
+        }
+      } else if (type == 3) {
+        plcType='CNG';
+        plcCode = lib.padNum(i+1,3);
+        tank = plcType[0] + plcCode;
+        var formula = latestFormula[oID][tank];
+        // console.log('formula----',formula);
+
+
+        if (!formula){ //create formula if not already created
+            return _addNewFormula({oID:oID},tank).then(function(resp){
+              // console.log("created formula---",resp);
+              if (resp && resp.pl && resp.pl.formula){
+                  latestFormula[oID][tank] = resp.pl.formula;
+                  redisClient.set("lastestFormula", JSON.stringify(latestFormula));  //add new formula to the latest formula object
+                  extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,resp.pl.formula,lastestRemainingAmountAlerts,redisClient);
+                  return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
+              }
+            });
+
+
+        } else {
+            extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,formula,lastestRemainingAmountAlerts,redisClient);
             return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
         }
       }
@@ -1448,18 +1470,25 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   var holderVal2 = data.slice(52+shift,56+shift);
   var outputP = data.slice(56+shift,60+shift);
   var fmot = data.slice(60+shift,64+shift);
+
+  var outputPOrInstfow0 = data.slice(56+shift,60+shift);
+  var fmotOrCumfow0 = data.slice(60+shift,64+shift);
+
   var instfow = data.slice(64+shift,68+shift);
   var cumfow = data.slice(68+shift,72+shift);
-  var holderKey1 = '';
-  var holderKey2 = '';
+  var holderKey1 = 'hxt1';
+  var holderKey2 = 'hxt2';
+  var holderKey3 = 'outputP';
+  var holderKey4 = 'fmot';
 
-  if(type==0){
-      holderKey1 = 'outputP1';
-      holderKey2 = 'outputP2';
+  if (type==0) {
+    holderKey1 = 'outputP1';
+    holderKey2 = 'outputP2';
   }
-  else{
-      holderKey1 = 'hxt1';
-      holderKey2 = 'hxt2';
+
+  if (type == 3) {
+    holderKey3 = 'instfow0';
+    holderKey4 = 'cumfow0';
   }
 
   cumfow = lib.getPlcFloat(cumfow.toString('hex'),0);
@@ -1534,10 +1563,10 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
       taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1),
       rft:rft, // remaining flow  time -- computed
       rfq:rfq, // remaining flow  quantity -- computed
-      // outputP1 :lib.getPlcFloat(outputP1.toString('hex'),1),
-      // outputP2 :lib.getPlcFloat(outputP2.toString('hex'),1),
-      outputP: lib.getPlcFloat(outputP.toString('hex'),1),
-      fmot :lib.getPlcFloat(fmot.toString('hex'),1),
+      // outputP1 :lib.getPlcFloat(outputPOrInstfow.toString('hex'),1), // set below due to dynamic key
+      // outputP2 :lib.getPlcFloat(fmotOrCumfow.toString('hex'),1),  // set below due to dynamic key
+      // outputP: lib.getPlcFloat(outputP.toString('hex'),1), // set below due to dynamic key
+      // fmot :lib.getPlcFloat(fmot.toString('hex'),1), // set below due to dynamic key
       instfow: lib.getPlcFloat(instfow.toString('hex'),1),
       // cumfow: lib.getPlcFloat(cumfow.toString('hex'),0,plcConfig.cumFlowCoef),
       cumfow: cumfow,
@@ -1546,6 +1575,9 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
   result[holderKey1] =  lib.getPlcFloat(holderVal1.toString('hex'),1);
   result[holderKey2] =  lib.getPlcFloat(holderVal2.toString('hex'),1);
+
+  result[holderKey3] =  lib.getPlcFloat(outputPOrInstfow0.toString('hex'),1);
+  result[holderKey4] =  lib.getPlcFloat(fmotOrCumfow0.toString('hex'),1);
 
   r.data = result;
 

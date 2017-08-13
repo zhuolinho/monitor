@@ -6,7 +6,6 @@
 
         <select class="helper-select-font-bigger current-plc">
           <option *ngFor="let plc of connectedPlcs" [value]="plc" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
-
         </select>
           <label >选择地址</label>
       </div>
@@ -54,95 +53,95 @@
           <!--管网  数据  -->
             <div class="row" *ngIf="realTimeData[currentPlcTank]?.plcType =='Guanwang'">
 
-                              <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg">
+                <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg">
 
-                                <div class="clearfix"></div>
+                  <div class="clearfix"></div>
 
-                                <!-- <div class="table-row">
-                                  <div class="table-cell"> 使用情况</div>
-                                  <div class="table-cell"> 正在使用</div>
-                                </div> -->
+                  <!-- <div class="table-row">
+                    <div class="table-cell"> 使用情况</div>
+                    <div class="table-cell"> 正在使用</div>
+                  </div> -->
 
-                                <div class="table-row">
-                                  <div class="table-cell"> 流量表名称</div>
-                                  <div class="table-cell"> 流量计 {{realTimeData[currentPlcTank]?.addr1}}</div>
-                                </div>
-
-
-                                <div class="table-row">
-                                  <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.addr1}}</span></div>
-                                </div>
-
-                                <!-- 标况累计 -->
-                                <div class="table-row">
-                                  <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.psc1}}</span></div>
-                                </div>
-
-                                <!-- 瞬时标况 -->
-                                <div class="table-row">
-                                  <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.isc1}}</span></div>
-                                </div>
-
-                                <div class="table-row">
-                                  <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.temp1}}</span></div>
-                                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 流量表名称</div>
+                    <div class="table-cell"> 流量计 {{realTimeData[currentPlcTank]?.addr1}}</div>
+                  </div>
 
 
-                                <div class="table-row">
-                                  <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.p1}}</span></div>
-                                </div>
+                  <div class="table-row">
+                    <div class="table-cell">分配地址</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.addr1}}</span></div>
+                  </div>
 
-                                <div class="clearfix"></div>
+                  <!-- 标况累计 -->
+                  <div class="table-row">
+                    <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.psc1}}</span></div>
+                  </div>
 
-                              </div>
+                  <!-- 瞬时标况 -->
+                  <div class="table-row">
+                    <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.isc1}}</span></div>
+                  </div>
 
-                              <div class="monitor-table table55-45 helper-font-bigger  helper-white-bg helper-margin-top-10">
-
-                                <div class="clearfix"></div>
-
-                                <!-- <div class="table-row">
-                                  <div class="table-cell"> 使用情况</div>
-                                  <div class="table-cell"> 正在使用</div>
-                                </div> -->
-
-                                <div class="table-row">
-                                  <div class="table-cell"> 流量表名称</div>
-                                  <div class="table-cell"> 流量计 {{realTimeData[currentPlcTank]?.addr2}}</div>
-                                </div>
-
-
-                                <div class="table-row">
-                                  <div class="table-cell">分配地址</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.addr2}}</span></div>
-                                </div>
-
-                                <!-- 标况累计 -->
-                                <div class="table-row">
-                                  <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.psc2}}</span></div>
-                                </div>
-
-                                <!-- 瞬时标况 -->
-                                <div class="table-row">
-                                  <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.isc2}}</span></div>
-                                </div>
-
-                                <div class="table-row">
-                                  <div class="table-cell">温度(<sup>o</sup>C)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.temp2}}</span></div>
-                                </div>
+                  <div class="table-row">
+                    <div class="table-cell">温度(<sup>o</sup>C)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.temp1}}</span></div>
+                  </div>
 
 
-                                <div class="table-row">
-                                  <div class="table-cell"> 压力(Kpa)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.p2}}</span></div>
-                                </div>
+                  <div class="table-row">
+                    <div class="table-cell"> 压力(Kpa)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.p1}}</span></div>
+                  </div>
+
+                  <div class="clearfix"></div>
+
+                </div>
+
+                <div class="monitor-table table55-45 helper-font-bigger  helper-white-bg helper-margin-top-10">
+
+                  <div class="clearfix"></div>
+
+                  <!-- <div class="table-row">
+                    <div class="table-cell"> 使用情况</div>
+                    <div class="table-cell"> 正在使用</div>
+                  </div> -->
+
+                  <div class="table-row">
+                    <div class="table-cell"> 流量表名称</div>
+                    <div class="table-cell"> 流量计 {{realTimeData[currentPlcTank]?.addr2}}</div>
+                  </div>
+
+
+                  <div class="table-row">
+                    <div class="table-cell">分配地址</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.addr2}}</span></div>
+                  </div>
+
+                  <!-- 标况累计 -->
+                  <div class="table-row">
+                    <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.psc2}}</span></div>
+                  </div>
+
+                  <!-- 瞬时标况 -->
+                  <div class="table-row">
+                    <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.isc2}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell">温度(<sup>o</sup>C)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.temp2}}</span></div>
+                  </div>
+
+
+                  <div class="table-row">
+                    <div class="table-cell"> 压力(Kpa)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.p2}}</span></div>
+                  </div>
 
                   </div>
                 <div class="clearfix"></div>
@@ -155,100 +154,125 @@
 
               <div class="row" *ngIf="realTimeData[currentPlcTank]?.plcType=='CNG'">
 
-                                <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" >
+                <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" >
 
-                                  <div class="clearfix"></div>
+                  <div class="clearfix"></div>
 
+            <!-- CNG 3 类型 -->
 
+              <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                <div class="table-cell">剩余时间(H)</div>
+                  <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.rft}}</span></div>
+              </div>
+              <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                <div class="table-cell">剩余量(Nm<sup>3</sup>)</div>
+                  <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.rfq}}</span></div>
+              </div>
 
-                                <div class="table-row">
-                                  <div class="table-cell">剩余时间(H)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.rft}}</span></div>
-                                </div>
-                                <div class="table-row">
-                                  <div class="table-cell">剩余量(Nm<sup>3</sup>)</div>
-                                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.rfq}}</span></div>
-                                </div>
-                                  <div class="table-row">
-                                    <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell">流量计出口温度(<sup>o</sup>C)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.fmot}}</span></div>
-                                  </div>
-
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 出口压力(Kpa)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 入口压力1(MPa)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.inputP1}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 入口压力2(MPa)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.inputP2}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 一级调压后压力1(Bar)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.paflpa1}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 一级调压后压力2(Bar)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.paflpa2}}</span></div>
-                                  </div>
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 一级调压后温度1(<sup>o</sup>C)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.taflpa1}}</span></div>
-                                  </div>
-
-
-                                  <div class="table-row">
-                                    <div class="table-cell"> 一级调压后温度2(<sup>o</sup>C)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.taflpa2}}</span></div>
-                                  </div>
-
-
-
-                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0" >
-                                    <div class="table-cell"> 一号出口压力(Bar)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP1}}</span></div>
-                                  </div>
-
-                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0">
-                                    <div class="table-cell"> 二号出口压力(Bar)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP2}}</span></div>
-                                  </div>
-
-
-                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
-                                    <div class="table-cell"> 一号换热器温度 (℃)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt1}}</span></div>
-                                  </div>
-
-                                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
-                                    <div class="table-cell"> 二号换热器温度 (℃)</div>
-                                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt2}}</span></div>
-                                  </div>
-
-
-                                  <div class="clearfix"></div>
-
-                                </div>
+                <div class="table-row " *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                  <div class="table-cell">累计流量1(Nm<sup>3</sup>)</div>
+                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow0}}</span></div>
                 </div>
+
+                <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                  <div class="table-cell">瞬时流量1(Nm<sup>3</sup>/h)</div>
+                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow0}}</span></div>
+                </div>
+
+                <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                  <div class="table-cell">累计流量2(Nm<sup>3</sup>)</div>
+                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow}}</span></div>
+                </div>
+
+                <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType == 3">
+                  <div class="table-cell">瞬时流量2(Nm<sup>3</sup>/h)</div>
+                    <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow}}</span></div>
+                </div>
+
+              <!-- end of CNG 3 类型 -->
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType != 3">
+                    <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow}}</span></div>
+                  </div>
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType != 3">
+                    <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow}}</span></div>
+                  </div>
+
+
+
+                  <div class="table-row">
+                    <div class="table-cell">流量计出口温度(<sup>o</sup>C)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.fmot}}</span></div>
+                  </div>
+
+
+                  <div class="table-row">
+                    <div class="table-cell"> 出口压力(Kpa)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 入口压力1(MPa)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.inputP1}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 入口压力2(MPa)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.inputP2}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 一级调压后压力1(Bar)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.paflpa1}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 一级调压后压力2(Bar)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.paflpa2}}</span></div>
+                  </div>
+
+                  <div class="table-row">
+                    <div class="table-cell"> 一级调压后温度1(<sup>o</sup>C)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.taflpa1}}</span></div>
+                  </div>
+
+
+                  <div class="table-row">
+                    <div class="table-cell"> 一级调压后温度2(<sup>o</sup>C)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.taflpa2}}</span></div>
+                  </div>
+
+
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0" >
+                    <div class="table-cell"> 一号出口压力(Bar)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP1}}</span></div>
+                  </div>
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==0">
+                    <div class="table-cell"> 二号出口压力(Bar)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP2}}</span></div>
+                  </div>
+
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
+                    <div class="table-cell"> 一号换热器温度 (℃)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt1}}</span></div>
+                  </div>
+
+                  <div class="table-row" *ngIf="realTimeData[currentPlcTank]?.cngType==2">
+                    <div class="table-cell"> 二号换热器温度 (℃)</div>
+                      <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.hxt2}}</span></div>
+                  </div>
+
+
+                  <div class="clearfix"></div>
+
+                </div>
+              </div>
 
 
 
@@ -261,50 +285,50 @@
 
                   <div class="row" *ngIf="realTimeData[currentPlcTank]?.plcType=='LNG'">
 
-                                    <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" >
+                      <div class="monitor-table  table55-45 helper-font-bigger helper-white-bg" >
 
-                                      <div class="clearfix"></div>
-
-
-                                      <div class="table-row">
-                                        <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow}}</span></div>
-                                      </div>
-
-                                      <div class="table-row">
-                                        <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow}}</span></div>
-                                      </div>
-
-                                      <div class="table-row">
-                                        <div class="table-cell">流量计出口温度(<sup>o</sup>C)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.fmot}}</span></div>
-                                      </div>
+                        <div class="clearfix"></div>
 
 
-                                      <div class="table-row">
-                                        <div class="table-cell"> 出口压力(Kpa)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP}}</span></div>
-                                      </div>
+                        <div class="table-row">
+                          <div class="table-cell">累计流量(Nm<sup>3</sup>)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.cumfow}}</span></div>
+                        </div>
 
-                                      <div class="table-row">
-                                        <div class="table-cell"> 储罐压力(Bar)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.tankp}}</span></div>
-                                      </div>
+                        <div class="table-row">
+                          <div class="table-cell">瞬时流量(Nm<sup>3</sup>/h)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.instfow}}</span></div>
+                        </div>
 
-                                      <div class="table-row">
-                                        <div class="table-cell"> 调压区入口压力(Bar)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.azip}}</span></div>
-                                      </div>
+                        <div class="table-row">
+                          <div class="table-cell">流量计出口温度(<sup>o</sup>C)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.fmot}}</span></div>
+                        </div>
 
-                                      <div class="table-row">
-                                        <div class="table-cell"> 储罐液位(%)</div>
-                                          <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.tanklavel}}</span></div>
-                                      </div>
 
-                                      <div class="clearfix"></div>
+                        <div class="table-row">
+                          <div class="table-cell"> 出口压力(Kpa)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.outputP}}</span></div>
+                        </div>
 
-                                    </div>
+                        <div class="table-row">
+                          <div class="table-cell"> 储罐压力(Bar)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.tankp}}</span></div>
+                        </div>
+
+                        <div class="table-row">
+                          <div class="table-cell"> 调压区入口压力(Bar)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.azip}}</span></div>
+                        </div>
+
+                        <div class="table-row">
+                          <div class="table-cell"> 储罐液位(%)</div>
+                            <div class="table-cell"> <span>{{realTimeData[currentPlcTank]?.tanklavel}}</span></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                      </div>
                     </div>
 
 
