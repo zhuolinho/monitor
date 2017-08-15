@@ -102,6 +102,7 @@ export class Gas implements AfterViewInit, OnDestroy {
         this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
           return parseInt(o.slice(1, 4));
         }, ['asc']);
+
         this.currentPlcTank = this.connectedPlcs[0];
         this.initSelect();
       }

@@ -256,14 +256,12 @@ plc.getData =  function(m) {
 }
 
 plc.getLatestData =  function(m) {
-
   console.log("plc module: getLatestData FUNCTION");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
   var length = m.pl.length||1;
 
-
-  if(m && m.pl && m.pl.user && m.pl.user.oID){
+  if(m && m.pl && m.pl.user && m.pl.user.oID) {
     iPlc.find({oID:m.pl.user.oID,cd:{$gt:lib.deductTimeFromDate(plcConfig.sTimer+2*60*1000)}})
     .sort({cd:-1}).limit(length).exec(function (err, plc) {
         if (err){
@@ -277,14 +275,11 @@ plc.getLatestData =  function(m) {
           deferred.resolve(r);
         }
     })
-  }
-  else{
+  } else {
     r.er = 'no org provided';
     r.status = false;
     deferred.reject(r);
   }
-
-
 
   return deferred.promise;
 }
@@ -302,7 +297,7 @@ plc.getAlertForTimeInterval =  function(m) {
   var dates = [];
 
 
-  if(m && m.pl && m.pl.user && m.pl.user.oID && m.pl.tank){
+  if(m && m.pl && m.pl.user && m.pl.user.oID && m.pl.tank) {
 
     var flow = '';
     var dateNow = lib.dateTime();

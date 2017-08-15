@@ -94,7 +94,7 @@ module.exports = function (handler)
 
 
   });
-
+ 
 
   router.get('/latest/withaddress.json', function(req, res, next) {
 
