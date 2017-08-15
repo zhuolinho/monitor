@@ -1,0 +1,19 @@
+<div class="" style="overflow-x:hidden">
+  <div class="">
+    <div>
+      <div class="monitor-table stripped" >
+        <div class="table-row  helper-gray-bg-light">
+          <div class="table-cell"> 罐号 </div>
+          <div class="table-cell">累计流量(Nm3) </div>
+          <div class="table-cell">用量(Nm3)  </div>
+        </div>
+        <div class="table-row" *ngFor="let data of availableStatsTanks" >
+          <div class="table-cell"> {{data.tank}}  {{data.addr}} </div>
+          <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+          <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+        </div>
+      </div>   <!-- end of table -->
+
+    </div>
+    </div>
+  </div>

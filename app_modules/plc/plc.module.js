@@ -423,7 +423,7 @@ plc.getPlcStats = function(m){
                           }
                       })
 
-                    }else{
+                    } else {
                       r.pl.plc = [];
                       r.status = false;
                       deferred.resolve(r);
@@ -524,6 +524,89 @@ plc.getPlcStats = function(m){
 
 
 
+plc.getAllPlcStats = function(m) {
+    console.log("plc module: getPlcAllStats FUNCTION");
+    var r = {pl: {}, status:false , er:''};
+    var deferred = q.defer();
+    var computedValues = [];
+    var previousDate = lib.getPreviousDayDate() + ' 23:59:59';
+
+    if(m && m.pl && m.pl.user && m.pl.user.oID) {
+      iPlc.aggregate([
+          {
+            $match: {
+              oID:m.pl.user.oID,
+              // oID: "10000000001",
+              cd:{$gt: previousDate}
+            }
+          },
+          {
+              $group: {
+                  _id:"$tank",
+                  doc: { $push: "$$ROOT" },
+                  maxVal1:{ $max: "$cumfow"},
+                  maxVal2:{ $max: "$psc2"},
+                  minVal1:{ $min: "$cumfow"},
+                  minVal2:{ $min: "$psc2"},
+                  count: {$sum: 1}
+              }
+          }
+          ,{
+            $project: {
+              maxVal: {
+                $let: {
+                  vars: {
+                    plcFlow: {
+                      $cond: [{$eq:['$maxVal1', null]} ,'$maxVal2', '$maxVal1']
+                    }
+                  },
+                  in: {$max: '$$plcFlow'}
+                }
+              },
+              minVal: {
+                $let: {
+                  vars: {
+                    plcFlow: {
+                      $cond: [{$eq:['$minVal1', null]} ,'$minVal2', '$minVal1']
+                    }
+                  },
+                  in: {$max: '$$plcFlow'}
+                }
+              },
+              tank: '$_id',
+              '_id': 0
+            }
+          }
+      ]).sort({date:1}).exec(function (err, plc) {
+          if (err){
+            r.er = err;
+            r.status = false;
+            deferred.reject(r);
+          } else {
+            for (var i = 0; i < plc.length; i++) {
+              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i].minVal));
+              delete plc[i].minVal;
+            }
+
+            r.pl.plc = plc;
+            r.status = true;
+            deferred.resolve(r);
+          }
+      });
+
+  } else {
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+  return deferred.promise;
+
+}
+
+
+
+
 plc.getInstantaniousPlcData = function(m){
 
 
@@ -579,9 +662,9 @@ plc.getAddress =  function(m) {
  var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  if(m && m.pl && m.pl.user && m.pl.user.oID){
+  if(m && m.pl && m.pl.user && m.pl.user.oID) {
 
-    Address.find({oID:m.pl.user.oID}).sort({cd:-1}).exec(function (err, address) {
+    Address.find({oID: m.pl.user.oID}).sort({cd:-1}).exec(function (err, address) {
         if (err){
           r.er = err;
           r.status = false;

@@ -26,6 +26,9 @@ import {Shipment} from '../components/gps/shipment/shiment.component';
 import {Gas} from '../components/monitor/gas/gas.component';
 import {Camera} from '../components/monitor/camera/camera.component';
 
+//admin gas stats
+import {GasStats} from '../components/monitor/gas-stats/gas-stats.component';
+
 //admin settings components
 
 import {SettingsSms} from '../components/settings/sms/settings-sms.component';
@@ -68,8 +71,10 @@ const ROUTES: Routes = [
     {path:'monitor', component:Monitor,children:[
       {path:'gas', component:Gas},
       {path:'camera', component:Camera},
+      {path:'gas-stats', component: GasStats},
       {path:'**',component:Gas}
     ]},
+
     {path:'gps', component:Gps,children:[
       {path:'shipments', component:Shipment},
       {path:'shipment-map/:tank', component:ShipmentMap},

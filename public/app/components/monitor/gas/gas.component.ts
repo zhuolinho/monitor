@@ -85,11 +85,12 @@ export class Gas implements AfterViewInit, OnDestroy {
     atype: '',
     addr: ''
   };
+
   constructor(
     private request: RequestService,
     private rtmgs: RTMessagesService,
     private lib: LibService) {
-    console.log("gas is up and running");
+    console.log("gas is up and running--->>>>");
 
     // realTimeData
     this.date = lib.dateTime();
@@ -108,11 +109,11 @@ export class Gas implements AfterViewInit, OnDestroy {
       }
     });
   }
+
   ngAfterViewInit() {
     this.iniSocket();
     this.updateTime();
   }
-
 
   ngOnDestroy() {
     clearInterval(this.dateTimer);
@@ -147,6 +148,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   }
 
   createNewAlert(type) {
+
 
     console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
 

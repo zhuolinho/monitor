@@ -25,5 +25,6 @@ declare var jQuery:any;
 export class MainComponent {
   constructor(){
   console.log("MainComponent is up and running");
+  alert('rolland')
   }
  }

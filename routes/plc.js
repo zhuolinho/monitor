@@ -30,10 +30,6 @@ server.listen(3003);
 
 var q = require('q');
 
-
-
-
-
 module.exports = function (handler)
 {
 
@@ -66,6 +62,7 @@ module.exports = function (handler)
       var r = {pl:{}};
 
       redisClient.get("lastestPlc", function(err, result) {
+
         var temp = {};
         temp[user.oID] = {};
         var latestIncommingData = JSON.parse(result)||temp;
@@ -94,7 +91,7 @@ module.exports = function (handler)
 
 
   });
- 
+
 
   router.get('/latest/withaddress.json', function(req, res, next) {
 
@@ -107,12 +104,12 @@ module.exports = function (handler)
             pl:{user:user}
       };
 
-      var param2 = {
-            ns: 'plc',
-            vs: '1.0',
-            op: 'getLatestData',
-            pl:{length:100, user:user}
-      };
+      // var param2 = {
+      //       ns: 'plc',
+      //       vs: '1.0',
+      //       op: 'getLatestData',
+      //       pl:{length:100, user:user}
+      // };``
 
         handler(param1)
             .then(function (r1) {
@@ -120,9 +117,15 @@ module.exports = function (handler)
                 var r = {pl:{}};
 
                 redisClient.get("lastestPlc", function(err, result) {
+
+
+
+
+
                   var temp = {};
                   temp[user.oID] = {};
                   var latestIncommingData = JSON.parse(result)||temp;
+
                   r.pl.address = r1.pl.address;
                   r.pl.plc = latestIncommingData[user.oID];
                   helpers.sendResponse(res, 200, r);
@@ -267,6 +270,95 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
               helpers.sendResponse(res, 404, r);
             });
   });
+
+    router.get('/connected/get-all.json', function(req, res, next) {
+        var user = lib.reqUser(req);
+
+        var param1 = {
+              ns: 'plc',
+              vs: '1.0',
+              op: 'getAllPlcStats',
+              pl:{user:user}
+        };
+
+        var param2 = {
+              ns: 'plc',
+              vs: '1.0',
+              op: 'getAddress',
+              pl: {user:user}
+        };
+
+        handler(param1)
+          .then(function (r1) {
+            handler(param2)
+              .then(function (r2) {
+                r2.pl.plc = r1.pl.plc;
+                 helpers.sendResponse(res, 200, r2);
+              })
+              .fail(function (r2) {
+                helpers.sendResponse(res, 404, r2);
+              });
+          })
+          .fail(function (r1) {
+            helpers.sendResponse(res, 404, r1);
+          });
+  });
+
+
+  router.get('/latest/withaddress.json', function(req, res, next) {
+
+      var user = lib.reqUser(req);
+
+      var param1 = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'getAddress',
+            pl:{user:user}
+      };
+
+      // var param2 = {
+      //       ns: 'plc',
+      //       vs: '1.0',
+      //       op: 'getLatestData',
+      //       pl:{length:100, user:user}
+      // };``
+
+        handler(param1)
+            .then(function (r1) {
+
+                var r = {pl:{}};
+
+                redisClient.get("lastestPlc", function(err, result) {
+
+
+
+
+
+                  var temp = {};
+                  temp[user.oID] = {};
+                  var latestIncommingData = JSON.parse(result)||temp;
+
+                  r.pl.address = r1.pl.address;
+                  r.pl.plc = latestIncommingData[user.oID];
+                  helpers.sendResponse(res, 200, r);
+                });
+              //
+              // handler(param2)
+              //     .then(function (r2) {
+              //
+              //       r2.pl.address = r1.pl.address;
+              //        helpers.sendResponse(res, 200, r2);
+              //     })
+              //     .fail(function (r2) {
+              //       helpers.sendResponse(res, 404, r2);
+              //     });
+
+            })
+            .fail(function (r1) {
+              helpers.sendResponse(res, 404, r1);
+            });
+  });
+
 
 
   router.get('/address/all.json', function(req, res, next) {
@@ -620,6 +712,13 @@ redisClient.get("lastestPlc", function(err, result) {
   //     });
 }
 
+
+function _deleteTanksFromDb(latestIncommingData, user, tankID) {
+  //tankID eg. G026, C065
+  delete latestIncommingData[user.oID][tankID];
+
+  redisClient.set("lastestPlc", JSON.stringify(latestIncommingData));  //save updated data
+}
 
 function _checkInterruption(handler){
     var ctimer = sTimer+10000;
