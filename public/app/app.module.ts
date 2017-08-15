@@ -40,6 +40,9 @@ import {Shipment} from './components/gps/shipment/shiment.component';
 import {Gas} from './components/monitor/gas/gas.component';
 import {Camera} from './components/monitor/camera/camera.component';
 
+//admin gas-stats
+import {GasStats} from './components/monitor/gas-stats/gas-stats.component';
+
 //admin settings
 import {SettingsSms} from './components/settings/sms/settings-sms.component';
 import {SettingsAuth} from './components/settings/auth/settings-auth.component';
@@ -77,6 +80,8 @@ import {SettingsOfflineUsers} from './components/settings/offline_users/settings
 
     Gas,
     Camera,
+
+    GasStats,
 
     SettingsSms,
     SettingsAuth,

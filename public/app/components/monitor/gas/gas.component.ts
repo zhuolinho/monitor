@@ -1,5 +1,5 @@
 
-import {Component, AfterViewInit, OnDestroy} from '@angular/core';
+import {Component, AfterViewInit, OnDestroy, OnInit} from '@angular/core';
 import {LibService} from '../../../services/lib.service';
 import {config} from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';
@@ -18,7 +18,7 @@ declare var c3: any;
   // directives:[GasDetail]
 })
 
-export class Gas implements AfterViewInit, OnDestroy {
+export class Gas implements AfterViewInit, OnDestroy, OnInit {
 
   months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   years: number[] = [];
@@ -85,6 +85,7 @@ export class Gas implements AfterViewInit, OnDestroy {
     atype: '',
     addr: ''
   };
+
   constructor(
     private request: RequestService,
     private rtmgs: RTMessagesService,
@@ -107,11 +108,11 @@ export class Gas implements AfterViewInit, OnDestroy {
       }
     });
   }
+
   ngAfterViewInit() {
     this.iniSocket();
     this.updateTime();
   }
-
 
   ngOnDestroy() {
     clearInterval(this.dateTimer);
@@ -146,6 +147,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   }
 
   createNewAlert(type) {
+
 
     console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
 

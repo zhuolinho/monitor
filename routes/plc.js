@@ -268,6 +268,43 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
             });
   });
 
+    router.get('/connected/get-all.json', function(req, res, next) {
+
+        var user = lib.reqUser(req);
+
+        var param1 = {
+              ns: 'plc',
+              vs: '1.0',
+              op: 'getAddress',
+              pl:{user:user}
+        };
+
+        var param2 = {
+              ns: 'plc',
+              vs: '1.0',
+              op: 'getLatestData',
+              pl:{length:100, user:user}
+        };
+
+        handler(param1)
+          .then(function (r1) {
+
+              var r = {pl:{}};
+
+              redisClient.get("lastestPlc", function(err, result) {
+                var temp = {};
+                temp[user.oID] = {};
+                var latestIncommingData = JSON.parse(result)||temp;
+                r.pl.address = r1.pl.address;
+                r.pl.plc = latestIncommingData[user.oID];
+                helpers.sendResponse(res, 200, r);
+              });
+
+          })
+          .fail(function (r1) {
+            helpers.sendResponse(res, 404, r1);
+          });
+    });
 
   router.get('/address/all.json', function(req, res, next) {
 

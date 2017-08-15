@@ -10,7 +10,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1, Gas, Gas_1;
+    var core_1, lib_service_1, config_1, rt_messages_service_1, request_service_1, Gas;
     return {
         setters: [
             function (core_1_1) {
@@ -30,7 +30,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
             }
         ],
         execute: function () {
-            Gas = Gas_1 = (function () {
+            Gas = (function () {
                 function Gas(request, rtmgs, lib) {
                     var _this = this;
                     this.request = request;
@@ -98,6 +98,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                         }
                     });
                 }
+                Gas_1 = Gas;
                 Gas.prototype.ngAfterViewInit = function () {
                     this.iniSocket();
                     this.updateTime();
@@ -292,7 +293,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                     }
                     this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(function (res) {
                         console.log("res-----", res);
-                        window.location = res.pl.file;
+                        window.location.href = res.pl.file;
                     });
                 };
                 // code for detail modal
@@ -352,18 +353,20 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                         }
                     });
                 };
+                Gas.graphIsRunning = false;
+                Gas = Gas_1 = __decorate([
+                    core_1.Component({
+                        selector: 'gas',
+                        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
+                        // directives:[GasDetail]
+                    }),
+                    __metadata("design:paramtypes", [request_service_1.RequestService,
+                        rt_messages_service_1.RTMessagesService,
+                        lib_service_1.LibService])
+                ], Gas);
                 return Gas;
+                var Gas_1;
             }());
-            Gas.graphIsRunning = false;
-            Gas = Gas_1 = __decorate([
-                core_1.Component({
-                    selector: 'gas',
-                    templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
-                }),
-                __metadata("design:paramtypes", [request_service_1.RequestService,
-                    rt_messages_service_1.RTMessagesService,
-                    lib_service_1.LibService])
-            ], Gas);
             exports_1("Gas", Gas);
         }
     };

@@ -347,7 +347,6 @@ auth.authenticateUser = function(m){
         });
       }
     }
-
   });
 
  return deferred.promise;

@@ -428,7 +428,7 @@ plc.getPlcStats = function(m){
                           }
                       })
 
-                    }else{
+                    } else {
                       r.pl.plc = [];
                       r.status = false;
                       deferred.resolve(r);
