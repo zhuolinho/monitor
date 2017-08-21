@@ -56,11 +56,10 @@ export class GasStats implements OnInit {
     this.request.get('/plc/connected/get-all.json')
       .subscribe(res => {
         let list = {};
-        res.pl.address.forEach(function (obj){
+        res.pl.address.forEach(function(obj) {
           list[obj.tank] = obj;
         });
-        console.log(list);
-        this.realTimeData = res.pl.plc.map(obj => {obj.addr = list[obj.tank].addr});
+        this.realTimeData = res.pl.plc.map(obj => { obj.addr = list[obj.tank].addr; return obj; });
       });
   }
 }

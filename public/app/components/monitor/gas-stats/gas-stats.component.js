@@ -67,8 +67,7 @@ System.register(["@angular/core", "../../../services/lib.service", "../../../con
                         res.pl.address.forEach(function (obj) {
                             list[obj.tank] = obj;
                         });
-                        console.log(list);
-                        _this.realTimeData = res.pl.plc.map(function (obj) { obj.addr = list[obj.tank].addr; });
+                        _this.realTimeData = res.pl.plc.map(function (obj) { obj.addr = list[obj.tank].addr; return obj; });
                     });
                 };
                 GasStats = __decorate([
