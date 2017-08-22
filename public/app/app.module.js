@@ -1,173 +1,101 @@
-System.register(["@angular/core", "@angular/http", "@angular/platform-browser", "@angular/common", "./services/router.service", "./components/main.component", "./components/login/login.component", "./components/admin/admin.component", "@angular/forms", "./services/user.service", "./services/request.service", "./services/settings.service", "./services/lib.service", "./services/rt-messages.service", "./layout_components/header/header", "./layout_components/navigator/navigator", "./layout_components/footer/footer", "./components/home/home.component", "./components/monitor/monitor.component", "./components/gps/gps.component", "./components/settings/settings.component", "./components/home/alerts/home.alerts.component", "./components/home/alerts_processed/home.alerts.processed.component", "./components/gps/map/shipment-map.component", "./components/gps/processed/processed-shipment.component", "./components/gps/shipment/shiment.component", "./components/monitor/gas/gas.component", "./components/monitor/camera/camera.component", "./components/monitor/gas-stats/gas-stats.component", "./components/settings/sms/settings-sms.component", "./components/settings/auth/settings-auth.component", "./components/settings/access/settings-access.component", "./components/settings/address/settings-address.component", "./components/settings/formula/settings-formula.component", "./components/settings/offline_users/settings-offline-users.component"], function (exports_1, context_1) {
-    "use strict";
-    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, platform_browser_1, common_1, router_service_1, main_component_1, login_component_1, admin_component_1, forms_1, user_service_1, request_service_1, settings_service_1, lib_service_1, rt_messages_service_1, header_1, navigator_1, footer_1, home_component_1, monitor_component_1, gps_component_1, settings_component_1, home_alerts_component_1, home_alerts_processed_component_1, shipment_map_component_1, processed_shipment_component_1, shiment_component_1, gas_component_1, camera_component_1, gas_stats_component_1, settings_sms_component_1, settings_auth_component_1, settings_access_component_1, settings_address_component_1, settings_formula_component_1, settings_offline_users_component_1, AppModule;
-    return {
-        setters: [
-            function (core_1_1) {
-                core_1 = core_1_1;
-            },
-            function (http_1_1) {
-                http_1 = http_1_1;
-            },
-            function (platform_browser_1_1) {
-                platform_browser_1 = platform_browser_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
-            },
-            function (router_service_1_1) {
-                router_service_1 = router_service_1_1;
-            },
-            function (main_component_1_1) {
-                main_component_1 = main_component_1_1;
-            },
-            function (login_component_1_1) {
-                login_component_1 = login_component_1_1;
-            },
-            function (admin_component_1_1) {
-                admin_component_1 = admin_component_1_1;
-            },
-            function (forms_1_1) {
-                forms_1 = forms_1_1;
-            },
-            function (user_service_1_1) {
-                user_service_1 = user_service_1_1;
-            },
-            function (request_service_1_1) {
-                request_service_1 = request_service_1_1;
-            },
-            function (settings_service_1_1) {
-                settings_service_1 = settings_service_1_1;
-            },
-            function (lib_service_1_1) {
-                lib_service_1 = lib_service_1_1;
-            },
-            function (rt_messages_service_1_1) {
-                rt_messages_service_1 = rt_messages_service_1_1;
-            },
-            function (header_1_1) {
-                header_1 = header_1_1;
-            },
-            function (navigator_1_1) {
-                navigator_1 = navigator_1_1;
-            },
-            function (footer_1_1) {
-                footer_1 = footer_1_1;
-            },
-            function (home_component_1_1) {
-                home_component_1 = home_component_1_1;
-            },
-            function (monitor_component_1_1) {
-                monitor_component_1 = monitor_component_1_1;
-            },
-            function (gps_component_1_1) {
-                gps_component_1 = gps_component_1_1;
-            },
-            function (settings_component_1_1) {
-                settings_component_1 = settings_component_1_1;
-            },
-            function (home_alerts_component_1_1) {
-                home_alerts_component_1 = home_alerts_component_1_1;
-            },
-            function (home_alerts_processed_component_1_1) {
-                home_alerts_processed_component_1 = home_alerts_processed_component_1_1;
-            },
-            function (shipment_map_component_1_1) {
-                shipment_map_component_1 = shipment_map_component_1_1;
-            },
-            function (processed_shipment_component_1_1) {
-                processed_shipment_component_1 = processed_shipment_component_1_1;
-            },
-            function (shiment_component_1_1) {
-                shiment_component_1 = shiment_component_1_1;
-            },
-            function (gas_component_1_1) {
-                gas_component_1 = gas_component_1_1;
-            },
-            function (camera_component_1_1) {
-                camera_component_1 = camera_component_1_1;
-            },
-            function (gas_stats_component_1_1) {
-                gas_stats_component_1 = gas_stats_component_1_1;
-            },
-            function (settings_sms_component_1_1) {
-                settings_sms_component_1 = settings_sms_component_1_1;
-            },
-            function (settings_auth_component_1_1) {
-                settings_auth_component_1 = settings_auth_component_1_1;
-            },
-            function (settings_access_component_1_1) {
-                settings_access_component_1 = settings_access_component_1_1;
-            },
-            function (settings_address_component_1_1) {
-                settings_address_component_1 = settings_address_component_1_1;
-            },
-            function (settings_formula_component_1_1) {
-                settings_formula_component_1 = settings_formula_component_1_1;
-            },
-            function (settings_offline_users_component_1_1) {
-                settings_offline_users_component_1 = settings_offline_users_component_1_1;
-            }
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+var platform_browser_1 = require("@angular/platform-browser");
+var common_1 = require("@angular/common");
+var router_service_1 = require("./services/router.service");
+var main_component_1 = require("./components/main.component");
+var login_component_1 = require("./components/login/login.component");
+var admin_component_1 = require("./components/admin/admin.component");
+var forms_1 = require("@angular/forms");
+var user_service_1 = require("./services/user.service");
+var request_service_1 = require("./services/request.service");
+var settings_service_1 = require("./services/settings.service");
+var lib_service_1 = require("./services/lib.service");
+var rt_messages_service_1 = require("./services/rt-messages.service");
+//layout
+var header_1 = require("./layout_components/header/header");
+var navigator_1 = require("./layout_components/navigator/navigator");
+var footer_1 = require("./layout_components/footer/footer");
+//admin
+var home_component_1 = require("./components/home/home.component");
+var monitor_component_1 = require("./components/monitor/monitor.component");
+var gps_component_1 = require("./components/gps/gps.component");
+var settings_component_1 = require("./components/settings/settings.component");
+//admin home
+var home_alerts_component_1 = require("./components/home/alerts/home.alerts.component");
+var home_alerts_processed_component_1 = require("./components/home/alerts_processed/home.alerts.processed.component");
+// admin gps
+var shipment_map_component_1 = require("./components/gps/map/shipment-map.component");
+var processed_shipment_component_1 = require("./components/gps/processed/processed-shipment.component");
+var shiment_component_1 = require("./components/gps/shipment/shiment.component");
+//admin monitor
+var gas_component_1 = require("./components/monitor/gas/gas.component");
+var camera_component_1 = require("./components/monitor/camera/camera.component");
+//admin gas-stats
+var gas_stats_component_1 = require("./components/monitor/gas-stats/gas-stats.component");
+//admin settings
+var settings_sms_component_1 = require("./components/settings/sms/settings-sms.component");
+var settings_auth_component_1 = require("./components/settings/auth/settings-auth.component");
+var settings_access_component_1 = require("./components/settings/access/settings-access.component");
+var settings_address_component_1 = require("./components/settings/address/settings-address.component");
+var settings_formula_component_1 = require("./components/settings/formula/settings-formula.component");
+var settings_offline_users_component_1 = require("./components/settings/offline_users/settings-offline-users.component");
+var AppModule = (function () {
+    function AppModule() {
+    }
+    return AppModule;
+}());
+AppModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            platform_browser_1.BrowserModule,
+            forms_1.FormsModule,
+            http_1.HttpModule,
+            router_service_1.globalRouting
         ],
-        execute: function () {
-            AppModule = (function () {
-                function AppModule() {
-                }
-                AppModule = __decorate([
-                    core_1.NgModule({
-                        imports: [
-                            platform_browser_1.BrowserModule,
-                            forms_1.FormsModule,
-                            http_1.HttpModule,
-                            router_service_1.globalRouting
-                        ],
-                        declarations: [
-                            main_component_1.MainComponent,
-                            login_component_1.LoginComponent,
-                            admin_component_1.AdminComponent,
-                            header_1.Header,
-                            navigator_1.Navigator,
-                            footer_1.Footer,
-                            home_component_1.Home,
-                            monitor_component_1.Monitor,
-                            gps_component_1.Gps,
-                            settings_component_1.Settings,
-                            home_alerts_component_1.HomeAlerts,
-                            home_alerts_processed_component_1.HomeProcssedAlerts,
-                            shipment_map_component_1.ShipmentMap,
-                            processed_shipment_component_1.ProcessedShipment,
-                            shiment_component_1.Shipment,
-                            gas_component_1.Gas,
-                            camera_component_1.Camera,
-                            gas_stats_component_1.GasStats,
-                            settings_sms_component_1.SettingsSms,
-                            settings_auth_component_1.SettingsAuth,
-                            settings_access_component_1.SettingsAccess,
-                            settings_address_component_1.SettingsAddress,
-                            settings_formula_component_1.SettingsFormula,
-                            settings_offline_users_component_1.SettingsOfflineUsers
-                        ],
-                        providers: [
-                            { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy },
-                            user_service_1.UserService,
-                            request_service_1.RequestService,
-                            settings_service_1.SettingsService,
-                            rt_messages_service_1.RTMessagesService,
-                            lib_service_1.LibService
-                        ],
-                        bootstrap: [main_component_1.MainComponent]
-                    })
-                ], AppModule);
-                return AppModule;
-            }());
-            exports_1("AppModule", AppModule);
-        }
-    };
-});
+        declarations: [
+            main_component_1.MainComponent,
+            login_component_1.LoginComponent,
+            admin_component_1.AdminComponent,
+            header_1.Header,
+            navigator_1.Navigator,
+            footer_1.Footer,
+            home_component_1.Home,
+            monitor_component_1.Monitor,
+            gps_component_1.Gps,
+            settings_component_1.Settings,
+            home_alerts_component_1.HomeAlerts,
+            home_alerts_processed_component_1.HomeProcssedAlerts,
+            shipment_map_component_1.ShipmentMap,
+            processed_shipment_component_1.ProcessedShipment,
+            shiment_component_1.Shipment,
+            gas_component_1.Gas,
+            camera_component_1.Camera,
+            gas_stats_component_1.GasStats,
+            settings_sms_component_1.SettingsSms,
+            settings_auth_component_1.SettingsAuth,
+            settings_access_component_1.SettingsAccess,
+            settings_address_component_1.SettingsAddress,
+            settings_formula_component_1.SettingsFormula,
+            settings_offline_users_component_1.SettingsOfflineUsers
+        ],
+        providers: [
+            { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy },
+            user_service_1.UserService,
+            request_service_1.RequestService,
+            settings_service_1.SettingsService,
+            rt_messages_service_1.RTMessagesService,
+            lib_service_1.LibService
+        ],
+        bootstrap: [main_component_1.MainComponent]
+    })
+], AppModule);
+exports.AppModule = AppModule;

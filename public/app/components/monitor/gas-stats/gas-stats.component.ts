@@ -23,7 +23,6 @@ export class GasStats implements OnInit {
     { tank: 'C041', addr: '黄埔', 'maxVal': '22893424', usage: 232 }
   ]
 
-
   realTimeData: any;
   connectedPlcs: any;
   plcAddresses: any;
@@ -33,7 +32,7 @@ export class GasStats implements OnInit {
     private request: RequestService,
     private rtmgs: RTMessagesService,
     private lib: LibService) {
-    console.log("gas-stats is up and running----->>>>---");
+    console.log("gas-stats is up and running fine----->>>>---");
 
     this.showAllPlc();
     this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
@@ -53,8 +52,6 @@ export class GasStats implements OnInit {
   }
 
   showAllPlc() {
-    console.log('get all stats---->>>>>>-----');
-
     this.request.get('/plc/connected/get-all.json')
       .subscribe(res => {
         console.log("connected created--:::::::--", res);

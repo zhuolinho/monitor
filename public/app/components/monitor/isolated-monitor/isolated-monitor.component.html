@@ -1,0 +1,153 @@
+
+
+
+<!-- detail modal -->
+<div class=" helper-padding-bottom-20">
+  <div class=" helper-overflow-hidden">
+
+      <!-- <h4>Modal Header</h4> -->
+      <div class="helper-font-double center-align helper-padding-30">
+              {{currentPlcTank}} {{plcAddresses[currentPlcTank]?.addr}}
+      </div>
+
+      <!-- <div class="row modal-nav monitor-tabs">
+        <div class="col s3">
+            <a (click)="showByDay(true); selectedtab=1; " [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 日均用量 </a>
+        </div>
+
+        <div class="col s3">
+            <a  (click)="showByMonth(true); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 月均用量</a>
+        </div>
+        <div class="col s3">
+
+            <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
+        </div>
+        <div class="clearfix"></div>
+
+      </div> -->
+
+      <!-- <div class="row helper-margin-top-15">
+                <hr />
+      </div> -->
+
+
+
+    <div *ngIf="selectedtab==1 || selectedtab==2" class="row modal-table helper-margin-top-20 helper-vscrolling" style="height:40vh;">
+          <div class="row helper-hscrolling" style="max-width:100% !important;">
+            <!-- <img src="dist/images/chart.jpg" alt="" width="100%; height:200px;"> -->
+
+            <!-- <p class="helper-padding-left-15">瞬时流量 {{date}}</p> -->
+
+            <div  class="helper-padding-left-15" id="statsChart" style="width:2500px;">
+            </div>
+
+            <!-- <div id="realTimeSigStatus">
+            </div> -->
+          </div>
+        <div class="row valign-wrapper" style="margin-top:20px;">
+          <div class="col m1 s12  helper-margin-left-5" style="max-width:35px; font-size:1.3em;">
+            从
+          </div>
+
+          <div class="col m2  s12 helper-margin-bottom-15 helper-margin-left-0">
+              <input type="date" [(ngModel)]="statsStartDate"/>
+
+          </div>
+          <div class="col m1  s12  helper-margin-left-0" style="max-width:60px;font-size:1.3em;">
+            -到-
+          </div>
+          <div class="col m2  s12  helper-margin-bottom-15 helper-margin-left-0">
+              <input type="date" [(ngModel)]="statsEndDate"/>
+          </div>
+          <div class="col s12 m2 helper-margin-left-5">
+                <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="computeStats();">
+                  查看
+                </a>
+          </div>
+
+<!--
+          <div class="col s3 m3">
+            <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
+              下载数据
+            </a>
+          </div> -->
+        </div>
+          <div class="">
+            <div *ngIf="isShowByDay">
+              <div class="monitor-table stripped">
+                <div class="table-row  helper-gray-bg-light">
+                  <div class="table-cell"> 罐号 </div>
+                  <div class="table-cell">日期  </div>
+                  <div class="table-cell">累计流量(Nm3) </div>
+                  <div class="table-cell">用量(Nm3)  </div>
+                </div>
+
+                <div class="table-row"  *ngFor="let data of statsData; let i=index;">
+                  <div class="table-cell"> {{currentPlcTank}} </div>
+                  <div class="table-cell"> <span> {{data.date}}</span></div>
+                  <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+                  <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                </div>
+
+              </div>  <!-- end of table -->
+
+              <div  *ngIf="!statsData.length">
+                <div style="text-align:center; margin-top: 20px;"> 数据未满一天 </div>
+              </div>
+
+            </div>
+
+
+            <div *ngIf="!isShowByDay">
+
+              <div class="monitor-table stripped" >
+                <div class="table-row  helper-gray-bg-light">
+                  <div class="table-cell"> 罐号 </div>
+                  <div class="table-cell">日期  </div>
+                  <div class="table-cell">累计流量(Nm3) </div>
+                  <div class="table-cell">用量(Nm3)  </div>
+                </div>
+
+
+                <div class="table-row" *ngFor="let data of statsData" >
+                  <div class="table-cell"> {{currentPlcTank}} </div>
+                  <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
+                  <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
+                  <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                </div>
+              </div>   <!-- end of table -->
+
+              <div  *ngIf="!statsData.length">
+                <div  style="text-align:center; margin-top: 20px;"> 数据未满一个月! </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- padding div -->
+          <div style="height:80px;"></div>
+      </div>
+
+
+
+      <div *ngIf="selectedtab==3"  class="center-align" style="margin:20px 0;">
+
+        <p>
+          <a  (click)="selectedDownloadTab=1;" [class.monitor-tab-selected]="selectedDownloadTab==1"  class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5">
+            瞬时流量
+          </a>
+          <a (click)="selectedDownloadTab=2;" [class.monitor-tab-selected]="selectedDownloadTab==2" class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5">
+            日均用量
+          </a>
+          <a (click)="selectedDownloadTab=3;" [class.monitor-tab-selected]="selectedDownloadTab==3" class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5">
+            月均用量
+          </a>
+        </p>
+      </div>
+
+      <!-- <h4 *ngIf="selectedtab==4" class="center-align" style="margin:13% 0;">
+        在线支付
+      </h4> -->
+  </div>
+</div>

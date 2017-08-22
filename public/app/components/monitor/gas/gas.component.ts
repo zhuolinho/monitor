@@ -1,10 +1,10 @@
 
-import {Component, AfterViewInit, OnDestroy} from '@angular/core';
-import {LibService} from '../../../services/lib.service';
-import {config} from '../../../config';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { LibService } from '../../../services/lib.service';
+import { config } from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';
-import {RTMessagesService} from '../../../services/rt-messages.service';
-import {RequestService} from '../../../services/request.service';
+import { RTMessagesService } from '../../../services/rt-messages.service';
+import { RequestService } from '../../../services/request.service';
 
 declare var jQuery: any;
 declare var _: any;
@@ -138,7 +138,6 @@ export class Gas implements AfterViewInit, OnDestroy {
   //     },100000);
   //   }
 
-
   veReturnSelectedTanks() {
     this.createNewAlert("拉回报警");
   }
@@ -148,8 +147,6 @@ export class Gas implements AfterViewInit, OnDestroy {
   }
 
   createNewAlert(type) {
-
-
     console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
 
     if (this.selectedTanks.length) {

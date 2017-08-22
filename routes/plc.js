@@ -24,6 +24,18 @@ var chunks = [];
 var sTimer = plcConf.sTimer;
 var size = 0;
 
+// TODO  delete tank from redis DO NOT un comment
+// redisClient.get("lastestPlc", function(err, result) {
+//   var temp = {};
+//   var user = {oID: '10000000001'};
+//   temp[user.oID] = {};
+//   var latestIncommingData = JSON.parse(result)||temp;
+//
+//   _deleteTanksFromDb(latestIncommingData, user, 'C068');
+//   _deleteTanksFromDb(latestIncommingData, user, 'L075');
+// });
+
+
 //socket io
 server.listen(3003);
 
@@ -715,6 +727,7 @@ redisClient.get("lastestPlc", function(err, result) {
 
 function _deleteTanksFromDb(latestIncommingData, user, tankID) {
   //tankID eg. G026, C065
+
   delete latestIncommingData[user.oID][tankID];
 
   redisClient.set("lastestPlc", JSON.stringify(latestIncommingData));  //save updated data
