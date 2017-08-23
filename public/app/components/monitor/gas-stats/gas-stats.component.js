@@ -17,12 +17,11 @@ var rt_messages_service_1 = require("../../../services/rt-messages.service");
 var request_service_1 = require("../../../services/request.service");
 var GasStats = (function () {
     function GasStats(request, rtmgs, lib) {
-        var _this = this;
         this.request = request;
         this.rtmgs = rtmgs;
         this.lib = lib;
         this.availableStatsTanks = [
-            { tank: 'G001', addr: '宝山', 'maxVal': '223424', usage: 2235552 },
+            { tank: 'G001', addr: '宝山', 'maxVal': '223424', usage: 225552 },
             { tank: 'G011', addr: '闵行', 'maxVal': '22424', usage: 23222 },
             { tank: 'G021', addr: '徐汇', 'maxVal': '3424', usage: 22 },
             { tank: 'G031', addr: '静安', 'maxVal': '22223424', usage: 26782 },
@@ -30,25 +29,30 @@ var GasStats = (function () {
         ];
         console.log("gas-stats is up and running fine----->>>>---");
         this.showAllPlc();
-        this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
-            console.log("latest plc>>>-----", resp);
-            if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-                _this.realTimeData = resp.pl.plc;
-                _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-                _this.connectedPlcs = _.orderBy(Object.keys(_this.realTimeData), function (o) {
-                    return parseInt(o.slice(1, 4));
-                }, ['asc']);
-                _this.currentPlcTank = _this.connectedPlcs[0];
-            }
-        });
+        // this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
+        //   console.log("latest plc>>>-----", resp);
+        //   if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+        //     this.realTimeData = resp.pl.plc;
+        //     this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+        //     this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
+        //       return parseInt(o.slice(1, 4));
+        //     }, ['asc']);
+        //     this.currentPlcTank = this.connectedPlcs[0];
+        //   }
+        // });
     }
     GasStats.prototype.ngOnInit = function () {
         this.showAllPlc();
     };
     GasStats.prototype.showAllPlc = function () {
+        var _this = this;
         this.request.get('/plc/connected/get-all.json')
             .subscribe(function (res) {
-            console.log("connected created--:::::::--", res);
+            var list = {};
+            res.pl.address.forEach(function (obj) {
+                list[obj.tank] = obj;
+            });
+            _this.realTimeData = res.pl.plc.map(function (obj) { obj.addr = list[obj.tank].addr; return obj; });
         });
     };
     return GasStats;
@@ -63,4 +67,3 @@ GasStats = __decorate([
         lib_service_1.LibService])
 ], GasStats);
 exports.GasStats = GasStats;
-//# sourceMappingURL=gas-stats.component.js.map

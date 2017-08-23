@@ -1,16 +1,14 @@
-<div class="" style="">
-
-
+<div>
 <div class="container">
-  <div class="row helper-margin-bottom-10" style="width:800px;">
+  <div class="row" style="width:800px;">
 
-    <div class="col s8 helper-margin-top-15 helper-padding-left-0">
+    <div class="col s8 helper-padding-left-0">
       <!-- <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span> -->
       <select class="helper-select-font-bigger select-address">
         <option [value]="cam.id" *ngFor="let cam of allCameras" >{{cam.addr}}</option>
       </select>
     </div>
-    <div class="input-field  col s4">
+    <div class="col s4 ">
       <select class="helper-select-font-bigger select-camera">
         <option [value]="cam.id" *ngFor="let cam of currentCameras" >{{cam.name}}</option>
       </select>
@@ -22,15 +20,12 @@
 </div>
 
 
-<!-- <div class="container" class="helper-vscrolling" style=" height:80vh;"> -->
 <div class="container" >
   <div class="row">
-
-
     <div *ngFor="let cam of currentCameras">
-      <div id="videoContainer" *ngIf="selectedCam==cam.id" class="" style="margin-bottom:40px;">
+      <div id="videoContainer" *ngIf="selectedCam==cam.id">
         <object
-        pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="450" id="video" name="video" align="middle">
+        pluginspage="http://www.macromedia.com/go/getflashplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="800" height="400" id="video" name="video" align="middle">
         <param name="allowScriptAccess" value="always">
         <param name="allowFullScreen" value="true">
         <param name="quality" value="high">
@@ -38,7 +33,7 @@
         <param name="wmode" value="transparent">
         <param name="movie" value="https://open.ys7.com/assets/ckplayer/ckplayer.swf">
         <param name="flashvars" [value]="'f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a='+cam.link+'&amp;c=0&amp;p=1&amp;s=4&amp;lv=1'">
-        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" [attr.flashvars]="'f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a='+cam.link+'&amp;c=0&amp;p=1&amp;s=4&amp;lv=1'" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+        <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" [attr.flashvars]="'f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a='+cam.link+'&amp;c=0&amp;p=1&amp;s=4&amp;lv=1'" width="800" height="400" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
         </object>
       </div>
 
@@ -255,13 +250,6 @@
         <embed allowscriptaccess="always" allowfullscreen="true" quality="high" bgcolor="#FFF" wmode="transparent" src="https://open.ys7.com/assets/ckplayer/ckplayer.swf" flashvars="f=https://open.ys7.com/assets/ckplayer/m3u8.swf&amp;a=http://open.ys7.com/openlive/328abe9b21a841c69520471d89d03805.m3u8&amp;c=0&amp;p=1&amp;s=4&amp;lv=1" width="800" height="450" name="video" id="video" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
       </object>
     </div> -->
-
-
-   <!-- padding div -->
-    <div style="height:80px;"> </div>
-
-
-
   </div>
 </div>
 

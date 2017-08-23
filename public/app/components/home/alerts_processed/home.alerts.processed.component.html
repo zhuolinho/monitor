@@ -1,6 +1,6 @@
 
-<div class="helper-padding-10 helper-vscrolling" style=" height:80vh;">
-  <ul class="collapsible row" data-collapsible="accordion">
+<div class="scrollable-container" style=" height:70vh;">
+  <ul class="collapsible row helper-padding-10" data-collapsible="accordion">
 
       <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="let alert of alertsList">
         <div class="collapsible-header active"> <span class="left helper-font-bigger">{{alert.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
@@ -41,8 +41,5 @@
       </li>
 
     </ul>
-  <!-- padding div -->
-    <div style="height:50px;"></div>
-
 
 </div>

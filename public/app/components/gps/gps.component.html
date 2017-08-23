@@ -1,10 +1,18 @@
 
-  <div class="top-nav helper-padding-bottom-15">
-    <a [routerLink]="['/admin/gps/shipments']" routerLinkActive="router-link-active" class="waves-effect waves-light btn-large top-nav-item helper-font-bigger" style="display:inline-block; width:180px;  text-align:center; margin-right:30px;">配送列表</a>
-    <a [routerLink]="['/admin/gps/shipment-map','manual']" routerLinkActive="router-link-active" class="waves-effect waves-light btn-large top-nav-item helper-font-bigger hide-on-small-only"  style="display:inline-block; width:180px; text-align:center; margin-right:30px;">GPS地图</a>
-    <a [routerLink]="['/admin/gps/processed-shipments']"  routerLinkActive="router-link-active" class="waves-effect waves-light btn-large top-nav-item helper-font-bigger"  style="display:inline-block; width:180px; text-align:center;">处理与完成</a>
+  <div class="top-nav module-top-nav">
+    <a class="module-top-nav-item-wrapper" [routerLink]="['/admin/gps/shipments']" routerLinkActive="router-link-active" >
+      <a class="waves-effect waves-light btn-large top-nav-item helper-font-bigger">配送列表</a>
+    </a>
+
+    <a class="module-top-nav-item-wrapper" [routerLink]="['/admin/gps/shipment-map','manual']" routerLinkActive="router-link-active" >
+      <a class="waves-effect waves-light btn-large top-nav-item helper-font-bigger hide-on-small-only" >GPS地图</a>
+    </a>
+
+    <a class="module-top-nav-item-wrapper" [routerLink]="['/admin/gps/processed-shipments']"  routerLinkActive="router-link-active" >
+      <a class="waves-effect waves-light btn-large top-nav-item helper-font-bigger" >处理与完成</a>
+    </a>
   </div>
 
-  <div class="" id="homeMainContainer">
+  <div class="bottom-container" id="homeMainContainer">
     	<router-outlet></router-outlet>
   </div>

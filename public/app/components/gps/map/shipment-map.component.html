@@ -1,5 +1,5 @@
 <div class="row" style="height:100%; width:100%;">
-  <div class="col s6 helper-vscrolling" style="height:80vh;">
+  <div class="col s6 scrollable-container" style="height:70vh;">
     <!-- <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
       目的地
     </span>
@@ -193,12 +193,10 @@
                 <a (click)="selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 更换车辆 </a>
             </div>
         </div>
-       <!--scroll helper  -->
-        <div style="height:100px;"></div>
 
 
   </div>
-  <div class="col s6 helper-relative helper-overflow" style="height:77vh; position:relative;">
+  <div class="col s6 helper-relative helper-overflow" style="height:77vh; position:relative; top: 20px;">
     <h5 *ngIf="totalCarNumber" style="position:absolute; top:-40px; right:7px;"> 一共 {{totalCarNumber}} 辆</h5>
     <div class="row" id="allmap"  style="margin-right:-50px; display:block;" >
       <!-- <div class="" style="height:100%;width:100%; position:absolute; top:0; left:0; background: rgba(0,0,0,1);">

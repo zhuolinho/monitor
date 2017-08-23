@@ -1,16 +1,17 @@
-<div class="helper-border-top helper-relative">
-    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
+<div class="helper-relative">
+    <div class="helper-padding-10  monitor-tabs module-sub-top-menu herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
         <a (click)="veSortBy(1);   selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 管理层</a>
         <a  (click)="veSortBy(2);  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 监管员 </a>
         <a  (click)="veSortBy(3);  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;">调度员</a>
         <a   (click)="veSortBy(4);  selectedtab=4;"  [class.monitor-tab-selected]="selectedtab==4" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 客户</a>
     </div>
-    <div class="space" style="padding-top:60px;">
+    <div class="space-sub-nav">
+
     </div>
 
     <!-- toto add a back to top button -->
 
-    <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+    <div class="scrollable-container"  style=" height:70vh;">
 
       <ul class="collapsible row" data-collapsible="accordion">
           <li *ngFor="let userGroup of userArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
@@ -169,7 +170,5 @@
            <a *ngIf="!editTarget" (click)="addNewUser()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger btn-flat">提交</a>
            <a *ngIf="editTarget" (click)="updateUser()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger btn-flat">提交</a>
          </div>
-
-          <!-- for the select -->
-         <div style="height:60px;"></div>
+=
       </div>

@@ -1,15 +1,15 @@
-<div class="helper-border-top helper-relative">
-    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
+<div class="helper-relative">
+    <div class="helper-padding-10  monitor-tabs module-sub-top-menu herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
         <a (click)="veElertParameter(); selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 报警参数</a>
         <a  (click)="veCalculateParameter(); selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 计算参数 </a>
     </div>
+    <div class="space-sub-nav">
 
-    <div class="space" style="padding-top:60px;">
     </div>
 
     <!-- toto add a back to top button -->
 
-    <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+    <div class="" style=" height:70vh; overflow-y:auto; overflow-x:hidden;">
 
               <div *ngIf="selectedtab == 1" class="helper-padding-bottom-20 helper-hpadding-15 helper-white-bg">
                  <div class="col s12 helper-font-bigger helper-vpadding-10">参数列表</div>
@@ -210,7 +210,4 @@
         <div class="modal-footer">
          <a class=" modal-action modal-close monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
        </div>
-
-        <!-- for the select -->
-       <div style="padding-bottom:80px;"></div>
     </div>

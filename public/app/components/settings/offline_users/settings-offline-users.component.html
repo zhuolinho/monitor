@@ -1,17 +1,17 @@
-<div class="helper-border-top helper-relative">
-    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor" style="position:absolute;top:0; left:0; width:100%;">
+<div class="helper-relative">
+    <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor module-sub-top-menu" style="position:absolute;top:0; left:0; width:100%;">
         <a (click)="veSortBy(6);  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 司机</a>
         <a  (click)="veSortBy(8);  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 押运员 </a>
     </div>
 
     <!-- padding for tab above -->
-    <div class="space" style="padding-top:60px;">
+        <div class="space-sub-nav">
     </div>
 
 
     <!-- toto add a back to top button -->
 
-    <div class="" style=" height:80vh; overflow-y:auto; overflow-x:hidden;">
+    <div class="scrollable-container"  style=" height:70vh;">
 
         <ul   class="collapsible row" data-collapsible="accordion">
               <li *ngFor="let userGroup of staffArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
@@ -165,6 +165,4 @@
            <a *ngIf="editTarget" (click)="updateUser()" class="  monitor-gray-button helper-margin-right-15  helper-font-bigger btn-flat">提交</a>
          </div>
 
-          <!-- for the select -->
-         <div style="padding-bottom:60px;"></div>
       </div>
