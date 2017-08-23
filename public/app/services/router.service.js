@@ -18,6 +18,7 @@ var processed_shipment_component_1 = require("../components/gps/processed/proces
 var shiment_component_1 = require("../components/gps/shipment/shiment.component");
 //admin monitor components
 var gas_component_1 = require("../components/monitor/gas/gas.component");
+var isolated_monitor_component_1 = require("../components/monitor/isolated-monitor/isolated-monitor.component");
 var camera_component_1 = require("../components/monitor/camera/camera.component");
 //admin gas stats
 var gas_stats_component_1 = require("../components/monitor/gas-stats/gas-stats.component");
@@ -47,25 +48,33 @@ var ROUTES = [
     //   },
     // ]},
     { path: '', component: login_component_1.LoginComponent },
-    { path: 'admin', component: admin_component_1.AdminComponent, children: [
-            { path: 'home', component: home_component_1.Home, children: [
+    {
+        path: 'admin', component: admin_component_1.AdminComponent, children: [
+            {
+                path: 'home', component: home_component_1.Home, children: [
                     { path: 'alerts', component: home_alerts_component_1.HomeAlerts },
                     { path: 'processed-alerts', component: home_alerts_processed_component_1.HomeProcssedAlerts },
                     { path: '**', component: home_alerts_component_1.HomeAlerts }
-                ] },
-            { path: 'monitor', component: monitor_component_1.Monitor, children: [
+                ]
+            },
+            {
+                path: 'monitor', component: monitor_component_1.Monitor, children: [
                     { path: 'gas', component: gas_component_1.Gas },
                     { path: 'camera', component: camera_component_1.Camera },
                     { path: 'gas-stats', component: gas_stats_component_1.GasStats },
                     { path: '**', component: gas_component_1.Gas }
-                ] },
-            { path: 'gps', component: gps_component_1.Gps, children: [
+                ]
+            },
+            {
+                path: 'gps', component: gps_component_1.Gps, children: [
                     { path: 'shipments', component: shiment_component_1.Shipment },
                     { path: 'shipment-map/:tank', component: shipment_map_component_1.ShipmentMap },
                     { path: 'processed-shipments', component: processed_shipment_component_1.ProcessedShipment },
                     { path: '**', component: shiment_component_1.Shipment }
-                ] },
-            { path: 'settings', component: settings_component_1.Settings, children: [
+                ]
+            },
+            {
+                path: 'settings', component: settings_component_1.Settings, children: [
                     { path: 'auth', component: settings_auth_component_1.SettingsAuth },
                     { path: 'sms', component: settings_sms_component_1.SettingsSms },
                     { path: 'access', component: settings_access_component_1.SettingsAccess },
@@ -73,9 +82,12 @@ var ROUTES = [
                     { path: 'offline-users', component: settings_offline_users_component_1.SettingsOfflineUsers },
                     { path: 'formula', component: settings_formula_component_1.SettingsFormula },
                     { path: '**', component: settings_auth_component_1.SettingsAuth }
-                ] },
+                ]
+            },
             { path: '**', component: home_component_1.Home }
-        ] },
+        ]
+    },
+    { path: 'view/tank-stats/:tankId', component: isolated_monitor_component_1.IsolatedMonitor },
     { path: '**', component: login_component_1.LoginComponent }
 ];
 // export const globalRouterProviders: any[]  = [

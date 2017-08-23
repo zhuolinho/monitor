@@ -2,6 +2,7 @@
 import { Component, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { LibService } from '../../../services/lib.service';
 import { config } from '../../../config';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 // import {GasDetail} from './details/gas.detail.component';
 import { RTMessagesService } from '../../../services/rt-messages.service';
 import { RequestService } from '../../../services/request.service';
@@ -27,32 +28,28 @@ export class IsolatedMonitor implements OnInit {
   connectedPlcs: any;
   plcAddresses: any;
   statsData: any[] = [];
-  currentPlcTank: any;
   statsStartDate: any;
   statsEndDate: any;
+  gotData: boolean = false;
   isShowByDay: boolean;
+  tankId: string;
 
   constructor(
     private request: RequestService,
+    private route: ActivatedRoute,
     private rtmgs: RTMessagesService,
     private lib: LibService) {
     console.log("gas-stats is up and running fine----->>>>---");
-
-    // this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-    //   console.log("latest plc>>>-----", resp);
-    //   if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-    //     this.realTimeData = resp.pl.plc;
-    //     this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-    //     this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
-    //       return parseInt(o.slice(1, 4));
-    //     }, ['asc']);
-    //     this.currentPlcTank = this.connectedPlcs[0];
-    //   }
-    // });
   }
 
   ngOnInit() {
-    this.getPlcStats();
+    this.route.params.forEach((params: Params) => {
+      this.tankId = params['tankId'];
+      if (this.tankId) {
+        this.getPlcStats();
+      }
+      console.log("params['tank']----", this.tankId);
+    });
   }
 
   getPlcStats() {
@@ -64,12 +61,19 @@ export class IsolatedMonitor implements OnInit {
     //   mode = 'day';
     // }
 
+
+    var d = new Date();
+    this.statsEndDate = d.toISOString().slice(0, 10);
+    d.setMonth(d.getMonth() - 1);//last months date;
+    this.statsStartDate = d.toISOString().slice(0, 10);
+
     console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(resp => {
+    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.tankId + '/' + mode + '.json').subscribe(resp => {
       console.log("plc stats-----", resp);
       if (resp && resp.pl && resp.pl.plc) {
         this.statsData = resp.pl.plc;
       }
+      this.gotData = true;
     });
   }
 }

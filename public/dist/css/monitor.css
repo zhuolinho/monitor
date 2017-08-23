@@ -46,8 +46,6 @@
 
 .bottom-container {
   padding: 15px 30px !important;
-  position: relative;
-  z-index: 3;
 }
 
 .bottom-container .collapsible {
@@ -78,7 +76,7 @@
   margin-right:20px;
   text-align: center;
   position: relative;
-  z-index: 4;
+  z-index: 2;
 }
 
 .module-top-nav-item-wrapper.router-link-active {

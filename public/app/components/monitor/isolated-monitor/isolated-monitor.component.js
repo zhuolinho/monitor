@@ -12,12 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var lib_service_1 = require("../../../services/lib.service");
 var config_1 = require("../../../config");
+var router_1 = require("@angular/router");
 // import {GasDetail} from './details/gas.detail.component';
 var rt_messages_service_1 = require("../../../services/rt-messages.service");
 var request_service_1 = require("../../../services/request.service");
 var IsolatedMonitor = (function () {
-    function IsolatedMonitor(request, rtmgs, lib) {
+    function IsolatedMonitor(request, route, rtmgs, lib) {
         this.request = request;
+        this.route = route;
         this.rtmgs = rtmgs;
         this.lib = lib;
         this.availableStatsTanks = [
@@ -28,21 +30,18 @@ var IsolatedMonitor = (function () {
             { tank: 'C041', addr: '黄埔', 'maxVal': '22893424', usage: 232 }
         ];
         this.statsData = [];
+        this.gotData = false;
         console.log("gas-stats is up and running fine----->>>>---");
-        // this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-        //   console.log("latest plc>>>-----", resp);
-        //   if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-        //     this.realTimeData = resp.pl.plc;
-        //     this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-        //     this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
-        //       return parseInt(o.slice(1, 4));
-        //     }, ['asc']);
-        //     this.currentPlcTank = this.connectedPlcs[0];
-        //   }
-        // });
     }
     IsolatedMonitor.prototype.ngOnInit = function () {
-        this.getPlcStats();
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            _this.tankId = params['tankId'];
+            if (_this.tankId) {
+                _this.getPlcStats();
+            }
+            console.log("params['tank']----", _this.tankId);
+        });
     };
     IsolatedMonitor.prototype.getPlcStats = function () {
         var _this = this;
@@ -52,12 +51,17 @@ var IsolatedMonitor = (function () {
         // if (this.isShowByDay) {
         //   mode = 'day';
         // }
+        var d = new Date();
+        this.statsEndDate = d.toISOString().slice(0, 10);
+        d.setMonth(d.getMonth() - 1); //last months date;
+        this.statsStartDate = d.toISOString().slice(0, 10);
         console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-        this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(function (resp) {
+        this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.tankId + '/' + mode + '.json').subscribe(function (resp) {
             console.log("plc stats-----", resp);
             if (resp && resp.pl && resp.pl.plc) {
                 _this.statsData = resp.pl.plc;
             }
+            _this.gotData = true;
         });
     };
     return IsolatedMonitor;
@@ -68,6 +72,7 @@ IsolatedMonitor = __decorate([
         templateUrl: config_1.config.prefix + '/components/monitor/isolated-monitor/isolated-monitor.component.html'
     }),
     __metadata("design:paramtypes", [request_service_1.RequestService,
+        router_1.ActivatedRoute,
         rt_messages_service_1.RTMessagesService,
         lib_service_1.LibService])
 ], IsolatedMonitor);
