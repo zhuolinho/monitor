@@ -1,5 +1,6 @@
 #loginWrapper{
-  background-color: #289DDC;
+  /*background-color: #289DDC;*/
+  background: url('../../../../../dist/images/login-bg.png') no-repeat center center;
   height: 100vh;
   overflow-y: auto;
   padding-top: 25vh;
@@ -11,6 +12,67 @@
   width: 300px;
   height: 150px;
   margin: auto;
+}
+
+.login-title {
+  font-size: 32px;
+  line-height: 50px;
+}
+
+
+#loginForm {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  padding: 20px;
+  padding-top: 50px;
+}
+
+#loginForm input,
+ #loginForm .material-icons {
+  height: 35px;
+  background-color: white;
+  border: 0;
+}
+
+#loginForm input {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+
+#loginForm .material-icons {
+  border-top-left-radius:  6px;
+  border-bottom-left-radius: 6px;
+  padding: 7px 10px;
+  font-size: 22px;
+  color: #c8c8c8 !important;
+}
+
+
+.login-title:first-child {
+  margin-top: 50px;
+}
+
+.login-logo2,
+.login-logo1 {
+  display: block;
+  position: absolute;
+}
+
+.login-logo2 {
+  left: 0;
+  top: 0;
+  height: 330px;
+  width: 180px;
+}
+
+
+.login-logo1 {
+  bottom: 40px;
+  left: 70px;
+  height: 210px;
+  width: 600px;
+
 }
 
 .padding-top-30{

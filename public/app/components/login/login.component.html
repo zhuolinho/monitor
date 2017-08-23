@@ -4,6 +4,9 @@
     <div class="col m8 s12">
         <h3 class="center-align login-title">上海万事红智能信息管理系统</h3>
         <h3 class="center-align login-title">顺天（上海）能源技术发展有限公司</h3>
+
+        <img src="dist/images/login-logo1.png" alt="" class="login-logo1">
+        <img src="dist/images/login-logo2.png" alt="" class="login-logo2">
 <!--
         <h3 class="center-align">YZ 智能信息管理系统</h3>
         <h3 class="center-align">YZ 智能信息管理系统</h3> -->
@@ -12,19 +15,19 @@
         <div class="container">
           <div class="row">
             <div class="col s6">
-              <img class="logo" src="dist/images/logo1.jpg" alt="" style="display:block; width:150px;  height:85px;" />
-              <h5 class="center-align hide-on-small-only">
+              <!-- <img class="logo" src="dist/images/logo1.jpg" alt="" style="display:block; width:150px;  height:85px;" /> -->
+              <!-- <h5 class="center-align hide-on-small-only">
                 团结 求实 开拓 高效
-              </h5>
+              </h5> -->
               <!-- <h5 class="center-align">
             定制
               </h5> -->
             </div>
             <div class="col s6">
-              <img class="logo" src="dist/images/logo2.jpg" alt="" style="display:block;  width:150px;  height:85px;"  />
-              <h5 class="center-align hide-on-small-only">
+              <!-- <img class="logo" src="dist/images/logo2.jpg" alt="" style="display:block;  width:150px;  height:85px;"  /> -->
+              <!-- <h5 class="center-align hide-on-small-only">
                 团结 求实 开拓 高效
-              </h5>
+              </h5> -->
               <!-- <h5 class="center-align">
             定制
               </h5> -->
@@ -37,7 +40,7 @@
 
     <div class="col m4  s12 padding-top-30 helper-relative">
 
-      <div class="row" *ngIf="loginError" style=" position:absolute; width:90%; left:7.5%; top:-20px;">
+      <div class="row" *ngIf="loginError" style=" position:absolute; width:70%; left:17.5%; top:-20px;">
         <div class="col s12">
           <p class="center-align helper-padding-5" style="background:#ee6e73;">
             用户名或密码错误, 请重试!
@@ -45,9 +48,9 @@
         </div>
       </div>
 
-      <div class="row helper-padding-top-10">
+      <div class="row">
 
-        <form class="helper-white-bg helper-padding-15" style="width:85%; margin:auto;" id="loginForm">
+        <form style="width:70%;" id="loginForm">
           <div class="row">
 
             <div class="input-field col s12">
@@ -61,10 +64,13 @@
               <label for="icon_telephone">密码</label>
             </div>
           </div>
+
+          <div class="row">
+            <div>
+              <a (click)="login()"   class="btn monitor-gray-button btn-dark waves-effect  waves-light helper-font-bigger "   style="width: 80%; min-width: 160px; height:35px; line-height:35px; font-size: 14px !important;  margin:auto; margin-top: 40px; display:block;  background-color: #003a82 !important;">登录</a>
+            </div>
+          </div>
         </form>
-      </div>
-      <div class="helper-hpadding-25 helper-vpadding-10">
-        <a (click)="login()"   class="btn monitor-gray-button btn-dark waves-effect  waves-light helper-font-bigger "   style="width:160px; height:50px; margin:auto; display:block; line-height:50px;">登录</a>
       </div>
     </div>
 
