@@ -1,10 +1,15 @@
 #loginWrapper{
-  /*background-color: #289DDC;*/
-  background: url('../../../../../dist/images/login-bg.png') no-repeat center center;
+
+  background: url('../../../../../dist/images/login-bg.jpeg') no-repeat center center;
   height: 100vh;
   overflow-y: auto;
   padding-top: 25vh;
+  background-size: cover;
   color: white;
+}
+
+.input-field label {
+  top: 0.4rem;  
 }
 
 .logo{
@@ -27,20 +32,19 @@
   padding-top: 50px;
 }
 
-#loginForm input,
- #loginForm .material-icons {
+#loginForm   input, #loginForm   .material-icons {
   height: 35px;
   background-color: white;
   border: 0;
 }
 
-#loginForm input {
+#loginForm   input {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
 
 
-#loginForm .material-icons {
+#loginForm   .material-icons {
   border-top-left-radius:  6px;
   border-bottom-left-radius: 6px;
   padding: 7px 10px;
@@ -53,8 +57,7 @@
   margin-top: 50px;
 }
 
-.login-logo2,
-.login-logo1 {
+.login-logo2, .login-logo1 {
   display: block;
   position: absolute;
 }
