@@ -40,17 +40,16 @@
 
     <div class="col m4  s12 padding-top-30 helper-relative">
 
-      <div class="row" *ngIf="loginError" style=" position:absolute; width:70%; left:17.5%; top:-20px;">
-        <div class="col s12">
-          <p class="center-align helper-padding-5" style="background:#ee6e73;">
-            用户名或密码错误, 请重试!
-          </p>
-        </div>
-      </div>
-
       <div class="row">
 
-        <form style="width:70%;" id="loginForm">
+        <form style="width:70%; position: relative;" id="loginForm">
+          <div *ngIf="loginError" style=" position:absolute; width: 100%; left: 0; top:-55px;">
+            <div>
+              <p class="center-align helper-padding-5" style="background:#ee6e73;">
+                用户名或密码错误, 请重试!
+              </p>
+            </div>
+          </div>
           <div class="row">
 
             <div class="input-field col s12">

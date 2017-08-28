@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = require("@angular/router");
+var router_guard_service_1 = require("./router-guard.service");
 //main components
 var login_component_1 = require("../components/login/login.component");
 var admin_component_1 = require("../components/admin/admin.component");
@@ -76,11 +77,41 @@ var ROUTES = [
             {
                 path: 'settings', component: settings_component_1.Settings, children: [
                     { path: 'auth', component: settings_auth_component_1.SettingsAuth },
-                    { path: 'sms', component: settings_sms_component_1.SettingsSms },
-                    { path: 'access', component: settings_access_component_1.SettingsAccess },
-                    { path: 'address', component: settings_address_component_1.SettingsAddress },
-                    { path: 'offline-users', component: settings_offline_users_component_1.SettingsOfflineUsers },
-                    { path: 'formula', component: settings_formula_component_1.SettingsFormula },
+                    {
+                        path: 'sms',
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ],
+                        component: settings_sms_component_1.SettingsSms
+                    },
+                    {
+                        path: 'access',
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ],
+                        component: settings_access_component_1.SettingsAccess
+                    },
+                    {
+                        path: 'address',
+                        component: settings_address_component_1.SettingsAddress,
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ]
+                    },
+                    {
+                        path: 'offline-users',
+                        component: settings_offline_users_component_1.SettingsOfflineUsers,
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ]
+                    },
+                    {
+                        path: 'formula',
+                        component: settings_formula_component_1.SettingsFormula,
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ]
+                    },
                     { path: '**', component: settings_auth_component_1.SettingsAuth }
                 ]
             },

@@ -2,6 +2,9 @@
 
 import { Routes, RouterModule } from '@angular/router';
 
+import { CanActivateViaAuthGuard } from './router-guard.service';
+
+
 //main components
 import { LoginComponent } from '../components/login/login.component';
 import { AdminComponent } from '../components/admin/admin.component';
@@ -92,11 +95,42 @@ const ROUTES: Routes = [
       {
         path: 'settings', component: Settings, children: [
           { path: 'auth', component: SettingsAuth },
-          { path: 'sms', component: SettingsSms },
-          { path: 'access', component: SettingsAccess },
-          { path: 'address', component: SettingsAddress },
-          { path: 'offline-users', component: SettingsOfflineUsers },
-          { path: 'formula', component: SettingsFormula },
+          {
+            path: 'sms',
+            canActivate: [
+              CanActivateViaAuthGuard
+            ],
+            component: SettingsSms
+          },
+
+          {
+            path: 'access',
+            canActivate: [
+              CanActivateViaAuthGuard
+            ],
+            component: SettingsAccess
+          },
+          {
+            path: 'address',
+            component: SettingsAddress,
+            canActivate: [
+              CanActivateViaAuthGuard
+            ]
+          },
+          {
+            path: 'offline-users',
+            component: SettingsOfflineUsers,
+            canActivate: [
+              CanActivateViaAuthGuard
+            ]
+          },
+          {
+            path: 'formula',
+            component: SettingsFormula,
+            canActivate: [
+              CanActivateViaAuthGuard
+            ]
+          },
           { path: '**', component: SettingsAuth }
 
         ]

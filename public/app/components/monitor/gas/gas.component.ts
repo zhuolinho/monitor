@@ -76,6 +76,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   statsStartDate: any;
   statsEndDate: any;
   isShowByDay: boolean;
+  showModal: boolean = false;
   statsData: any[];
   plcAddresses: any[] = [];
   selectedDownloadTab: number = 1;
@@ -174,6 +175,7 @@ export class Gas implements AfterViewInit, OnDestroy {
       for (let i = 0; i < this.availableTanks.length; i++) {
         this.availableTanks[i].selected = true;
       }
+
       this.selectedTanks = this.availableTanks;
     }
     else {
@@ -227,7 +229,6 @@ export class Gas implements AfterViewInit, OnDestroy {
 
 
   initSelect() {
-
     var that = this;
     setTimeout(_ => {
       jQuery('select:not(simple-select)').material_select();
@@ -236,16 +237,8 @@ export class Gas implements AfterViewInit, OnDestroy {
         console.log('changed');
         that.setCurrentPlc(e);
       });
-      // jQuery('select.select-year').change(function(e){
-      //           that.statYearSelected(e);
-      // });
-      //
-      // jQuery('select.select-month').change(function(e){
-      //     that.statMothSelected(e);
-      // });
     });
   }
-
 
   setCurrentPlc(event) {
     this.currentPlcTank = event.target.value;
@@ -254,7 +247,6 @@ export class Gas implements AfterViewInit, OnDestroy {
   }
 
   setYears(startYear) {
-
     var sY = startYear || 2009;
     var y = 2016;
     while (y >= sY) {
@@ -274,257 +266,21 @@ export class Gas implements AfterViewInit, OnDestroy {
     console.log("this.days----", this.startDays);
   }
 
-  //  statYearSelected(event){
-  //
-  //    console.log('year changed1----',event.target.value);
-  //        this.currentStatSelectedYear = event.target.value;
-  //  }
-
-  statMothSelected(event) {
-    //  console.log('month changed1----',event.target.value);
-    //  this.currentStatSelectedMonth = event.target.value;
-    //  this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
-  }
-
   showDetailModal(param) {
     var that = this;
 
-    this.setStatsInitValues();
+    if (param === 'day') {
+      this.isShowByDay = true;
+
+    } else if (param === 'month') {
+      this.isShowByDay = false;
+    }
+    that.showModal = false;
 
     jQuery("#gasUsageDetailModal").openModal({
       ready: function() {
-        that.initChart();
+        that.showModal = true;
       }
     });
   }
-
-  setStatsInitValues() {
-    var d = new Date();
-    this.statsEndDate = d.toISOString().slice(0, 10);
-    d.setMonth(d.getMonth() - 1);//last month date;
-    this.statsStartDate = d.toISOString().slice(0, 10);
-    console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
-  }
-
-
-
-  getPlcStats() {
-    this.statsData = [];
-
-    var mode = 'month';
-    if (this.isShowByDay) {
-      mode = 'day';
-    }
-
-    console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(resp => {
-      console.log("plc stats-----", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.statsData = resp.pl.plc;
-      }
-    });
-  }
-
-  computeStats() {
-    console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
-    this.getPlcStats();
-  }
-
-
-
-  downloadData() {
-    var which = '';
-    var mode = null;
-
-    if (this.selectedDownloadTab === 1) {
-      which = 'instantaneous';
-    }
-    else if (this.selectedDownloadTab === 2) {
-      which = 'dayly-usage';
-      mode = 'day';
-    }
-    else if (this.selectedDownloadTab === 3) {
-      which = 'monthly-usage';
-      mode = 'month';
-    }
-
-    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(res => {
-      console.log("res-----", res);
-      window.location.href = res.pl.file;
-    });
-  }
-
-
-  // code for detail modal
-  showByDay(fromModal) {
-    // alert('by day');
-    console.log("by day");
-    if (fromModal) {
-      this.initChart();
-    }
-
-    this.isShowByDay = true;
-    this.computeStats();
-  }
-
-  showByMonth(fromModal) {
-    // alert('by month');
-    console.log("by month");
-
-    if (fromModal) {
-      this.initChart();
-    }
-    this.isShowByDay = false;
-
-    // re-initialize material-select
-    this.currentSelect = this.years;
-    this.computeStats();
-  }
-
-  initChart() {
-    var that = this;
-
-    this.request.get('/plc/forlasthours/' + this.currentPlcTank + '.json').subscribe(resp => {
-      console.log("plc stats chart data-->>>:---", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.chartData = resp.pl.plc;
-        this.generateChart();
-      }
-    });
-
-  }
-
-  generateChart() {
-    var that = this;
-    var Y;
-    if (this.currentPlcMetter == '1') {
-      Y = that.chartData.values || [];
-    } else {
-      Y = that.chartData.values2 || [];
-    }
-
-    Y.unshift("瞬时流量");
-    var X = that.chartData.dates || [];
-    X.unshift('x');
-
-    var statsChart = c3.generate({
-      bindto: '#statsChart',
-      data: {
-        x: 'x',
-        xFormat: '%Y-%m-%d %H:%M:%S', // how the date is parsed
-        columns: [X, Y]
-      },
-      axis: {
-        x: {
-          type: 'timeseries',
-          tick: {
-            count: 24,
-            //  format: function (x) { return x.getFullYear(); }
-            format: '%H:%M' //how the date is displayed
-          }
-        }
-      }
-    });
-  }
-
-
-  // var X = temp;
-  // X.unshift('x');
-  // console.log("X-----",X);
-  // temp = _.uniq(temp);
-  // console.log("temp unique------",temp);
-  // var updatedAxes = [];
-  // if(temp){
-  //       for (let i = 0; i < 24; i++) {
-  //         if(temp[i]){
-  //             updatedAxes[i] = temp[i];
-  //         }
-  //         else{
-  //            if(i<9){
-  //               updatedAxes[i] = temp[0].split(' ')[0]+" "+"0"+i+":00";
-  //           }
-  //           else{
-  //                 updatedAxes[i] = temp[0].split(' ')[0]+" "+i+":00";
-  //           }
-  //         }
-  //
-  //
-  //       }
-  // }
-
-
-  // initGrapth(){
-  //
-  //   var that = this;
-  //
-  //   if(!Gas.graphIsRunning){
-  //      Gas.graphIsRunning = true;
-  //      var INTERVAL = Math.PI / 30;
-  //
-  //     // Precompute wave
-  //     var d = d3.range(0, Math.PI / 2 + INTERVAL, INTERVAL),
-  //         sinWave = d.map(Math.sin);
-  //
-  //     var w = 900, h = 150,
-  //         x = d3.scale.linear().domain([-5, 15]).range([0, w]),
-  //         y = x,
-  //         r = (function(a, b) {
-  //       return Math.sqrt(a * a + b * b);
-  //     })(x.invert(w), y.invert(h));
-  //
-  //     var realTimeSigStatus = d3.select("#realTimeSigStatus").append("svg")
-  //         .attr("width", w).attr("height", h);
-  //
-  //     realTimeSigStatus.append("g")
-  //         .attr("id", "sinwave")
-  //         .attr("width", w)
-  //         .attr("height", h)
-  //         .attr("transform", "translate("+x(-11.2)+","+y(-8)+")")
-  //       .selectAll("path")
-  //         .data([d3.range(0, 8 * Math.PI + INTERVAL, INTERVAL).map(Math.sin)])
-  //       .enter().append("path")
-  //         .attr("class", "wave")
-  //         .attr("d", d3.svg.line()
-  //           .x(function(d, i) { return x(i * INTERVAL) - x(0) })
-  //           .y(function(d) { return y(d) }));
-  //
-  //     var line = function(e, x1, y1, x2, y2) {
-  //       return e.append("line")
-  //           .attr("class", "line")
-  //           .attr("x1", x1)
-  //           .attr("y1", y1)
-  //           .attr("x2", x2)
-  //           .attr("y2", y2);
-  //     }
-  //     var axes = function(cx, cy, cls) {
-  //       cx = x(cx); cy = y(cy);
-  //       line(realTimeSigStatus, cx, 0, cx, h).attr("class", cls || "line")
-  //       line(realTimeSigStatus, 0, cy, w, cy).attr("class", cls || "line")
-  //     }
-  //
-  //     axes(3, -2, "edge");
-  //     axes(3, -3, "axis");
-  //
-  //     var offset = -4*Math.PI, last = 0;
-  //
-  //     d3.timer(function(elapsed) {
-  //       if(that.goodConnection){
-  //         offset += (elapsed - last) / 1000;
-  //         last = elapsed;
-  //         if (offset > -2*Math.PI) offset = -4*Math.PI;
-  //         realTimeSigStatus.selectAll("#sinwave")
-  //           .attr("transform", "translate(" + x(offset+Math.PI/20) + "," + y(-8)+ ")")
-  //         var xline = x(Math.sin(offset)) - x(0);
-  //         var yline = x(-Math.cos(offset)) - y(0);
-  //
-  //         realTimeSigStatus.select("#xline")
-  //           .attr("transform", "translate(0," + xline + ")");
-  //         realTimeSigStatus.select("#yline")
-  //           .attr("transform", "translate(" + yline + ",0)");
-  //       }
-  //     });
-  //   }
-  //
-  // }
-
 }

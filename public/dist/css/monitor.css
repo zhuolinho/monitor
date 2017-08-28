@@ -39,6 +39,10 @@
 /*end material icons*/
 
 
+.btn, .btn-flat, .btn-large {
+  padding: 0 15px;
+  text-align: center;
+}
 
 .xxl.material-icons{
   font-size:2.6rem !important ;
@@ -110,7 +114,7 @@
 a{
   cursor: pointer;
 }
-#homeMainContainer{
+#homeMainContainer {
   /*height: 80vh;
   width: 100%;
   overflow-y: auto;;

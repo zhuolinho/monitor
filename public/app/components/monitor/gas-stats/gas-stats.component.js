@@ -29,30 +29,36 @@ var GasStats = (function () {
         ];
         console.log("gas-stats is up and running fine----->>>>---");
         this.showAllPlc();
-        // this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-        //   console.log("latest plc>>>-----", resp);
-        //   if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-        //     this.realTimeData = resp.pl.plc;
-        //     this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-        //     this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
-        //       return parseInt(o.slice(1, 4));
-        //     }, ['asc']);
-        //     this.currentPlcTank = this.connectedPlcs[0];
-        //   }
-        // });
     }
     GasStats.prototype.ngOnInit = function () {
         this.showAllPlc();
     };
     GasStats.prototype.showAllPlc = function () {
         var _this = this;
-        this.request.get('/plc/connected/get-all.json')
-            .subscribe(function (res) {
-            var list = {};
-            res.pl.address.forEach(function (obj) {
-                list[obj.tank] = obj;
-            });
-            _this.realTimeData = res.pl.plc.map(function (obj) { obj.addr = list[obj.tank].addr; return obj; });
+        this.request.get('/plc/connected/get-all.json').subscribe(function (resp) {
+            console.log("latest plc>>>-----", resp);
+            if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+                var tempPlcData_1 = _.keyBy(resp.pl.plc, 'tank');
+                // this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+                _this.realTimeData = _.forEach(resp.pl.address, function (o) {
+                    if (tempPlcData_1[o.tank]) {
+                        o = _.assign(o, tempPlcData_1[o.tank]);
+                    }
+                    else {
+                        o = _.assign(o, {
+                            maxVal1: 0,
+                            maxVal2: 0,
+                            usage1: 0,
+                            usage2: 0
+                        });
+                    }
+                });
+                console.log("this.plcAddresses---", _this.plcAddresses);
+                // this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
+                //   return parseInt(o.slice(1, 4));
+                // }, ['asc']);
+                // this.currentPlcTank = this.connectedPlcs[0];
+            }
         });
     };
     return GasStats;

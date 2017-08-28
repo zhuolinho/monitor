@@ -58,6 +58,7 @@ var Gas = Gas_1 = (function () {
         this.realTimeData = {};
         this.currentPlcTank = 'G001';
         this.connectedPlcs = [];
+        this.showModal = false;
         this.plcAddresses = [];
         this.selectedDownloadTab = 1;
         this.newAlert = {
@@ -187,13 +188,6 @@ var Gas = Gas_1 = (function () {
                 console.log('changed');
                 that.setCurrentPlc(e);
             });
-            // jQuery('select.select-year').change(function(e){
-            //           that.statYearSelected(e);
-            // });
-            //
-            // jQuery('select.select-month').change(function(e){
-            //     that.statMothSelected(e);
-            // });
         });
     };
     Gas.prototype.setCurrentPlc = function (event) {
@@ -217,130 +211,18 @@ var Gas = Gas_1 = (function () {
         }
         console.log("this.days----", this.startDays);
     };
-    //  statYearSelected(event){
-    //
-    //    console.log('year changed1----',event.target.value);
-    //        this.currentStatSelectedYear = event.target.value;
-    //  }
-    Gas.prototype.statMothSelected = function (event) {
-        //  console.log('month changed1----',event.target.value);
-        //  this.currentStatSelectedMonth = event.target.value;
-        //  this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
-    };
     Gas.prototype.showDetailModal = function (param) {
         var that = this;
-        this.setStatsInitValues();
+        if (param === 'day') {
+            this.isShowByDay = true;
+        }
+        else if (param === 'month') {
+            this.isShowByDay = false;
+        }
+        that.showModal = false;
         jQuery("#gasUsageDetailModal").openModal({
             ready: function () {
-                that.initChart();
-            }
-        });
-    };
-    Gas.prototype.setStatsInitValues = function () {
-        var d = new Date();
-        this.statsEndDate = d.toISOString().slice(0, 10);
-        d.setMonth(d.getMonth() - 1); //last month date;
-        this.statsStartDate = d.toISOString().slice(0, 10);
-        console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
-    };
-    Gas.prototype.getPlcStats = function () {
-        var _this = this;
-        this.statsData = [];
-        var mode = 'month';
-        if (this.isShowByDay) {
-            mode = 'day';
-        }
-        console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-        this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(function (resp) {
-            console.log("plc stats-----", resp);
-            if (resp && resp.pl && resp.pl.plc) {
-                _this.statsData = resp.pl.plc;
-            }
-        });
-    };
-    Gas.prototype.computeStats = function () {
-        console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
-        this.getPlcStats();
-    };
-    Gas.prototype.downloadData = function () {
-        var which = '';
-        var mode = null;
-        if (this.selectedDownloadTab === 1) {
-            which = 'instantaneous';
-        }
-        else if (this.selectedDownloadTab === 2) {
-            which = 'dayly-usage';
-            mode = 'day';
-        }
-        else if (this.selectedDownloadTab === 3) {
-            which = 'monthly-usage';
-            mode = 'month';
-        }
-        this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(function (res) {
-            console.log("res-----", res);
-            window.location.href = res.pl.file;
-        });
-    };
-    // code for detail modal
-    Gas.prototype.showByDay = function (fromModal) {
-        // alert('by day');
-        console.log("by day");
-        if (fromModal) {
-            this.initChart();
-        }
-        this.isShowByDay = true;
-        this.computeStats();
-    };
-    Gas.prototype.showByMonth = function (fromModal) {
-        // alert('by month');
-        console.log("by month");
-        if (fromModal) {
-            this.initChart();
-        }
-        this.isShowByDay = false;
-        // re-initialize material-select
-        this.currentSelect = this.years;
-        this.computeStats();
-    };
-    Gas.prototype.initChart = function () {
-        var _this = this;
-        var that = this;
-        this.request.get('/plc/forlasthours/' + this.currentPlcTank + '.json').subscribe(function (resp) {
-            console.log("plc stats chart data-->>>:---", resp);
-            if (resp && resp.pl && resp.pl.plc) {
-                _this.chartData = resp.pl.plc;
-                _this.generateChart();
-            }
-        });
-    };
-    Gas.prototype.generateChart = function () {
-        var that = this;
-        var Y;
-        if (this.currentPlcMetter == '1') {
-            Y = that.chartData.values || [];
-        }
-        else {
-            Y = that.chartData.values2 || [];
-        }
-        Y.unshift("瞬时流量");
-        var X = that.chartData.dates || [];
-        X.unshift('x');
-        var statsChart = c3.generate({
-            bindto: '#statsChart',
-            data: {
-                x: 'x',
-                xFormat: '%Y-%m-%d %H:%M:%S',
-                columns: [X, Y]
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        count: 24,
-                        //  format: function (x) { return x.getFullYear(); }
-                        format: '%H:%M' //how the date is displayed
-                    }
-                }
+                that.showModal = true;
             }
         });
     };

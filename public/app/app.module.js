@@ -20,6 +20,7 @@ var request_service_1 = require("./services/request.service");
 var settings_service_1 = require("./services/settings.service");
 var lib_service_1 = require("./services/lib.service");
 var rt_messages_service_1 = require("./services/rt-messages.service");
+var router_guard_service_1 = require("./services/router-guard.service");
 //layout
 var header_1 = require("./layout_components/header/header");
 var navigator_1 = require("./layout_components/navigator/navigator");
@@ -38,6 +39,7 @@ var processed_shipment_component_1 = require("./components/gps/processed/process
 var shiment_component_1 = require("./components/gps/shipment/shiment.component");
 //admin monitor
 var gas_component_1 = require("./components/monitor/gas/gas.component");
+var gas_details_component_1 = require("./components/monitor/gas/gas-details.component");
 var camera_component_1 = require("./components/monitor/camera/camera.component");
 var isolated_monitor_component_1 = require("./components/monitor/isolated-monitor/isolated-monitor.component");
 //admin gas-stats
@@ -79,6 +81,7 @@ AppModule = __decorate([
             processed_shipment_component_1.ProcessedShipment,
             shiment_component_1.Shipment,
             gas_component_1.Gas,
+            gas_details_component_1.GasDetails,
             camera_component_1.Camera,
             isolated_monitor_component_1.IsolatedMonitor,
             gas_stats_component_1.GasStats,
@@ -95,6 +98,7 @@ AppModule = __decorate([
             request_service_1.RequestService,
             settings_service_1.SettingsService,
             rt_messages_service_1.RTMessagesService,
+            router_guard_service_1.CanActivateViaAuthGuard,
             lib_service_1.LibService
         ],
         bootstrap: [main_component_1.MainComponent]

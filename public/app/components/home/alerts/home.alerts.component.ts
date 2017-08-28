@@ -1,5 +1,5 @@
 
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { config } from '../../../config';
 
 import { AlertModel } from '../../../models/alert-model';
@@ -11,6 +11,8 @@ import { LibService } from '../../../services/lib.service';
 declare var jQuery: any;
 declare var _: any;
 declare var io: any;
+declare var d3: any;
+declare var c3: any;
 
 @Component({
   selector: 'home-alerts',
@@ -18,7 +20,7 @@ declare var io: any;
   // directives:[CORE_DIRECTIVES]
 })
 
-export class HomeAlerts implements AfterViewInit, OnInit {
+export class HomeAlerts implements AfterViewInit, OnInit, OnDestroy {
 
   currentSort: string = 'all';
 
@@ -45,14 +47,25 @@ export class HomeAlerts implements AfterViewInit, OnInit {
   currentSelect: number[];
   detailmodal: any = {};
   realTimeData: any;
+  currentTankMovingAlert: any = {};
   currentStatSelectedYear: number = 2016;
   currentStatSelectedMonth: number = 1;
-  isShowByDay: boolean;
+  isShowByDay: boolean = false;
+  showModal: boolean = false;
   plcAddresses: any;
+  statsStartDate: any;
+  statsEndDate: any;
   connectedPlcs: any;
   statsData: any[];
   tmpEditTtank: any = {};
   ttankNgModel: any = {};
+  currentPlcTank: string;
+
+  goodConnection: boolean = false;
+  dateTimer: any;
+  dataTimer: number = 300000;
+  lastDataTime: number = 0;
+  checkInterruptionTimer: any;
 
   constructor(private request: RequestService,
     private userSrvc: UserService,
@@ -62,7 +75,6 @@ export class HomeAlerts implements AfterViewInit, OnInit {
     var self = this;
     this.user = this.userSrvc.getUser();
     console.log("this.user----", this.user);
-    this.setYears(null);
     this.request.get('/plc/alerts/unprocessed.json').subscribe(res => {
       if (res.pl && res.pl.alerts) {
         this.alertsList = res.pl.alerts;
@@ -92,11 +104,13 @@ export class HomeAlerts implements AfterViewInit, OnInit {
         this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
         // this.realTimeData = _.keyBy(this.testPlcs,'tank');
         this.connectedPlcs = Object.keys(this.realTimeData);
-        this.initSelect();
       }
     });
   }
 
+  ngOnDestroy() {
+    clearInterval(this.dateTimer);
+  }
 
   veSortBy(wich) {
     if (this.currentSort != wich) {
@@ -113,10 +127,12 @@ export class HomeAlerts implements AfterViewInit, OnInit {
     this.ttankNgModel[alert.tank] = alert.ttank;
     alert.ttank = null;
   }
+
   veCancelEditTransportableTank(alert) {
     alert.ttank = this.tmpEditTtank[alert.tank];
     this.tmpEditTtank[alert.tank] = null;
   }
+
 
   veSetTransportableTank(alert, ttank) {
     if (ttank) {
@@ -143,7 +159,14 @@ export class HomeAlerts implements AfterViewInit, OnInit {
 
     console.log("alert------", alert);
 
-    this.request.put('/plc/alert.json', alert).subscribe(res => {
+    // this.request.put('/plc/alert.json', alert).subscribe(res => {
+    //   console.log("alert updated", res);
+    //   var newArray = _.remove(this.alertGroups[alert.atype], function(o) {
+    //     return o._id == alert._id;
+    //   });
+    // });
+
+    this.request.put('/plc/processed/alert.json', alert).subscribe(res => {
       console.log("alert updated", res);
       var newArray = _.remove(this.alertGroups[alert.atype], function(o) {
         return o._id == alert._id;
@@ -166,22 +189,6 @@ export class HomeAlerts implements AfterViewInit, OnInit {
     });
   }
 
-  // iniSocket(){
-  //      var that = this;
-  //       var url = 'http://'+window.location.hostname+':3003/10000000001';
-  //       var socket = io(url);
-  //      socket.on('newPlcAlert', function(data){
-  //        console.log("got new alert---",data);
-  //        if(data && data.pl && data.pl.alert){
-  //            that.alertsList.unshift(data.pl.alert);
-  //            that.alertGroups =  _.groupBy(that.alertsList,'atype');
-  //            that.hasData = true;
-  //        }
-  //      });
-  //   }
-
-
-
   iniSocket() {
     var that = this;
     this.rtmgs.connect(3003);
@@ -189,156 +196,33 @@ export class HomeAlerts implements AfterViewInit, OnInit {
       console.log("got new alert---", data);
       if (data && data.pl && data.pl.alert) {
         that.alertsList.unshift(data.pl.alert);
-        that.alertGroups = _.groupBy(that.alertsList, 'atype');
+        that.alertGroups = _.groupBy(that.alertsList, 'atype');  // TODO 余量报警 => 余量警报 sms can't use the word 报警
+        console.log("that.alertGroups ----", that.alertGroups);
         that.hasData = true;
       }
     });
   }
 
-
-
-  initSelect() {
-    var that = this;
-    setTimeout(_ => {
-      jQuery('select').material_select();
-      jQuery('select.select-year').change(function(e) {
-        that.statYearSelected(e);
-      });
-
-      jQuery('select.select-month').change(function(e) {
-        that.statMothSelected(e);
-      });
+  showTankMovingModal(alert) {
+    console.log("selected alert----", alert);
+    this.currentTankMovingAlert = alert;
+    jQuery("#returnAlertDetailModal").openModal({
+      ready: function() {
+        // jQuery('select').material_select();
+      }
     });
   }
-
-  setYears(startYear) {
-
-    var sY = startYear || 2009;
-    var y = 2016;
-    while (y >= sY) {
-      this.years.push(y--);
-    }
-  }
-
-  setDaysOfMonth(year, month) {
-    this.days = [];
-    var y = year || new Date().getFullYear();
-    var m = month || new Date().getMonth() + 1;
-    var numDays = this.lib.daysInMonth(y, m);
-    for (let i = 0; i < numDays; i++) {
-      this.days.push(i + 1);
-    }
-
-    console.log("this.days----", this.days);
-  }
-
-  statYearSelected(event) {
-    console.log('year changed1----', event.target.value);
-    this.currentStatSelectedYear = event.target.value;
-  }
-
-  statMothSelected(event) {
-    console.log('month changed1----', event.target.value);
-    this.currentStatSelectedMonth = event.target.value;
-    this.setDaysOfMonth(this.currentStatSelectedYear, this.currentStatSelectedMonth);
-  }
-
-
-
 
   showDetailModal(alert) {
-    console.log("selected alert----", alert);
-    this.detailmodal.selectedtab = 1;
     var that = this;
-    var d = new Date();
-    this.currentStatSelectedYear = d.getFullYear();
-    this.currentStatSelectedMonth = d.getMonth() + 1;
-    // jQuery('select.select-month').val(this.currentStatSelectedMonth);
-    // jQuery('select.select-year').val(this.currentStatSelectedYear);
 
-    jQuery("#alertDetailsModal").openModal({
+    this.currentPlcTank = alert.tank;
+    that.showModal = false;
+
+    jQuery("#gasUsageDetailModal").openModal({
       ready: function() {
-        that.initGrapth();
-        jQuery('select').material_select();
+        that.showModal = true;
       }
     });
-  }
-
-  getPlcStats(year, month) {
-    this.statsData = [];
-    console.log('get plc stats----', year, month);
-    this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(resp => {
-      console.log("plc stats-----", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.statsData = resp.pl.plc;
-      }
-    });
-  }
-
-  computeStats() {
-    this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
-  }
-
-
-  // code for detail modal
-  showByDay() {
-    // alert('by day');
-    console.log("by day");
-    this.isShowByDay = true;
-    var d = new Date();
-    this.currentStatSelectedYear = d.getFullYear();
-    this.currentStatSelectedMonth = d.getMonth() + 1;
-
-
-    // re-initialize material-select
-    this.setDaysOfMonth(null, null);
-    this.computeStats();
-    setTimeout(_ => {
-      jQuery('.select-year').val(this.currentStatSelectedYear);
-      jQuery('.select-month').val(this.currentStatSelectedMonth);
-      jQuery('select').material_select();
-    });
-
-  }
-
-  showByMonth() {
-    // alert('by month');
-    console.log("by month");
-
-    this.isShowByDay = false;
-    var d = new Date();
-    this.currentStatSelectedYear = d.getFullYear();
-    this.currentStatSelectedMonth = 0;
-
-    // re-initialize material-select
-    this.currentSelect = this.years;
-    this.computeStats();
-    setTimeout(_ => {
-      jQuery('.select-year').val(this.currentStatSelectedYear);
-      jQuery('select').material_select();
-    });
-  }
-
-  // downloadData(){
-  //
-  //   this.request.post('/plc/download.json', this.statsData).subscribe(resp => {
-  //     console.log("plc downdload-----",resp);
-  //     if(resp&&resp.pl&&resp.pl.plc){
-  //         this.statsData = resp.pl.plc;
-  //     }
-  //   });
-
-
-  downloadData() {
-    this.request.post('/plc/stats/download.json', this.statsData).subscribe(res => {
-      console.log("res-----", res);
-      window.location.href = res.pl.file;
-    });
-  }
-
-  initGrapth() {
-
-    var that = this;
-
   }
 }

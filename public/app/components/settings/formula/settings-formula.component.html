@@ -44,10 +44,10 @@
 
 
       <div  id="settingsFormulaComputeDetailModal" class="modal " style="overflow:auto;">
-        <div class="modal-content"  *ngIf="editTarget">
+        <div class="modal-content">
           <i class="modal-close material-icons right">clear</i>
           <h4 class="helper-margin-bottom-30">{{editTarget.tank}} 编辑参数 </h4>
-          <div *ngIf="editTarget.tankType== 'CNG'" class="helper-margin-bottom-30">
+          <div *ngIf="editTarget && editTarget.tankType == 'CNG'" class="helper-margin-bottom-30">
 
             <div>公式:</div>
             <div class="row">
@@ -83,7 +83,7 @@
 
 
         <div class="helper-margin-bottom-30">报警条件:</div>
-        <div class="row">
+        <div class="row" ngIf="editTarget">
 
           <span *ngIf="editTarget.tankType== 'CNG'">
               剩余时间  <

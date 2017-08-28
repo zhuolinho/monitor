@@ -14,6 +14,8 @@ import { RequestService } from './services/request.service';
 import { SettingsService } from './services/settings.service';
 import { LibService } from './services/lib.service';
 import { RTMessagesService } from './services/rt-messages.service';
+import { CanActivateViaAuthGuard } from './services/router-guard.service';
+
 
 //layout
 import { Header } from './layout_components/header/header';
@@ -38,6 +40,7 @@ import { Shipment } from './components/gps/shipment/shiment.component';
 
 //admin monitor
 import { Gas } from './components/monitor/gas/gas.component';
+import { GasDetails } from './components/monitor/gas/gas-details.component';
 import { Camera } from './components/monitor/camera/camera.component';
 import { IsolatedMonitor } from './components/monitor/isolated-monitor/isolated-monitor.component';
 
@@ -80,6 +83,7 @@ import { SettingsOfflineUsers } from './components/settings/offline_users/settin
     Shipment,
 
     Gas,
+    GasDetails,
     Camera,
     IsolatedMonitor,
 
@@ -99,6 +103,7 @@ import { SettingsOfflineUsers } from './components/settings/offline_users/settin
     RequestService,
     SettingsService,
     RTMessagesService,
+    CanActivateViaAuthGuard,
     LibService
   ],
   bootstrap: [MainComponent]

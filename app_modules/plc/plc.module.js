@@ -405,9 +405,9 @@ plc.getPlcStats = function(m) {
                             deferred.reject(r);
                           }
                           else{
-                            if(plc2.length){
-                                plc[0].usage1  =  Math.abs(parseFloat(plc[0].maxVal1-plc2[0][flow1]));
-                                plc[0].usage2  =  Math.abs(parseFloat(plc[0].maxVal2-plc2[0][flow2]));
+                            if(plc2.length) {
+                                plc[0].usage1  =  Math.abs(parseInt(plc[0].maxVal1-plc2[0][flow1], 10));
+                                plc[0].usage2  =  Math.abs(parseInt(plc[0].maxVal2-plc2[0][flow2], 10));
                             } else{
                                 // plc[0].usage  =  plc[0].maxVal;
                                 plc[0].usage1  = null;
@@ -417,9 +417,9 @@ plc.getPlcStats = function(m) {
                               plc[0].date = plc[0].date.slice(0,10);
 
                             for (var i = 1; i < plc.length; i++) {
-                              plc[i].usage1 = Math.abs(parseFloat(plc[i].maxVal1 - plc[i-1].maxVal1));
-                              plc[i].usage2 = Math.abs(parseFloat(plc[i].maxVal2 - plc[i-1].maxVal2));
-                              plc[i].date = plc[i].date.slice(0,10);
+                              plc[i].usage1 = Math.abs(parseInt(plc[i].maxVal1 - plc[i-1].maxVal1, 10));
+                              plc[i].usage2 = Math.abs(parseInt(plc[i].maxVal2 - plc[i-1].maxVal2, 10));
+                              plc[i].date = plc[i].date.slice(0, 10);
                             }
 
                             r.pl.plc = plc;
@@ -609,15 +609,22 @@ plc.getAllPlcStats = function(m) {
               '_id': 0
             }
           }
-      ]).sort({date:1}).exec(function (err, plc) {
+      ]).sort({date:1})
+        .allowDiskUse(true)
+        .exec(function (err, plc) {
           if (err){
             r.er = err;
             r.status = false;
             deferred.reject(r);
           } else {
             for (var i = 0; i < plc.length; i++) {
-              plc[i].usage1 = Math.abs(parseFloat(plc[i].maxVal1 - plc[i].minVal1));
-              plc[i].usage2 = Math.abs(parseFloat(plc[i].maxVal2 - plc[i].minVal2));
+              plc[i].maxVal1 = Math.abs(parseInt(plc[i].maxVal1));
+              plc[i].maxVal2 = Math.abs(parseInt(plc[i].maxVal2));
+              plc[i].minVal1 = Math.abs(parseInt(plc[i].minVal1));
+              plc[i].minVal2 = Math.abs(parseInt(plc[i].minVal2));
+
+              plc[i].usage1 = plc[i].maxVal1 - plc[i].minVal1;
+              plc[i].usage2 = plc[i].maxVal2 - plc[i].minVal2;
               delete plc[i].minVal1;
               delete plc[i].minVal2;
             }
@@ -1298,8 +1305,6 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
                   return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
               }
             });
-
-
         }
         else{
             extractedData = _extractCngData(data,shift,i,type,oID,tank,latestIncommingData,formula,lastestRemainingAmountAlerts,redisClient);
@@ -1606,38 +1611,38 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   cumfow = lib.getPlcFloat(cumfow.toString('hex'),0);
 
   inputP1 = lib.getPlcFloat(inputP1.toString('hex'),1);
+  inputP2 = lib.getPlcFloat(inputP2.toString('hex'),1);
 
   // console.log("i is----",i);
   // console.log("inputP1----",inputP1);
 
-
-
-  // var rfq = (inputP1/10)*18; //(Nm3)
-  var divisor = formula.divisor||1;
-  var rfq = (inputP1/divisor)*formula.factor; //(Nm3)
-  rfq=rfq.toFixed(3);
-
-  var usagePerHour = null;
-
-  if (latestIncommingData[oID]&&latestIncommingData[oID][tank]){
-    usagePerHour = cumfow - parseFloat(latestIncommingData[oID][tank].cumfow);//(Nm3/h)
-  }
-  else{
-    usagePerHour = cumfow;
-  }
-
-  // console.log("usagePerHour----",usagePerHour);
-  var dataRecepionIntervalInMinutes = plcConfig.sTimer/(60*1000);  // convert from millisecs to minutes
-  usagePerHour = usagePerHour*(60/dataRecepionIntervalInMinutes);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
-
-  if(usagePerHour<1){  //avoid division by zero
-    usagePerHour = 1;
-  }
-
-  var rft  = rfq/usagePerHour; //remaining time in hours
-
-  rft=rft.toFixed(3);
-
+  //
+  //
+  // // var rfq = (inputP1/10)*18; //(Nm3)
+  // var divisor = formula.divisor||1;
+  // var rfq = (inputP1/divisor)*formula.factor; //(Nm3)
+  // rfq=rfq.toFixed(3);
+  //
+  // var usagePerHour = null;
+  //
+  // if (latestIncommingData[oID]&&latestIncommingData[oID][tank]){
+  //   usagePerHour = cumfow - parseFloat(latestIncommingData[oID][tank].cumfow);//(Nm3/h)
+  // } else {
+  //   usagePerHour = cumfow;
+  // }
+  //
+  // // console.log("usagePerHour----",usagePerHour);
+  // var dataRecepionIntervalInMinutes = plcConfig.sTimer/(60*1000);  // convert from millisecs to minutes
+  // usagePerHour = usagePerHour*(60/dataRecepionIntervalInMinutes);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
+  //
+  // if(usagePerHour<1){  //avoid division by zero
+  //   usagePerHour = 1;
+  // }
+  //
+  // var rft  = rfq/usagePerHour; //remaining time in hours
+  //
+  // rft=rft.toFixed(3);
+  //
 
   // if (rft<formula.tt){ //// TODO: uncoment this once the condition is clear
   //
@@ -1663,18 +1668,19 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
   //   };
   // }
 
-  // console.log("rfq,rft---",rfq,rft);
+  var procesedInfo = _checkCngAlert(inputP1, inputP2, formula, cumfow, lastestRemainingAmountAlerts, latestIncommingData, oID, tank, redisClient);
 
+  r.alert = procesedInfo.alert;
 
   var result = {
       inputP1 :inputP1,
-      inputP2 :lib.getPlcFloat(inputP2.toString('hex'),1),
+      inputP2 :inputP2,
       paflpa1 :lib.getPlcFloat(paflpa1.toString('hex'),1),
       paflpa2 :lib.getPlcFloat(paflpa2.toString('hex'),1),
       taflpa1 :lib.getPlcFloat(taflpa1.toString('hex'),1),
       taflpa2 :lib.getPlcFloat(taflpa2.toString('hex'),1),
-      rft:rft, // remaining flow  time -- computed
-      rfq:rfq, // remaining flow  quantity -- computed
+      rft:procesedInfo.rft, // remaining flow  time -- computed
+      rfq:procesedInfo.rfq, // remaining flow  quantity -- computed
       // outputP1 :lib.getPlcFloat(outputPOrInstfow.toString('hex'),1), // set below due to dynamic key
       // outputP2 :lib.getPlcFloat(fmotOrCumfow.toString('hex'),1),  // set below due to dynamic key
       // outputP: lib.getPlcFloat(outputP.toString('hex'),1), // set below due to dynamic key
@@ -1695,6 +1701,70 @@ var _extractCngData =  function(data,shift,i,type,oID,tank,latestIncommingData,f
 
   return r;
 }
+
+
+var _checkCngAlert = function(inputP1, inputP2, formula, cumfow, lastestRemainingAmountAlerts, latestIncommingData, oID, tank, redisClient) {
+  var r = {alert: null, rfq:null, rft:null};
+
+    var inputP = Math.abs(Math.max(inputP1, inputP2));
+    var divisor = formula.divisor||1;
+    var rfq = (inputP/divisor)*formula.factor; //(Nm3)
+    rfq = rfq.toFixed(3);
+
+    var usagePerHour = null;
+
+    if (latestIncommingData[oID]&&latestIncommingData[oID][tank]){
+      // console.log("cumfow , last cumfow", cumfow, parseFloat(latestIncommingData[oID][tank].cumfow))
+      // TODO this diff is about 1 - 4 only.
+      usagePerHour = Math.abs(cumfow - parseFloat(latestIncommingData[oID][tank].cumfow));//(Nm3/h)=>Usage for plcConfig.sTimer time interval
+    } else {
+      usagePerHour = cumfow;
+    }
+
+    // usagePerHour = usagePerHour* (60/plcConfig.sTimer);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
+
+    var hourInMilliseccond = 3600000;
+    usagePerHour = (usagePerHour * hourInMilliseccond) / plcConfig.sTimer;   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
+
+    if(usagePerHour<1){  //avoid division by zero
+      usagePerHour = 1;
+    }
+
+    console.log("usagePerHour----",usagePerHour);
+
+    var rft  = rfq/usagePerHour; //remaining time in hours
+
+    rft = rft.toFixed(3);
+
+    if ((rft >  0) && (rft<formula.tt)) { // TODO: uncoment this once the condition is clear
+
+      if (!lastestRemainingAmountAlerts[oID][tank]){  //to avoid recreating same alert multiple times
+        //create alert
+        var alert = {
+              am:'余量警报',
+              atype:'余量警报',
+              tank:tank,
+              rt:lib.H2Hms(rft),
+              ra:rfq
+        }
+
+        lastestRemainingAmountAlerts[oID][tank]=alert;
+        redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
+        r.alert = alert;
+      };
+    } else { //TODO remove only when it has been processed
+      // if (lastestRemainingAmountAlerts[oID][tank]){  //remove remaining amount alert if previously created to this tank
+      //   delete lastestRemainingAmountAlerts[oID][tank];
+      //   redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
+      // };
+    }
+
+    console.log("rfq,rft---",rfq,rft);
+    r.rfq = rfq;
+    r.rft = lib.H2Hms(rft);
+    return r;
+}
+
 
 var _extractLngData = function(data,shift,oID,tank,formula,lastestRemainingAmountAlerts,redisClient){
   var r = {data:null,alert:null};
@@ -1748,19 +1818,16 @@ var _extractLngData = function(data,shift,oID,tank,formula,lastestRemainingAmoun
 }
 
 
-
-
-
-var _getPlcType = function(data,shift){
+var _getPlcType = function(data,shift) {
     var type  = data.slice(84+shift,86+shift);
     return parseInt(type.toString('hex'), 16);
 }
 
-var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInteruptedChanels){
+var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInteruptedChanels) {
 
     var result = {createAlert:false,save:false, latestIncommingData:latestIncommingData,latestInteruptedChanels:latestInteruptedChanels};
 
-          if(latestInteruptedChanels[oID]){  //is always set by default
+          if(latestInteruptedChanels[oID] && data){  //is always set by default
                 if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
                   if (latestIncommingData[oID][data.tank]){//if not the first time to get this data
                       if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)){  //if same as previous value
@@ -1779,8 +1846,7 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
                     result.save = true;
                     latestIncommingData[oID][data.tank] = data; //save in latest data
                   }
-                }
-                else {
+                } else if(latestIncommingData[oID][data.tank]){
                     if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) !== (data.cdct+data.cdcns)){  //normal flow restored
                         delete latestInteruptedChanels[oID][data.tank]; //will be set to redis client above
                         result.save = true;
@@ -1790,12 +1856,6 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
     }
     return result;
 }
-
-
-
-
-
-
 
 
 module.exports = plc;

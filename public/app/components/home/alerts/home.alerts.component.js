@@ -35,15 +35,20 @@ var HomeAlerts = (function () {
         //                 ];
         this.days = [];
         this.detailmodal = {};
+        this.currentTankMovingAlert = {};
         this.currentStatSelectedYear = 2016;
         this.currentStatSelectedMonth = 1;
+        this.isShowByDay = false;
+        this.showModal = false;
         this.tmpEditTtank = {};
         this.ttankNgModel = {};
+        this.goodConnection = false;
+        this.dataTimer = 300000;
+        this.lastDataTime = 0;
         console.log("Home alerts is up and running");
         var self = this;
         this.user = this.userSrvc.getUser();
         console.log("this.user----", this.user);
-        this.setYears(null);
         this.request.get('/plc/alerts/unprocessed.json').subscribe(function (res) {
             if (res.pl && res.pl.alerts) {
                 _this.alertsList = res.pl.alerts;
@@ -70,9 +75,11 @@ var HomeAlerts = (function () {
                 _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
                 // this.realTimeData = _.keyBy(this.testPlcs,'tank');
                 _this.connectedPlcs = Object.keys(_this.realTimeData);
-                _this.initSelect();
             }
         });
+    };
+    HomeAlerts.prototype.ngOnDestroy = function () {
+        clearInterval(this.dateTimer);
     };
     HomeAlerts.prototype.veSortBy = function (wich) {
         var _this = this;
@@ -113,7 +120,13 @@ var HomeAlerts = (function () {
         alert.status = 1;
         alert.pa = this.user.an;
         console.log("alert------", alert);
-        this.request.put('/plc/alert.json', alert).subscribe(function (res) {
+        // this.request.put('/plc/alert.json', alert).subscribe(res => {
+        //   console.log("alert updated", res);
+        //   var newArray = _.remove(this.alertGroups[alert.atype], function(o) {
+        //     return o._id == alert._id;
+        //   });
+        // });
+        this.request.put('/plc/processed/alert.json', alert).subscribe(function (res) {
             console.log("alert updated", res);
             var newArray = _.remove(_this.alertGroups[alert.atype], function (o) {
                 return o._id == alert._id;
@@ -134,19 +147,6 @@ var HomeAlerts = (function () {
             //  alert('getting models up');
         });
     };
-    // iniSocket(){
-    //      var that = this;
-    //       var url = 'http://'+window.location.hostname+':3003/10000000001';
-    //       var socket = io(url);
-    //      socket.on('newPlcAlert', function(data){
-    //        console.log("got new alert---",data);
-    //        if(data && data.pl && data.pl.alert){
-    //            that.alertsList.unshift(data.pl.alert);
-    //            that.alertGroups =  _.groupBy(that.alertsList,'atype');
-    //            that.hasData = true;
-    //        }
-    //      });
-    //   }
     HomeAlerts.prototype.iniSocket = function () {
         var that = this;
         this.rtmgs.connect(3003);
@@ -154,129 +154,30 @@ var HomeAlerts = (function () {
             console.log("got new alert---", data);
             if (data && data.pl && data.pl.alert) {
                 that.alertsList.unshift(data.pl.alert);
-                that.alertGroups = _.groupBy(that.alertsList, 'atype');
+                that.alertGroups = _.groupBy(that.alertsList, 'atype'); // TODO 余量报警 => 余量警报 sms can't use the word 报警
+                console.log("that.alertGroups ----", that.alertGroups);
                 that.hasData = true;
             }
         });
     };
-    HomeAlerts.prototype.initSelect = function () {
-        var that = this;
-        setTimeout(function (_) {
-            jQuery('select').material_select();
-            jQuery('select.select-year').change(function (e) {
-                that.statYearSelected(e);
-            });
-            jQuery('select.select-month').change(function (e) {
-                that.statMothSelected(e);
-            });
+    HomeAlerts.prototype.showTankMovingModal = function (alert) {
+        console.log("selected alert----", alert);
+        this.currentTankMovingAlert = alert;
+        jQuery("#returnAlertDetailModal").openModal({
+            ready: function () {
+                // jQuery('select').material_select();
+            }
         });
-    };
-    HomeAlerts.prototype.setYears = function (startYear) {
-        var sY = startYear || 2009;
-        var y = 2016;
-        while (y >= sY) {
-            this.years.push(y--);
-        }
-    };
-    HomeAlerts.prototype.setDaysOfMonth = function (year, month) {
-        this.days = [];
-        var y = year || new Date().getFullYear();
-        var m = month || new Date().getMonth() + 1;
-        var numDays = this.lib.daysInMonth(y, m);
-        for (var i = 0; i < numDays; i++) {
-            this.days.push(i + 1);
-        }
-        console.log("this.days----", this.days);
-    };
-    HomeAlerts.prototype.statYearSelected = function (event) {
-        console.log('year changed1----', event.target.value);
-        this.currentStatSelectedYear = event.target.value;
-    };
-    HomeAlerts.prototype.statMothSelected = function (event) {
-        console.log('month changed1----', event.target.value);
-        this.currentStatSelectedMonth = event.target.value;
-        this.setDaysOfMonth(this.currentStatSelectedYear, this.currentStatSelectedMonth);
     };
     HomeAlerts.prototype.showDetailModal = function (alert) {
-        console.log("selected alert----", alert);
-        this.detailmodal.selectedtab = 1;
         var that = this;
-        var d = new Date();
-        this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth = d.getMonth() + 1;
-        // jQuery('select.select-month').val(this.currentStatSelectedMonth);
-        // jQuery('select.select-year').val(this.currentStatSelectedYear);
-        jQuery("#alertDetailsModal").openModal({
+        this.currentPlcTank = alert.tank;
+        that.showModal = false;
+        jQuery("#gasUsageDetailModal").openModal({
             ready: function () {
-                that.initGrapth();
-                jQuery('select').material_select();
+                that.showModal = true;
             }
         });
-    };
-    HomeAlerts.prototype.getPlcStats = function (year, month) {
-        var _this = this;
-        this.statsData = [];
-        console.log('get plc stats----', year, month);
-        this.request.get('/plc/stats/' + year + '/' + month + '.json').subscribe(function (resp) {
-            console.log("plc stats-----", resp);
-            if (resp && resp.pl && resp.pl.plc) {
-                _this.statsData = resp.pl.plc;
-            }
-        });
-    };
-    HomeAlerts.prototype.computeStats = function () {
-        this.getPlcStats(this.currentStatSelectedYear, this.currentStatSelectedMonth);
-    };
-    // code for detail modal
-    HomeAlerts.prototype.showByDay = function () {
-        var _this = this;
-        // alert('by day');
-        console.log("by day");
-        this.isShowByDay = true;
-        var d = new Date();
-        this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth = d.getMonth() + 1;
-        // re-initialize material-select
-        this.setDaysOfMonth(null, null);
-        this.computeStats();
-        setTimeout(function (_) {
-            jQuery('.select-year').val(_this.currentStatSelectedYear);
-            jQuery('.select-month').val(_this.currentStatSelectedMonth);
-            jQuery('select').material_select();
-        });
-    };
-    HomeAlerts.prototype.showByMonth = function () {
-        var _this = this;
-        // alert('by month');
-        console.log("by month");
-        this.isShowByDay = false;
-        var d = new Date();
-        this.currentStatSelectedYear = d.getFullYear();
-        this.currentStatSelectedMonth = 0;
-        // re-initialize material-select
-        this.currentSelect = this.years;
-        this.computeStats();
-        setTimeout(function (_) {
-            jQuery('.select-year').val(_this.currentStatSelectedYear);
-            jQuery('select').material_select();
-        });
-    };
-    // downloadData(){
-    //
-    //   this.request.post('/plc/download.json', this.statsData).subscribe(resp => {
-    //     console.log("plc downdload-----",resp);
-    //     if(resp&&resp.pl&&resp.pl.plc){
-    //         this.statsData = resp.pl.plc;
-    //     }
-    //   });
-    HomeAlerts.prototype.downloadData = function () {
-        this.request.post('/plc/stats/download.json', this.statsData).subscribe(function (res) {
-            console.log("res-----", res);
-            window.location.href = res.pl.file;
-        });
-    };
-    HomeAlerts.prototype.initGrapth = function () {
-        var that = this;
     };
     return HomeAlerts;
 }());

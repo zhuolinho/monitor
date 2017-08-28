@@ -237,6 +237,41 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
             });
   });
 
+  router.put('/processed/alert.json', function(req, res, next) {
+
+        var param = {
+          ns: 'plc',
+          vs: '1.0',
+          op: 'updatePlcAlert',
+          pl:{
+            data:req.body,
+            user:lib.reqUser(req)
+          }
+        };
+
+        handler(param)
+            .then(function (r) {
+              redisClient.get("lastestRemainingAmountAlerts", function(err, result) {
+                  var oID = param.pl.user.oID;
+                  var tank = param.pl.data.tank;
+                  var temp = {};
+                  temp[oID] = {};
+                  var lastestRemainingAmountAlerts  = JSON.parse(result)||temp;
+
+                  if (lastestRemainingAmountAlerts[oID][tank]) {  //remove remaining amount alert if previously created to this tank
+                    console.log('was in alerts --|||||||----');
+                    delete lastestRemainingAmountAlerts[oID][tank];
+                    redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
+                  };
+              });
+
+              helpers.sendResponse(res, 200, r);
+            })
+            .fail(function (r) {
+              helpers.sendResponse(res, 404, r);
+            });
+  });
+
 
 
   router.post('/alert.json', function(req, res, next) {

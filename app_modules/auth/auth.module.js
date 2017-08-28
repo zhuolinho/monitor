@@ -306,7 +306,7 @@ auth.authenticateUser = function(m){
   var deferred = q.defer();
 
   User.findOne({
-    name: m.pl.user.name    //phone or unique id
+  $or:[{ 'name': m.pl.user.name}, { 'phone': m.pl.user.name}]
   }, function(err, user) {
     if (err){
       r.er = err;
