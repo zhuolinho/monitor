@@ -539,8 +539,24 @@
                     <div class="table-row"  *ngFor="let data of statsData; let i=index;">
                       <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span> {{data.date}}</span></div>
-                      <div class="table-cell"> <span *ngIf="realTimeData">{{(currentPlcMetter == '1') ? data.maxVal1 :  data.maxVal2}}</span> </div>
-                      <div class="table-cell">  <span *ngIf="realTimeData">{{currentPlcMetter == '1') ? data.usage1 :  data.usage2}}</span> </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">
+                        <span *ngIf="currentPlcMetter == '1'">
+                          {{data.maxVal1}}
+                        </span>
+                        <span *ngIf="currentPlcMetter == '2'">
+                          {{data.maxVal2}}
+                        </span>
+                      </span> </div>
+                      <div class="table-cell">
+                        <span *ngIf="realTimeData">
+                          <span *ngIf="currentPlcMetter == '1'">
+                            {{data.usage1}}
+                          </span>
+                          <span *ngIf="currentPlcMetter == '2'">
+                            {{data.usage2}}
+                            </span>
+                        </span>
+                        </div>
                     </div>
 
                   </div>  <!-- end of table -->
@@ -566,8 +582,28 @@
                     <div class="table-row" *ngFor="let data of statsData" >
                       <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
-                      <div class="table-cell"> <span *ngIf="realTimeData">{{(currentPlcMetter == '1') ? data.maxVal1 :  data.maxVal2}}</span> </div>
-                      <div class="table-cell">  <span *ngIf="realTimeData">{{currentPlcMetter == '1') ? data.usage1 :  data.usage2}}</span> </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">
+                        <span *ngIf="realTimeData">
+                          <span *ngIf="currentPlcMetter == '1'">
+                            {{data.maxVal1}}
+                          </span>
+                          <span *ngIf="currentPlcMetter == '2'">
+                            {{data.maxVal2}}
+                            </span>
+                        </span>
+
+                      </span> </div>
+                      <div class="table-cell">  <span *ngIf="realTimeData">
+                        <span *ngIf="realTimeData">
+                          <span *ngIf="currentPlcMetter == '1'">
+                            {{data.usage1}}
+                          </span>
+                          <span *ngIf="currentPlcMetter == '2'">
+                            {{data.usage2}}
+                            </span>
+                        </span>
+
+                      </span> </div>
                     </div>
                   </div>   <!-- end of table -->
 
