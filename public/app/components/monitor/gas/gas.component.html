@@ -510,6 +510,13 @@
                     </a>
               </div>
 
+              <div class="col s12 m2 helper-margin-left-5">
+                  <select class="select-plc-meter" name="plc-meter" [(ngModel)]="currentPlcMetter">
+                  <option value="1">表1</option>
+                  <option value="2">表2</option>
+                  </select>
+              </div>
+
 <!--
               <div class="col s3 m3">
                 <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
@@ -532,8 +539,8 @@
                     <div class="table-row"  *ngFor="let data of statsData; let i=index;">
                       <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span> {{data.date}}</span></div>
-                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
-                      <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{(currentPlcMetter == '1') ? data.maxVal1 :  data.maxVal2}}</span> </div>
+                      <div class="table-cell">  <span *ngIf="realTimeData">{{currentPlcMetter == '1') ? data.usage1 :  data.usage2}}</span> </div>
                     </div>
 
                   </div>  <!-- end of table -->
@@ -559,8 +566,8 @@
                     <div class="table-row" *ngFor="let data of statsData" >
                       <div class="table-cell"> {{currentPlcTank}} </div>
                       <div class="table-cell"> <span *ngIf="realTimeData">{{data.date}}</span></div>
-                      <div class="table-cell"> <span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
-                      <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+                      <div class="table-cell"> <span *ngIf="realTimeData">{{(currentPlcMetter == '1') ? data.maxVal1 :  data.maxVal2}}</span> </div>
+                      <div class="table-cell">  <span *ngIf="realTimeData">{{currentPlcMetter == '1') ? data.usage1 :  data.usage2}}</span> </div>
                     </div>
                   </div>   <!-- end of table -->
 
@@ -612,11 +619,10 @@
                     <input type="date" [(ngModel)]="statsEndDate"/>
                 </div>
 
-
                 <div class="helper-inline-block helper-margin-left-5">
-                      <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
-                        下载
-                      </a>
+                  <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
+                    下载
+                  </a>
                 </div>
 
                 <div class="clearfix"></div>

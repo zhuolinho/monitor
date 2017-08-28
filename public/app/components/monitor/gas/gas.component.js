@@ -29,6 +29,7 @@ var Gas = Gas_1 = (function () {
         this.goodConnection = false;
         this.dataTimer = 300000;
         this.lastDataTime = 0;
+        this.currentPlcMetter = '1';
         this.chartData = [];
         this.availableTanks = [
             { id: '12345', selected: false },
@@ -314,7 +315,13 @@ var Gas = Gas_1 = (function () {
     };
     Gas.prototype.generateChart = function () {
         var that = this;
-        var Y = that.chartData.values || [];
+        var Y;
+        if (this.currentPlcMetter == '1') {
+            Y = that.chartData.values || [];
+        }
+        else {
+            Y = that.chartData.values2 || [];
+        }
         Y.unshift("瞬时流量");
         var X = that.chartData.dates || [];
         X.unshift('x');

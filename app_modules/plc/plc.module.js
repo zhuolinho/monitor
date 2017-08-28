@@ -293,23 +293,27 @@ plc.getAlertForTimeInterval =  function(m) {
   console.log("plc mod: getLatestDataForTimeInterval ");
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
-  var instantaneousValues = [];
+  var instantaneousValues1 = [];
+  var instantaneousValues2 = [];
   var dates = [];
 
 
   if(m && m.pl && m.pl.user && m.pl.user.oID && m.pl.tank) {
 
-    var flow = '';
+    var flow1 = '';
+    var flow2 = '';
     var dateNow = lib.dateTime();
     var todayZeroHour = dateNow.split(' ')[0]+' 00:00:00';
 
       iPlc.find({oID:m.pl.user.oID,})
 
         if (m.pl.tank[0] =='G'){
-              flow = 'isc2';
+              flow1 = 'isc1';
+              flow2 = 'isc2';
         }
         else{
-              flow = 'instfow';
+              flow1 = 'instfow';
+              flow2 = 'instfow0';
         }
 
         iPlc.find({oID: m.pl.user.oID,tank:m.pl.tank,cd:{$gte:todayZeroHour}})
@@ -321,10 +325,11 @@ plc.getAlertForTimeInterval =  function(m) {
             }
             else{
               for (var i = 0; i < plc.length; i++) {
-                  instantaneousValues[i] = parseFloat(plc[i][flow]);  // return only instantaneous data
+                  instantaneousValues1[i] = parseFloat(plc[i][flow1]) // return only instantaneous data
+                  instantaneousValues2[i] = parseFloat(plc[i][flow2]) // return only instantaneous data
                   dates[i] = plc[i].cd;
               }
-              r.pl.plc = {values:instantaneousValues,dates:dates};
+              r.pl.plc = {values:instantaneousValues1, values2: instantaneousValues2,dates:dates};
               r.status = true;
               deferred.resolve(r);
             }
@@ -340,9 +345,7 @@ plc.getAlertForTimeInterval =  function(m) {
 }
 
 
-plc.getPlcStats = function(m){
-
-
+plc.getPlcStats = function(m) {
     console.log("plc module: getPlcStats FUNCTION");
     var r = {pl: {}, status:false , er:''};
     var deferred = q.defer();
@@ -354,13 +357,16 @@ plc.getPlcStats = function(m){
 
             var start = m.pl.start+' 00:00:00';
             var end = m.pl.end+' 23:59:59';
-            var flow = '';
+            var flow1 = '';
+            var flow2 = '';
 
             if (m.pl.tank[0] == 'G'){
-                  flow = 'psc2';
+                  flow1 = 'psc1';
+                  flow2 = 'psc2';
             }
             else{
-                  flow = 'cumfow';
+                  flow1 = 'cumfow0';
+                  flow2 = 'cumfow';
             }
 
             if( m.pl.mode && m.pl.mode === 'day' ){
@@ -372,7 +378,8 @@ plc.getPlcStats = function(m){
                   {
                       $group: {
                           _id:"$d",
-                          maxVal:{ $max: "$"+flow },
+                          maxVal1:{ $max: "$"+flow1 },
+                          maxVal2:{ $max: "$"+flow2 },
                           date:{$max:"$cd"},
                           count: {$sum: 1}
                       }
@@ -399,22 +406,20 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  Math.abs(parseFloat(plc[0].maxVal-plc2[0][flow]));
-                            }
-                            else{
+                                plc[0].usage1  =  Math.abs(parseFloat(plc[0].maxVal1-plc2[0][flow1]));
+                                plc[0].usage2  =  Math.abs(parseFloat(plc[0].maxVal2-plc2[0][flow2]));
+                            } else{
                                 // plc[0].usage  =  plc[0].maxVal;
-                                plc[0].usage  = null;
+                                plc[0].usage1  = null;
+                                plc[0].usage2  = null;
                             }
 
                               plc[0].date = plc[0].date.slice(0,10);
 
                             for (var i = 1; i < plc.length; i++) {
-                              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i-1].maxVal));
+                              plc[i].usage1 = Math.abs(parseFloat(plc[i].maxVal1 - plc[i-1].maxVal1));
+                              plc[i].usage2 = Math.abs(parseFloat(plc[i].maxVal2 - plc[i-1].maxVal2));
                               plc[i].date = plc[i].date.slice(0,10);
-                            }
-
-                            if(!plc[0].usage){
-                              plc.shift(); //remove first element;
                             }
 
                             r.pl.plc = plc;
@@ -443,8 +448,9 @@ plc.getPlcStats = function(m){
                   },
                   {
                       $group: {
-                          _id:"$m",
-                          maxVal:{ $max: "$"+flow },
+                          _id:"$d",
+                          maxVal1:{ $max: "$"+flow1 },
+                          maxVal2:{ $max: "$"+flow2 },
                           date:{$max:"$cd"},
                           count: {$sum: 1}
                       }
@@ -471,23 +477,23 @@ plc.getPlcStats = function(m){
                           }
                           else{
                             if(plc2.length){
-                                plc[0].usage  =  Math.abs(parseFloat(plc[0].maxVal-plc2[0][flow]));
+                                plc[0].usage1  =  Math.abs(parseFloat(plc[0].maxVal1-plc2[0][flow1]));
+                                plc[0].usage2  =  Math.abs(parseFloat(plc[0].maxVal2-plc2[0][flow2]));
                             }
                             else{
                                 // plc[0].usage  =  plc[0].maxVal;
-                                plc[0].usage  = null;
+                                plc[0].usage1  = null;
+                                plc[0].usage2  = null;
                             }
 
                             plc[0].date = plc[0].date.slice(0,7);
 
                             for (var i = 1; i < plc.length; i++) {
-                              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i-1].maxVal));
+                              plc[i].usage1 = Math.abs(parseFloat(plc[i].maxVal1 - plc[i-1].maxVal1));
+                              plc[i].usage2 = Math.abs(parseFloat(plc[i].maxVal2 - plc[i-1].maxVal2));
                               plc[i].date = plc[i].date.slice(0,7);
                             }
 
-                            if(!plc[0].usage){
-                              plc.shift(); //remove first element;
-                            }
                             r.pl.plc = plc;
                             r.status = true;
                             deferred.resolve(r);
@@ -541,33 +547,59 @@ plc.getAllPlcStats = function(m) {
             }
           },
           {
-              $group: {
-                  _id:"$tank",
-                  doc: { $push: "$$ROOT" },
-                  maxVal1:{ $max: "$cumfow"},
-                  maxVal2:{ $max: "$psc2"},
-                  minVal1:{ $min: "$cumfow"},
-                  minVal2:{ $min: "$psc2"},
-                  count: {$sum: 1}
-              }
+            $group: {
+                _id:"$tank",
+                doc: { $push: "$$ROOT" },
+                cumfowMaxVal1:{ $max: "$cumfow"},
+                cumfowMaxVal2:{ $max: "$cumfow0"},
+                pscMaxVal1:{ $max: "$psc1"},
+                pscMaxVal2:{ $max: "$psc2"},
+                cumfowMinVal1:{ $min: "$cumfow"},
+                cumfowMinVal2:{ $min: "$cumfow0"},
+                pscMinVal1:{ $min: "$psc1"},
+                pscMinVal2:{ $min: "$psc2"},
+                count: {$sum: 1}
+            }
           }
           ,{
             $project: {
-              maxVal: {
+              maxVal1: {
                 $let: {
                   vars: {
                     plcFlow: {
-                      $cond: [{$eq:['$maxVal1', null]} ,'$maxVal2', '$maxVal1']
+                      $cond: [{$eq:['$cumfowMaxVal1', null]} ,'$pscMaxVal1', '$cumfowMaxVal1']
                     }
                   },
                   in: {$max: '$$plcFlow'}
                 }
               },
-              minVal: {
+
+              maxVal2: {
                 $let: {
                   vars: {
                     plcFlow: {
-                      $cond: [{$eq:['$minVal1', null]} ,'$minVal2', '$minVal1']
+                      $cond: [{$eq:['$cumfowMaxVal2', null]} ,'$pscMaxVal2', '$cumfowMaxVal2']
+                    }
+                  },
+                  in: {$max: '$$plcFlow'}
+                }
+              },
+              minVal1: {
+                $let: {
+                  vars: {
+                    plcFlow: {
+                      $cond: [{$eq:['$cumfowMinVal1', null]} ,'$pscMinVal1', '$cumfowMinVal1']
+                    }
+                  },
+                  in: {$max: '$$plcFlow'}
+                }
+              },
+
+              minVal2: {
+                $let: {
+                  vars: {
+                    plcFlow: {
+                      $cond: [{$eq:['$cumfowMinVal2', null]} ,'$pscMinVal2', '$cumfowMinVal2']
                     }
                   },
                   in: {$max: '$$plcFlow'}
@@ -584,8 +616,10 @@ plc.getAllPlcStats = function(m) {
             deferred.reject(r);
           } else {
             for (var i = 0; i < plc.length; i++) {
-              plc[i].usage = Math.abs(parseFloat(plc[i].maxVal - plc[i].minVal));
-              delete plc[i].minVal;
+              plc[i].usage1 = Math.abs(parseFloat(plc[i].maxVal1 - plc[i].minVal1));
+              plc[i].usage2 = Math.abs(parseFloat(plc[i].maxVal2 - plc[i].minVal2));
+              delete plc[i].minVal1;
+              delete plc[i].minVal2;
             }
 
             r.pl.plc = plc;
@@ -607,7 +641,7 @@ plc.getAllPlcStats = function(m) {
 
 
 
-plc.getInstantaniousPlcData = function(m){
+plc.getInstantaniousPlcData = function(m){ // for download
 
 
     console.log("plc module: getInstantaniousPlcData FUNCTION",m.pl);

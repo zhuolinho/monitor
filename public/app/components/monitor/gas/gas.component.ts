@@ -32,6 +32,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   dateTimer: any;
   dataTimer: number = 300000;
   lastDataTime: number = 0;
+  currentPlcMetter: string = '1';
   chartData: any = [];
   checkInterruptionTimer: any;
   static graphIsRunning: boolean = false;
@@ -395,7 +396,13 @@ export class Gas implements AfterViewInit, OnDestroy {
 
   generateChart() {
     var that = this;
-    var Y = that.chartData.values || [];
+    var Y;
+    if (this.currentPlcMetter == '1') {
+      Y = that.chartData.values || [];
+    } else {
+      Y = that.chartData.values2 || [];
+    }
+
     Y.unshift("瞬时流量");
     var X = that.chartData.dates || [];
     X.unshift('x');
