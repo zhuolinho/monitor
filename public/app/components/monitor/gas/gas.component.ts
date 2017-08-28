@@ -394,6 +394,11 @@ export class Gas implements AfterViewInit, OnDestroy {
 
   }
 
+  plcMeterChanged(event) {
+    this.currentPlcMetter = event.target.value;
+    this.generateChart();
+  }
+
   generateChart() {
     var that = this;
     var Y;

@@ -313,6 +313,10 @@ var Gas = Gas_1 = (function () {
             }
         });
     };
+    Gas.prototype.plcMeterChanged = function (event) {
+        this.currentPlcMetter = event.target.value;
+        this.generateChart();
+    };
     Gas.prototype.generateChart = function () {
         var that = this;
         var Y;

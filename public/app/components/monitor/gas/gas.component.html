@@ -15,7 +15,8 @@
   </div>
 
 
-  <div class="row helper-vmargin-15" *ngIf="realTimeData && realTimeData[currentPlcTank]">
+  <!-- <div class="row helper-vmargin-15" *ngIf="realTimeData && realTimeData[currentPlcTank]"> -->
+  <div class="row helper-vmargin-15">
       <div class="col m7">
         <div class="row modal-nav monitor-tabs">
           <div class="col s3">
@@ -511,11 +512,12 @@
               </div>
 
               <div class="col s12 m2 helper-margin-left-5">
-                  <select class="select-plc-meter" name="plc-meter" [(ngModel)]="currentPlcMetter">
+                <select class="select-plc-meter simple-select" name="plc-meter" [(ngModel)]="currentPlcMetter" (change)="plcMeterChanged($event)">
                   <option value="1">表1</option>
                   <option value="2">表2</option>
-                  </select>
+                </select>
               </div>
+
 
 <!--
               <div class="col s3 m3">

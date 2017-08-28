@@ -8,14 +8,18 @@
         <div class="table-row  helper-gray-bg-light">
           <div class="table-cell"> 罐号 </div>
           <div class="table-cell"> 公司 </div>
-          <div class="table-cell">累计流量(Nm3) </div>
-          <div class="table-cell">用量(Nm3)  </div>
+          <div class="table-cell">累计流量1(Nm3) </div>
+          <div class="table-cell">累计流量2(Nm3) </div>
+          <div class="table-cell">用量1(Nm3)  </div>
+          <div class="table-cell">用量2(Nm3)  </div>
         </div>
         <div class="table-row" *ngFor="let data of realTimeData" >
           <div class="table-cell"> <span *ngIf="realTimeData">{{data.tank}}</span> </div>
           <div class="table-cell"> <span *ngIf="realTimeData">{{data.addr}}</span> </div>
-          <div class="table-cell"><span *ngIf="realTimeData">{{data.maxVal}}</span> </div>
-          <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage}}</span> </div>
+          <div class="table-cell"><span *ngIf="realTimeData">{{data.maxVal1}}</span> </div>
+          <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage1}}</span> </div>
+          <div class="table-cell"><span *ngIf="realTimeData">{{data.maxVal2}}</span> </div>
+          <div class="table-cell">  <span *ngIf="realTimeData">{{data.usage2}}</span> </div>
         </div>
       </div>   <!-- end of table -->
 
