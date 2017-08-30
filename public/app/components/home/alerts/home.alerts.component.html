@@ -1,18 +1,19 @@
-<div class="helper-relative">
-    <div class="helper-padding-10  herlper-gray-bg-monitor module-sub-top-menu hide-on-small-only" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortBy('余量报警');   selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span  *ngIf="alertGroups && alertGroups['余量报警'] && alertGroups['余量报警'].length " class="new-alert-badge">{{alertGroups['余量报警'].length}}</span></a>
-        <a  (click)="veSortBy('压力报警');  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警  <span  *ngIf="alertGroups && alertGroups['压力报警'] && alertGroups['压力报警'].length" class="new-alert-badge">{{alertGroups['压力报警'].length}}</span></a>
-        <a  (click)="veSortBy('信号中断');  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断  <span  *ngIf="alertGroups && alertGroups['信号中断'] && alertGroups['信号中断'].length" class="new-alert-badge">{{alertGroups['信号中断'].length}}</span></a>
-        <a   (click)="veSortBy('泄漏报警');  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 <span  *ngIf="alertGroups && alertGroups['泄漏报警'] && alertGroups['泄漏报警'].length" class="new-alert-badge">{{alertGroups['泄漏报警'].length}}</span></a>
-        <a   (click)="veSortBy('拉回报警');  selectedtab=5;" [class.monitor-tab-selected]="selectedtab==5"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 拉回报警 <span  *ngIf="alertGroups && alertGroups['拉回报警'] && alertGroups['拉回报警'].length" class="new-alert-badge">{{alertGroups['拉回报警'].length}}</span></a>
-        <a   (click)="veSortBy('进场报警');  selectedtab=6;" [class.monitor-tab-selected]="selectedtab==6"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 进场报警 <span *ngIf="alertGroups && alertGroups['进场报警'] && alertGroups['进场报警'].length" class="new-alert-badge">{{alertGroups['进场报警'].length}}</span></a>
+<div class="helper-border-top helper-relative">
+    <div class="helper-padding-10  herlper-gray-bg-monitor hide-on-small-only" style="position:absolute;top:0; left:0; width:100%;">
+        <a (click)="veSortBy('余量报警');   selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span  *ngIf="alertGroups && alertGroups['余量报警'] && alertGroups['余量报警'].length " class="new-alert-badge">{{alertGroups['余量报警'].length}}</span></a>
+        <a  (click)="veSortBy('压力报警');  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警  <span  *ngIf="alertGroups && alertGroups['压力报警'] && alertGroups['压力报警'].length" class="new-alert-badge">{{alertGroups['压力报警'].length}}</span></a>
+        <a   (click)="veSortBy('泄漏报警');  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 <span  *ngIf="alertGroups && alertGroups['泄漏报警'] && alertGroups['泄漏报警'].length" class="new-alert-badge">{{alertGroups['泄漏报警'].length}}</span></a>
+        <a   (click)="veSortBy('拉回报警');  selectedtab=5;" [class.monitor-tab-selected]="selectedtab==5"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 拉回报警 <span  *ngIf="alertGroups && alertGroups['拉回报警'] && alertGroups['拉回报警'].length" class="new-alert-badge">{{alertGroups['拉回报警'].length}}</span></a>
+        <a   (click)="veSortBy('进场报警');  selectedtab=6;" [class.monitor-tab-selected]="selectedtab==6"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 进场报警 <span *ngIf="alertGroups && alertGroups['进场报警'] && alertGroups['进场报警'].length" class="new-alert-badge">{{alertGroups['进场报警'].length}}</span></a>
+        <a  (click)="veSortBy('信号中断');  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断  <span  *ngIf="alertGroups && alertGroups['信号中断'] && alertGroups['信号中断'].length" class="new-alert-badge">{{alertGroups['信号中断'].length}}</span></a>
     </div>
-
-  <div class="space-sub-nav hide-on-small-only"></div>
+    <div class="space hide-on-small-only" style="padding-top:60px;">
+    </div>
 
     <!-- toto add a back to top button -->
 
-  <div class="scrollable-container" style=" height:70vh;">
+    <div class="helper-vscrolling" style=" height:80vh;">
+
 
       <div class="center-align helper-white-bg helper-padding-30" *ngIf="!hasData" style=" height:70vh;">
         无报警
@@ -197,7 +198,7 @@
 
     <!-- alert details modal -->
 
-          <div id="alertDetailsModal" class="modal  fixed helper-padding-bottom-20" style="z-index: 99999">
+          <div id="alertDetailsModal" class="modal  fixed helper-padding-bottom-20">
             <div class="modal-content helper-overflow-hidden">
               <i class="modal-close material-icons right">clear</i>
 
@@ -365,6 +366,10 @@
                 <div class="center-align" *ngFor="let n of selectedTanks">
                     {{n?.ti}}
                 </div>
+
+                <!-- padding div -->
+                <div style="height:50px;"></div>
+
               </div>
 
             </div>
