@@ -976,6 +976,8 @@ plc.addNewAlert = function(m){
 
     plc._sendAlertNotification(m);
 
+    var d = new Date();
+
     if(m.pl.alert){
             var newAlert = new PlcAlert({
                               atime:lib.dateTime(),
@@ -985,7 +987,10 @@ plc.addNewAlert = function(m){
                               am:m.pl.alert.am,
                               rt:m.pl.alert.rt,
                               ra:m.pl.alert.ra,
-                              st:m.pl.alert.st
+                              st:m.pl.alert.st,
+                              y:d.getFullYear(),
+                              m:d.getMonth() + 1,
+                              d:d.getDate()
                             });
 
               newAlert.setOwner(m.pl.user, function(setErr,setDoc){
@@ -1072,10 +1077,12 @@ plc.getPlcAlerts =  function(m) {
  var r = {pl: {}, status:false , er:''};
  var deferred = q.defer();
  var query = {};
+ var d = new Date();
 
  if(m.pl && m.pl.which){
    if(m.pl.which == "processed"){
      query.status = 1;
+     query.y = d.getFullYear();
    }
    else  if(m.pl.which == "unprocessed"){
       query.status = 0;
@@ -1083,7 +1090,6 @@ plc.getPlcAlerts =  function(m) {
  }
 
  if(m && m.pl && m.pl.user && m.pl.user.oID){
-
     query.oID = m.pl.user.oID;
      PlcAlert.find(query).sort({atime:-1}).exec(function (err, resp) {
          if (err){
@@ -1215,7 +1221,27 @@ plc.downloadData = function(m){
 
 
 
+plc.downloadDataProcessedAlerts = function(m) {
+  console.log(" downloadDataProcessedAlerts----");
 
+  var r = {pl:null , er:'',em:''};
+  var deferred = q.defer();
+
+    if(m && m.pl && m.pl.data){
+      lib.processDownloadProcessedAlerts(m.pl.data).then(function(res){
+        console.log("file res----",res);
+        r.pl = {file:res.path};
+        deferred.resolve(r);
+      });
+    }
+    else{
+      r.er = 'no data provided';
+      r.status = false;
+      deferred.reject(r);
+    }
+
+    return deferred.promise;
+}
 plc.downloadStats = function(m){
   console.log(" downloadStats----");
 
@@ -1321,7 +1347,6 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
 
 
         if (!formula){  //create formula if not already created
-
           return _addNewFormula({oID:oID},tank).then(function(resp){
             // console.log("created formula---",resp);
             if (resp && resp.pl && resp.pl.formula){
@@ -1331,7 +1356,6 @@ var _extractPlcData = function(data,index,oID,latestIncommingData,latestFormula,
                 return _setCommonPlcData(extractedData,dates,plcCode,plcType,tank);
             }
           });
-
         }
         else{
             extractedData = _extractLngData(data,shift,oID,tank,formula,lastestRemainingAmountAlerts,redisClient);
@@ -1745,7 +1769,7 @@ var _checkCngAlert = function(inputP1, inputP2, formula, cumfow, lastestRemainin
               atype:'余量警报',
               tank:tank,
               rt:lib.H2Hms(rft),
-              ra:rfq
+              ra:rfq+'%'
         }
 
         lastestRemainingAmountAlerts[oID][tank]=alert;
@@ -1805,12 +1829,11 @@ var _extractLngData = function(data,shift,oID,tank,formula,lastestRemainingAmoun
       redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
       r.alert = alert;
     };
-  }
-  else{
-    if (lastestRemainingAmountAlerts[oID][tank]){  //remove remaining amount alert if previously created to this tank
-      delete lastestRemainingAmountAlerts[oID][tank];
-      redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
-    };
+  } else { //TODO remove only after processed
+    // if (lastestRemainingAmountAlerts[oID][tank]){  //remove remaining amount alert if previously created to this tank
+    //   delete lastestRemainingAmountAlerts[oID][tank];
+    //   redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
+    // };
   }
 
   r.data = result;

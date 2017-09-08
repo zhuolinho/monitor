@@ -24,7 +24,7 @@
                 <div class="row valign-wrapper helper-padding-5">
                   <div class="col s4 push-s8">
                     <div *ngIf="!alert.status && alert.atype != '拉回报警' && alert.atype != '进场报警'" class="right">
-                          <a  (click)="showDetailModal(alert);" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger " >查看</a>
+                          <a  (click)="showDetailModal(alert);" class="monitor-inner-button helper-pointer helper-font-bigger " >查看</a>
                     </div>
                     <div *ngIf="alert.status" class="right helper-font-bigger">
                         已接报
@@ -66,7 +66,7 @@
                       <div class="row" *ngIf="!alert.ttank">
                         <div class=" col s8 m8 valign-wrapper">  <input type="text" class="valign" name="ttank" #tttnk [(ngModel)]="ttankNgModel[alert.tank]" value="" style="margin:0; border-bottom:0;padding:5px;" placeholder="请输入罐号"></div>
                         <div class="col s4 m4 valign-wrapper">
-                          <a class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">保存</a>
+                          <a class="monitor-inner-button helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center; margin:auto; margin-top:10px; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">确定</a>
                           <a *ngIf="tmpEditTtank[alert.tank]" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veCancelEditTransportableTank(alert)">取消</a>
                         </div>
                         <div class="clearfix"></div>
@@ -118,6 +118,11 @@
                   <div class="table-row" *ngIf="alert.atype == '余量警报'">
                     <div class="table-cell"> 剩余时间 </div>
                     <div class="table-cell">{{alert.rt}} </div>
+                  </div>
+
+                  <div class="table-row" *ngIf="alert.atype == '余量警报'">
+                    <div class="table-cell"> 剩余量 </div>
+                    <div class="table-cell">{{alert.ra}} </div>
                   </div>
 
 

@@ -1,18 +1,18 @@
 
-import {Component} from '@angular/core';
-import {RequestService} from '../services/request.service';
-import {UserService} from '../services/user.service';
+import { Component } from '@angular/core';
+import { RequestService } from '../services/request.service';
+import { UserService } from '../services/user.service';
 // import {LoginComponent} from './login/login.component';
 // import {AdminComponent} from './admin/admin.component';
-import {config} from '../config';
+import { config } from '../config';
 
 
 
-declare var jQuery:any;
+declare var jQuery: any;
 
 
 @Component({
-  selector:'main',
+  selector: 'main',
   template: '<router-outlet></router-outlet>'
   // directives: [ROUTER_DIRECTIVES,CORE_DIRECTIVES],
 })
@@ -23,8 +23,7 @@ declare var jQuery:any;
 // ])
 
 export class MainComponent {
-  constructor(){
-  console.log("MainComponent is up and running");
-  alert('rolland')
+  constructor() {
+    console.log("MainComponent is up and running");
   }
- }
+}

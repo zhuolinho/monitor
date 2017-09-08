@@ -21,28 +21,25 @@ export class SettingsAddress {
   addressArray: any[] = [];
 
 
-
-
-
-  lngTanks: any[] = [
-    'L004', 'L005', 'L006', 'L007'
-  ];
-  cngTanks: any[] = [
-    'C004', 'C005', 'C006', 'C007'
-  ];
-  jigeTanks: any[] = [
-    'J004', 'J005', 'J006', 'J007'
-  ];
-  duwapingTanks: any[] = [
-    'D004', 'D005', 'D006', 'D007'
-  ];
-
-  guanwangTanks: any[] = [
-    'G004', 'G005', 'G006', 'G007'
-  ];
-  zhongzhuanTanks: any[] = [
-    '中转站3号', '中转站4号', '中转站5号'
-  ];
+  // lngTanks: any[] = [
+  //   'L004', 'L005', 'L006', 'L007'
+  // ];
+  // cngTanks: any[] = [
+  //   'C004', 'C005', 'C006', 'C007'
+  // ];
+  // jigeTanks: any[] = [
+  //   'J004', 'J005', 'J006', 'J007'
+  // ];
+  // duwapingTanks: any[] = [
+  //   'D004', 'D005', 'D006', 'D007'
+  // ];
+  //
+  // guanwangTanks: any[] = [
+  //   'G004', 'G005', 'G006', 'G007'
+  // ];
+  // zhongzhuanTanks: any[] = [
+  //   '中转站3号', '中转站4号', '中转站5号'
+  // ];
 
   addressType: string;
 
@@ -69,21 +66,19 @@ export class SettingsAddress {
       console.log("this.indexedAddresses ------", this.indexedAddresses);
 
       this._processAddr(this.addresses);
-      this.initUi();
 
+      this.request.get('/plc/latest.json').subscribe(resp => {
+        console.log("latest plc-----", resp);
+        if (resp && resp.pl && resp.pl.plc) {
+          this.plcAddrTanks = _.map(resp.pl.plc, function(plc) {
+            return plc;
+          });
+          this.targetTanks = this.plcAddrTanks;
+          console.log('got this.plcAddrTanks ', this.plcAddrTanks);
+          this.initUi();
+        }
+      });
       // console.log("key by", self.userArray)
-    });
-
-
-    this.request.get('/plc/latest.json').subscribe(resp => {
-      console.log("latest plc-----", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.plcAddrTanks = _.map(resp.pl.plc, function(plc) {
-          return plc;
-        });
-        this.targetTanks = this.plcAddrTanks;
-        console.log('got this.plcAddrTanks ', this.plcAddrTanks);
-      }
     });
 
   }
@@ -181,7 +176,6 @@ export class SettingsAddress {
   }
 
   initSelect() {
-
     var that = this;
     setTimeout(_ => {
       jQuery('select').material_select();

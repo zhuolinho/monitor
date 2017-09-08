@@ -118,6 +118,13 @@ var Gas = Gas_1 = (function () {
     };
     Gas.prototype.createNewAlert = function (type) {
         console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
+        this.newAlert = {
+            st: [],
+            atime: '',
+            am: '',
+            atype: '',
+            addr: ''
+        };
         if (this.selectedTanks.length) {
             for (var i = 0; i < this.selectedTanks.length; i++) {
                 this.newAlert.st.push({ ti: this.selectedTanks[i].id });
@@ -139,7 +146,7 @@ var Gas = Gas_1 = (function () {
             for (var i = 0; i < this.availableTanks.length; i++) {
                 this.availableTanks[i].selected = true;
             }
-            this.selectedTanks = this.availableTanks;
+            this.selectedTanks = _.clone(this.availableTanks);
         }
         else {
             for (var i = 0; i < this.availableTanks.length; i++) {
@@ -151,6 +158,7 @@ var Gas = Gas_1 = (function () {
     };
     Gas.prototype.veToggleSelectTank = function (tank) {
         tank.selected = !tank.selected;
+        console.log("veToggleSelectTank----", tank);
         if (tank.selected) {
             this.selectedTanks.push(tank);
         }

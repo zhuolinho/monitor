@@ -10,12 +10,13 @@
                 <div class="col s2 m2 ">
                   <div class="input-field">
                       <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth">
-                        <option *ngFor="let m of months; let i = index" [attr.selected]="i == 0">{{m}}</option>
+                        <option></option>
+                        <option *ngFor="let m of months; let i = index" [attr.selected]="i == 0" [value]="i+1">{{m}}</option>
                       </select>
                     </div>
                 </div>
                 <div class="container valign">
-                  <a (click)="download()" class="btn right monitor-gray-button helper-font-bigger waves-effect waves-light helper-margin-right-5 hide-on-small-only" style="height:40px;">
+                  <a (click)="download(alert.data)" class="btn right monitor-inner-button helper-font-bigger waves-effect waves-light helper-margin-right-5 hide-on-small-only" style="height:40px;">
                     下载数据
                   </a>
                 </div>

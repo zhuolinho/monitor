@@ -151,6 +151,14 @@ export class Gas implements AfterViewInit, OnDestroy {
   createNewAlert(type) {
     console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
 
+    this.newAlert = {
+      st: [],
+      atime: '',
+      am: '',
+      atype: '',
+      addr: ''
+    };
+
     if (this.selectedTanks.length) {
       for (let i = 0; i < this.selectedTanks.length; i++) {
         this.newAlert.st.push({ ti: this.selectedTanks[i].id });
@@ -176,14 +184,12 @@ export class Gas implements AfterViewInit, OnDestroy {
         this.availableTanks[i].selected = true;
       }
 
-      this.selectedTanks = this.availableTanks;
-    }
-    else {
+      this.selectedTanks = _.clone(this.availableTanks);
+    } else {
       for (let i = 0; i < this.availableTanks.length; i++) {
         this.availableTanks[i].selected = false;
       }
     }
-
     //  console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
     this.allTankSelected = !this.allTankSelected;
 
@@ -191,15 +197,14 @@ export class Gas implements AfterViewInit, OnDestroy {
 
   veToggleSelectTank(tank) {
     tank.selected = !tank.selected;
+    console.log("veToggleSelectTank----", tank);
     if (tank.selected) {
       this.selectedTanks.push(tank);
-    }
-    else {
+    } else {
       var array = _.remove(this.selectedTanks, function(o) {
         return o.id == tank.id;
-      })
+      });
     }
-
   }
 
 

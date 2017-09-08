@@ -26,7 +26,12 @@ export class LoginComponent {
     this.loginError = false;
     this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(res => {
 
+
       if (!res.er) {
+        if ((res.pl && res.pl.user && res.pl.user.ap > 3)) {
+          alert('无权限');
+          return;
+        }
         this.localUserService.saveUser(res.pl);
 
         var patern = /^[GCL]\d{3}$/;

@@ -5,6 +5,9 @@ var shipmentSchema = mongoose.Schema({
                     oID:String,
                     cuID:String, //created user id
                     muID:String, //modified user id
+                    y:String,//year
+                    m:String,//month
+                    d:String,//day
                     sim:{type:String,required:true},  //sim card CAN BE REVERENCE TO TO GPS
                     dest:String,
                     cd:String, //created date

@@ -27,6 +27,10 @@ var LoginComponent = (function () {
         this.loginError = false;
         this.localUserService.login({ username: this.user.username, password: this.user.password }).subscribe(function (res) {
             if (!res.er) {
+                if ((res.pl && res.pl.user && res.pl.user.ap > 3)) {
+                    alert('无权限');
+                    return;
+                }
                 _this.localUserService.saveUser(res.pl);
                 var patern = /^[GCL]\d{3}$/;
                 if (res.pl && res.pl.user && patern.test(res.pl.user.name)) {

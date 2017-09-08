@@ -378,8 +378,8 @@
                             <div class="table-cell" style="">
                             <span class="left" style="margin-top:6px;">{{tank.id}}</span>
                               <a class="right" style="margin-top:8px;"  >
-                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
-                                <input type="checkbox" class="filled-in" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
+                                <input type="checkbox" class="filled-in non-empty" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
+                                <input type="checkbox" class="filled-in empty" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
                                 <label attr.for="{{tank.id+i}}"></label>
                               </a>
                             </div>
@@ -414,11 +414,11 @@
 
 <!-- feedback modal -->
 
-<div id="moveTanksFeedbackModal" class="modal modal-fixed-footer" style="max-width:500px; height: 200px;">
+<div id="moveTanksFeedbackModal" class="modal modal-fixed-footer" style="max-width:400px; height: 200px;">
   <div class="modal-content helper-overflow-hidden" style="height: 150px;">
     <i class="modal-close material-icons right">clear</i>
       <p class="center-align helper-font-bigger" style="padding-top:30px;">
-        操作成功, 请在首页 》报警通知 查看并处理.
+        操作成功， 请到首页查看报警通知。
       </p>
   </div>
   <div class="modal-footer  center-align">

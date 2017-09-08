@@ -21,24 +21,6 @@ var SettingsAddress = (function () {
         this.selectedtab = 1;
         this.indexedAddresses = {};
         this.addressArray = [];
-        this.lngTanks = [
-            'L004', 'L005', 'L006', 'L007'
-        ];
-        this.cngTanks = [
-            'C004', 'C005', 'C006', 'C007'
-        ];
-        this.jigeTanks = [
-            'J004', 'J005', 'J006', 'J007'
-        ];
-        this.duwapingTanks = [
-            'D004', 'D005', 'D006', 'D007'
-        ];
-        this.guanwangTanks = [
-            'G004', 'G005', 'G006', 'G007'
-        ];
-        this.zhongzhuanTanks = [
-            '中转站3号', '中转站4号', '中转站5号'
-        ];
         this.editMode = false;
         this.plcAddrTanks = [];
         this.targetTanks = [];
@@ -55,18 +37,18 @@ var SettingsAddress = (function () {
             }
             console.log("this.indexedAddresses ------", _this.indexedAddresses);
             _this._processAddr(_this.addresses);
-            _this.initUi();
+            _this.request.get('/plc/latest.json').subscribe(function (resp) {
+                console.log("latest plc-----", resp);
+                if (resp && resp.pl && resp.pl.plc) {
+                    _this.plcAddrTanks = _.map(resp.pl.plc, function (plc) {
+                        return plc;
+                    });
+                    _this.targetTanks = _this.plcAddrTanks;
+                    console.log('got this.plcAddrTanks ', _this.plcAddrTanks);
+                    _this.initUi();
+                }
+            });
             // console.log("key by", self.userArray)
-        });
-        this.request.get('/plc/latest.json').subscribe(function (resp) {
-            console.log("latest plc-----", resp);
-            if (resp && resp.pl && resp.pl.plc) {
-                _this.plcAddrTanks = _.map(resp.pl.plc, function (plc) {
-                    return plc;
-                });
-                _this.targetTanks = _this.plcAddrTanks;
-                console.log('got this.plcAddrTanks ', _this.plcAddrTanks);
-            }
         });
     }
     SettingsAddress.prototype._processAddr = function (addr) {

@@ -158,14 +158,6 @@ export class HomeAlerts implements AfterViewInit, OnInit, OnDestroy {
     alert.pa = this.user.an;
 
     console.log("alert------", alert);
-
-    // this.request.put('/plc/alert.json', alert).subscribe(res => {
-    //   console.log("alert updated", res);
-    //   var newArray = _.remove(this.alertGroups[alert.atype], function(o) {
-    //     return o._id == alert._id;
-    //   });
-    // });
-
     this.request.put('/plc/processed/alert.json', alert).subscribe(res => {
       console.log("alert updated", res);
       var newArray = _.remove(this.alertGroups[alert.atype], function(o) {

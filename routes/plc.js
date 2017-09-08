@@ -259,7 +259,6 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
                   var lastestRemainingAmountAlerts  = JSON.parse(result)||temp;
 
                   if (lastestRemainingAmountAlerts[oID][tank]) {  //remove remaining amount alert if previously created to this tank
-                    console.log('was in alerts --|||||||----');
                     delete lastestRemainingAmountAlerts[oID][tank];
                     redisClient.set("lastestRemainingAmountAlerts",JSON.stringify(lastestRemainingAmountAlerts));
                   };
@@ -538,6 +537,24 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
             .fail(function (r) {
               helpers.sendResponse(res, 404, r);
             });
+  });
+
+
+  router.post('/download/alerts/processed.json', function(req, res, next) {
+      var param = {
+        ns: 'plc',
+        vs: '1.0',
+        op: 'downloadDataProcessedAlerts',
+        pl:{user:lib.reqUser(req), data: req.body.data}
+      };
+
+      handler(param)
+          .then(function (r) {
+             helpers.sendResponse(res, 200, r);
+          })
+          .fail(function (r) {
+            helpers.sendResponse(res, 404, r);
+          });
   });
 
 

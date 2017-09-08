@@ -159,7 +159,17 @@ body, html{
   font-family:"微软雅黑";
 }
 
-
+.monitor-inner-button {
+  padding: 0 15px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  display: inline-block !important;
+  background: white !important;
+  color: black;
+  box-shadow: none !important;
+  border-radius: 6px !important;
+  border: 1px solid #C8c8c8 !important;
+}
 .modal.fixed{
   overflow: hidden !important;
 }

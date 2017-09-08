@@ -285,6 +285,9 @@ gps.getCompletedShipments =  function(m) {
         var start = m.pl.start+' 00:00:00';
         var end = m.pl.end+' 23:59:59';
         query.cd = {$gte:start,$lte:end};
+      } else {
+        var d = new Date();
+        query.y =  d.getFullYear();
       }
 
       Shiment.find(query,function (err, resp) {
@@ -431,7 +434,7 @@ gps.newShipment =  function(m) {
 
               if(lp){
 
-
+                var d = new Date();
                 var shipment = new Shiment({
                                     sim:sim,
                                     addr:data.addr,
@@ -448,6 +451,9 @@ gps.newShipment =  function(m) {
                                     ed:data.ed,
                                     pa:data.pa,
                                     rs:data.rs,
+                                    y:d.getFullYear(),
+                                    m:d.getMonth() + 1,
+                                    d:d.getDate(),
                                     status:data.status
                                 });
 
