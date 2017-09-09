@@ -11,9 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_1 = require("../../config");
+var routerNav_service_1 = require("../../services/routerNav.service");
 var Home = (function () {
-    function Home() {
+    function Home(routerNavServ) {
+        this.routerNavServ = routerNavServ;
         console.log("Home is up and running");
+        this.routerNavServ.currentModule = 'home';
         // var height = window.innerHeight - 150;
         //
         //
@@ -36,6 +39,6 @@ Home = __decorate([
     //   {path:'/processed', component:HomeProcssedAlerts, name:'HomeProcssedAlerts'}
     // ])
     ,
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [routerNav_service_1.routerNavService])
 ], Home);
 exports.Home = Home;

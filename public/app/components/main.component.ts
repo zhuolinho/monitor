@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { RequestService } from '../services/request.service';
 import { UserService } from '../services/user.service';
+import { routerNavService } from '../services/routerNav.service';
 // import {LoginComponent} from './login/login.component';
 // import {AdminComponent} from './admin/admin.component';
 import { config } from '../config';
@@ -23,7 +24,9 @@ declare var jQuery: any;
 // ])
 
 export class MainComponent {
-  constructor() {
+  constructor(
+    private routerNavServ: routerNavService
+  ) {
     console.log("MainComponent is up and running");
   }
 }

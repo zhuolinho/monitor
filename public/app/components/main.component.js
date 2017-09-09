@@ -10,8 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var routerNav_service_1 = require("../services/routerNav.service");
 var MainComponent = (function () {
-    function MainComponent() {
+    function MainComponent(routerNavServ) {
+        this.routerNavServ = routerNavServ;
         console.log("MainComponent is up and running");
     }
     return MainComponent;
@@ -27,6 +29,6 @@ MainComponent = __decorate([
     //   {path:'/admin/...', component:AdminComponent, name:'Admin'}
     // ])
     ,
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [routerNav_service_1.routerNavService])
 ], MainComponent);
 exports.MainComponent = MainComponent;

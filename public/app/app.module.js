@@ -21,6 +21,7 @@ var settings_service_1 = require("./services/settings.service");
 var lib_service_1 = require("./services/lib.service");
 var rt_messages_service_1 = require("./services/rt-messages.service");
 var router_guard_service_1 = require("./services/router-guard.service");
+var routerNav_service_1 = require("./services/routerNav.service");
 //layout
 var header_1 = require("./layout_components/header/header");
 var navigator_1 = require("./layout_components/navigator/navigator");
@@ -99,6 +100,7 @@ AppModule = __decorate([
             settings_service_1.SettingsService,
             rt_messages_service_1.RTMessagesService,
             router_guard_service_1.CanActivateViaAuthGuard,
+            routerNav_service_1.routerNavService,
             lib_service_1.LibService
         ],
         bootstrap: [main_component_1.MainComponent]

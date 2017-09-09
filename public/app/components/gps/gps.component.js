@@ -12,12 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_1 = require("../../config");
 var request_service_1 = require("../../services/request.service");
+var routerNav_service_1 = require("../../services/routerNav.service");
 // import {ShipmentMap} from './map/shipment-map.component';
 // import {ProcessedShipment} from './processed/processed-shipment.component';
 // import {Shipment} from './shipment/shiment.component';
 var Gps = (function () {
-    function Gps(request) {
+    function Gps(request, routerNavServ) {
         this.request = request;
+        this.routerNavServ = routerNavServ;
+        this.routerNavServ.currentModule = 'gps';
         console.log("Gps is up and running");
     }
     return Gps;
@@ -34,6 +37,7 @@ Gps = __decorate([
     //   {path:'/processed', component:ProcessedShipment, name:'ProcessedShipment'}
     // ])
     ,
-    __metadata("design:paramtypes", [request_service_1.RequestService])
+    __metadata("design:paramtypes", [request_service_1.RequestService,
+        routerNav_service_1.routerNavService])
 ], Gps);
 exports.Gps = Gps;

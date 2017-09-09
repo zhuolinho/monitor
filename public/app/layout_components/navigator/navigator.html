@@ -1,19 +1,19 @@
             <!-- START LEFT SIDEBAR NAV-->
-            <aside id="left-sidebar-nav">
-                <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
-                    <li class="user-info">
-                        <img src="dist/images/user.png" alt="" width="40" height="40" style="display: block; float: left;">
-                        <span style="display: block; float: left; margin-left: 20px;">{{user?.name}}</span>
-                        <div class="clearfix"></div>
-                    </li>
-                    <li class="bold nav-item-container" *ngFor="let nav of navigations">
-                        <a [routerLink]="nav.link" routerLinkActive="router-link-active"  class="waves-effect waves-light nav-item" [ngClass]="{'hide-on-med-and-down':nav.icon == 'settings'}">
-                          <img [src]="nav.icon"  [class]="nav.class"  />{{nav.title}}
-                        </a>
-                    </li>
-                </ul>
-                <a data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan">
-                  <i class="mdi-navigation-menu"></i>
-                </a>
-            </aside>
+      <aside id="left-sidebar-nav">
+          <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
+              <li class="user-info">
+                  <img src="dist/images/user.png" alt="" width="40" height="40" style="display: block; float: left;">
+                  <span style="display: block; float: left; margin-left: 20px;">{{user?.name}}</span>
+                  <div class="clearfix"></div>
+              </li>
+              <li class="bold nav-item-container" *ngFor="let nav of navigations">
+                  <a [routerLink]="nav.link"  class="waves-effect waves-light nav-item" [ngClass]="{'hide-on-med-and-down':nav.icon == 'settings', 'router-link-active': routerNavServ.currentModule == nav.module}">
+                    <img [src]="nav.icon"  [class]="nav.class"  />{{nav.title}}
+                  </a>
+              </li>
+          </ul>
+          <a data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan">
+            <i class="mdi-navigation-menu"></i>
+          </a>
+      </aside>
             <!-- END LEFT SIDEBAR NAV-->

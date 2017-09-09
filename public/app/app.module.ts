@@ -15,6 +15,7 @@ import { SettingsService } from './services/settings.service';
 import { LibService } from './services/lib.service';
 import { RTMessagesService } from './services/rt-messages.service';
 import { CanActivateViaAuthGuard } from './services/router-guard.service';
+import { routerNavService } from './services/routerNav.service';
 
 
 //layout
@@ -104,6 +105,7 @@ import { SettingsOfflineUsers } from './components/settings/offline_users/settin
     SettingsService,
     RTMessagesService,
     CanActivateViaAuthGuard,
+    routerNavService,
     LibService
   ],
   bootstrap: [MainComponent]

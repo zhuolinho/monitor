@@ -13,11 +13,14 @@ var core_1 = require("@angular/core");
 var config_1 = require("../../config");
 var router_1 = require("@angular/router");
 var user_service_1 = require("../../services/user.service");
+var routerNav_service_1 = require("../../services/routerNav.service");
 var Settings = (function () {
-    function Settings(localUserService, router) {
+    function Settings(localUserService, router, routerNavServ) {
         this.localUserService = localUserService;
         this.router = router;
+        this.routerNavServ = routerNavServ;
         console.log("Settings is up and running");
+        this.routerNavServ.currentModule = 'settings';
         // this.user = this.localUserService.Auth();
         console.log("this.user---", this.user);
         // if(!this.user.settingsAcces){
@@ -42,6 +45,7 @@ Settings = __decorate([
     //   {path:'/formula', component:SettingsFormula, name:'SettingsFormula'}
     // ])
     ,
-    __metadata("design:paramtypes", [user_service_1.UserService, router_1.Router])
+    __metadata("design:paramtypes", [user_service_1.UserService, router_1.Router,
+        routerNav_service_1.routerNavService])
 ], Settings);
 exports.Settings = Settings;

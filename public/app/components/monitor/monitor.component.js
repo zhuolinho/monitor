@@ -11,8 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_1 = require("../../config");
+var routerNav_service_1 = require("../../services/routerNav.service");
 var Monitor = (function () {
-    function Monitor() {
+    function Monitor(routerNavServ) {
+        this.routerNavServ = routerNavServ;
+        this.routerNavServ.currentModule = 'monitor';
         console.log("Monitor is up");
     }
     Monitor.prototype.ngAfterViewInit = function () { };
@@ -23,6 +26,6 @@ Monitor = __decorate([
         selector: 'monitor',
         templateUrl: config_1.config.prefix + '/components/monitor/monitor.component.html'
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [routerNav_service_1.routerNavService])
 ], Monitor);
 exports.Monitor = Monitor;

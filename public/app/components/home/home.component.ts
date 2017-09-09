@@ -1,14 +1,15 @@
 
-import {Component} from '@angular/core'
-import {config} from '../../config';
+import { Component } from '@angular/core'
+import { config } from '../../config';
 // import {HomeAlerts} from './alerts/home.alerts.component';
 // import {HomeProcssedAlerts} from './alerts_processed/home.alerts.processed.component';
-import {RouterLink} from '@angular/router';
-declare var jQuery:any;
+import { RouterLink } from '@angular/router';
+import { routerNavService } from '../../services/routerNav.service';
+declare var jQuery: any;
 
 @Component({
-  selector:'home',
-  templateUrl:config.prefix + '/components/home/home.component.html',
+  selector: 'home',
+  templateUrl: config.prefix + '/components/home/home.component.html',
   // directives:[ROUTER_DIRECTIVES,RouterLink]
 })
 
@@ -19,13 +20,11 @@ declare var jQuery:any;
 //   {path:'/processed', component:HomeProcssedAlerts, name:'HomeProcssedAlerts'}
 // ])
 
-export class Home{
+export class Home {
+  constructor(private routerNavServ: routerNavService) {
+    console.log("Home is up and running");
 
-
-  constructor(){
-  console.log("Home is up and running");
-
-
+    this.routerNavServ.currentModule = 'home';
     // var height = window.innerHeight - 150;
     //
     //
@@ -39,4 +38,4 @@ export class Home{
   }
 
 
- }
+}
