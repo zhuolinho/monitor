@@ -128,7 +128,7 @@ export class SettingsAccess {
     var that = this;
     if (arg.user) {
       this.editMode = true;
-      this.editTarget = arg.user;
+      this.editTarget = _.assign({}, arg.user);
       this.userCategory = config.usersPrivileges[this.editTarget.ap];
     }
     else {
@@ -168,6 +168,18 @@ export class SettingsAccess {
     this.request.put('/users/update.json', this.editTarget).subscribe(res => {
       console.log("user added-----", res);
       if (res.pl && res.pl.user) {
+        var groupIndex = _.findIndex(this.userArray, (addrGrp) => {
+          return addrGrp.type.value == this.userCategory
+        });
+
+        var index = _.findIndex(this.userArray[groupIndex].data, (o) => {
+          return o._id == res.pl.user._id;
+        });
+
+        if (index > -1) {
+          this.userArray[groupIndex].data.splice(index, 1, res.pl.user);
+        }
+
         this.settingsSrvc.updateUser(res.pl.user);
         this.closeDetailModal();
       }

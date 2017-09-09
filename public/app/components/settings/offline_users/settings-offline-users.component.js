@@ -98,15 +98,7 @@ var SettingsOfflineUsers = (function () {
         this.selectedtab = 1;
         this.staffArray = [];
         this.editMode = false;
-        this.newUser = {
-            name: "",
-            phone: "",
-            email: '',
-            pw: "111111",
-            addr: "",
-            ap: "",
-            sex: ""
-        };
+        this.newUser = new OfflineUser();
         console.log("Settings Offline users is up and running");
         var self = this;
         this.request.get("/users/offline.json").subscribe(function (res) {
@@ -154,12 +146,13 @@ var SettingsOfflineUsers = (function () {
         var that = this;
         if (arg.user) {
             this.editMode = true;
-            this.editTarget = arg.user;
+            this.editTarget = _.assign({}, arg.user);
             this.userCategory = config_1.config.usersPrivileges[this.editTarget.ap];
         }
         else {
             this.editMode = false;
             this.editTarget = null;
+            this.newUser = new OfflineUser();
             this.newUser.ap = arg.category;
             this.userCategory = config_1.config.usersPrivileges[this.newUser.ap];
         }
@@ -189,6 +182,15 @@ var SettingsOfflineUsers = (function () {
         this.request.put('/users/update.json', this.editTarget).subscribe(function (res) {
             console.log("user added-----", res);
             if (res.pl && res.pl.user) {
+                var groupIndex = _.findIndex(_this.staffArray, function (addrGrp) {
+                    return addrGrp.type.value == _this.userCategory;
+                });
+                var index = _.findIndex(_this.staffArray[groupIndex].data, function (o) {
+                    return o._id == res.pl.user._id;
+                });
+                if (index > -1) {
+                    _this.staffArray[groupIndex].data.splice(index, 1, res.pl.user);
+                }
                 _this.settingsSrvc.updateUser(res.pl.user);
                 _this.closeDetailModal();
             }
@@ -233,3 +235,16 @@ SettingsOfflineUsers = __decorate([
     __metadata("design:paramtypes", [request_service_1.RequestService, settings_service_1.SettingsService])
 ], SettingsOfflineUsers);
 exports.SettingsOfflineUsers = SettingsOfflineUsers;
+var OfflineUser = (function () {
+    function OfflineUser() {
+        this.name = "";
+        this.phone = "";
+        this.email = '';
+        this.pw = "111111";
+        this.addr = "";
+        this.ap = "";
+        this.sex = "";
+    }
+    return OfflineUser;
+}());
+;

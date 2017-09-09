@@ -107,7 +107,7 @@ var SettingsAccess = (function () {
         var that = this;
         if (arg.user) {
             this.editMode = true;
-            this.editTarget = arg.user;
+            this.editTarget = _.assign({}, arg.user);
             this.userCategory = config_1.config.usersPrivileges[this.editTarget.ap];
         }
         else {
@@ -142,6 +142,15 @@ var SettingsAccess = (function () {
         this.request.put('/users/update.json', this.editTarget).subscribe(function (res) {
             console.log("user added-----", res);
             if (res.pl && res.pl.user) {
+                var groupIndex = _.findIndex(_this.userArray, function (addrGrp) {
+                    return addrGrp.type.value == _this.userCategory;
+                });
+                var index = _.findIndex(_this.userArray[groupIndex].data, function (o) {
+                    return o._id == res.pl.user._id;
+                });
+                if (index > -1) {
+                    _this.userArray[groupIndex].data.splice(index, 1, res.pl.user);
+                }
                 _this.settingsSrvc.updateUser(res.pl.user);
                 _this.closeDetailModal();
             }

@@ -287,7 +287,7 @@ gps.getCompletedShipments =  function(m) {
         query.cd = {$gte:start,$lte:end};
       } else {
         var d = new Date();
-        query.y =  d.getFullYear();
+        query.m = d.getMonth() + 1
       }
 
       Shiment.find(query,function (err, resp) {

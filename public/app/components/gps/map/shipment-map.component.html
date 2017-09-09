@@ -17,15 +17,12 @@
               <option value="C002-闸北区大宁路355号XX站" > C002-闸北区大宁路355号XX站 </option>
               <option  value="L002-闸北区大宁路311号XX站"> L002-闸北区大宁路311号XX站 </option>
             </select> -->
-
-            <select class="select-address helper-select-font-bigger">
-              <option *ngFor="let plc of connectedPlcs" [value]="plc" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
-            </select>
-          </div>
-
-          <div class="clearfix"></div>
+          <select class="select-address helper-select-font-bigger">
+            <option *ngFor="let plc of connectedPlcs" [value]="plc" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
+          </select>
+        </div>
+        <div class="clearfix"></div>
       </div>
-
     </div>
 
     <div>
@@ -35,29 +32,26 @@
       <div class="helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
             <select class="helper-select-font-bigger select-license-plate">
-
-                <option value="13472488407"> 沪D75208</option>
-                <option value="14721922447"> 沪D24801</option>
-                <option value="14721115321"> 沪BS8267</option>
-                <option value="18217578247"> 沪DG7386</option>
-                <option value="18217578452"> 沪DG7355</option>
-                <option value="14721115319"> 沪BR8728</option>
-                <option value="18721447205"> 沪BS7773</option>
-                <option value="14721114287"> 沪BG9861</option>
-                <option value="14721114470"> 沪B84488</option>
-                <option value="14721115324"> 沪B65312</option>
-                <option value="13482489401"> 沪BR7101</option>
-                <option value="13761974728"> 沪DE1966</option>
-                <option value="13681905543"> 沪D37590</option>
-                <option value="13774343629"> 沪GK4546</option>
-
+              <option value="13472488407"> 沪D75208</option>
+              <option value="14721922447"> 沪D24801</option>
+              <option value="14721115321"> 沪BS8267</option>
+              <option value="18217578247"> 沪DG7386</option>
+              <option value="18217578452"> 沪DG7355</option>
+              <option value="14721115319"> 沪BR8728</option>
+              <option value="18721447205"> 沪BS7773</option>
+              <option value="14721114287"> 沪BG9861</option>
+              <option value="14721114470"> 沪B84488</option>
+              <option value="14721115324"> 沪B65312</option>
+              <option value="13482489401"> 沪BR7101</option>
+              <option value="13761974728"> 沪DE1966</option>
+              <option value="13681905543"> 沪D37590</option>
+              <option value="13774343629"> 沪GK4546</option>
             </select>
             <!-- <label>选在时间</label> -->
           </div>
           <div class="clearfix"></div>
       </div>
     </div>
-
 
     <div>
       <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
@@ -75,14 +69,12 @@
             </select>
             <!-- <label>选在时间</label> -->
           </div>
-
           <div class="clearfix"></div>
       </div>
-
     </div>
 
 
-      <div >
+      <div>
         <span class="helper-white-bg helper-padding-5-15 helper-font-bigger">
           回站加气
         </span>
@@ -106,13 +98,11 @@
         <div class=" helper-margin-bottom-20">
           <div class="input-field helper-white-bg col s12 helper-margin-top-10">
               <select class="helper-select-font-bigger select-refill-station">
-                <option value="母站"  selected> 母站</option>
-                <option  value="中转站1号">中转站1号</option>
-               <option  value="中转站2号">中转站2号</option>
-               <option  value="中转站3号">中转站3号</option>
-               <option  value="中转站4号">中转站4号</option>
-                <option  value="中转站5号">中转站5号</option>
-
+                <option value="上海市青浦区白鹤镇鹤祥路18号"  selected> 白鹤</option>
+                <option  value="江苏省苏州市相城区东桥旺东村">江苏苏州华峰</option>
+                <option  value="安徽省宣城市宣城去天湖工业区裕丰数控模具公司">安徽宣城深燃</option>
+                <option  value="安徽省芜湖市镜湖区银湖中路24-3号">安徽芜湖中燃</option>
+                <option  value="山东省枣庄市薛城区皱城镇煤化工产业园南区">山东枣薛能</option>
               </select>
               <!-- <label>选在时间</label> -->
             </div>

@@ -68,90 +68,48 @@
                 <h4 *ngIf="!editMode">  添加到 {{addressType}}</h4>
                 <h4 *ngIf="editMode">  编辑 {{addressType}}</h4>
 
+                <p *ngIf="(addressType != '中转站') && !editMode && !( targetTanks && targetTanks.length)" style="text-align:center; margin: 50px 0;  font-size: 24px; color: red;">
+                  没有未添加地址的 {{addressType}}
+                </p>
 
+                <div *ngIf="(addressType == '中转站') || editMode || (targetTanks && targetTanks.length)" >
 
-                <div class="col s12 m12 helper-margin-bottom-20">
-                      <div class="input-field">
-                        <select id="plcAddrTank" >
-                            <option value="">选择plc</option>
-                            <option *ngFor="let t of targetTanks" [value]="t.tank">
-                              {{t.tank}}
-                            </option>
-                        </select>
-                        <label for="plcip1">
-                        PLC 编号
-                        </label>
-                      </div>
+                  <div class="col s12 m12 helper-margin-bottom-20">
+                    <div class="input-field">
+                      <select id="plcAddrTank" >
+                          <option value="">选择plc</option>
+                          <option *ngFor="let t of targetTanks" [value]="t.tank">
+                            {{t.tank}}
+                          </option>
+                      </select>
+                      <label for="plcip1">
+                      PLC 编号
+                      </label>
+                    </div>
+                  </div>
+
+                 <div class="col s12 m12 helper-margin-bottom-20">
+                   <div class="input-field">
+                     <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.addr">
+                    <input type="text" id="addrInput" *ngIf ="!editTarget" [(ngModel)]="newAddress.addr" >
+                     <label class="active" for="addrInput">请输入地址</label>
+                   </div>
+                 </div>
+
+                 <div class="col s12 m12 helper-margin-bottom-20">
+                   <div class="input-field">
+                     <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.cn">
+                    <input type="text" id="addrInput" *ngIf ="!editTarget" [(ngModel)]="newAddress.cn" >
+                     <label class="active" for="addrInput">请输入公司名称</label>
+                   </div>
+                 </div>
+                </div>
                 </div>
 
 
-               <div class="col s12 m12 helper-margin-bottom-20">
-                 <div class="input-field">
-                   <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.addr">
-                  <input type="text" id="addrInput" *ngIf ="!editTarget" [(ngModel)]="newAddress.addr" >
-                   <label class="active" for="addrInput">请输入地址</label>
-                 </div>
+                <div class="modal-footer" *ngIf="(addressType == '中转站') || editMode || (targetTanks && targetTanks.length)">
+                 <a *ngIf="!editTarget" (click)="addNewAddress()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
+                 <a *ngIf="editTarget" (click)="updateAddress()" class=" modal-action monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
                </div>
-
-
-               <div class="col s12 m12 helper-margin-bottom-20">
-                 <div class="input-field">
-                   <input type="text" id="addrInput" *ngIf ="editTarget" [(ngModel)]="editTarget.cn">
-                  <input type="text" id="addrInput" *ngIf ="!editTarget" [(ngModel)]="newAddress.cn" >
-                   <label class="active" for="addrInput">请输入公司名称</label>
-                 </div>
-               </div>
-
-
-              <!-- <div class="col s12 m12 helper-margin-bottom-20">
-                    <div class="input-field">
-                      <select id="plcip1" >
-                          <option value="192.167.0.1">
-                          192.167.0.1
-                          </option>
-                          <option value="192.167.0.2">
-                              192.167.0.2
-                          </option>
-
-                          <option value="192.167.0.3">
-                            192.167.0.3
-                          </option>
-
-                      </select>
-                      <label for="plcip1">
-                      选择 PLC 地址1。
-                      </label>
-                    </div>
-                </div> -->
-
-                <!-- <div class="col s12 m12 helper-margin-bottom-20">
-                      <div class="input-field">
-                        <select id="plcip2" >
-                            <option value="192.167.0.5">
-                            192.167.0.5
-                            </option>
-                            <option value="192.167.0.6">
-                                192.167.0.6
-                            </option>
-
-                            <option value="192.167.0.7">
-                              192.167.0.7
-                            </option>
-
-                        </select>
-                        <label for="plcip2">
-                        选择 PLC 地址2。
-                        </label>
-                      </div>
-                  </div> -->
-
-
-
-              </div>
-
-              <div class="modal-footer">
-               <a *ngIf="!editTarget" (click)="addNewAddress()" class=" modal-action  monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
-               <a *ngIf="editTarget" (click)="updateAddress()" class=" modal-action monitor-gray-button helper-margin-right-15  helper-font-bigger waves-effect waves-green btn-flat">提交</a>
-             </div>
 
           </div>

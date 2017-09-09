@@ -45,6 +45,7 @@ export class SettingsAddress {
 
   editMode: boolean = false;
   editTarget: any;
+  editTargetRef: any;
   plcAddrTanks: any[] = [];
   targetTanks: any[] = [];
   newAddress: any = new plcAddress();
@@ -110,7 +111,8 @@ export class SettingsAddress {
     var that = this;
     if (arg.addr) {
       this.editMode = true;
-      this.editTarget = arg.addr;
+      this.editTarget = _.assign({}, arg.addr);
+
       jQuery('select#plcAddrTank').val(this.editTarget.tank);
       jQuery('select#plcAddrTank').attr('disabled', 'disabled');
     }
@@ -119,7 +121,7 @@ export class SettingsAddress {
       this.editTarget = null;
       this.newAddress = new plcAddress();
       this.newAddress.at = arg.addressType.en;
-      this.targetTanks = [];
+      this.targetTanks = []; //TODO only show address for current group.And only if there is not addres assigned yet
       for (let i = 0; i < this.plcAddrTanks.length; i++) {  //take only corresping type tanks
         if (this.plcAddrTanks[i].plcType == arg.addressType.en) {
           if (!this.indexedAddresses[this.plcAddrTanks[i].tank]) { // show only tanks that don t have addesses yet
@@ -205,6 +207,7 @@ export class SettingsAddress {
           var addrGroup = _.find(this.addressArray, function(addrGrp) {
             return addrGrp.type.value.en == res.pl.address.at;
           });
+
           addrGroup.data.unshift(res.pl.address);
           jQuery("#settinsAddressDetailModal").closeModal();
         }
@@ -224,13 +227,20 @@ export class SettingsAddress {
     console.log("posting ----", this.editTarget);
     this.request.put('/plc/address.json', this.editTarget).subscribe(res => {
       console.log("sub comp address updated-----", res);
+
+      var addrGroupIndex = _.findIndex(this.addressArray, function(addrGrp) {
+        return addrGrp.type.value.en == res.pl.address.at;
+      });
+
+      var index = _.findIndex(this.addressArray[addrGroupIndex].data, function(o) {
+        return o._id == res.pl.address._id;
+      });
+
+      if (index > -1) {
+        this.addressArray[addrGroupIndex].data.splice(index, 1, res.pl.address);
+      }
+
       this.closeDetailModal();
-      // if(res.pl && res.pl.address){
-      //     this.settingsSrvc.updateAddress(res.pl.address);
-      // }
-      // else{
-      //   alert("系统错误!");
-      // }
     });
   }
 

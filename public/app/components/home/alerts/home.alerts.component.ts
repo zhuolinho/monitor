@@ -85,7 +85,6 @@ export class HomeAlerts implements AfterViewInit, OnInit, OnDestroy {
         this.alertGroups = _.groupBy(this.alertsList, 'atype');
       }
     });
-
     // /plc/alerts/all
   }
 

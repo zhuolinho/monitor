@@ -1,15 +1,13 @@
 
   <div class="top-nav  module-top-nav">
-
     <a class="module-top-nav-item-wrapper" [routerLink]="['/admin/home/alerts']" routerLinkActive="router-link-active" >
       <a class="waves-effect waves-light btn-large top-nav-item helper-font-bigger" >报警通知</a>
     </a>
-
     <a class="module-top-nav-item-wrapper" [routerLink]="['/admin/home/processed-alerts']" routerLinkActive="router-link-active" >
       <a class="waves-effect waves-light btn-large top-nav-item helper-font-bigger" >处理与完成</a>
     </a>
-    </div>
+  </div>
 
-<div class="bottom-container" id="homeMainContainer">
-  	<router-outlet></router-outlet>
-</div>
+  <div class="bottom-container" id="homeMainContainer">
+    <router-outlet></router-outlet>
+  </div>

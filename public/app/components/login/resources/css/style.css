@@ -2,10 +2,10 @@
 
   background: url('../../../../../dist/images/login-bg.jpeg') no-repeat center center;
   height: 100vh;
-  overflow-y: auto;
   padding-top: 25vh;
   background-size: cover;
   color: white;
+  overflow: hidden;
 }
 
 .input-field label {

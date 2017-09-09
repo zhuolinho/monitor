@@ -75,7 +75,7 @@ var SettingsAddress = (function () {
         var that = this;
         if (arg.addr) {
             this.editMode = true;
-            this.editTarget = arg.addr;
+            this.editTarget = _.assign({}, arg.addr);
             jQuery('select#plcAddrTank').val(this.editTarget.tank);
             jQuery('select#plcAddrTank').attr('disabled', 'disabled');
         }
@@ -84,7 +84,7 @@ var SettingsAddress = (function () {
             this.editTarget = null;
             this.newAddress = new plcAddress();
             this.newAddress.at = arg.addressType.en;
-            this.targetTanks = [];
+            this.targetTanks = []; //TODO only show address for current group.And only if there is not addres assigned yet
             for (var i = 0; i < this.plcAddrTanks.length; i++) {
                 if (this.plcAddrTanks[i].plcType == arg.addressType.en) {
                     if (!this.indexedAddresses[this.plcAddrTanks[i].tank]) {
@@ -169,13 +169,16 @@ var SettingsAddress = (function () {
         console.log("posting ----", this.editTarget);
         this.request.put('/plc/address.json', this.editTarget).subscribe(function (res) {
             console.log("sub comp address updated-----", res);
+            var addrGroupIndex = _.findIndex(_this.addressArray, function (addrGrp) {
+                return addrGrp.type.value.en == res.pl.address.at;
+            });
+            var index = _.findIndex(_this.addressArray[addrGroupIndex].data, function (o) {
+                return o._id == res.pl.address._id;
+            });
+            if (index > -1) {
+                _this.addressArray[addrGroupIndex].data.splice(index, 1, res.pl.address);
+            }
             _this.closeDetailModal();
-            // if(res.pl && res.pl.address){
-            //     this.settingsSrvc.updateAddress(res.pl.address);
-            // }
-            // else{
-            //   alert("系统错误!");
-            // }
         });
     };
     SettingsAddress.prototype.veSelecedPlcTank = function (event, compRef) {

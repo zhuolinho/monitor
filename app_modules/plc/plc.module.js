@@ -1082,7 +1082,7 @@ plc.getPlcAlerts =  function(m) {
  if(m.pl && m.pl.which){
    if(m.pl.which == "processed"){
      query.status = 1;
-     query.y = d.getFullYear();
+     query.m = d.getMonth() + 1;
    }
    else  if(m.pl.which == "unprocessed"){
       query.status = 0;

@@ -96,17 +96,7 @@ export class SettingsOfflineUsers {
   users: any[];
   editMode: boolean = false;
   editTarget: any;
-
-  newUser: any = {
-    name: "",
-    phone: "",
-    email: '',
-    pw: "111111",
-    addr: "",
-    ap: "",
-    sex: ""
-  };
-
+  newUser: OfflineUser = new OfflineUser();
 
   constructor(private request: RequestService, private settingsSrvc: SettingsService) {
     console.log("Settings Offline users is up and running");
@@ -168,12 +158,12 @@ export class SettingsOfflineUsers {
     var that = this;
     if (arg.user) {
       this.editMode = true;
-      this.editTarget = arg.user;
+      this.editTarget = _.assign({}, arg.user);
       this.userCategory = config.usersPrivileges[this.editTarget.ap];
-    }
-    else {
+    } else {
       this.editMode = false;
       this.editTarget = null;
+      this.newUser = new OfflineUser();
       this.newUser.ap = arg.category;
       this.userCategory = config.usersPrivileges[this.newUser.ap];
     }
@@ -206,6 +196,17 @@ export class SettingsOfflineUsers {
     this.request.put('/users/update.json', this.editTarget).subscribe(res => {
       console.log("user added-----", res);
       if (res.pl && res.pl.user) {
+        var groupIndex = _.findIndex(this.staffArray, (addrGrp) => {
+          return addrGrp.type.value == this.userCategory
+        });
+
+        var index = _.findIndex(this.staffArray[groupIndex].data, (o) => {
+          return o._id == res.pl.user._id;
+        });
+
+        if (index > -1) {
+          this.staffArray[groupIndex].data.splice(index, 1, res.pl.user);
+        }
         this.settingsSrvc.updateUser(res.pl.user);
         this.closeDetailModal();
       }
@@ -247,3 +248,14 @@ export class SettingsOfflineUsers {
     });
   }
 }
+
+
+class OfflineUser {
+  name = "";
+  phone = "";
+  email = '';
+  pw = "111111";
+  addr = "";
+  ap = "";
+  sex = ""
+};

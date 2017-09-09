@@ -13,7 +13,6 @@
     <!-- toto add a back to top button -->
 
   <div class="scrollable-container" style=" height:70vh;">
-
       <div class="center-align helper-white-bg helper-padding-30" *ngIf="!hasData" style=" height:70vh;">
         无报警
       </div>
@@ -66,8 +65,8 @@
                       <div class="row" *ngIf="!alert.ttank">
                         <div class=" col s8 m8 valign-wrapper">  <input type="text" class="valign" name="ttank" #tttnk [(ngModel)]="ttankNgModel[alert.tank]" value="" style="margin:0; border-bottom:0;padding:5px;" placeholder="请输入罐号"></div>
                         <div class="col s4 m4 valign-wrapper">
-                          <a class="monitor-inner-button helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center; margin:auto; margin-top:10px; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">确定</a>
-                          <a *ngIf="tmpEditTtank[alert.tank]" class="monitor-gray-button helper-padding-5-30 helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:10px; padding: 2px 5px !important; display: inline-block;" (click)="veCancelEditTransportableTank(alert)">取消</a>
+                          <a class="monitor-inner-button helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center; margin:auto; margin-top:12px;  margin-right: 6px; display: inline-block;" (click)="veSetTransportableTank(alert,tttnk.value)">确定</a>
+                          <a *ngIf="tmpEditTtank[alert.tank]" class="monitor-inner-button  helper-pointer helper-font-bigger valign" style=" font-size:1em !important; text-align:center;width: 60px; margin:auto; margin-top:12px; padding: 0 5px !important; display: inline-block;" (click)="veCancelEditTransportableTank(alert)">取消</a>
                         </div>
                         <div class="clearfix"></div>
                       </div>
@@ -132,10 +131,6 @@
 
                       <div style="max-width:75%; position:absolute; left:15px; top:15px; " class="helper-ellipsis">
                           <span *ngFor="let n of alert.st"> {{n.ti}}, </span>
-                      </div>
-
-                      <div class="monitor-alert" *ngIf="!alert.status">
-                             {{alert.am}}
                       </div>
 
                       <div class="monitor-alert-action monitor-gray-button" *ngIf="!alert.status">

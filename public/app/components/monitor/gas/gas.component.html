@@ -3,7 +3,6 @@
   <div class="row helper-margin-bottom-5 valign-wrapper">
     <div class="col s7  helper-white-bg">
       <div class="input-field">
-
         <select class="helper-select-font-bigger current-plc">
           <option *ngFor="let plc of connectedPlcs" [value]="plc" > {{plc}} {{plcAddresses[plc]?.addr}}</option>
         </select>
@@ -13,7 +12,6 @@
     <div class="col s5">
     </div>
   </div>
-
 
   <div class="row helper-vmargin-15" *ngIf="realTimeData && realTimeData[currentPlcTank]">
       <div class="col m7">
