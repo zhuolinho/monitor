@@ -26,6 +26,8 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         this.delevered = false;
         this.returnToRefill = true;
         this.isShiping = false;
+        this.drivers = [];
+        this.driverEscorts = [];
         this.newShipment = {
             sim: '',
             dest: '',
@@ -56,8 +58,15 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                 var plcData = resp.pl.plc;
                 _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
                 _this.connectedPlcs = Object.keys(plcData);
-                _this.initUi();
                 // this.initSelect();
+                _this.request.get("/users/offline.json").subscribe(function (res) {
+                    console.log("got response--", res);
+                    if (res.pl && res.pl.users) {
+                        _this.drivers = _.filter(res.pl.users, { ap: 6 });
+                        _this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
+                    }
+                    _this.initUi();
+                });
             }
         });
     };

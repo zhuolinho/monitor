@@ -138,9 +138,7 @@
       <div class=" helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
             <select class="helper-select-font-bigger select-driver">
-              <option value="671"> 671 </option>
-              <option  value="672"> 672 </option>
-              <option  value="673"> 673 </option>
+              <option *ngFor="let d of drivers" [value]="d.an" > {{d.name}} </option>
             </select>
             <!-- <label>选在时间</label> -->
           </div>
@@ -157,9 +155,7 @@
       <div class="helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
             <select class="helper-select-font-bigger select-supercargo">
-              <option value="822" > 822 </option>
-              <option  value="823"> 823 </option>
-              <option  value="824"> 824 </option>
+              <option *ngFor="let de of driverEscorts" [value]="de.an" > {{de.name}} </option>
             </select>
             <!-- <label>选在时间</label> -->
           </div>

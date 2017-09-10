@@ -1,11 +1,11 @@
 
-import {Component, AfterViewInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Params} from '@angular/router';
-import {config} from '../../../config';
-import {gpsAlert} from '../../../../models/gpsAlert';
-import {RequestService} from '../../../services/request.service';
-import {UserService} from '../../../services/user.service';
-import {RTMessagesService} from '../../../services/rt-messages.service';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { config } from '../../../config';
+import { gpsAlert } from '../../../../models/gpsAlert';
+import { RequestService } from '../../../services/request.service';
+import { UserService } from '../../../services/user.service';
+import { RTMessagesService } from '../../../services/rt-messages.service';
 
 declare var BMAP_ANCHOR_TOP_LEFT: any;
 declare var BMAP_NAVIGATION_CONTROL_LARGE: any;
@@ -40,6 +40,8 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
   isShiping: boolean = false;
   user: any;
   tankId: string;
+  drivers: any[] = [];
+  driverEscorts: any[] = [];
   connectedPlcs: any;
   plcAddresses: any;
   totalCarNumber: number;
@@ -84,8 +86,16 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
         let plcData = resp.pl.plc;
         this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
         this.connectedPlcs = Object.keys(plcData);
-        this.initUi();
         // this.initSelect();
+
+        this.request.get("/users/offline.json").subscribe(res => {
+          console.log("got response--", res);
+          if (res.pl && res.pl.users) {
+            this.drivers = _.filter(res.pl.users, { ap: 6 });
+            this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
+          }
+          this.initUi();
+        });
       }
     });
   }

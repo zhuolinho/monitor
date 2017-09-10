@@ -150,7 +150,7 @@ var SettingsSms = (function () {
         this.users = [];
         this.userArray = [];
         console.log("SettingsSms is up and running");
-        this.request.get("/users/access.json").subscribe(function (res) {
+        this.request.get("/users/all.json").subscribe(function (res) {
             console.log("got response for users--", res);
             if (res.pl && res.pl.users) {
                 _this.users = res.pl.users;

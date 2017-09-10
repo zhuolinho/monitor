@@ -382,7 +382,10 @@ auth.getAccessUsers = function(m){
   var r = {pl: {}, er:''};
   var deferred = q.defer();
   if(m&&m.pl&&m.pl.user&&m.pl.user.oID){
-    User.find({oID:m.pl.user.oID}).where('an').lt(60000000000).exec(
+    User.find({oID:m.pl.user.oID})
+    .where('an')
+    .lt(60000000000)
+    .exec(
         function(err,users){
 
           if(err){

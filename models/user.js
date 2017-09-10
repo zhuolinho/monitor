@@ -36,7 +36,7 @@ var UserSchema = new Schema({
     },
     ap:{   //access priviledge
       type:Number,
-      default:8    //driver
+      default:8    //escort. 1 admin, driver 6
     },
     sex:{  //0 male, 1 female
       type:Number,

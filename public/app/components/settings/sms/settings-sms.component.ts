@@ -152,7 +152,7 @@ export class SettingsSms {
   constructor(private request: RequestService) {
     console.log("SettingsSms is up and running");
 
-    this.request.get("/users/access.json").subscribe(res => {
+    this.request.get("/users/all.json").subscribe(res => {
       console.log("got response for users--", res);
       if (res.pl && res.pl.users) {
         this.users = res.pl.users;
