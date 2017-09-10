@@ -52,6 +52,8 @@ var settings_access_component_1 = require("./components/settings/access/settings
 var settings_address_component_1 = require("./components/settings/address/settings-address.component");
 var settings_formula_component_1 = require("./components/settings/formula/settings-formula.component");
 var settings_offline_users_component_1 = require("./components/settings/offline_users/settings-offline-users.component");
+//tank
+var tanks_component_1 = require("./components/settings/tanks/tanks.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -91,7 +93,8 @@ AppModule = __decorate([
             settings_access_component_1.SettingsAccess,
             settings_address_component_1.SettingsAddress,
             settings_formula_component_1.SettingsFormula,
-            settings_offline_users_component_1.SettingsOfflineUsers
+            settings_offline_users_component_1.SettingsOfflineUsers,
+            tanks_component_1.SettingsTank
         ],
         providers: [
             { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy },

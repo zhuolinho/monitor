@@ -66,6 +66,64 @@ module.exports = function (handler)
             });
   });
 
+  router.get('/tanks/all.json', function(req, res, next) {
+    var param = {
+      ns: 'plc',
+      vs: '1.0',
+      op: 'getPlcTanks',
+      pl:{
+        user:lib.reqUser(req)
+      }
+    };
+
+    handler(param)
+      .then(function (r) {
+         helpers.sendResponse(res, 200, r);
+      })
+      .fail(function (r) {
+        helpers.sendResponse(res, 404, r);
+      });
+  });
+
+  router.put('/tanks.json', function(req, res, next) {
+    var param = {
+      ns: 'plc',
+      vs: '1.0',
+      op: 'updatePlcTank',
+      pl:{
+        tank:req.body,
+        user:lib.reqUser(req)
+      }
+    };
+
+    handler(param)
+      .then(function (r) {
+         helpers.sendResponse(res, 200, r);
+      })
+      .fail(function (r) {
+        helpers.sendResponse(res, 404, r);
+      });
+  });
+
+  router.post('/tanks/new.json', function(req, res, next) {
+    var param = {
+      ns: 'plc',
+      vs: '1.0',
+      op: 'addNewTank',
+      pl:{
+        tank:req.body,
+        user:lib.reqUser(req)
+      }
+    };
+
+    handler(param)
+      .then(function (r) {
+         helpers.sendResponse(res, 200, r);
+      })
+      .fail(function (r) {
+        helpers.sendResponse(res, 404, r);
+      });
+  });
 
   router.get('/latest.json', function(req, res, next) {
 

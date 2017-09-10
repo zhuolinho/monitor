@@ -30,6 +30,7 @@ var settings_access_component_1 = require("../components/settings/access/setting
 var settings_address_component_1 = require("../components/settings/address/settings-address.component");
 var settings_formula_component_1 = require("../components/settings/formula/settings-formula.component");
 var settings_offline_users_component_1 = require("../components/settings/offline_users/settings-offline-users.component");
+var tanks_component_1 = require("../components/settings/tanks/tanks.component");
 var ROUTES = [
     // { path: 'register', component: cbosRegister},
     // { path: 'desktop', component: cbosDesktop, children:[
@@ -108,6 +109,13 @@ var ROUTES = [
                     {
                         path: 'formula',
                         component: settings_formula_component_1.SettingsFormula,
+                        canActivate: [
+                            router_guard_service_1.CanActivateViaAuthGuard
+                        ]
+                    },
+                    {
+                        path: 'tanks',
+                        component: tanks_component_1.SettingsTank,
                         canActivate: [
                             router_guard_service_1.CanActivateViaAuthGuard
                         ]

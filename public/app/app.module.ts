@@ -57,6 +57,11 @@ import { SettingsFormula } from './components/settings/formula/settings-formula.
 import { SettingsOfflineUsers } from './components/settings/offline_users/settings-offline-users.component';
 
 
+//tank
+import { SettingsTank } from './components/settings/tanks/tanks.component';
+
+
+
 
 @NgModule({
   imports: [
@@ -95,7 +100,8 @@ import { SettingsOfflineUsers } from './components/settings/offline_users/settin
     SettingsAccess,
     SettingsAddress,
     SettingsFormula,
-    SettingsOfflineUsers
+    SettingsOfflineUsers,
+    SettingsTank
 
   ],
   providers: [

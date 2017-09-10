@@ -2,17 +2,15 @@
     <div class="helper-padding-10  monitor-tabs herlper-gray-bg-monitor module-sub-top-menu" style="position:absolute;top:0; left:0; width:100%;">
         <a (click)="veSortBy(6);  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-tab monitor-gray-button helper-font-bigger" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 司机</a>
         <a  (click)="veSortBy(8);  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 押运员 </a>
+        <a  (click)="selectedtab = 3;" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect waves-light  monitor-tab monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:140px; height:40px; line-height:40px; margin:auto; text-align:center;"> 罐号 </a>
     </div>
 
     <!-- padding for tab above -->
         <div class="space-sub-nav">
     </div>
-
-
     <!-- toto add a back to top button -->
 
-    <div class="scrollable-container"  style=" height:70vh;">
-
+    <div class="scrollable-container"  style=" height:70vh;" *ngIf="selectedtab != 3">
         <ul   class="collapsible row" data-collapsible="accordion">
               <li *ngFor="let userGroup of staffArray; let i = index;" class="helper-margin-bottom-15 helper-white-bg ">
                 <div *ngIf="(currentSort == userGroup.type.id) || (currentSort == 'all')" class="collapsible-header active"> <span class="left helper-padding-left-15 helper-font-bigger"> 员工列表 ( {{userGroup.type.value}})</span>  <i class="material-icons right">expand_more</i></div>
@@ -45,6 +43,9 @@
         </ul>
     </div>
 
+    <div *ngIf="selectedtab == 3">
+      <settings-tanks></settings-tanks>
+    </div>
 
 
 <!-- details modal -->
@@ -106,55 +107,7 @@
                         <input *ngIf="!editTarget" id="phone" type="text" name="phone" class="validate"  [(ngModel)]="newUser.phone" >
                         <label for="phone" class="active">手机:</label>
                       </div>
-
-
                     </div>
-
-
-
-                    <!-- <div class="row">
-                      <div class="col s12 helper-font-bigger center-align">
-                          <span class="helper-border-bottom helper-padding-10">
-                            账号信息
-                          </span>
-                      </div>
-                    </div>
-
-                   <div class="row">
-                        <div *ngIf="editTarget" class="input-field col s12">
-                          <input id="account" type="text" class="validate" [value]="editTarget.an" disabled>
-                          <label  class="active" for="account">账号:</label>
-                        </div>
-
-                        <div class="input-field col s12">
-                          <input *ngIf="editTarget" id="password" type="text" class="validate" value="******" disabled>
-                          <input *ngIf="!editTarget" id="password" type="text" class="validate" [(ngModel)]="newUser.pw" >
-                          <label for="password" class="active">密码:</label>
-                        </div>
-
-                        <div class="input-field col s12">
-                          <select class="privilege">
-                            <option value="" disabled >请选择级别</option>
-                            <option value="1" [attr.selected]="editTarget?.ap == 1">1</option>
-                            <option value="2" [attr.selected]="editTarget?.ap == 2">2</option>
-                            <option value="3" [attr.selected]="editTarget?.ap == 3">3</option>
-                            <option value="4" [attr.selected]="editTarget?.ap == 4">4</option>
-                            <option value="5" [attr.selected]="editTarget?.ap == 5">5</option>
-                            <option value="6" [attr.selected]="editTarget?.ap == 6">6</option>
-                            <option value="7" [attr.selected]="editTarget?.ap == 7">7</option>
-                            <option value="8" [attr.selected]="editTarget?.ap == 8">8</option>
-                          </select>
-                          <label >级别</label>
-                        </div>
-
-
-                        <div class="input-field col s12">
-                          <input  *ngIf="!editTarget"  id="address" type="text" class="validate" [(ngModel)]="newUser.addr">
-                          <input  *ngIf="editTarget"  id="address" type="text" class="validate" [(ngModel)]="editTarget.addr">
-                          <label class="active" for="address">地址:</label>
-                        </div>
-
-                    </div> -->
 
             </div>
 

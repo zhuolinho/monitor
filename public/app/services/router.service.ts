@@ -42,6 +42,8 @@ import { SettingsAddress } from '../components/settings/address/settings-address
 import { SettingsFormula } from '../components/settings/formula/settings-formula.component';
 import { SettingsOfflineUsers } from '../components/settings/offline_users/settings-offline-users.component';
 
+import { SettingsTank } from '../components/settings/tanks/tanks.component';
+
 
 const ROUTES: Routes = [
 
@@ -131,6 +133,16 @@ const ROUTES: Routes = [
               CanActivateViaAuthGuard
             ]
           },
+
+          {
+            path: 'tanks',
+            component: SettingsTank,
+            canActivate: [
+              CanActivateViaAuthGuard
+            ]
+          },
+
+
           { path: '**', component: SettingsAuth }
 
         ]

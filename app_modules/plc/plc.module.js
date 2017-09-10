@@ -14,6 +14,7 @@ var iPlc = require('../../models/iplc');  //incomming plc data
 var Address = require('../../models/plc-address');
 // var PlcFormula = require('../../models/plc-formula');
 var User   = require('../../models/user');
+var Tank   = require('../../models/tank');
 var PlcFormula   = require('../../models/plc-formula');
 var plcConfig = require('../../configs/plc');
 var lib = require('../../lib/lib');
@@ -1878,6 +1879,129 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
                 }
     }
     return result;
+}
+
+
+
+
+
+
+
+
+
+
+////TODO tanks related
+
+
+
+
+plc.getPlcTanks =  function(m) {
+  console.log("plc module: getPlcTanks FUNCTION");
+ var r = {pl: {}, status:false , er:''};
+ var deferred = q.defer();
+
+  if(m && m.pl && m.pl.user && m.pl.user.oID) {
+    Tank.find({oID:m.pl.user.oID},function (err, tank) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.tank = tank;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  } else {
+    r.er = 'no org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+  return deferred.promise;
+}
+
+
+
+plc.addNewTank =  function(m) {
+    console.log("add new address----");
+
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+    if(m.pl && m.pl.tank && m.pl.tank.addr && m.pl.user){
+        var newTank = new Tank({
+                          cd:lib.dateTime(),
+                          addr:m.pl.tank.addr,
+                          tank:m.pl.tank.tank
+                          });
+
+            newTank.setOwner(m.pl.user,function(err, doc) {
+                if(!err){
+                  doc.save(function (serr, tank){
+                      if (!serr){
+                        r.pl.tank = tank;
+                        deferred.resolve(r);
+                      }
+                      else{
+                        r.er = JSON.stringify(serr);
+                        r.em = 'could not save. already exist?';
+                        deferred.reject(r);
+                      }
+                  });
+                }
+                else{
+                  r.er = err;
+                  r.em = 'set owner failled';
+                  deferred.reject(r);
+                }
+
+            })
+
+
+      }
+      else {
+        r.er =  "no address or address code or user provided";
+        deferred.reject(r);
+      }
+    return deferred.promise;
+}
+
+
+plc.updatePlcTank =  function(m) {
+    console.log(" update address----");
+    var r = {pl: {}, er:'',em:''};
+    var deferred = q.defer();
+
+      if(m && m.pl && m.pl.user && m.pl.user.oID){
+
+        if(m.pl && m.pl.tank){
+
+          Tank.findOneAndUpdate({_id:m.pl.tank._id,oID:m.pl.user.oID}, m.pl.tank, { new: true }, function(err, tank) {
+                    if (err){
+                      r.er = err;
+                      r.em = 'problem finding address';
+                      deferred.reject(r);
+                    }
+                    else{
+                      r.pl.tank = tank;
+                      deferred.resolve(r);
+                    }
+          });
+          }
+          else {
+            r.er =  "no address or address code provided";
+            deferred.reject(r);
+          }
+      }
+      else{
+        r.er = 'no org provided';
+        r.status = false;
+        deferred.reject(r);
+      }
+
+    return deferred.promise;
 }
 
 
