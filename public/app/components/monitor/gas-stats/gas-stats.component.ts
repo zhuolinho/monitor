@@ -47,9 +47,16 @@ export class GasStats implements OnInit {
       console.log("latest plc>>>-----", resp);
       if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
         let tempPlcData = _.keyBy(resp.pl.plc, 'tank');
+        this.plcAddresses = _.orderBy(resp.pl.address, (o) => {
+          if (o.addr) {
+            return parseInt(o.addr.slice(0, 3));
+          }
+          return undefined;
+        }, ['asc']);
+
         // this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
 
-        this.realTimeData = _.forEach(resp.pl.address, (o) => {
+        this.realTimeData = _.forEach(this.plcAddresses, (o) => {
           if (tempPlcData[o.tank]) {
             o = _.assign(o, tempPlcData[o.tank]);
           } else {

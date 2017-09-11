@@ -76,11 +76,17 @@ var Gas = Gas_1 = (function () {
             console.log("latest plc>>>-----", resp);
             if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                 _this.realTimeData = resp.pl.plc;
-                _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-                _this.connectedPlcs = _.orderBy(Object.keys(_this.realTimeData), function (o) {
-                    return parseInt(o.slice(1, 4));
+                _this.plcAddresses = _.orderBy(resp.pl.address, function (o) {
+                    if (o.addr) {
+                        return parseInt(o.addr.slice(0, 3));
+                    }
+                    return undefined;
                 }, ['asc']);
-                _this.currentPlcTank = _this.connectedPlcs[0];
+                _this.connectedPlcs = _.keyBy(_this.realTimeData, 'tank');
+                console.log("this.connectedPlcs---", _this.connectedPlcs);
+                if (_this.plcAddresses && _this.plcAddresses[0]) {
+                    _this.currentPlcTank = _this.plcAddresses[0].tank; // TODO assuming there is matching plc available
+                }
                 _this.initSelect();
             }
         });
@@ -179,7 +185,7 @@ var Gas = Gas_1 = (function () {
             if (data && data.pl && data.pl.plc) {
                 // that.realTimeData = _.keyBy(data.pl.plc,'tank');
                 that.realTimeData = data.pl.plc;
-                that.connectedPlcs = Object.keys(that.realTimeData);
+                this.connectedPlcs = _.keyBy(that.realTimeData, 'tank');
                 jQuery('select:not(simple-select)').material_select();
             }
         });

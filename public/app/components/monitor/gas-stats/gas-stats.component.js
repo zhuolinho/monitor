@@ -39,8 +39,14 @@ var GasStats = (function () {
             console.log("latest plc>>>-----", resp);
             if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                 var tempPlcData_1 = _.keyBy(resp.pl.plc, 'tank');
+                _this.plcAddresses = _.orderBy(resp.pl.address, function (o) {
+                    if (o.addr) {
+                        return parseInt(o.addr.slice(0, 3));
+                    }
+                    return undefined;
+                }, ['asc']);
                 // this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-                _this.realTimeData = _.forEach(resp.pl.address, function (o) {
+                _this.realTimeData = _.forEach(_this.plcAddresses, function (o) {
                     if (tempPlcData_1[o.tank]) {
                         o = _.assign(o, tempPlcData_1[o.tank]);
                     }

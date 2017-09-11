@@ -101,12 +101,23 @@ export class Gas implements AfterViewInit, OnDestroy {
       console.log("latest plc>>>-----", resp);
       if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
         this.realTimeData = resp.pl.plc;
-        this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-        this.connectedPlcs = _.orderBy(Object.keys(this.realTimeData), (o) => {
-          return parseInt(o.slice(1, 4));
+        this.plcAddresses = _.orderBy(resp.pl.address, (o) => { //TODO plc must have addr to be available on the drop down
+          if (o.addr) {
+            return parseInt(o.addr.slice(0, 3));
+          }
+          return undefined;
         }, ['asc']);
 
-        this.currentPlcTank = this.connectedPlcs[0];
+
+        this.connectedPlcs = _.keyBy(this.realTimeData, 'tank');
+
+        console.log("this.connectedPlcs---", this.connectedPlcs);
+
+        if (this.plcAddresses && this.plcAddresses[0]) {
+          this.currentPlcTank = this.plcAddresses[0].tank; // TODO assuming there is matching plc available
+        }
+
+
         this.initSelect();
       }
     });
@@ -221,7 +232,7 @@ export class Gas implements AfterViewInit, OnDestroy {
       if (data && data.pl && data.pl.plc) {
         // that.realTimeData = _.keyBy(data.pl.plc,'tank');
         that.realTimeData = data.pl.plc
-        that.connectedPlcs = Object.keys(that.realTimeData);
+        this.connectedPlcs = _.keyBy(that.realTimeData, 'tank');
         jQuery('select:not(simple-select)').material_select();
       }
     });

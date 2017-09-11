@@ -149,7 +149,6 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
     //  this.setDaysOfMonth(this.currentStatSelectedYear,  this.currentStatSelectedMonth);
   }
 
-
   setStatsInitValues() {
     var d = new Date();
     this.statsEndDate = d.toISOString().slice(0, 10);
@@ -157,8 +156,6 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
     this.statsStartDate = d.toISOString().slice(0, 10);
     console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
   }
-
-
 
   getPlcStats() {
     this.statsData = [];
@@ -184,7 +181,6 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
     console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
     this.getPlcStats();
   }
-
 
 
   downloadData() {
