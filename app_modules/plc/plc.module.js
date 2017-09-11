@@ -57,7 +57,6 @@ var alertsList =[
 plc.init = function(m) {
     var r = {pl: {status:true} , er:''};
 
-
     // populating plcalerts
 
     // PlcAlert.find({},function(error, doc){
@@ -989,9 +988,9 @@ plc.addNewAlert = function(m){
                               rt:m.pl.alert.rt,
                               ra:m.pl.alert.ra,
                               st:m.pl.alert.st,
-                              y:d.getFullYear(),
-                              m:d.getMonth() + 1,
-                              d:d.getDate()
+                              y:d.getFullYear() + '',
+                              m:d.getMonth() + 1 + '',
+                              d:d.getDate() + ''
                             });
 
               newAlert.setOwner(m.pl.user, function(setErr,setDoc){
@@ -1083,8 +1082,8 @@ plc.getPlcAlerts =  function(m) {
  if(m.pl && m.pl.which){
    if(m.pl.which == "processed"){
      query.status = 1;
-     query.y = d.getFullYear();
-    //  query.m = d.getMonth() + 1;
+     query.y = d.getFullYear() + '';
+    //  query.m = d.getMonth() + 1 + '';
    }
    else  if(m.pl.which == "unprocessed"){
       query.status = 0;
@@ -1932,7 +1931,7 @@ plc.addNewTank =  function(m) {
     var r = {pl: {}, er:'',em:''};
     var deferred = q.defer();
 
-    if(m.pl && m.pl.tank && m.pl.tank.addr && m.pl.user){
+    if(m.pl && m.pl.tank && m.pl.tank.tank && m.pl.user){
         var newTank = new Tank({
                           cd:lib.dateTime(),
                           addr:m.pl.tank.addr,
@@ -1964,7 +1963,7 @@ plc.addNewTank =  function(m) {
 
       }
       else {
-        r.er =  "no address or address code or user provided";
+        r.er =  "no tank addr or user provided";
         deferred.reject(r);
       }
     return deferred.promise;

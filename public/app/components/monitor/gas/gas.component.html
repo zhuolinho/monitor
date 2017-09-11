@@ -1,5 +1,4 @@
 <div class="" style="overflow-x:hidden">
-
   <div class="row helper-margin-bottom-5 valign-wrapper">
     <div class="col s7  helper-white-bg">
       <div class="input-field">
@@ -34,13 +33,9 @@
       </div>
   </div>
 
-  <div class="divider">
-  </div>
+  <div class="divider"></div>
 
-
-
-
-  <div class="scrollable-container" style="height:60vh; padding-bottom:30px; padding-top:10px;">
+  <div class="scrollable-container" style="height:65vh; padding-bottom:100px; padding-top:10px;">
         <div class="helper-margin-bottom-20 valign-wrapper row">
           <div class="col m9">
             <div class=" " *ngIf="realTimeData">
@@ -344,12 +339,12 @@
 
 
 
-        <div class="helper-margin-bottom-20 valign-wrapper row">
+        <div class="helper-margin-bottom-20 valign-wrapper row" *ngIf="availableTanks && availableTanks.length">
           <div class="col m9">
             <div class="helper-white-bg" style="overflow-x:hidden;">
               <div class="row valign-wrapper helper-padding-15 helper-font-bigger helper-display-block">
 
-                 {{currentPlcTank}}  {{plcAddresses[currentPlcTank]?.addr}} ({{availableTanks.length}}个储罐)
+                {{availableTanks.length}}个储罐
 
                 <a  class="monitor-gray-button right helper-vpadding-5 helper-hpadding-15" (click)="veToggleSelectAllTanks()">
                   <span *ngIf="!allTankSelected">
@@ -369,37 +364,27 @@
                 <div class="col s4 helper-font-bigger center-align">
                   现有储罐
                 </div>
-
                 <div class="col s8">
                     <div class="monitor-table vstrip helper-font-bigger" style="border-top:hidden; border-bottom:hidden;">
-                          <div class="table-row" *ngFor="let tank of availableTanks; let i=index;">
-                            <div class="table-cell" style="">
-                            <span class="left" style="margin-top:6px;">{{tank.id}}</span>
-                              <a class="right" style="margin-top:8px;"  >
-                                <input type="checkbox" class="filled-in non-empty" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
-                                <input type="checkbox" class="filled-in empty" id="{{tank.id+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
-                                <label attr.for="{{tank.id+i}}"></label>
-                              </a>
-                            </div>
-                          </div>
-                          <div class="clearfix"></div>
+                      <div class="table-row" *ngFor="let tank of availableTanks; let i=index;">
+                        <div class="table-cell" style="">
+                        <span class="left" style="margin-top:6px;">{{tank.tank}}</span>
+                          <a class="right" style="margin-top:8px;"  >
+                            <input type="checkbox" class="filled-in non-empty" id="{{tank.tank+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="tank.selected" checked = "checked" />
+                            <input type="checkbox" class="filled-in empty" id="{{tank.tank+i}}" (click)="veToggleSelectTank(tank)"  *ngIf="!tank.selected" />
+                            <label attr.for="{{tank.tank+i}}"></label>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
                     </div>
-
                 </div>
-
               </div>
-
             </div>
-
           </div>
-          <div class="col s3 valign">
-          </div>
-
+          <div class="col s3 valign"></div>
         </div>
-
   </div>
-
-
 </div>
 
 

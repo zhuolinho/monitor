@@ -287,7 +287,7 @@ gps.getCompletedShipments =  function(m) {
         query.cd = {$gte:start,$lte:end};
       } else {
         var d = new Date();
-        query.y = d.getFullYear();
+        query.y = d.getFullYear() + '';
         // query.m = d.getMonth() + 1
       }
 
@@ -454,9 +454,9 @@ gps.newShipment =  function(m) {
                                     ed:data.ed,
                                     pa:data.pa,
                                     rs:data.rs,
-                                    y:d.getFullYear(),
-                                    m:d.getMonth() + 1,
-                                    d:d.getDate(),
+                                    y:d.getFullYear() + '',
+                                    m:d.getMonth() + 1 + '',
+                                    d:d.getDate() + '',
                                     status:data.status
                                 });
 

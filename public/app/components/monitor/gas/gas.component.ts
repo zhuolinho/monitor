@@ -37,30 +37,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   checkInterruptionTimer: any;
   static graphIsRunning: boolean = false;
 
-
-  availableTanks: any[] = [
-    { id: '12345', selected: false },
-    { id: '62545', selected: false },
-    { id: '27456', selected: false },
-    { id: '72145', selected: false },
-    { id: '19345', selected: false },
-    { id: '82345', selected: false },
-    { id: '32345', selected: false },
-    { id: '11345', selected: false },
-    { id: '22345', selected: false },
-    { id: '82322', selected: false },
-    { id: '22325', selected: false },
-    { id: '99345', selected: false },
-    { id: '902345', selected: false },
-    { id: '102345', selected: false },
-    { id: '444235', selected: false },
-    { id: '602345', selected: false },
-    { id: '62340', selected: false },
-    { id: '72305', selected: false },
-    { id: '50345', selected: false },
-    { id: '56665', selected: false }
-  ]
-
+  availableTanks: any[] = [];
   allTankSelected: boolean = false;
   selectedTanks: any[] = [];
   realTimeData: any = {};
@@ -97,6 +74,7 @@ export class Gas implements AfterViewInit, OnDestroy {
     // realTimeData
     this.date = lib.dateTime();
     this.setYears(null);
+
     this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
       console.log("latest plc>>>-----", resp);
       if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
@@ -119,6 +97,13 @@ export class Gas implements AfterViewInit, OnDestroy {
 
 
         this.initSelect();
+      }
+    });
+
+    this.request.get('/plc/tanks/all.json').subscribe(resp => {
+      console.log("availableTanks>>>-----", resp);
+      if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
+        this.availableTanks = resp.pl.tank;
       }
     });
   }
@@ -172,7 +157,7 @@ export class Gas implements AfterViewInit, OnDestroy {
 
     if (this.selectedTanks.length) {
       for (let i = 0; i < this.selectedTanks.length; i++) {
-        this.newAlert.st.push({ ti: this.selectedTanks[i].id });
+        this.newAlert.st.push({ ti: this.selectedTanks[i].tank });
       }
       this.newAlert.am = type;
       this.newAlert.atype = type;
@@ -213,7 +198,7 @@ export class Gas implements AfterViewInit, OnDestroy {
       this.selectedTanks.push(tank);
     } else {
       var array = _.remove(this.selectedTanks, function(o) {
-        return o.id == tank.id;
+        return o.tank == tank.tank;
       });
     }
   }
@@ -300,3 +285,27 @@ export class Gas implements AfterViewInit, OnDestroy {
     });
   }
 }
+
+
+// availableTanks: any[] = [
+//   { id: '12345', selected: false },
+//   { id: '62545', selected: false },
+//   { id: '27456', selected: false },
+//   { id: '72145', selected: false },
+//   { id: '19345', selected: false },
+//   { id: '82345', selected: false },
+//   { id: '32345', selected: false },
+//   { id: '11345', selected: false },
+//   { id: '22345', selected: false },
+//   { id: '82322', selected: false },
+//   { id: '22325', selected: false },
+//   { id: '99345', selected: false },
+//   { id: '902345', selected: false },
+//   { id: '102345', selected: false },
+//   { id: '444235', selected: false },
+//   { id: '602345', selected: false },
+//   { id: '62340', selected: false },
+//   { id: '72305', selected: false },
+//   { id: '50345', selected: false },
+//   { id: '56665', selected: false }
+// ]

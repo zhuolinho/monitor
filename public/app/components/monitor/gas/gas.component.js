@@ -31,28 +31,7 @@ var Gas = Gas_1 = (function () {
         this.lastDataTime = 0;
         this.currentPlcMetter = '1';
         this.chartData = [];
-        this.availableTanks = [
-            { id: '12345', selected: false },
-            { id: '62545', selected: false },
-            { id: '27456', selected: false },
-            { id: '72145', selected: false },
-            { id: '19345', selected: false },
-            { id: '82345', selected: false },
-            { id: '32345', selected: false },
-            { id: '11345', selected: false },
-            { id: '22345', selected: false },
-            { id: '82322', selected: false },
-            { id: '22325', selected: false },
-            { id: '99345', selected: false },
-            { id: '902345', selected: false },
-            { id: '102345', selected: false },
-            { id: '444235', selected: false },
-            { id: '602345', selected: false },
-            { id: '62340', selected: false },
-            { id: '72305', selected: false },
-            { id: '50345', selected: false },
-            { id: '56665', selected: false }
-        ];
+        this.availableTanks = [];
         this.allTankSelected = false;
         this.selectedTanks = [];
         this.realTimeData = {};
@@ -88,6 +67,12 @@ var Gas = Gas_1 = (function () {
                     _this.currentPlcTank = _this.plcAddresses[0].tank; // TODO assuming there is matching plc available
                 }
                 _this.initSelect();
+            }
+        });
+        this.request.get('/plc/tanks/all.json').subscribe(function (resp) {
+            console.log("availableTanks>>>-----", resp);
+            if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
+                _this.availableTanks = resp.pl.tank;
             }
         });
     }
@@ -133,7 +118,7 @@ var Gas = Gas_1 = (function () {
         };
         if (this.selectedTanks.length) {
             for (var i = 0; i < this.selectedTanks.length; i++) {
-                this.newAlert.st.push({ ti: this.selectedTanks[i].id });
+                this.newAlert.st.push({ ti: this.selectedTanks[i].tank });
             }
             this.newAlert.am = type;
             this.newAlert.atype = type;
@@ -170,7 +155,7 @@ var Gas = Gas_1 = (function () {
         }
         else {
             var array = _.remove(this.selectedTanks, function (o) {
-                return o.id == tank.id;
+                return o.tank == tank.tank;
             });
         }
     };
@@ -255,3 +240,25 @@ Gas = Gas_1 = __decorate([
 ], Gas);
 exports.Gas = Gas;
 var Gas_1;
+// availableTanks: any[] = [
+//   { id: '12345', selected: false },
+//   { id: '62545', selected: false },
+//   { id: '27456', selected: false },
+//   { id: '72145', selected: false },
+//   { id: '19345', selected: false },
+//   { id: '82345', selected: false },
+//   { id: '32345', selected: false },
+//   { id: '11345', selected: false },
+//   { id: '22345', selected: false },
+//   { id: '82322', selected: false },
+//   { id: '22325', selected: false },
+//   { id: '99345', selected: false },
+//   { id: '902345', selected: false },
+//   { id: '102345', selected: false },
+//   { id: '444235', selected: false },
+//   { id: '602345', selected: false },
+//   { id: '62340', selected: false },
+//   { id: '72305', selected: false },
+//   { id: '50345', selected: false },
+//   { id: '56665', selected: false }
+// ]
