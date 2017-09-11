@@ -14,14 +14,16 @@ var config_1 = require("../../../config");
 var request_service_1 = require("../../../services/request.service");
 var user_service_1 = require("../../../services/user.service");
 var rt_messages_service_1 = require("../../../services/rt-messages.service");
+var utils_service_1 = require("../../../services/utils.service");
 // import {CORE_DIRECTIVES} from '@angular/common';
 var lib_service_1 = require("../../../services/lib.service");
 var HomeAlerts = (function () {
-    function HomeAlerts(request, userSrvc, rtmgs, lib) {
+    function HomeAlerts(request, userSrvc, rtmgs, utilServ, lib) {
         var _this = this;
         this.request = request;
         this.userSrvc = userSrvc;
         this.rtmgs = rtmgs;
+        this.utilServ = utilServ;
         this.lib = lib;
         this.currentSort = 'all';
         this.alertsList = [];
@@ -76,6 +78,9 @@ var HomeAlerts = (function () {
                 // this.realTimeData = _.keyBy(this.testPlcs,'tank');
                 _this.connectedPlcs = Object.keys(_this.realTimeData);
             }
+        });
+        this.utilServ.homeAlertSortAll$.subscribe(function () {
+            _this.veSortBy('all');
         });
     };
     HomeAlerts.prototype.ngOnDestroy = function () {
@@ -183,6 +188,7 @@ HomeAlerts = __decorate([
     __metadata("design:paramtypes", [request_service_1.RequestService,
         user_service_1.UserService,
         rt_messages_service_1.RTMessagesService,
+        utils_service_1.UtilsService,
         lib_service_1.LibService])
 ], HomeAlerts);
 exports.HomeAlerts = HomeAlerts;

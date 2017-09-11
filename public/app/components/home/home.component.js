@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_1 = require("../../config");
 var routerNav_service_1 = require("../../services/routerNav.service");
+var utils_service_1 = require("../../services/utils.service");
 var Home = (function () {
-    function Home(routerNavServ) {
+    function Home(routerNavServ, utilServ) {
         this.routerNavServ = routerNavServ;
+        this.utilServ = utilServ;
         console.log("Home is up and running");
         this.routerNavServ.currentModule = 'home';
         // var height = window.innerHeight - 150;
@@ -27,6 +29,9 @@ var Home = (function () {
         //            });
         //       },1000);
     }
+    Home.prototype.homeAlertSortAll = function () {
+        this.utilServ.homeAlertSortAll();
+    };
     return Home;
 }());
 Home = __decorate([
@@ -39,6 +44,6 @@ Home = __decorate([
     //   {path:'/processed', component:HomeProcssedAlerts, name:'HomeProcssedAlerts'}
     // ])
     ,
-    __metadata("design:paramtypes", [routerNav_service_1.routerNavService])
+    __metadata("design:paramtypes", [routerNav_service_1.routerNavService, utils_service_1.UtilsService])
 ], Home);
 exports.Home = Home;

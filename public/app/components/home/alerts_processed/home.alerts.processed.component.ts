@@ -14,19 +14,24 @@ declare var _: any;
 export class HomeProcssedAlerts {
 
   months: string[] = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-  selectedMonth: string = '';
+  selectedMonth: number;
   alertStorage: any;
   alertsList: any[] = [];
+  expandedIndex: number = 0;
 
   constructor(private request: RequestService) {
     console.log("Home processed alerts is up and running");
     var self = this;
+    let d = new Date();
+    this.selectedMonth = d.getMonth() + 1;
     this.request.get('/plc/alerts/processed.json').subscribe(res => {
       if (res.pl && res.pl.alerts) {
         this.alertStorage = res.pl.alerts;
-        this.shapeData(_.clone(this.alertStorage));
+        this.shapeData(_.filter(this.alertStorage, { m: this.selectedMonth }));
       }
-      this.initUi();
+
+      this.initCollapse();
+      this.initSelect();
     });
   }
 
@@ -42,20 +47,30 @@ export class HomeProcssedAlerts {
 
   veSelected(event, comp) {
     var temp = _.filter(comp.alertStorage, { m: event.target.value });
+    comp.selectedMonth = event.target.value;
+    comp.expandedIndex = event.target.id.split('-index-')[1];
     comp.shapeData(temp);
+    this.initCollapse();
+    this.initSelect();
   }
 
-  initUi() {
+  initCollapse() {
+    var that = this;
+    setTimeout(_ => {
+      jQuery('.collapsible').collapsible({
+        accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+    }, 0);
+  }
+
+  initSelect() {
     var that = this;
     setTimeout(_ => {
       jQuery('select').material_select();
       jQuery('select').on('change', function(event) {
         that.veSelected(event, that);
       });
-      jQuery('.collapsible').collapsible({
-        accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-      });
-    });
+    }, 0);
   }
 
   download(data) {

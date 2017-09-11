@@ -6,6 +6,7 @@ import { AlertModel } from '../../../models/alert-model';
 import { RequestService } from '../../../services/request.service';
 import { UserService } from '../../../services/user.service';
 import { RTMessagesService } from '../../../services/rt-messages.service';
+import { UtilsService } from '../../../services/utils.service';
 // import {CORE_DIRECTIVES} from '@angular/common';
 import { LibService } from '../../../services/lib.service';
 declare var jQuery: any;
@@ -70,6 +71,7 @@ export class HomeAlerts implements AfterViewInit, OnInit, OnDestroy {
   constructor(private request: RequestService,
     private userSrvc: UserService,
     private rtmgs: RTMessagesService,
+    private utilServ: UtilsService,
     private lib: LibService) {
     console.log("Home alerts is up and running");
     var self = this;
@@ -104,6 +106,10 @@ export class HomeAlerts implements AfterViewInit, OnInit, OnDestroy {
         // this.realTimeData = _.keyBy(this.testPlcs,'tank');
         this.connectedPlcs = Object.keys(this.realTimeData);
       }
+    });
+
+    this.utilServ.homeAlertSortAll$.subscribe(() => {
+      this.veSortBy('all');
     });
   }
 

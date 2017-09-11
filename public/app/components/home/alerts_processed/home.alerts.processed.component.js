@@ -17,16 +17,19 @@ var HomeProcssedAlerts = (function () {
         var _this = this;
         this.request = request;
         this.months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-        this.selectedMonth = '';
         this.alertsList = [];
+        this.expandedIndex = 0;
         console.log("Home processed alerts is up and running");
         var self = this;
+        var d = new Date();
+        this.selectedMonth = d.getMonth() + 1;
         this.request.get('/plc/alerts/processed.json').subscribe(function (res) {
             if (res.pl && res.pl.alerts) {
                 _this.alertStorage = res.pl.alerts;
-                _this.shapeData(_.clone(_this.alertStorage));
+                _this.shapeData(_.filter(_this.alertStorage, { m: _this.selectedMonth }));
             }
-            _this.initUi();
+            _this.initCollapse();
+            _this.initSelect();
         });
     }
     HomeProcssedAlerts.prototype.shapeData = function (alerts) {
@@ -40,19 +43,28 @@ var HomeProcssedAlerts = (function () {
     };
     HomeProcssedAlerts.prototype.veSelected = function (event, comp) {
         var temp = _.filter(comp.alertStorage, { m: event.target.value });
+        comp.selectedMonth = event.target.value;
+        comp.expandedIndex = event.target.id.split('-index-')[1];
         comp.shapeData(temp);
+        this.initCollapse();
+        this.initSelect();
     };
-    HomeProcssedAlerts.prototype.initUi = function () {
+    HomeProcssedAlerts.prototype.initCollapse = function () {
+        var that = this;
+        setTimeout(function (_) {
+            jQuery('.collapsible').collapsible({
+                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            });
+        }, 0);
+    };
+    HomeProcssedAlerts.prototype.initSelect = function () {
         var that = this;
         setTimeout(function (_) {
             jQuery('select').material_select();
             jQuery('select').on('change', function (event) {
                 that.veSelected(event, that);
             });
-            jQuery('.collapsible').collapsible({
-                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
-        });
+        }, 0);
     };
     HomeProcssedAlerts.prototype.download = function (data) {
         this.request.post('/plc/download/alerts/processed.json', { data: data }).subscribe(function (res) {

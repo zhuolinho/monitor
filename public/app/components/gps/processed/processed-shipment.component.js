@@ -18,40 +18,23 @@ var ProcessedShipment = (function () {
         this.request = request;
         this.shipments = [];
         this.shimentStorage = [];
+        this.expandedIndex = 0;
         this.months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-        var self = this;
+        var d = new Date();
+        this.selectedMonth = d.getMonth() + 1;
         console.log("processed-shipment is up and running");
         this.request.get('/gps/shipments/done.json').subscribe(function (res) {
             console.log("res ---", res);
             if (res && res.pl && res.pl.shipments) {
-                // var groupObj = _.groupBy(res.pl.shipments, 'ntt');
-                // config.shipmentTanks.forEach(function(key, index) {
-                //   var group = { groupName: key, groupId: index + 1, data: groupObj[key] || [] };
-                //   self.shipments.push(group);
-                // });
-                // console.log("self.shipments---", self.shipments);
-                // this.initUi();
-                //
                 if (res.pl && res.pl.shipments) {
                     _this.shimentStorage = res.pl.shipments;
-                    _this.shapeData(_.clone(_this.shimentStorage));
+                    _this.shapeData(_.filter(_this.shimentStorage, { m: _this.selectedMonth }));
                 }
-                _this.initUi();
+                _this.initCollapse();
+                _this.initSelect();
             }
         });
     }
-    ProcessedShipment.prototype.initUi = function () {
-        var that = this;
-        setTimeout(function (_) {
-            jQuery('select').material_select();
-            jQuery('select').on('change', function (event) {
-                that.veSelected(event, that);
-            });
-            jQuery('.collapsible').collapsible({
-                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
-        });
-    };
     ProcessedShipment.prototype.shapeData = function (param) {
         var self = this;
         this.shipments = [];
@@ -63,7 +46,28 @@ var ProcessedShipment = (function () {
     };
     ProcessedShipment.prototype.veSelected = function (event, comp) {
         var temp = _.filter(comp.alertStorage, { m: event.target.value });
+        comp.selectedMonth = event.target.value;
+        comp.expandedIndex = event.target.id.split('-index-')[1];
         comp.shapeData(temp);
+        this.initCollapse();
+        this.initSelect();
+    };
+    ProcessedShipment.prototype.initCollapse = function () {
+        var that = this;
+        setTimeout(function (_) {
+            jQuery('.collapsible').collapsible({
+                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            });
+        }, 0);
+    };
+    ProcessedShipment.prototype.initSelect = function () {
+        var that = this;
+        setTimeout(function (_) {
+            jQuery('select').material_select();
+            jQuery('select').on('change', function (event) {
+                that.veSelected(event, that);
+            });
+        }, 0);
     };
     ProcessedShipment.prototype.downloadData = function () {
         this.request.post('/gps/shipment/complete/download.json', {}).subscribe(function (res) {

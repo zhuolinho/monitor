@@ -4,6 +4,7 @@ import { config } from '../../../config';
 import { RequestService } from '../../../services/request.service';
 declare var jQuery: any;
 declare var _: any;
+declare var window: any;
 
 @Component({
   selector: 'processed-shipment',
@@ -13,43 +14,26 @@ declare var _: any;
 export class ProcessedShipment {
   shipments: any[] = [];
   shimentStorage: any[] = [];
+  selectedMonth: number;
+  expandedIndex: number = 0;
   months: string[] = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
   constructor(private request: RequestService) {
+    let d = new Date();
+    this.selectedMonth = d.getMonth() + 1;
 
-    var self = this;
     console.log("processed-shipment is up and running");
     this.request.get('/gps/shipments/done.json').subscribe(res => {
       console.log("res ---", res);
       if (res && res.pl && res.pl.shipments) {
-        // var groupObj = _.groupBy(res.pl.shipments, 'ntt');
-        // config.shipmentTanks.forEach(function(key, index) {
-        //   var group = { groupName: key, groupId: index + 1, data: groupObj[key] || [] };
-        //   self.shipments.push(group);
-        // });
-        // console.log("self.shipments---", self.shipments);
-        // this.initUi();
-        //
-
         if (res.pl && res.pl.shipments) {
           this.shimentStorage = res.pl.shipments;
-          this.shapeData(_.clone(this.shimentStorage));
+          this.shapeData(_.filter(this.shimentStorage, { m: this.selectedMonth }));
         }
-        this.initUi();
-      }
-    });
 
-  }
-  initUi() {
-    var that = this;
-    setTimeout(_ => {
-      jQuery('select').material_select();
-      jQuery('select').on('change', function(event) {
-        that.veSelected(event, that);
-      });
-      jQuery('.collapsible').collapsible({
-        accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-      });
+        this.initCollapse();
+        this.initSelect();
+      }
     });
   }
 
@@ -65,7 +49,30 @@ export class ProcessedShipment {
 
   veSelected(event, comp) {
     var temp = _.filter(comp.alertStorage, { m: event.target.value });
+    comp.selectedMonth = event.target.value;
+    comp.expandedIndex = event.target.id.split('-index-')[1];
     comp.shapeData(temp);
+    this.initCollapse();
+    this.initSelect();
+  }
+
+  initCollapse() {
+    var that = this;
+    setTimeout(_ => {
+      jQuery('.collapsible').collapsible({
+        accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+    }, 0);
+  }
+
+  initSelect() {
+    var that = this;
+    setTimeout(_ => {
+      jQuery('select').material_select();
+      jQuery('select').on('change', function(event) {
+        that.veSelected(event, that);
+      });
+    }, 0);
   }
 
 

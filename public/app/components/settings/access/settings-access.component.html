@@ -138,14 +138,14 @@
                         <div class="input-field col s12" *ngIf="editTarget" >
                           <select class="privilege">
                             <option value="" disabled >请选择级别</option>
-                            <option value="1" [attr.selected]="editTarget?.ap == 1">1</option>
-                            <option value="2" [attr.selected]="editTarget?.ap == 2">2</option>
-                            <option value="3" [attr.selected]="editTarget?.ap == 3">3</option>
-                            <option value="4" [attr.selected]="editTarget?.ap == 4">4</option>
-                            <option value="5" [attr.selected]="editTarget?.ap == 5">5</option>
-                            <option value="6" [attr.selected]="editTarget?.ap == 6">6</option>
-                            <option value="7" [attr.selected]="editTarget?.ap == 7">7</option>
-                            <option value="8" [attr.selected]="editTarget?.ap == 8">8</option>
+                            <option value="1" [attr.selected]="(editTarget?.ap == 1)?'selected':null">1</option>
+                            <option value="2" [attr.selected]="(editTarget?.ap == 2)?'selected':null">2</option>
+                            <option value="3" [attr.selected]="(editTarget?.ap == 3)?'selected':null">3</option>
+                            <option value="4" [attr.selected]="(editTarget?.ap == 4)?'selected':null">4</option>
+                            <option value="5" [attr.selected]="(editTarget?.ap == 5)?'selected':null">5</option>
+                            <option value="6" [attr.selected]="(editTarget?.ap == 6)?'selected':null">6</option>
+                            <option value="7" [attr.selected]="(editTarget?.ap == 7)?'selected':null">7</option>
+                            <option value="8" [attr.selected]="(editTarget?.ap == 8)?'selected':null">8</option>
                           </select>
                           <label >级别</label>
                         </div>

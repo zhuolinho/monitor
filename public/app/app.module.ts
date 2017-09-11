@@ -16,7 +16,7 @@ import { LibService } from './services/lib.service';
 import { RTMessagesService } from './services/rt-messages.service';
 import { CanActivateViaAuthGuard } from './services/router-guard.service';
 import { routerNavService } from './services/routerNav.service';
-
+import { UtilsService } from './services/utils.service';
 
 //layout
 import { Header } from './layout_components/header/header';
@@ -112,6 +112,7 @@ import { SettingsTank } from './components/settings/tanks/tanks.component';
     RTMessagesService,
     CanActivateViaAuthGuard,
     routerNavService,
+    UtilsService,
     LibService
   ],
   bootstrap: [MainComponent]

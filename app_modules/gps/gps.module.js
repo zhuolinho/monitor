@@ -149,31 +149,31 @@ gps.init = function(m) {
 
 
 
-        // populating shipments completed to test download
+        // TODO populating shipments completed to test download
 
-        Shiment.find({oID:globalConfig.orgs[0].oID,status:1},function(error, doc){
-          if(doc&&doc.length){
-              return;
-         }else {
-
-           console.log('populated shipments-----')
-              // save sample to init it of not there.
-              var pchain = [];
-              for (var i = 0; i < testShipments.length; i++) {
-                     var message = {pl:{}};
-                     message.pl.data =  testShipments[i];
-                     message.pl.data.status = 1;
-                     message.pl.data.sim = '13472488407';
-                     message.pl.user = globalConfig.orgs[0];
-                     pchain.push(gps.newShipment(message));
-              }
-
-              var result =  q();
-              pchain.forEach(function (f) {
-                  result = result.then(f);
-              });
-         }
-        });
+        // Shiment.find({oID:globalConfig.orgs[0].oID, status:1},function(error, doc){
+        //   if(doc&&doc.length){
+        //       return;
+        //  }else {
+        //
+        //    console.log('populated shipments-----')
+        //       // save sample to init it of not there.
+        //       var pchain = [];
+        //       for (var i = 0; i < testShipments.length; i++) {
+        //              var message = {pl:{}};
+        //              message.pl.data =  testShipments[i];
+        //              message.pl.data.status = 1;
+        //              message.pl.data.sim = '13472488407';
+        //              message.pl.user = globalConfig.orgs[0];
+        //              pchain.push(gps.newShipment(message));
+        //       }
+        //
+        //       var result =  q();
+        //       pchain.forEach(function (f) {
+        //           result = result.then(f);
+        //       });
+        //  }
+        // });
 
       var montlyJob  = scheduler.scheduleJob('0 0 2 * * *', function(){
         console.log('Job: every day at 2 am');
@@ -280,17 +280,20 @@ gps.getCompletedShipments =  function(m) {
   var deferred = q.defer();
 
   if(m && m.pl &&  m.pl.user && m.pl.user.oID){
-    var query = {oID:m.pl.user.oID,status:1};
-    if(m.pl.start && m.pl.end){
+    var query = {oID:m.pl.user.oID, status:1};
+    if(m.pl.start && m.pl.end) {
         var start = m.pl.start+' 00:00:00';
         var end = m.pl.end+' 23:59:59';
         query.cd = {$gte:start,$lte:end};
       } else {
         var d = new Date();
-        query.m = d.getMonth() + 1
+        query.y = d.getFullYear();
+        // query.m = d.getMonth() + 1
       }
 
-      Shiment.find(query,function (err, resp) {
+      Shiment.find(query)
+      .sort({ cd: -1})
+      .exec(function (err, resp) {
           if (err){
             r.er = err;
             deferred.reject(r);
@@ -300,7 +303,7 @@ gps.getCompletedShipments =  function(m) {
             r.status = true;
             deferred.resolve(r);
           }
-      })
+      });
   }
   else{
     r.er = 'no org provided';

@@ -5,18 +5,17 @@
   <ul class="collapsible helper-padding-10 row" data-collapsible="accordion">
 
 
-          <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="let shipment of shipments">
-            <div class="collapsible-header active"> <span class="left helper-font-bigger">{{shipment.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
+          <li class="helper-margin-bottom-15 helper-white-bg " *ngFor="let shipment of shipments; let x = index">
+            <div class="collapsible-header"  [class.active]="x == expandedIndex"> <span class="left helper-font-bigger">{{shipment.groupName}}</span>  <i class="material-icons right">expand_more</i></div>
             <div class="collapsible-body helper-padding-10">
 
                   <div class="row helper-margin-bottom-5 valign-wrapper">
                     <div class="col s2 m2 ">
                       <div class="input-field">
-                        <select class="helper-select-font-bigger" [(ngModel)]="selectedMonth">
-                          <option></option>
-                          <option *ngFor="let m of months; let i = index" [attr.selected]="i == 0" [value]="i+1">{{m}}</option>
+                        <select class="helper-select-font-bigger" [id]="'select-index-' + x" [(ngModel)]="selectedMonth">
+                          <option *ngFor="let m of months; let i = index;" [attr.selected]="(i == selectedMonth) ? 'selected': null" [value]="i+1">{{m}}</option>
                         </select>
-                        </div>
+                      </div>
                     </div>
                      <div class="container valign">
                       <a (click)="downloadData()" class="btn right monitor-inner-button helper-font-bigger waves-effect waves-light helper-margin-right-5" style="height:40px;">

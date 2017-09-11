@@ -1083,7 +1083,8 @@ plc.getPlcAlerts =  function(m) {
  if(m.pl && m.pl.which){
    if(m.pl.which == "processed"){
      query.status = 1;
-     query.m = d.getMonth() + 1;
+     query.y = d.getFullYear();
+    //  query.m = d.getMonth() + 1;
    }
    else  if(m.pl.which == "unprocessed"){
       query.status = 0;
@@ -1128,7 +1129,10 @@ plc.getShipmentList =  function(m) {
 
  if(m && m.pl && m.pl.user && m.pl.user.oID){
 
-     PlcAlert.find({oID:m.pl.user.oID}).$where('(this.status == 1) && ((this.atype == "余量警报")||(this.atype == "拉回警报")||(this.atype == "进场警报"))').exec(
+     PlcAlert.find({oID:m.pl.user.oID})
+     .$where('(this.status == 1) && ((this.atype == "余量警报")||(this.atype == "拉回警报")||(this.atype == "进场警报"))')
+     .sort({'atime': -1})
+     .exec(
        function (err, resp) {
            if (err){
              r.er = err;
@@ -1140,8 +1144,6 @@ plc.getShipmentList =  function(m) {
              deferred.resolve(r);
            }
        });
-
-
  }
  else{
    r.er = 'no org provided';

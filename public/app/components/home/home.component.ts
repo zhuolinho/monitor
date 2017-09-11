@@ -5,6 +5,7 @@ import { config } from '../../config';
 // import {HomeProcssedAlerts} from './alerts_processed/home.alerts.processed.component';
 import { RouterLink } from '@angular/router';
 import { routerNavService } from '../../services/routerNav.service';
+import { UtilsService } from '../../services/utils.service';
 declare var jQuery: any;
 
 @Component({
@@ -21,7 +22,7 @@ declare var jQuery: any;
 // ])
 
 export class Home {
-  constructor(private routerNavServ: routerNavService) {
+  constructor(private routerNavServ: routerNavService, private utilServ: UtilsService) {
     console.log("Home is up and running");
 
     this.routerNavServ.currentModule = 'home';
@@ -35,6 +36,11 @@ export class Home {
     //            });
     //       },1000);
 
+  }
+
+
+  homeAlertSortAll() {
+    this.utilServ.homeAlertSortAll();
   }
 
 

@@ -332,7 +332,6 @@ router.get('/stats/:start/:end/:tank/:mode.json', function(req, res, next) {
 
 
   router.post('/alert.json', function(req, res, next) {
-
       var user = lib.reqUser(req);
 
         var param = {
