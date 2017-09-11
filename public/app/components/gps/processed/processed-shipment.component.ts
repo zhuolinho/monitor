@@ -28,7 +28,7 @@ export class ProcessedShipment {
       if (res && res.pl && res.pl.shipments) {
         if (res.pl && res.pl.shipments) {
           this.shimentStorage = res.pl.shipments;
-          this.shapeData(_.filter(this.shimentStorage, { m: this.selectedMonth }));
+          this.shapeData(_.filter(this.shimentStorage, { m: this.selectedMonth + '' }));
         }
 
         this.initCollapse();

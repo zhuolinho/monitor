@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="table-row" *ngFor="let data of alert.data">
-                  <div class="table-cell"> {{data.tank}} </div>
+                  <div class="table-cell"> {{data.tank}}  <a (click)="showTankMovingModal(data)" *ngIf="data.st && data.st.length">显示全部</a> </div>
                   <div class="table-cell">{{data.atime}}  </div>
                   <div class="table-cell">{{data.pt}} </div>
                   <div class="table-cell">{{data.pa}} </div>
@@ -41,3 +41,27 @@
     </ul>
 
 </div>
+
+
+
+
+        <!-- return alert modal  -->
+
+        <div id="returnAlertDetailModal" class="modal  fixed helper-padding-bottom-20" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+          <div class="modal-content helper-overflow-hidden ">
+            <i class="modal-close material-icons right">clear</i>
+
+              <!-- <h4>Modal Header</h4> -->
+              <div class="helper-font-double center-align helper-padding-30">
+                    {{currentTankMovingAlert.am}}
+              </div>
+
+              <div class="helper-vscrolling" style="max-height:50vh;">
+
+                <div class="center-align" *ngFor="let n of currentTankMovingAlert.st">
+                    {{n?.ti}}
+                </div>
+              </div>
+
+            </div>
+      </div>

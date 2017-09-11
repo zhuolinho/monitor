@@ -28,7 +28,7 @@ var ProcessedShipment = (function () {
             if (res && res.pl && res.pl.shipments) {
                 if (res.pl && res.pl.shipments) {
                     _this.shimentStorage = res.pl.shipments;
-                    _this.shapeData(_.filter(_this.shimentStorage, { m: _this.selectedMonth }));
+                    _this.shapeData(_.filter(_this.shimentStorage, { m: _this.selectedMonth + '' }));
                 }
                 _this.initCollapse();
                 _this.initSelect();

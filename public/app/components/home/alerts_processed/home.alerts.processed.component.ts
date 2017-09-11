@@ -18,6 +18,7 @@ export class HomeProcssedAlerts {
   alertStorage: any;
   alertsList: any[] = [];
   expandedIndex: number = 0;
+  currentTankMovingAlert: any = {};
 
   constructor(private request: RequestService) {
     console.log("Home processed alerts is up and running");
@@ -27,7 +28,7 @@ export class HomeProcssedAlerts {
     this.request.get('/plc/alerts/processed.json').subscribe(res => {
       if (res.pl && res.pl.alerts) {
         this.alertStorage = res.pl.alerts;
-        this.shapeData(_.filter(this.alertStorage, { m: this.selectedMonth }));
+        this.shapeData(_.filter(this.alertStorage, { m: this.selectedMonth + '' }));
       }
 
       this.initCollapse();
@@ -71,6 +72,16 @@ export class HomeProcssedAlerts {
         that.veSelected(event, that);
       });
     }, 0);
+  }
+
+  showTankMovingModal(alert) {
+    console.log("selected alert----", alert);
+    this.currentTankMovingAlert = alert;
+    jQuery("#returnAlertDetailModal").openModal({
+      ready: function() {
+        // jQuery('select').material_select();
+      }
+    });
   }
 
   download(data) {

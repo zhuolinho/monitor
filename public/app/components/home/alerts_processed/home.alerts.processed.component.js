@@ -19,6 +19,7 @@ var HomeProcssedAlerts = (function () {
         this.months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         this.alertsList = [];
         this.expandedIndex = 0;
+        this.currentTankMovingAlert = {};
         console.log("Home processed alerts is up and running");
         var self = this;
         var d = new Date();
@@ -26,7 +27,7 @@ var HomeProcssedAlerts = (function () {
         this.request.get('/plc/alerts/processed.json').subscribe(function (res) {
             if (res.pl && res.pl.alerts) {
                 _this.alertStorage = res.pl.alerts;
-                _this.shapeData(_.filter(_this.alertStorage, { m: _this.selectedMonth }));
+                _this.shapeData(_.filter(_this.alertStorage, { m: _this.selectedMonth + '' }));
             }
             _this.initCollapse();
             _this.initSelect();
@@ -65,6 +66,15 @@ var HomeProcssedAlerts = (function () {
                 that.veSelected(event, that);
             });
         }, 0);
+    };
+    HomeProcssedAlerts.prototype.showTankMovingModal = function (alert) {
+        console.log("selected alert----", alert);
+        this.currentTankMovingAlert = alert;
+        jQuery("#returnAlertDetailModal").openModal({
+            ready: function () {
+                // jQuery('select').material_select();
+            }
+        });
     };
     HomeProcssedAlerts.prototype.download = function (data) {
         this.request.post('/plc/download/alerts/processed.json', { data: data }).subscribe(function (res) {
