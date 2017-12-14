@@ -730,6 +730,33 @@ plc.getAddress =  function(m) {
 
 
 
+plc.deleteAddress =  function(m) {
+  console.log("plc module: deleteAddress FUNCTION");
+ var r = {pl: {}, status:false , er:''};
+  var deferred = q.defer();
+
+  if(m && m.pl && m.pl.tank) {
+
+    Address.remove({tank: m.pl.tank}, function (err, address) {
+        if (err){
+          r.er = err;
+          r.status = false;
+          deferred.reject(r);
+        }
+        else{
+          r.pl.address = address;
+          r.status = true;
+          deferred.resolve(r);
+        }
+    })
+  } else {
+    r.er = 'tank org provided';
+    r.status = false;
+    deferred.reject(r);
+  }
+
+  return deferred.promise;
+}
 
 
 plc.getFormula =  function(m) {
@@ -1855,14 +1882,13 @@ var _checkChanelInterruption = function(data, oID,latestIncommingData,latestInte
           if(latestInteruptedChanels[oID] && data){  //is always set by default
                 if (!latestInteruptedChanels[oID][data.tank]){ //make sure the interuption has not been registered yet
                   if (latestIncommingData[oID][data.tank]){//if not the first time to get this data
-                      if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)){  //if same as previous value
+                      if ((latestIncommingData[oID][data.tank].cdct+latestIncommingData[oID][data.tank].cdcns) === (data.cdct+data.cdcns)) {  //if same as previous value
                             if(Math.abs((new Date(data.dct))-(new Date(data.cdct)))>(plcConfig.sTimer-10000)){   //check difference betwen sample and transmition times.
                                 latestInteruptedChanels[oID][data.tank] = data;
                                 //keep to create interuption alert
                                 result.createAlert = true;
                             }
-                      }
-                      else{
+                      } else {
                         result.save = true;
                         latestIncommingData[oID][data.tank] = data; //update latest data
                       }

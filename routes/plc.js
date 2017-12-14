@@ -24,17 +24,6 @@ var chunks = [];
 var sTimer = plcConf.sTimer;
 var size = 0;
 
-// TODO  delete tank from redis DO NOT un comment
-// redisClient.get("lastestPlc", function(err, result) {
-//   var temp = {};
-//   var user = {oID: '10000000001'};
-//   temp[user.oID] = {};
-//   var latestIncommingData = JSON.parse(result)||temp;
-//
-//   _deleteTanksFromDb(latestIncommingData, user, 'C068');
-//   _deleteTanksFromDb(latestIncommingData, user, 'L075');
-// });
-
 
 //socket io
 server.listen(3003);
@@ -125,6 +114,46 @@ module.exports = function (handler)
       });
   });
 
+
+
+  router.post('/delete/tank.json', function(req, res, next) {
+
+    var tank = req.body.tank;
+    var auth = req.body.auth;
+
+    if (tank && auth && (auth === plcConf.opsAuth)) {
+
+      var param = {
+            ns: 'plc',
+            vs: '1.0',
+            op: 'deleteAddress',
+            pl:{tank:tank}
+      };
+
+
+
+      handler(param)
+        .then(function (r) {
+          redisClient.get("lastestPlc", function(err, result) {
+            var temp = {};
+            var user = {oID: plcConf.oID};
+            temp[user.oID] = {};
+            var latestIncommingData = JSON.parse(result)||temp;
+            console.log("latestIncommingData-----", latestIncommingData[user.oID]);
+            console.log("latestIncommingData[tank]" , latestIncommingData[user.oID][tank]);
+              _deleteTanksFromDb(latestIncommingData, user, tank);
+              helpers.sendResponse(res, 200, {pl: {status: 'ok'}});
+          });
+        })
+        .fail(function (r) {
+          helpers.sendResponse(res, 404, r);
+        });
+
+    } else {
+      helpers.sendResponse(res, 200, {pl: {status: 'fail', em:'invalid tank or auth'}});
+    }
+  });
+
   router.get('/latest.json', function(req, res, next) {
 
       var user = lib.reqUser(req);
@@ -187,11 +216,6 @@ module.exports = function (handler)
                 var r = {pl:{}};
 
                 redisClient.get("lastestPlc", function(err, result) {
-
-
-
-
-
                   var temp = {};
                   temp[user.oID] = {};
                   var latestIncommingData = JSON.parse(result)||temp;
@@ -835,8 +859,6 @@ redisClient.get("lastestPlc", function(err, result) {
 
 
 function _deleteTanksFromDb(latestIncommingData, user, tankID) {
-  //tankID eg. G026, C065
-
   delete latestIncommingData[user.oID][tankID];
 
   redisClient.set("lastestPlc", JSON.stringify(latestIncommingData));  //save updated data

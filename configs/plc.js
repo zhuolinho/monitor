@@ -6,6 +6,8 @@ var plc = {
   sTimer:5*60000, //5min.
   start:'abegin',
   end:'aend',
+  oID: '10000000001', //default org id
+  opsAuth: 'admin',
   plcTypeByPrefix:{
     "C":"CNG",
     "L":"LNG",
