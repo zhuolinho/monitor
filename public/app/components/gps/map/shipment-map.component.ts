@@ -37,6 +37,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
   static gpsmap: any;
   static carsGroups: any[] = [];
   static allMarkers: any = {};
+  allSims: any[] = [];
   isShiping: boolean = false;
   user: any;
   tankId: string;
@@ -78,26 +79,37 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
       console.log("params['tank']----", this.tankId);
     });
 
+    this.request.get('/plc/latest/withaddress.json')
+      .subscribe(resp => {
+        console.log("latest plc>>>-----", resp);
+        if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
 
-    this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-      console.log("latest plc>>>-----", resp);
-      if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+          let plcData = resp.pl.plc;
+          this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+          this.connectedPlcs = Object.keys(plcData);
+          // this.initSelect();
 
-        let plcData = resp.pl.plc;
-        this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
-        this.connectedPlcs = Object.keys(plcData);
-        // this.initSelect();
+          this.request.get("/users/offline.json").subscribe(res => {
+            console.log("got response--", res);
+            if (res.pl && res.pl.users) {
+              this.drivers = _.filter(res.pl.users, { ap: 6 });
+              this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
+            }
 
-        this.request.get("/users/offline.json").subscribe(res => {
-          console.log("got response--", res);
-          if (res.pl && res.pl.users) {
-            this.drivers = _.filter(res.pl.users, { ap: 6 });
-            this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
-          }
-          this.initUi();
-        });
-      }
-    });
+            this.request.get('/gps/sim/all.json')
+              .subscribe(resp => {
+                if (resp.pl && resp.pl.sim) {
+                  Object.keys(resp.pl.sim).map((key) => {
+                    this.allSims.push({ sim: key, lp: resp.pl.sim[key] });
+                  })
+                }
+
+                this.initUi();
+              });
+
+          });
+        }
+      });
   }
 
   ngAfterViewInit() {
@@ -161,7 +173,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
         _this.veSelectedDriver(event, _this)
       });
 
-    });
+    }, 500);
   }
 
 
@@ -179,6 +191,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
 
 
   veSelectedLicensePlate(event, compRef) {
+    console.log("lp", event.target.value);
     if (event) {
       compRef.selectedCarId = event.target.value;
       compRef.newShipment.sim = compRef.selectedCarId;

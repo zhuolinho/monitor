@@ -65,6 +65,15 @@ module.exports = function (handler)
   });
 
 
+  router.get('/sim/all.json', function(req, res, next) {
+     helpers.sendResponse(res, 200, {
+       pl:{
+       sim: gpsConf.simPlate
+     }
+   });
+  });
+
+
   router.get('/alert/all.json', function(req, res, next) {
 
         var param = {
@@ -105,7 +114,6 @@ module.exports = function (handler)
               helpers.sendResponse(res, 404, r);
             });
   });
-
 
 
   router.get('/shipments/done.json', function(req, res, next) {
@@ -213,7 +221,7 @@ module.exports = function (handler)
 
 var _tcpCLient = function(handler){
 
-            client.connect(gpsConf.port,gpsConf.ip, function(){
+            client.connect(gpsConf.port,gpsConf.ip, function() {
               var delay = gpsConf.timer;
               var user = gpsConf.user;
               var initquery = queryGps(user)[0];
@@ -228,7 +236,7 @@ var _tcpCLient = function(handler){
               });
             });
 
-            client.on('error',function(err){
+            client.on('error',function(err) {
                 console.log("GPS CONNECTION ERROR -----",err);
             });
 
@@ -246,7 +254,7 @@ var _tcpCLient = function(handler){
 }
 
 
-function processIncommingData(handler,stream){
+function processIncommingData(handler,stream) {
 
   var param = {
         ns: 'gps',
@@ -257,7 +265,7 @@ function processIncommingData(handler,stream){
 
   handler(param)
       .then(function (r) {
-        // console.log("route: gps process data successful");
+        console.log("route: gps process data successful", r);
         io.emit("carMove:"+globalConf.orgs[0].oID,r);
       })
       .fail(function (r) {

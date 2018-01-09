@@ -25,6 +25,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         this.selectedtab = 1;
         this.delevered = false;
         this.returnToRefill = true;
+        this.allSims = [];
         this.isShiping = false;
         this.drivers = [];
         this.driverEscorts = [];
@@ -52,7 +53,8 @@ var ShipmentMap = ShipmentMap_1 = (function () {
             _this.tankId = params['tank'];
             console.log("params['tank']----", _this.tankId);
         });
-        this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
+        this.request.get('/plc/latest/withaddress.json')
+            .subscribe(function (resp) {
             console.log("latest plc>>>-----", resp);
             if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                 var plcData = resp.pl.plc;
@@ -65,7 +67,15 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                         _this.drivers = _.filter(res.pl.users, { ap: 6 });
                         _this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
                     }
-                    _this.initUi();
+                    _this.request.get('/gps/sim/all.json')
+                        .subscribe(function (resp) {
+                        if (resp.pl && resp.pl.sim) {
+                            Object.keys(resp.pl.sim).map(function (key) {
+                                _this.allSims.push({ sim: key, lp: resp.pl.sim[key] });
+                            });
+                        }
+                        _this.initUi();
+                    });
                 });
             }
         });
@@ -122,7 +132,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
             jQuery('select.select-driver').on('change', function (event) {
                 _this.veSelectedDriver(event, _this);
             });
-        });
+        }, 500);
     };
     ShipmentMap.prototype.veReturnToRefill = function (event, compRef) {
         if (event) {
@@ -136,6 +146,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         jQuery('select').material_select();
     };
     ShipmentMap.prototype.veSelectedLicensePlate = function (event, compRef) {
+        console.log("lp", event.target.value);
         if (event) {
             compRef.selectedCarId = event.target.value;
             compRef.newShipment.sim = compRef.selectedCarId;

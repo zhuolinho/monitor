@@ -32,20 +32,7 @@
       <div class="helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
             <select class="helper-select-font-bigger select-license-plate">
-              <option value="13472488407"> 沪D75208</option>
-              <option value="14721922447"> 沪D24801</option>
-              <option value="14721115321"> 沪BS8267</option>
-              <option value="18217578247"> 沪DG7386</option>
-              <option value="18217578452"> 沪DG7355</option>
-              <option value="14721115319"> 沪BR8728</option>
-              <option value="18721447205"> 沪BS7773</option>
-              <option value="14721114287"> 沪BG9861</option>
-              <option value="14721114470"> 沪B84488</option>
-              <option value="14721115324"> 沪EH2959</option>
-              <option value="13482489401"> 沪BR7101</option>
-              <option value="13761974728"> 沪DE1966</option>
-              <option value="13681905543"> 沪D37590</option>
-              <option value="13774343629"> 沪GK4546</option>
+              <option *ngFor="let item of allSims" [value]="item.sim"> {{item.lp}}</option>
             </select>
             <!-- <label>选在时间</label> -->
           </div>

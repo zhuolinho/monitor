@@ -335,7 +335,7 @@ gps.getAllCars =  function(m) {
                lp:{$last: "$lp"}
              })
       .allowDiskUse(true)
-      .exec(function(err,resp){
+      .exec(function(err,resp) {
               // console.log("all cars----",resp)
           if (err){
             console.log("MOD::------",err);
@@ -372,7 +372,7 @@ gps.processIncommingData = function(m){
   var stream = m.pl.stream;
 
 
-  if(stream){
+  if(stream) {
     var data  = stream.split(',');
     var sim = stream.split('|')[3];
     var loc = data[0].split('|').pop();
@@ -392,8 +392,7 @@ gps.processIncommingData = function(m){
       // console.log("no macthing licence plate found for sim number ",sim);
       r.er = "no macthing licence plate found for sim number "+sim;
       deferred.resolve(r);
-    }
-    else {
+    } else {
 
       var toSave = {sim:sim,loc:loc,lng:lng,lat:lat,speed:speed,course:course,time:time,alarm:alarm,addr:addr,rawd:rawd,lp:lp};
 
@@ -655,7 +654,7 @@ gps.saveIncommingData =  function(m) {
   var r = {pl: {}, status:false , er:''};
   var deferred = q.defer();
 
-  if(m){
+  if(m) {
           m.save(function (err, gps) {
               if (err){
                 r.er = err;
@@ -667,8 +666,7 @@ gps.saveIncommingData =  function(m) {
                 deferred.resolve(r);
               }
           })
-      }
-    else {
+      } else {
       r.er =  "empty data";
       deferred.reject(r);
     }
@@ -678,21 +676,20 @@ gps.saveIncommingData =  function(m) {
 
 
 
-gps.downloadCompletedShipments = function(m){
+gps.downloadCompletedShipments = function(m) {
   console.log(" downloadCompletedShipments----");
 
   var r = {pl:null , er:'',em:''};
   var deferred = q.defer();
 
-    if(m && m.pl && m.pl.data){
+    if(m && m.pl && m.pl.data) {
 
           lib.procesDownloadCompletedShipments(m.pl.data).then(function(res){
             console.log("file res----",res);
             r.pl = {file:res.path};
             deferred.resolve(r);
           });
-    }
-    else{
+    } else {
       r.er = 'no data provided';
       r.status = false;
       deferred.reject(r);
