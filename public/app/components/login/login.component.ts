@@ -28,10 +28,11 @@ export class LoginComponent {
 
 
       if (!res.er) {
-        if ((res.pl && res.pl.user && res.pl.user.ap > 3)) {
-          alert('无权限');
-          return;
-        }
+        // if ((res.pl && res.pl.user && res.pl.user.ap > 3)) {
+        //   alert('无权限');
+        //   return;
+        // }
+
         this.localUserService.saveUser(res.pl);
 
         var patern = /^[GCL]\d{3}$/;

@@ -26,7 +26,14 @@ var Navigator = (function () {
                 { link: ['/admin/settings/auth'], title: '设置 ', icon: 'dist/images/settings.png', module: 'settings', class: 'settings-icon' }
             ];
         }
-        else {
+        else if ((this.user.ap == 2)) {
+            this.navigations = [
+                { link: ['/admin/home/alerts'], title: '首页', icon: 'dist/images/home.png', module: 'home', class: 'home-icon' },
+                { link: ['/admin/monitor/gas'], title: '实时监控', icon: 'dist/images/monitor.png', module: 'monitor', class: 'monitor-icon' },
+                { link: ['/admin/gps/shipments'], title: 'GPS ', icon: 'dist/images/gps.png', module: 'gps', class: 'gps-icon' }
+            ];
+        }
+        else if ((this.user.ap == 3)) {
             this.navigations = [
                 { link: ['/admin/home/alerts'], title: '首页', icon: 'dist/images/home.png', module: 'home', class: 'home-icon' },
                 { link: ['/admin/gps/shipments'], title: 'GPS ', icon: 'dist/images/gps.png', module: 'gps', class: 'gps-icon' }

@@ -136,7 +136,7 @@
                         </div>
 
                         <div class="input-field col s12" *ngIf="editTarget" >
-                          <select class="privilege">
+                          <select class="privilege" (change)="veSelectedPrevileage($event)">
                             <option value="" disabled >请选择级别</option>
                             <option value="1" [attr.selected]="(editTarget?.ap == 1)?'selected':null">1</option>
                             <option value="2" [attr.selected]="(editTarget?.ap == 2)?'selected':null">2</option>

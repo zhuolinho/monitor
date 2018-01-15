@@ -102,12 +102,7 @@ export class SettingsFormula {
       this.closeDetailModal();
     });
   }
-
 }
-
-
-
-
 
 export class plcFormula {
 

@@ -91,8 +91,16 @@ export class SettingsAccess {
   initUi() {
     this.initCollapase();
     this.initModal();
+  }
+
+
+  veSelectedPrevileage(event) {
+    if (event) {
+      this.editTarget.ap = event.target.value;
+    }
 
   }
+
   initCollapase() {
     setTimeout(_ => {
       jQuery('.collapsible').collapsible({
@@ -118,13 +126,16 @@ export class SettingsAccess {
   initSelect() {
     setTimeout(_ => {
       jQuery('select').material_select();
+
+      jQuery('.privilege').on('change', (event) => {
+        this.veSelectedPrevileage.call(this, event);
+      });
     });
   }
 
 
-
   showDetailModal(arg) {
-    console.log("selected itme----", arg);
+    // console.log("selected itme----", arg);
     var that = this;
     if (arg.user) {
       this.editMode = true;

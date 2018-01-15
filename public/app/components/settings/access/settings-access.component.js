@@ -77,6 +77,11 @@ var SettingsAccess = (function () {
         this.initCollapase();
         this.initModal();
     };
+    SettingsAccess.prototype.veSelectedPrevileage = function (event) {
+        if (event) {
+            this.editTarget.ap = event.target.value;
+        }
+    };
     SettingsAccess.prototype.initCollapase = function () {
         setTimeout(function (_) {
             jQuery('.collapsible').collapsible({
@@ -98,12 +103,16 @@ var SettingsAccess = (function () {
         });
     };
     SettingsAccess.prototype.initSelect = function () {
+        var _this = this;
         setTimeout(function (_) {
             jQuery('select').material_select();
+            jQuery('.privilege').on('change', function (event) {
+                _this.veSelectedPrevileage.call(_this, event);
+            });
         });
     };
     SettingsAccess.prototype.showDetailModal = function (arg) {
-        console.log("selected itme----", arg);
+        // console.log("selected itme----", arg);
         var that = this;
         if (arg.user) {
             this.editMode = true;
