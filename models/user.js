@@ -51,7 +51,6 @@ var UserSchema = new Schema({
       siap:{type:Boolean, default:false}, //signal interruption alert processed 信号中断
       iaap:{type:Boolean, default:false}, //insufficient amout  alert processed余量报警
       lap:{type:Boolean, default:false},   //leakage alert processed 泄漏报警
-
       sa:{type:Boolean, default:false},   //shipment alert 配送短信
       sca:{type:Boolean, default:false}, //shipment complete alert 送达短信
 

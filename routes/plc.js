@@ -260,7 +260,7 @@ module.exports = function (handler)
   });
 
   router.get('/alerts/:which.json', function(req, res, next) {
-    console.log("getting alerts------");
+    console.log("getting alerts------", lib.reqUser(req));
 
         var param = {
           ns: 'plc',

@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers, RequestOptions, Response} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -8,7 +8,7 @@ export class RequestService {
   // private paramHeaders: any = new Headers({ 'Content-Type': 'application/json','Accept':'application/json'});
   // private paramHeaders: any = new Headers({'Accept':'application/json'});
 
-  private paramOptions:any;
+  private paramOptions: any;
 
   public constructor(private httpService: Http) {
     this.http = httpService;
@@ -17,37 +17,46 @@ export class RequestService {
   }
 
   get(path) {
-      return this.http.get(path, this.getHeaders()).map((response: Response) => {
-        return response.json();
-      });
+    return this.http.get(path, this.getHeaders()).map((response: Response) => {
+      return response.json();
+    });
 
   }
 
   post(path, data) {
-    return this.http.post(path,  JSON.stringify(data), this.getHeaders()).map((response: Response) => {
-        var r: any = response.json();
-        return r;
+    return this.http.post(path, JSON.stringify(data), this.getHeaders()).map((response: Response) => {
+      var r: any = response.json();
+      return r;
     });
   }
 
   put(path, data) {
-    return this.http.put(path,  JSON.stringify(data), this.getHeaders()).map((response: Response) => {
-        var r: any = response.json();
-        return r;
+    return this.http.put(path, JSON.stringify(data), this.getHeaders()).map((response: Response) => {
+      var r: any = response.json();
+      return r;
     });
   }
 
-  getUser(){
-      return JSON.parse(sessionStorage.getItem('user'));
+
+
+  getUser() {
+    let userStr = sessionStorage.getItem('user');
+
+    if (userStr) {
+      return JSON.parse(userStr);
+    }
+    return {};
   }
 
-  private getHeaders(){
-   let headers = new Headers({ 'Content-Type': 'application/json','Accept':'application/json'});
-   this.paramOptions = new RequestOptions({ headers:headers});
+  private getHeaders() {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
+    this.paramOptions = new RequestOptions({ headers: headers });
 
-    var user = this.getUser();
-    this.paramOptions.headers.append('user', JSON.stringify(user));
-   return this.paramOptions;
- }
+    let user = this.getUser();
+    let headerInfo = { _id: user._id, ap: user.ap, an: user.an, oID: user.oID }
+
+    this.paramOptions.headers.append('user', JSON.stringify(headerInfo));
+    return this.paramOptions;
+  }
 
 }
