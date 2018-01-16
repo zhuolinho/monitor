@@ -1,0 +1,4 @@
+.isolated-page {
+  height: 95vh !important;
+  overflow-y: scroll;
+}

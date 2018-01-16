@@ -150,7 +150,8 @@ const ROUTES: Routes = [
       { path: '**', component: Home }
     ]
   },
-  { path: 'view/tank-stats/:tankId', component: IsolatedMonitor },
+  // { path: 'view/tank-stats/:tankId', component: IsolatedMonitor },
+  { path: 'view/tank-stats/:tankId', component: Gas },
   { path: '**', component: LoginComponent }
 ];
 

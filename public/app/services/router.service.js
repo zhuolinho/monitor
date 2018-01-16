@@ -19,7 +19,6 @@ var processed_shipment_component_1 = require("../components/gps/processed/proces
 var shiment_component_1 = require("../components/gps/shipment/shiment.component");
 //admin monitor components
 var gas_component_1 = require("../components/monitor/gas/gas.component");
-var isolated_monitor_component_1 = require("../components/monitor/isolated-monitor/isolated-monitor.component");
 var camera_component_1 = require("../components/monitor/camera/camera.component");
 //admin gas stats
 var gas_stats_component_1 = require("../components/monitor/gas-stats/gas-stats.component");
@@ -126,7 +125,8 @@ var ROUTES = [
             { path: '**', component: home_component_1.Home }
         ]
     },
-    { path: 'view/tank-stats/:tankId', component: isolated_monitor_component_1.IsolatedMonitor },
+    // { path: 'view/tank-stats/:tankId', component: IsolatedMonitor },
+    { path: 'view/tank-stats/:tankId', component: gas_component_1.Gas },
     { path: '**', component: login_component_1.LoginComponent }
 ];
 // export const globalRouterProviders: any[]  = [

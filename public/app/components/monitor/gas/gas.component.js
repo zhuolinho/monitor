@@ -15,11 +15,12 @@ var config_1 = require("../../../config");
 // import {GasDetail} from './details/gas.detail.component';
 var rt_messages_service_1 = require("../../../services/rt-messages.service");
 var request_service_1 = require("../../../services/request.service");
+var router_1 = require("@angular/router");
 var Gas = Gas_1 = (function () {
-    function Gas(request, rtmgs, lib) {
-        var _this = this;
+    function Gas(request, rtmgs, route, lib) {
         this.request = request;
         this.rtmgs = rtmgs;
+        this.route = route;
         this.lib = lib;
         this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         this.years = [];
@@ -51,31 +52,44 @@ var Gas = Gas_1 = (function () {
         // realTimeData
         this.date = lib.dateTime();
         this.setYears(null);
-        this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
-            console.log("latest plc>>>-----", resp);
-            if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-                _this.realTimeData = resp.pl.plc;
-                _this.plcAddresses = _.orderBy(resp.pl.address, function (o) {
-                    if (o.addr) {
-                        return parseInt(o.addr.slice(0, 3));
-                    }
-                    return undefined;
-                }, ['asc']);
-                _this.connectedPlcs = _.keyBy(_this.realTimeData, 'tank');
-                console.log("this.connectedPlcs---", _this.connectedPlcs);
-                if (_this.plcAddresses && _this.plcAddresses[0]) {
-                    _this.currentPlcTank = _this.plcAddresses[0].tank; // TODO assuming there is matching plc available
-                }
-                _this.initSelect();
-            }
-        });
-        this.request.get('/plc/tanks/all.json').subscribe(function (resp) {
-            console.log("availableTanks>>>-----", resp);
-            if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
-                _this.availableTanks = resp.pl.tank;
-            }
-        });
     }
+    Gas.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            _this.tankId = params['tankId'];
+            // if (this.tankId) {
+            //   this.getPlcStats();
+            // }
+            console.log("params['tank']----", _this.tankId);
+            _this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
+                console.log("latest plc>>>-----", resp);
+                if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+                    _this.realTimeData = resp.pl.plc;
+                    _this.plcAddresses = _.orderBy(resp.pl.address, function (o) {
+                        if (o.addr) {
+                            return parseInt(o.addr.slice(0, 3));
+                        }
+                        return undefined;
+                    }, ['asc']);
+                    _this.connectedPlcs = _.keyBy(_this.realTimeData, 'tank');
+                    console.log("this.connectedPlcs---", _this.connectedPlcs);
+                    if (_this.tankId) {
+                        _this.currentPlcTank = _this.tankId;
+                    }
+                    else if (_this.plcAddresses && _this.plcAddresses[0]) {
+                        _this.currentPlcTank = _this.plcAddresses[0].tank; // TODO assuming there is matching plc available
+                    }
+                    _this.initSelect();
+                }
+            });
+            _this.request.get('/plc/tanks/all.json').subscribe(function (resp) {
+                console.log("availableTanks>>>-----", resp);
+                if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
+                    _this.availableTanks = resp.pl.tank;
+                }
+            });
+        });
+    };
     Gas.prototype.ngAfterViewInit = function () {
         this.iniSocket();
         this.updateTime();
@@ -231,11 +245,13 @@ Gas.graphIsRunning = false;
 Gas = Gas_1 = __decorate([
     core_1.Component({
         selector: 'gas',
-        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html'
+        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html',
+        styleUrls: [config_1.config.prefix + '/components/monitor/gas/gas.component.css']
         // directives:[GasDetail]
     }),
     __metadata("design:paramtypes", [request_service_1.RequestService,
         rt_messages_service_1.RTMessagesService,
+        router_1.ActivatedRoute,
         lib_service_1.LibService])
 ], Gas);
 exports.Gas = Gas;

@@ -1,10 +1,11 @@
 
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { LibService } from '../../../services/lib.service';
 import { config } from '../../../config';
 // import {GasDetail} from './details/gas.detail.component';
 import { RTMessagesService } from '../../../services/rt-messages.service';
 import { RequestService } from '../../../services/request.service';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 
 declare var jQuery: any;
 declare var _: any;
@@ -14,11 +15,12 @@ declare var c3: any;
 
 @Component({
   selector: 'gas',
-  templateUrl: config.prefix + '/components/monitor/gas/gas.component.html'
+  templateUrl: config.prefix + '/components/monitor/gas/gas.component.html',
+  styleUrls: [config.prefix + '/components/monitor/gas/gas.component.css']
   // directives:[GasDetail]
 })
 
-export class Gas implements AfterViewInit, OnDestroy {
+export class Gas implements AfterViewInit, OnInit, OnDestroy {
 
   months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   years: number[] = [];
@@ -34,6 +36,7 @@ export class Gas implements AfterViewInit, OnDestroy {
   lastDataTime: number = 0;
   currentPlcMetter: string = '1';
   chartData: any = [];
+  tankId: '';
   checkInterruptionTimer: any;
   static graphIsRunning: boolean = false;
 
@@ -68,43 +71,55 @@ export class Gas implements AfterViewInit, OnDestroy {
   constructor(
     private request: RequestService,
     private rtmgs: RTMessagesService,
+    private route: ActivatedRoute,
     private lib: LibService) {
     console.log("gas is up and running--->>>>");
 
     // realTimeData
     this.date = lib.dateTime();
     this.setYears(null);
+  }
 
-    this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
-      console.log("latest plc>>>-----", resp);
-      if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
-        this.realTimeData = resp.pl.plc;
-        this.plcAddresses = _.orderBy(resp.pl.address, (o) => { //TODO plc must have addr to be available on the drop down
-          if (o.addr) {
-            return parseInt(o.addr.slice(0, 3));
+  ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      this.tankId = params['tankId'];
+      // if (this.tankId) {
+      //   this.getPlcStats();
+      // }
+      console.log("params['tank']----", this.tankId);
+
+      this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
+        console.log("latest plc>>>-----", resp);
+        if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
+          this.realTimeData = resp.pl.plc;
+          this.plcAddresses = _.orderBy(resp.pl.address, (o) => { //TODO plc must have addr to be available on the drop down
+            if (o.addr) {
+              return parseInt(o.addr.slice(0, 3));
+            }
+            return undefined;
+          }, ['asc']);
+
+
+          this.connectedPlcs = _.keyBy(this.realTimeData, 'tank');
+
+          console.log("this.connectedPlcs---", this.connectedPlcs);
+
+          if (this.tankId) {
+            this.currentPlcTank = this.tankId;
+          } else if (this.plcAddresses && this.plcAddresses[0]) {
+            this.currentPlcTank = this.plcAddresses[0].tank; // TODO assuming there is matching plc available
           }
-          return undefined;
-        }, ['asc']);
 
-
-        this.connectedPlcs = _.keyBy(this.realTimeData, 'tank');
-
-        console.log("this.connectedPlcs---", this.connectedPlcs);
-
-        if (this.plcAddresses && this.plcAddresses[0]) {
-          this.currentPlcTank = this.plcAddresses[0].tank; // TODO assuming there is matching plc available
+          this.initSelect();
         }
+      });
 
-
-        this.initSelect();
-      }
-    });
-
-    this.request.get('/plc/tanks/all.json').subscribe(resp => {
-      console.log("availableTanks>>>-----", resp);
-      if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
-        this.availableTanks = resp.pl.tank;
-      }
+      this.request.get('/plc/tanks/all.json').subscribe(resp => {
+        console.log("availableTanks>>>-----", resp);
+        if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
+          this.availableTanks = resp.pl.tank;
+        }
+      });
     });
   }
 

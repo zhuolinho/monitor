@@ -15,13 +15,13 @@ declare var _: any;
 })
 
 export class GasStats implements OnInit {
-  availableStatsTanks: any[] = [
-    { tank: 'G001', addr: '宝山', 'maxVal': '223424', usage: 225552 },
-    { tank: 'G011', addr: '闵行', 'maxVal': '22424', usage: 23222 },
-    { tank: 'G021', addr: '徐汇', 'maxVal': '3424', usage: 22 },
-    { tank: 'G031', addr: '静安', 'maxVal': '22223424', usage: 26782 },
-    { tank: 'C041', addr: '黄埔', 'maxVal': '22893424', usage: 232 }
-  ]
+  // availableStatsTanks: any[] = [
+  //   { tank: 'G001', addr: '宝山', 'maxVal': '223424', usage: 225552 },
+  //   { tank: 'G011', addr: '闵行', 'maxVal': '22424', usage: 23222 },
+  //   { tank: 'G021', addr: '徐汇', 'maxVal': '3424', usage: 22 },
+  //   { tank: 'G031', addr: '静安', 'maxVal': '22223424', usage: 26782 },
+  //   { tank: 'C041', addr: '黄埔', 'maxVal': '22893424', usage: 232 }
+  // ]
 
   realTimeData: any;
   connectedPlcs: any;
@@ -33,9 +33,7 @@ export class GasStats implements OnInit {
     private rtmgs: RTMessagesService,
     private lib: LibService) {
     console.log("gas-stats is up and running fine----->>>>---");
-
     this.showAllPlc();
-
   }
 
   ngOnInit() {

@@ -38,7 +38,6 @@ export class RequestService {
   }
 
 
-
   getUser() {
     let userStr = sessionStorage.getItem('user');
 
