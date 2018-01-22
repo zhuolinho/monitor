@@ -43,7 +43,7 @@ import { Shipment } from './components/gps/shipment/shiment.component';
 import { Gas } from './components/monitor/gas/gas.component';
 import { GasDetails } from './components/monitor/gas/gas-details.component';
 import { Camera } from './components/monitor/camera/camera.component';
-import { IsolatedMonitor } from './components/monitor/isolated-monitor/isolated-monitor.component';
+// import { IsolatedMonitor } from './components/monitor/isolated-monitor/isolated-monitor.component';
 
 //admin gas-stats
 import { GasStats } from './components/monitor/gas-stats/gas-stats.component';
@@ -91,7 +91,7 @@ import { SettingsTank } from './components/settings/tanks/tanks.component';
     Gas,
     GasDetails,
     Camera,
-    IsolatedMonitor,
+    // IsolatedMonitor,
 
     GasStats,
 

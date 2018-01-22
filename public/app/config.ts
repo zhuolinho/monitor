@@ -46,7 +46,8 @@ export const config: ConfigType = {
       id: '002',
       addr: 'CNG-日建供气站（万事红)',
       cameras: [
-        { id: '01', name: '日建站1号', link: 'http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg==&amp;c=0' },
+        // { id: '01', name: '日建站1号', link: 'http://vshare.ys7.com:80/openlive/566521595_1_2.m3u8?ticket=OE9JNzRyMUptaDJCRmdmcWRmdDI2ODgzaGVaS3hPM2FLOGp5QUhMV3NVaz0kMSQyMDE3MDMyNTE2MjUzNCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMCQxNDU4ODk0MTQ5MDAwJDE0OTA0MzAxNDkwMDAkMg==&amp;c=0' },
+        { id: '01', name: '日建站1号', link: 'http://open.ys7.com/openlive/d3b7fa59bdda4f55823629b0f0d5ef51.m3u8' },
         { id: '02', name: '日建站2号', link: 'http://open.ys7.com/openlive/d42418818a4f445687f7849f260e32ab.m3u8' },
         { id: '03', name: '日建站控制室', link: 'http://open.ys7.com/openlive/36c4baa31bb549d9a0751e89632b3821.m3u8' },
         { id: '04', name: '日建站大门', link: 'http://open.ys7.com/openlive/e80e35b46d624f92be8061fb3bc8d65b.m3u8' }

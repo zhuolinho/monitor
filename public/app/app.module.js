@@ -43,7 +43,7 @@ var shiment_component_1 = require("./components/gps/shipment/shiment.component")
 var gas_component_1 = require("./components/monitor/gas/gas.component");
 var gas_details_component_1 = require("./components/monitor/gas/gas-details.component");
 var camera_component_1 = require("./components/monitor/camera/camera.component");
-var isolated_monitor_component_1 = require("./components/monitor/isolated-monitor/isolated-monitor.component");
+// import { IsolatedMonitor } from './components/monitor/isolated-monitor/isolated-monitor.component';
 //admin gas-stats
 var gas_stats_component_1 = require("./components/monitor/gas-stats/gas-stats.component");
 //admin settings
@@ -87,7 +87,7 @@ AppModule = __decorate([
             gas_component_1.Gas,
             gas_details_component_1.GasDetails,
             camera_component_1.Camera,
-            isolated_monitor_component_1.IsolatedMonitor,
+            // IsolatedMonitor,
             gas_stats_component_1.GasStats,
             settings_sms_component_1.SettingsSms,
             settings_auth_component_1.SettingsAuth,
