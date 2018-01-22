@@ -5,3 +5,4 @@ public/gulpfile.js
 public/node_modules
 public/bower_components
 .idea
+signin-app
