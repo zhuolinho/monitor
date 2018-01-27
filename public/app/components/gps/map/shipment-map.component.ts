@@ -618,7 +618,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
       ShipmentMap.carsGroups = this.groupByTen(this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
 
       for (let i = 0; i < ShipmentMap.carsGroups.length; i++) {
-        this.adjustPoint(ShipmentMap.carsGroups[i], this.addToMap); //convertor doen'st work for more thatn 10 points
+        this.adjustPoint(ShipmentMap.carsGroups[i], this.addToMap); //convertor doen'st work for more than 10 points
       }
 
       this.totalCarNumber = this.allCars.length;
@@ -698,6 +698,7 @@ export class ShipmentMap implements AfterViewInit, OnDestroy {
       group.push(tempArr.slice(0, 10));
       tempArr = tempArr.slice(10, tempArr.length);
     }
+
     group.push(tempArr);
     return group;
   }

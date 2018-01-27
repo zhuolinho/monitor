@@ -479,7 +479,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
             });
             ShipmentMap_1.carsGroups = _this.groupByTen(_this.allCars); //convertor doen'st work for more thatn 10 points!! so we group by ten;
             for (var i = 0; i < ShipmentMap_1.carsGroups.length; i++) {
-                _this.adjustPoint(ShipmentMap_1.carsGroups[i], _this.addToMap); //convertor doen'st work for more thatn 10 points
+                _this.adjustPoint(ShipmentMap_1.carsGroups[i], _this.addToMap); //convertor doen'st work for more than 10 points
             }
             _this.totalCarNumber = _this.allCars.length;
         });
