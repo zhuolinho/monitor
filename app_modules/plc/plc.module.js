@@ -1888,7 +1888,7 @@ var _checkCngAlert = function(
     // };
   }
 
-  console.log("rfq,rft---", rfq, rft);
+  // console.log("rfq,rft---", rfq, rft);
   r.rfq = rfq;
   r.rft = lib.H2Hms(rft);
   return r;
