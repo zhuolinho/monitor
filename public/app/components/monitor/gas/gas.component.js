@@ -30,23 +30,23 @@ var Gas = Gas_1 = (function () {
         this.goodConnection = false;
         this.dataTimer = 300000;
         this.lastDataTime = 0;
-        this.currentPlcMetter = '1';
+        this.currentPlcMetter = "1";
         this.chartData = [];
         this.availableTanks = [];
         this.allTankSelected = false;
         this.selectedTanks = [];
         this.realTimeData = {};
-        this.currentPlcTank = 'G001';
+        this.currentPlcTank = "G001";
         this.connectedPlcs = [];
         this.showModal = false;
         this.plcAddresses = [];
         this.selectedDownloadTab = 1;
         this.newAlert = {
             st: [],
-            atime: '',
-            am: '',
-            atype: '',
-            addr: ''
+            atime: "",
+            am: "",
+            atype: "",
+            addr: ""
         };
         console.log("gas is up and running--->>>>");
         // realTimeData
@@ -56,22 +56,23 @@ var Gas = Gas_1 = (function () {
     Gas.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.forEach(function (params) {
-            _this.tankId = params['tankId'];
+            _this.tankId = params["tankId"];
             // if (this.tankId) {
             //   this.getPlcStats();
             // }
             console.log("params['tank']----", _this.tankId);
-            _this.request.get('/plc/latest/withaddress.json').subscribe(function (resp) {
+            _this.request.get("/plc/latest/withaddress.json").subscribe(function (resp) {
                 console.log("latest plc>>>-----", resp);
                 if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                     _this.realTimeData = resp.pl.plc;
                     _this.plcAddresses = _.orderBy(resp.pl.address, function (o) {
+                        //TODO plc must have addr to be available on the drop down
                         if (o.addr) {
                             return parseInt(o.addr.slice(0, 3));
                         }
                         return undefined;
-                    }, ['asc']);
-                    _this.connectedPlcs = _.keyBy(_this.realTimeData, 'tank');
+                    }, ["asc"]);
+                    _this.connectedPlcs = _.keyBy(_this.realTimeData, "tank");
                     console.log("this.connectedPlcs---", _this.connectedPlcs);
                     if (_this.tankId) {
                         _this.currentPlcTank = _this.tankId;
@@ -82,7 +83,7 @@ var Gas = Gas_1 = (function () {
                     _this.initSelect();
                 }
             });
-            _this.request.get('/plc/tanks/all.json').subscribe(function (resp) {
+            _this.request.get("/plc/tanks/all.json").subscribe(function (resp) {
                 console.log("availableTanks>>>-----", resp);
                 if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
                     _this.availableTanks = resp.pl.tank;
@@ -125,10 +126,10 @@ var Gas = Gas_1 = (function () {
         console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
         this.newAlert = {
             st: [],
-            atime: '',
-            am: '',
-            atype: '',
-            addr: ''
+            atime: "",
+            am: "",
+            atype: "",
+            addr: ""
         };
         if (this.selectedTanks.length) {
             for (var i = 0; i < this.selectedTanks.length; i++) {
@@ -139,9 +140,9 @@ var Gas = Gas_1 = (function () {
             this.newAlert.atime = this.lib.dateTime();
             this.newAlert.addr = "C003-闸北区大宁路3325号";
             console.log("posting--", this.newAlert);
-            this.request.post('/plc/alert.json', this.newAlert).subscribe(function (res) {
+            this.request.post("/plc/alert.json", this.newAlert).subscribe(function (res) {
                 console.log("alert created----", res);
-                jQuery('#moveTanksFeedbackModal').openModal();
+                jQuery("#moveTanksFeedbackModal").openModal();
             });
         }
     };
@@ -176,7 +177,7 @@ var Gas = Gas_1 = (function () {
     Gas.prototype.iniSocket = function () {
         var that = this;
         this.rtmgs.connect(3003);
-        this.rtmgs.on('realTimePlc', function (data) {
+        this.rtmgs.on("realTimePlc", function (data) {
             if (!that.goodConnection) {
                 that.goodConnection = true;
             }
@@ -184,28 +185,28 @@ var Gas = Gas_1 = (function () {
             if (data && data.pl && data.pl.plc) {
                 // that.realTimeData = _.keyBy(data.pl.plc,'tank');
                 that.realTimeData = data.pl.plc;
-                this.connectedPlcs = _.keyBy(that.realTimeData, 'tank');
-                jQuery('select:not(simple-select)').material_select();
+                this.connectedPlcs = _.keyBy(that.realTimeData, "tank");
+                jQuery("select:not(simple-select)").material_select();
             }
         });
-        this.rtmgs.on('plcDataInterruption', function (data) {
-            console.log('plcDataInterruption', data);
+        this.rtmgs.on("plcDataInterruption", function (data) {
+            console.log("plcDataInterruption", data);
             that.goodConnection = false;
         });
     };
     Gas.prototype.initSelect = function () {
         var that = this;
         setTimeout(function (_) {
-            jQuery('select:not(simple-select)').material_select();
-            jQuery('select.current-plc').change(function (e) {
-                console.log('changed');
+            jQuery("select:not(simple-select)").material_select();
+            jQuery("select.current-plc").change(function (e) {
+                console.log("changed");
                 that.setCurrentPlc(e);
             });
         });
     };
     Gas.prototype.setCurrentPlc = function (event) {
         this.currentPlcTank = event.target.value;
-        console.log('this.currentPlcTank---', this.currentPlcTank);
+        console.log("this.currentPlcTank---", this.currentPlcTank);
     };
     Gas.prototype.setYears = function (startYear) {
         var sY = startYear || 2009;
@@ -226,10 +227,10 @@ var Gas = Gas_1 = (function () {
     };
     Gas.prototype.showDetailModal = function (param) {
         var that = this;
-        if (param === 'day') {
+        if (param === "day") {
             this.isShowByDay = true;
         }
-        else if (param === 'month') {
+        else if (param === "month") {
             this.isShowByDay = false;
         }
         that.showModal = false;
@@ -244,9 +245,9 @@ var Gas = Gas_1 = (function () {
 Gas.graphIsRunning = false;
 Gas = Gas_1 = __decorate([
     core_1.Component({
-        selector: 'gas',
-        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas.component.html',
-        styleUrls: [config_1.config.prefix + '/components/monitor/gas/gas.component.css']
+        selector: "gas",
+        templateUrl: config_1.config.prefix + "/components/monitor/gas/gas.component.html",
+        styleUrls: [config_1.config.prefix + "/components/monitor/gas/gas.component.css"]
         // directives:[GasDetail]
     }),
     __metadata("design:paramtypes", [request_service_1.RequestService,

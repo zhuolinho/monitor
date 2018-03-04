@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "monitor",
+      "script": "bin/server",
+      "merge_logs": true,
+      "cwd": "monitor/",
+      "exec_mode": "cluster",
+      "cron_restart": "0 0 3 * * *"
+    }
+  ]
+}

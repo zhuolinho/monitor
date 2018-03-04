@@ -27,22 +27,23 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         this.returnToRefill = true;
         this.allSims = [];
         this.isShiping = false;
+        this.availableTanks = [];
         this.drivers = [];
         this.driverEscorts = [];
         this.newShipment = {
-            sim: '',
-            dest: '',
-            origin: '',
-            s: '',
-            dist: '',
-            lp: '',
-            driver: '',
-            rs: '',
-            oti: '',
-            nti: '',
-            ntt: '',
-            pa: '',
-            ed: '' //estimated duration
+            sim: "",
+            dest: "",
+            origin: "",
+            s: "",
+            dist: "",
+            lp: "",
+            driver: "",
+            rs: "",
+            oti: "",
+            nti: "",
+            ntt: "",
+            pa: "",
+            ed: "" //estimated duration
         };
         this.user = this.userSrvc.getUser();
         console.log("ShipmentMap is up and running---");
@@ -50,15 +51,14 @@ var ShipmentMap = ShipmentMap_1 = (function () {
     ShipmentMap.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.forEach(function (params) {
-            _this.tankId = params['tank'];
+            _this.tankId = params["tank"];
             console.log("params['tank']----", _this.tankId);
         });
-        this.request.get('/plc/latest/withaddress.json')
-            .subscribe(function (resp) {
+        this.request.get("/plc/latest/withaddress.json").subscribe(function (resp) {
             console.log("latest plc>>>-----", resp);
             if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
                 var plcData = resp.pl.plc;
-                _this.plcAddresses = _.keyBy(resp.pl.address, 'tank');
+                _this.plcAddresses = _.keyBy(resp.pl.address, "tank");
                 _this.connectedPlcs = Object.keys(plcData);
                 // this.initSelect();
                 _this.request.get("/users/offline.json").subscribe(function (res) {
@@ -67,8 +67,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                         _this.drivers = _.filter(res.pl.users, { ap: 6 });
                         _this.driverEscorts = _.filter(res.pl.users, { ap: 8 });
                     }
-                    _this.request.get('/gps/sim/all.json')
-                        .subscribe(function (resp) {
+                    _this.request.get("/gps/sim/all.json").subscribe(function (resp) {
                         if (resp.pl && resp.pl.sim) {
                             Object.keys(resp.pl.sim).map(function (key) {
                                 _this.allSims.push({ sim: key, lp: resp.pl.sim[key] });
@@ -77,6 +76,12 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                         _this.initUi();
                     });
                 });
+            }
+        });
+        this.request.get("/plc/tanks/all.json").subscribe(function (resp) {
+            console.log("availableTanks>>>-----", resp);
+            if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
+                _this.availableTanks = resp.pl.tank;
             }
         });
     };
@@ -94,7 +99,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
     };
     ShipmentMap.prototype.loadCars = function () {
         var _this = this;
-        console.log('load cars----');
+        console.log("load cars----");
         if (ShipmentMap_1.mapLoaded) {
             this.showAllCars();
         }
@@ -107,29 +112,29 @@ var ShipmentMap = ShipmentMap_1 = (function () {
     ShipmentMap.prototype.initUi = function () {
         var _this = this;
         setTimeout(function (_) {
-            jQuery('select').material_select();
-            jQuery('select.return-to-refill').on('change', function (event) {
+            jQuery("select").material_select();
+            jQuery("select.return-to-refill").on("change", function (event) {
                 _this.veReturnToRefill(event, _this);
             });
-            jQuery('select.select-license-plate').on('change', function (event) {
+            jQuery("select.select-license-plate").on("change", function (event) {
                 _this.veSelectedLicensePlate(event, _this);
             });
-            jQuery('select.select-tank-type').on('change', function (event) {
+            jQuery("select.select-tank-type").on("change", function (event) {
                 _this.veSelectedTankType(event, _this);
             });
-            jQuery('select.select-address').on('change', function (event) {
+            jQuery("select.select-address").on("change", function (event) {
                 _this.veSelectedAddress(event, _this);
             });
-            jQuery('select.select-tank').on('change', function (event) {
+            jQuery("select.select-tank").on("change", function (event) {
                 _this.veSelectedTank(event, _this);
             });
-            jQuery('select.select-refill-station').on('change', function (event) {
+            jQuery("select.select-refill-station").on("change", function (event) {
                 _this.veSelectedRefillStation(event, _this);
             });
-            jQuery('select.select-supercargo').on('change', function (event) {
+            jQuery("select.select-supercargo").on("change", function (event) {
                 _this.veSelectedSupercargo(event, _this);
             });
-            jQuery('select.select-driver').on('change', function (event) {
+            jQuery("select.select-driver").on("change", function (event) {
                 _this.veSelectedDriver(event, _this);
             });
         }, 500);
@@ -143,7 +148,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                 compRef.returnToRefill = false;
             }
         }
-        jQuery('select').material_select();
+        jQuery("select").material_select();
     };
     ShipmentMap.prototype.veSelectedLicensePlate = function (event, compRef) {
         console.log("lp", event.target.value);
@@ -186,12 +191,16 @@ var ShipmentMap = ShipmentMap_1 = (function () {
     ShipmentMap.prototype.loadJScript = function () {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = 'http://api.map.baidu.com/api?v=2.0&ak=' + config_1.config.bdmkey + '&callback=mapLoadedCb';
+        script.src =
+            "http://api.map.baidu.com/api?v=2.0&ak=" +
+                config_1.config.bdmkey +
+                "&callback=mapLoadedCb";
         window.mapLoadedCb = this.mapLoadedCb; //set global reference for initMap callback;
         document.body.appendChild(script);
     };
     ShipmentMap.prototype.mapLoadedCb = function () {
         if (!ShipmentMap_1.mapLoaded) {
+            //avoid initializing twice.
             ShipmentMap_1.mapLoaded = true;
             // 百度地图API功能
             ShipmentMap_1.gpsmap = new BMap.Map("allmap");
@@ -226,7 +235,13 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                 title: "车辆信息",
                 enableMessage: true //设置允许信息窗发送短息
             };
-            var infoWindow = new BMap.InfoWindow("车牌号:" + data.lp + ", 速度:" + data.speed + "km/h " + ", 定位时间:" + data.time, opts); // 创建信息窗口对象
+            var infoWindow = new BMap.InfoWindow("车牌号:" +
+                data.lp +
+                ", 速度:" +
+                data.speed +
+                "km/h " +
+                ", 定位时间:" +
+                data.time, opts); // 创建信息窗口对象
             ShipmentMap_1.allMarkers[data._id].addEventListener("click", function () {
                 ShipmentMap_1.gpsmap.openInfoWindow(infoWindow, point); //开启信息窗口
             });
@@ -240,7 +255,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         //
         // var socket = io(url);
         this.rtmgs.connect(3001);
-        this.rtmgs.on('carMove', function (data) {
+        this.rtmgs.on("carMove", function (data) {
             console.log("carMove-----", data);
             // TODO put this back to restore real time
             //  if(data.pl&&data.pl.gps){
@@ -254,7 +269,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         console.log("handle alarm------", param);
         var that = this;
         if (param.alarm) {
-            if (param.alarm.slice(9, 10) === '1') {
+            if (param.alarm.slice(9, 10) === "1") {
                 console.log("speed alert");
                 var alert = {
                     sim: param.sim,
@@ -264,7 +279,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                     speed: param.speed,
                     atype: "speed",
                     an: "超速报警",
-                    addr: '',
+                    addr: "",
                     lp: param.lp
                 };
                 var convertor = new BMap.Convertor();
@@ -278,7 +293,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                     }
                 });
             }
-            if (param.alarm.slice(10, 11) === '1') {
+            if (param.alarm.slice(10, 11) === "1") {
                 console.log("prohibited zone alert");
                 console.log("speed alert");
                 var alert = {
@@ -289,7 +304,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                     speed: param.speed,
                     atype: "prohibitedzone",
                     an: "越界报警",
-                    addr: '',
+                    addr: "",
                     lp: param.lp
                 };
                 var convertor = new BMap.Convertor();
@@ -311,17 +326,27 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         var geoc = new BMap.Geocoder();
         geoc.getLocation(new BMap.Point(param.lng, param.lat), function (rs) {
             var addComp = rs.addressComponents;
-            param.addr = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+            param.addr =
+                addComp.province +
+                    ", " +
+                    addComp.city +
+                    ", " +
+                    addComp.district +
+                    ", " +
+                    addComp.street +
+                    ", " +
+                    addComp.streetNumber;
             // console.log("saving param-----", param);
-            that.request.post('/gps/alert.json', param).subscribe(function (res) {
+            that.request.post("/gps/alert.json", param).subscribe(function (res) {
                 console.log("gps alert created-----", res);
             });
         });
     };
     ShipmentMap.prototype.addCustomMarker = function (cardata) {
-        var iconImage = 'dist/images/truck.new.gif';
-        var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+        var iconImage = "dist/images/truck.new.gif";
+        var testIconImage = "http://developer.baidu.com/map/jsdemo/img/Mario.png";
         var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
+            //小车图片
             // offset: new BMap.Size(0, -5),    //相当于CSS精灵
             imageOffset: new BMap.Size(0, 15) //图片的偏移量。为了是图片底部中心对准坐标点。
         });
@@ -338,25 +363,29 @@ var ShipmentMap = ShipmentMap_1 = (function () {
     };
     ShipmentMap.prototype.updatePosition = function (cardata, dest) {
         var _this = this;
-        console.log('updatePosition---');
+        console.log("updatePosition---");
         if (!this.targetCar) {
             // ShipmentMap.gpsmap.centerAndZoom(initPoint, 16);
             this.targetCar = cardata;
             this.addCustomMarker(cardata);
         }
         else if (cardata.sim == this.targetCar.sim) {
-            console.log('same car on the move-----');
+            console.log("same car on the move-----");
             if (this.isShiping) {
+                //to make sure the completeShipment func is only called once.
                 this.targetMarker.setPosition(new BMap.Point(cardata.lng, cardata.lat));
                 var currentPosition = cardata;
                 var destination = dest;
-                _this.calculateDistance(currentPosition, destination).then(function (data) {
+                _this
+                    .calculateDistance(currentPosition, destination)
+                    .then(function (data) {
                     var patern = /[0,9]{1,3}['米']{1}/;
                     if (patern.test(data)) {
+                        //within metters
                         var distance = parseInt(data, 10); //parseInt asuming there is no decimal part. otherwise parseFloat
                         // console.log('distance>>>>',distance);
                         if (distance <= 900) {
-                            console.log('已配送');
+                            console.log("已配送");
                             _this.targetCar = null;
                             _this.completeShipment();
                         }
@@ -369,7 +398,9 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         var that = this;
         console.log("posting end of shipment----", this.newShipment);
         this.isShiping = false;
-        this.request.put('/gps/shipment/done.json', this.newShipment).subscribe(function (res) {
+        this.request
+            .put("/gps/shipment/done.json", this.newShipment)
+            .subscribe(function (res) {
             console.log("res shipment done-----", res);
         });
     };
@@ -377,7 +408,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         var that = this;
         console.log("confirm-----", ShipmentMap_1.mapLoaded, this.selectedCarId);
         if (ShipmentMap_1.mapLoaded && this.selectedCarId && !this.isShiping) {
-            this.request.get('/gps/cars/all.json').subscribe(function (res) {
+            this.request.get("/gps/cars/all.json").subscribe(function (res) {
                 console.log("got cars----", res);
                 var cars = res.pl.cars;
                 var c = cars[that.selectedCarId];
@@ -390,12 +421,12 @@ var ShipmentMap = ShipmentMap_1 = (function () {
                             that.newShipment.origin = originAddr.address;
                         }
                     });
-                    geocoder.getPoint('闸北区大宁路355号', function (dest) {
+                    geocoder.getPoint("闸北区大宁路355号", function (dest) {
                         var myP1 = new BMap.Point(116.380967, 39.913285); //起点
                         var myP2 = new BMap.Point(116.424374, 39.914668); //终点
                         // that.showShipmentRoute(origin,dest);
                         that.showShipmentRoute(myP1, myP2);
-                    }, '上海市');
+                    }, "上海市");
                 }
                 else {
                     alert("此车辆未发送gps信号, 请启动车后再试!");
@@ -413,31 +444,44 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         var middle = new BMap.Point(midLng.toFixed(3), midLat.toFixed(3));
         console.log("middle point----", middle);
         console.log("car,dest", car, dest);
-        var iconImage = 'dist/images/truck.png';
-        var testIconImage = 'http://developer.baidu.com/map/jsdemo/img/Mario.png';
+        var iconImage = "dist/images/truck.png";
+        var testIconImage = "http://developer.baidu.com/map/jsdemo/img/Mario.png";
         var myIcon = new BMap.Icon(iconImage, new BMap.Size(32, 70), {
+            //小车图片
             // offset: new BMap.Size(0, -5),    //相当于CSS精灵
             imageOffset: new BMap.Size(0, 10) //图片的偏移量。为了是图片底部中心对准坐标点。
         });
-        var route = new BMap.DrivingRoute(ShipmentMap_1.gpsmap, { renderOptions: { map: ShipmentMap_1.gpsmap, autoViewport: true } }); //驾车实例
+        var route = new BMap.DrivingRoute(ShipmentMap_1.gpsmap, {
+            renderOptions: { map: ShipmentMap_1.gpsmap, autoViewport: true }
+        }); //驾车实例
         route.search(myP1, myP2); //显示一条公交线路
         route.setSearchCompleteCallback(function () {
             that.updatePosition(car, dest);
             ShipmentMap_1.gpsmap.centerAndZoom(middle, 12);
-            var distance = route.getResults().getPlan(0).getDistance(true);
-            var duration = route.getResults().getPlan(0).getDuration(true);
+            var distance = route
+                .getResults()
+                .getPlan(0)
+                .getDistance(true);
+            var duration = route
+                .getResults()
+                .getPlan(0)
+                .getDuration(true);
             that.newShipment.dist = distance;
             that.newShipment.ed = duration;
             that.newShipment.pa = that.user.an;
-            that.newShipment.oti = this.route.queryParams.map(function (params) { return params['tank'] || 'None'; });
+            that.newShipment.oti = this.route.queryParams.map(function (params) { return params["tank"] || "None"; });
             console.log("tank id----", that.newShipment.oti);
-            var pts = route.getResults().getPlan(0).getRoute(0).getPath(); //通过驾车实例，获得一系列点的数组
+            var pts = route
+                .getResults()
+                .getPlan(0)
+                .getRoute(0)
+                .getPath(); //通过驾车实例，获得一系列点的数组
             var paths = pts.length;
             var i = 0;
             function resetMkPoint() {
                 if (i < paths) {
                     that.updatePosition(pts[i], dest);
-                    console.log('updating----', paths, pts[i]);
+                    console.log("updating----", paths, pts[i]);
                     i++;
                     setTimeout(function () {
                         resetMkPoint();
@@ -446,7 +490,9 @@ var ShipmentMap = ShipmentMap_1 = (function () {
             }
             resetMkPoint();
             console.log("this.newShipment----", that.newShipment);
-            that.request.post('/gps/shipment.json', that.newShipment).subscribe(function (res) {
+            that.request
+                .post("/gps/shipment.json", that.newShipment)
+                .subscribe(function (res) {
                 console.log("new shipment saved-----", res);
                 that.isShiping = true;
                 that.newShipment = res.pl.shipment; //update shiment with _id; used on the shipment completion
@@ -471,7 +517,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         ShipmentMap_1.gpsmap.clearOverlays();
         var point = new BMap.Point(121.454, 31.153);
         ShipmentMap_1.gpsmap.centerAndZoom(point, 10);
-        this.request.get('/gps/cars/all.json').subscribe(function (res) {
+        this.request.get("/gps/cars/all.json").subscribe(function (res) {
             var cars = res.pl.cars;
             console.log("all cars----", cars);
             _this.allCars = Object.keys(cars).map(function (key) {
@@ -491,6 +537,7 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         // console.log("processed cars->>>>>>---",adjusted)
         if (adjusted.status === 0) {
             if (adjusted.points.length > 4) {
+                //for first ten cars , assuming 14 in total;
                 for (var i = 0; i < adjusted.points.length; i++) {
                     ShipmentMap_1.carsGroups[0][i].lng = adjusted.points[i].lng;
                     ShipmentMap_1.carsGroups[0][i].lat = adjusted.points[i].lat;
@@ -529,7 +576,11 @@ var ShipmentMap = ShipmentMap_1 = (function () {
         var distance = null;
         var deferred = jQuery.Deferred();
         tempDriving.setSearchCompleteCallback(function () {
-            distance = tempDriving.getResults().getPlan(0).getDistance(true);
+            //after route has been set
+            distance = tempDriving
+                .getResults()
+                .getPlan(0)
+                .getDistance(true);
             console.log("new distance-----", distance);
             deferred.resolve(distance);
         });
@@ -552,9 +603,9 @@ ShipmentMap.carsGroups = [];
 ShipmentMap.allMarkers = {};
 ShipmentMap = ShipmentMap_1 = __decorate([
     core_1.Component({
-        selector: 'shipment-map',
-        templateUrl: config_1.config.prefix + '/components/gps/map/shipment-map.component.html',
-        styleUrls: [config_1.config.prefix + '/components/gps/map/resources//css/style.css']
+        selector: "shipment-map",
+        templateUrl: config_1.config.prefix + "/components/gps/map/shipment-map.component.html",
+        styleUrls: [config_1.config.prefix + "/components/gps/map/resources//css/style.css"]
     }),
     __metadata("design:paramtypes", [router_1.ActivatedRoute,
         request_service_1.RequestService,

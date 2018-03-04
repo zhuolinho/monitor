@@ -5,24 +5,21 @@
         <select class="helper-select-font-bigger current-plc">
           <option *ngFor="let a of plcAddresses" [value]="a.tank"> {{a.addr}}</option>
         </select>
-          <label >选择地址</label>
+        <label >选择地址</label>
       </div>
     </div>
   </div>
-
   <div class="row helper-vmargin-15" *ngIf="realTimeData && realTimeData[currentPlcTank]">
       <div class="col m7">
         <div class="row modal-nav monitor-tabs">
           <div class="col s3">
-              <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; showDetailModal('day'); " [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button  helper-font-bigger helper-display-block center-align"> 日均用量 </a>
-          </div>
-
-          <div class="col s3">
-              <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  showDetailModal('month'); " [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align "> 月均用量</a>
+            <a (click)="selectedtab=1; detailmodal.selectedtab = selectedtab; showDetailModal('day'); " [class.monitor-tab-selected]="selectedtab==1" class="waves-effect monitor-tab monitor-tab-selected waves-light btn monitor-gray-button  helper-font-bigger helper-display-block center-align"> 日均用量 </a>
           </div>
           <div class="col s3">
-
-              <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
+            <a (click)="selectedtab=2; detailmodal.selectedtab = selectedtab;  showDetailModal('month'); " [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align "> 月均用量</a>
+          </div>
+          <div class="col s3">
+            <a (click)="selectedtab=3; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==3" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block center-align"> 下载数据 </a>
           </div>
           <!-- <div class="col s3">
               <a (click)="selectedtab=4; detailmodal.selectedtab = selectedtab; showDetailModal();" [class.monitor-tab-selected]="selectedtab==4" class="waves-effect monitor-tab waves-light btn monitor-gray-button helper-font-bigger helper-display-block  center-align"> 在线支付 </a>
@@ -30,10 +27,8 @@
         </div>
       </div>
   </div>
-
   <div class="divider"></div>
-
-  <div class="scrollable-container" [class.isolated-page]="tankId" style="height:65vh; padding-bottom:100px; padding-top:10px;">
+  <div class="scrollable-container" [class.isolated-page]="tankId" style="height:60vh; padding-bottom:150px; padding-top:10px;">
         <div class="helper-margin-bottom-20 valign-wrapper row">
           <div class="col m9">
             <div class=" " *ngIf="realTimeData">

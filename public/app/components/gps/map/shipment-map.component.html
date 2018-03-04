@@ -106,9 +106,10 @@
       <div class=" helper-margin-bottom-20">
         <div class="input-field helper-white-bg col s12 helper-margin-top-10">
             <select class="helper-select-font-bigger select-tank">
-              <option value="C6462" > C6462 </option>
+              <!-- <option value="C6462" > C6462 </option>
               <option  value="J6463"> J6463 </option>
-              <option  value="D6464"> D6464 </option>
+              <option  value="D6464"> D6464 </option> -->
+              <option *ngFor="let t of availableTanks" [value]="t.tank" > {{t.tank}}</option>
             </select>
             <!-- <label>选在时间</label> -->
           </div>

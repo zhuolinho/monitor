@@ -1,11 +1,10 @@
-
-import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
-import { LibService } from '../../../services/lib.service';
-import { config } from '../../../config';
+import { Component, AfterViewInit, OnInit, OnDestroy } from "@angular/core";
+import { LibService } from "../../../services/lib.service";
+import { config } from "../../../config";
 // import {GasDetail} from './details/gas.detail.component';
-import { RTMessagesService } from '../../../services/rt-messages.service';
-import { RequestService } from '../../../services/request.service';
-import { Router, Params, ActivatedRoute } from '@angular/router';
+import { RTMessagesService } from "../../../services/rt-messages.service";
+import { RequestService } from "../../../services/request.service";
+import { Router, Params, ActivatedRoute } from "@angular/router";
 
 declare var jQuery: any;
 declare var _: any;
@@ -14,19 +13,17 @@ declare var d3: any;
 declare var c3: any;
 
 @Component({
-  selector: 'gas',
-  templateUrl: config.prefix + '/components/monitor/gas/gas.component.html',
-  styleUrls: [config.prefix + '/components/monitor/gas/gas.component.css']
+  selector: "gas",
+  templateUrl: config.prefix + "/components/monitor/gas/gas.component.html",
+  styleUrls: [config.prefix + "/components/monitor/gas/gas.component.css"]
   // directives:[GasDetail]
 })
-
 export class Gas implements AfterViewInit, OnInit, OnDestroy {
-
   months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   years: number[] = [];
   startDays: number[] = [];
   endDays: number[] = [];
-  selectedtab: number;  //to switch tabs, the rest is controlled on the page
+  selectedtab: number; //to switch tabs, the rest is controlled on the page
   currentTable: any;
   detailmodal: any = {};
   goodConnection: boolean = false;
@@ -34,9 +31,9 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   dateTimer: any;
   dataTimer: number = 300000;
   lastDataTime: number = 0;
-  currentPlcMetter: string = '1';
+  currentPlcMetter: string = "1";
   chartData: any = [];
-  tankId: '';
+  tankId: "";
   checkInterruptionTimer: any;
   static graphIsRunning: boolean = false;
 
@@ -44,7 +41,7 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   allTankSelected: boolean = false;
   selectedTanks: any[] = [];
   realTimeData: any = {};
-  currentPlcTank: string = 'G001';
+  currentPlcTank: string = "G001";
   connectedPlcs: string[] = [];
   date: any;
   // statSelectedStartYear:number = 2016;
@@ -62,17 +59,18 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   selectedDownloadTab: number = 1;
   newAlert: any = {
     st: [],
-    atime: '',
-    am: '',
-    atype: '',
-    addr: ''
+    atime: "",
+    am: "",
+    atype: "",
+    addr: ""
   };
 
   constructor(
     private request: RequestService,
     private rtmgs: RTMessagesService,
     private route: ActivatedRoute,
-    private lib: LibService) {
+    private lib: LibService
+  ) {
     console.log("gas is up and running--->>>>");
 
     // realTimeData
@@ -82,25 +80,29 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      this.tankId = params['tankId'];
+      this.tankId = params["tankId"];
       // if (this.tankId) {
       //   this.getPlcStats();
       // }
       console.log("params['tank']----", this.tankId);
 
-      this.request.get('/plc/latest/withaddress.json').subscribe(resp => {
+      this.request.get("/plc/latest/withaddress.json").subscribe(resp => {
         console.log("latest plc>>>-----", resp);
         if (resp && resp.pl && resp.pl.plc && resp.pl.address) {
           this.realTimeData = resp.pl.plc;
-          this.plcAddresses = _.orderBy(resp.pl.address, (o) => { //TODO plc must have addr to be available on the drop down
-            if (o.addr) {
-              return parseInt(o.addr.slice(0, 3));
-            }
-            return undefined;
-          }, ['asc']);
+          this.plcAddresses = _.orderBy(
+            resp.pl.address,
+            o => {
+              //TODO plc must have addr to be available on the drop down
+              if (o.addr) {
+                return parseInt(o.addr.slice(0, 3));
+              }
+              return undefined;
+            },
+            ["asc"]
+          );
 
-
-          this.connectedPlcs = _.keyBy(this.realTimeData, 'tank');
+          this.connectedPlcs = _.keyBy(this.realTimeData, "tank");
 
           console.log("this.connectedPlcs---", this.connectedPlcs);
 
@@ -114,7 +116,7 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
         }
       });
 
-      this.request.get('/plc/tanks/all.json').subscribe(resp => {
+      this.request.get("/plc/tanks/all.json").subscribe(resp => {
         console.log("availableTanks>>>-----", resp);
         if (resp && resp.pl && resp.pl.tank && resp.pl.tank) {
           this.availableTanks = resp.pl.tank;
@@ -160,14 +162,18 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   }
 
   createNewAlert(type) {
-    console.log("selectedTanks--", this.selectedTanks.length, this.selectedTanks);
+    console.log(
+      "selectedTanks--",
+      this.selectedTanks.length,
+      this.selectedTanks
+    );
 
     this.newAlert = {
       st: [],
-      atime: '',
-      am: '',
-      atype: '',
-      addr: ''
+      atime: "",
+      am: "",
+      atype: "",
+      addr: ""
     };
 
     if (this.selectedTanks.length) {
@@ -180,13 +186,12 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
       this.newAlert.addr = "C003-闸北区大宁路3325号";
 
       console.log("posting--", this.newAlert);
-      this.request.post('/plc/alert.json', this.newAlert).subscribe(res => {
+      this.request.post("/plc/alert.json", this.newAlert).subscribe(res => {
         console.log("alert created----", res);
-        jQuery('#moveTanksFeedbackModal').openModal();
+        jQuery("#moveTanksFeedbackModal").openModal();
       });
     }
   }
-
 
   veToggleSelectAllTanks() {
     this.selectedTanks = [];
@@ -203,7 +208,6 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
     }
     //  console.log("this.selectedTanks ----",this.selectedTanks.length, this.selectedTanks );
     this.allTankSelected = !this.allTankSelected;
-
   }
 
   veToggleSelectTank(tank) {
@@ -218,12 +222,10 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-
   iniSocket() {
     var that = this;
     this.rtmgs.connect(3003);
-    this.rtmgs.on('realTimePlc', function(data) {
-
+    this.rtmgs.on("realTimePlc", function(data) {
       if (!that.goodConnection) {
         that.goodConnection = true;
       }
@@ -231,26 +233,25 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
       console.log("realTimePlc-----", data);
       if (data && data.pl && data.pl.plc) {
         // that.realTimeData = _.keyBy(data.pl.plc,'tank');
-        that.realTimeData = data.pl.plc
-        this.connectedPlcs = _.keyBy(that.realTimeData, 'tank');
-        jQuery('select:not(simple-select)').material_select();
+        that.realTimeData = data.pl.plc;
+        this.connectedPlcs = _.keyBy(that.realTimeData, "tank");
+        jQuery("select:not(simple-select)").material_select();
       }
     });
 
-    this.rtmgs.on('plcDataInterruption', function(data) {
-      console.log('plcDataInterruption', data);
+    this.rtmgs.on("plcDataInterruption", function(data) {
+      console.log("plcDataInterruption", data);
       that.goodConnection = false;
     });
   }
 
-
   initSelect() {
     var that = this;
     setTimeout(_ => {
-      jQuery('select:not(simple-select)').material_select();
+      jQuery("select:not(simple-select)").material_select();
 
-      jQuery('select.current-plc').change(function(e) {
-        console.log('changed');
+      jQuery("select.current-plc").change(function(e) {
+        console.log("changed");
         that.setCurrentPlc(e);
       });
     });
@@ -259,7 +260,7 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   setCurrentPlc(event) {
     this.currentPlcTank = event.target.value;
 
-    console.log('this.currentPlcTank---', this.currentPlcTank);
+    console.log("this.currentPlcTank---", this.currentPlcTank);
   }
 
   setYears(startYear) {
@@ -285,10 +286,9 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
   showDetailModal(param) {
     var that = this;
 
-    if (param === 'day') {
+    if (param === "day") {
       this.isShowByDay = true;
-
-    } else if (param === 'month') {
+    } else if (param === "month") {
       this.isShowByDay = false;
     }
     that.showModal = false;
@@ -300,7 +300,6 @@ export class Gas implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 }
-
 
 // availableTanks: any[] = [
 //   { id: '12345', selected: false },

@@ -3,19 +3,18 @@ module.exports = {
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
-  apps : [
-
+  apps: [
     // First application
     {
-      name      : 'monitor',
-      script    : 'bin/server',
+      name: "monitor",
+      script: "bin/server",
       // cron_restart: '0 3 * * 1 *', // every monday 3am
-      cron_restart: '0 3 * * * *', // every day 3am
+      cron_restart: "0 3 * * * *", // every day 3am
       env: {
-        COMMON_VARIABLE: 'true'
+        COMMON_VARIABLE: "true"
       },
-      env_production : {
-        NODE_ENV: 'production'
+      env_production: {
+        NODE_ENV: "production"
       }
     }
     // ,
