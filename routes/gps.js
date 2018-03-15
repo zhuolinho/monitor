@@ -226,7 +226,13 @@ var _tcpCLient = function(handler) {
   });
 
   client.once("close", function() {
-    // console.log('Connection closed');
+    console.log("Connection closed||||||");
+    setTimeout(_tcpCLient(handler), 4000);
+  });
+
+  client.once("end", function() {
+    console.log("Connection ended|||||");
+    setTimeout(_tcpCLient(handler), 4000);
   });
 };
 
