@@ -1,10 +1,15 @@
-
-import { Component, AfterViewInit, OnDestroy, OnInit, Input } from '@angular/core';
-import { LibService } from '../../../services/lib.service';
-import { config } from '../../../config';
+import {
+  Component,
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
+  Input
+} from "@angular/core";
+import { LibService } from "../../../services/lib.service";
+import { config } from "../../../config";
 // import {GasDetail} from './details/gas.detail.component';
-import { RTMessagesService } from '../../../services/rt-messages.service';
-import { RequestService } from '../../../services/request.service';
+import { RTMessagesService } from "../../../services/rt-messages.service";
+import { RequestService } from "../../../services/request.service";
 
 declare var jQuery: any;
 declare var _: any;
@@ -13,20 +18,19 @@ declare var d3: any;
 declare var c3: any;
 
 @Component({
-  selector: 'gas-details',
-  templateUrl: config.prefix + '/components/monitor/gas/gas-details.component.html'
+  selector: "gas-details",
+  templateUrl:
+    config.prefix + "/components/monitor/gas/gas-details.component.html"
   // directives:[GasDetail]
 })
-
 export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
-
   @Input() currentPlcTank: string;
   @Input() isShowByDay: boolean = true;
   months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   years: number[] = [];
   startDays: number[] = [];
   endDays: number[] = [];
-  selectedtab: number;  //to switch tabs, the rest is controlled on the page
+  selectedtab: number; //to switch tabs, the rest is controlled on the page
   currentTable: any;
   detailmodal: any = {};
   goodConnection: boolean = false;
@@ -34,7 +38,7 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
   dateTimer: any;
   dataTimer: number = 300000;
   lastDataTime: number = 0;
-  currentPlcMetter: string = '1';
+  currentPlcMetter: string = "1";
   chartData: any = [];
   checkInterruptionTimer: any;
   static graphIsRunning: boolean = false;
@@ -52,7 +56,8 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
   constructor(
     private request: RequestService,
     private rtmgs: RTMessagesService,
-    private lib: LibService) {
+    private lib: LibService
+  ) {
     console.log("gas is up and running--->>>>");
 
     // realTimeData
@@ -115,9 +120,7 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
     }, 1000);
   }
 
-
   setYears(startYear) {
-
     var sY = startYear || 2009;
     var y = 2016;
     while (y >= sY) {
@@ -152,70 +155,102 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
   setStatsInitValues() {
     var d = new Date();
     this.statsEndDate = d.toISOString().slice(0, 10);
-    d.setMonth(d.getMonth() - 1);//last month date;
+    d.setMonth(d.getMonth() - 1); //last month date;
     this.statsStartDate = d.toISOString().slice(0, 10);
-    console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
+    console.log(
+      "set stats date value-----",
+      this.statsStartDate,
+      this.statsEndDate
+    );
   }
 
   getPlcStats() {
     this.statsData = [];
 
-    var mode = 'month';
+    var mode = "month";
     if (this.isShowByDay) {
-      mode = 'day';
+      mode = "day";
     }
 
     this.gotTableData = false;
-    console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-    this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(resp => {
-      console.log("plc stats-----", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.statsData = resp.pl.plc;
-      }
+    console.log(
+      "get plc stats----",
+      this.statsStartDate,
+      this.statsEndDate,
+      mode
+    );
+    this.request
+      .get(
+        "/plc/stats/" +
+          this.statsStartDate +
+          "/" +
+          this.statsEndDate +
+          "/" +
+          this.currentPlcTank +
+          "/" +
+          mode +
+          ".json"
+      )
+      .subscribe(resp => {
+        console.log("plc stats-----", resp);
+        if (resp && resp.pl && resp.pl.plc) {
+          this.statsData = resp.pl.plc;
+        }
 
-      this.gotTableData = true;
-    });
+        this.gotTableData = true;
+      });
   }
 
   computeStats() {
-    console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
+    console.log(
+      "this.statsStartDate,this.statsEndDate------",
+      this.statsStartDate,
+      this.statsEndDate
+    );
     this.getPlcStats();
   }
 
-
   downloadData() {
-    var which = '';
+    var which = "";
     var mode = null;
 
     if (this.selectedDownloadTab === 1) {
-      which = 'instantaneous';
-    }
-    else if (this.selectedDownloadTab === 2) {
-      which = 'dayly-usage';
-      mode = 'day';
-    }
-    else if (this.selectedDownloadTab === 3) {
-      which = 'monthly-usage';
-      mode = 'month';
+      which = "instantaneous";
+    } else if (this.selectedDownloadTab === 2) {
+      which = "dayly-usage";
+      mode = "day";
+    } else if (this.selectedDownloadTab === 3) {
+      which = "monthly-usage";
+      mode = "month";
     }
 
-    this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(res => {
-      console.log("res-----", res);
-      window.location.href = res.pl.file;
-    });
+    this.request
+      .post("/plc/stats/download.json", {
+        start: this.statsStartDate,
+        end: this.statsEndDate,
+        which: which,
+        mode: mode,
+        tank: this.currentPlcTank,
+        meter: this.currentPlcMetter
+      })
+      .subscribe(res => {
+        console.log("res-----", res);
+        window.location.href = res.pl.file;
+      });
   }
-
 
   initChart() {
     var that = this;
 
-    this.request.get('/plc/forlasthours/' + this.currentPlcTank + '.json').subscribe(resp => {
-      console.log("plc stats chart data-->>>:---", resp);
-      if (resp && resp.pl && resp.pl.plc) {
-        this.chartData = resp.pl.plc;
-        this.generateChart();
-      }
-    });
+    this.request
+      .get("/plc/forlasthours/" + this.currentPlcTank + ".json")
+      .subscribe(resp => {
+        console.log("plc stats chart data-->>>:---", resp);
+        if (resp && resp.pl && resp.pl.plc) {
+          this.chartData = resp.pl.plc;
+          this.generateChart();
+        }
+      });
   }
 
   plcMeterChanged(event) {
@@ -226,7 +261,7 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
   generateChart() {
     var that = this;
     var Y;
-    if (this.currentPlcMetter == '1') {
+    if (this.currentPlcMetter == "1") {
       Y = that.chartData.values || [];
     } else {
       Y = that.chartData.values2 || [];
@@ -234,22 +269,22 @@ export class GasDetails implements AfterViewInit, OnDestroy, OnInit {
 
     Y.unshift("瞬时流量");
     var X = that.chartData.dates || [];
-    X.unshift('x');
+    X.unshift("x");
 
     var statsChart = c3.generate({
-      bindto: '#statsChart',
+      bindto: "#statsChart",
       data: {
-        x: 'x',
-        xFormat: '%Y-%m-%d %H:%M:%S', // how the date is parsed
+        x: "x",
+        xFormat: "%Y-%m-%d %H:%M:%S", // how the date is parsed
         columns: [X, Y]
       },
       axis: {
         x: {
-          type: 'timeseries',
+          type: "timeseries",
           tick: {
             count: 24,
             //  format: function (x) { return x.getFullYear(); }
-            format: '%H:%M' //how the date is displayed
+            format: "%H:%M" //how the date is displayed
           }
         }
       }

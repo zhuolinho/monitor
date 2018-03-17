@@ -75,14 +75,6 @@
               <option value="2">表2</option>
             </select>
           </div>
-
-
-<!--
-          <div class="col s3 m3">
-            <a class="btn right monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">
-              下载数据
-            </a>
-          </div> -->
         </div>
 
 
@@ -214,6 +206,14 @@
             <div class="helper-inline-block helper-margin-left-0">
                 <input type="date" [(ngModel)]="statsEndDate"/>
             </div>
+
+            <div class="helper-inline-block helper-margin-left-5">
+              <select class="select-plc-meter simple-select" name="plc-meter" [(ngModel)]="currentPlcMetter" (change)="plcMeterChanged($event)">
+                <option value="1">表1</option>
+                <option value="2">表2</option>
+              </select>
+            </div>
+
 
             <div class="helper-inline-block helper-margin-left-5">
               <a class="btn  monitor-gray-button  waves-effect waves-light helper-margin-right-5" (click)="downloadData();">

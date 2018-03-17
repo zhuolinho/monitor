@@ -1239,17 +1239,17 @@ plc.downloadDataProcessedAlerts = function(m) {
 };
 
 plc.downloadStats = function(m) {
-  //console.log(" downloadStats----");
-
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.data) {
-    lib.procesDownloadStats(m.pl.data, m.pl.tank).then(function(res) {
-      //console.log("file res----", res);
-      r.pl = { file: res.path };
-      deferred.resolve(r);
-    });
+    lib
+      .procesDownloadStats(m.pl.data, m.pl.tank, m.pl.meter)
+      .then(function(res) {
+        //console.log("file res----", res);
+        r.pl = { file: res.path };
+        deferred.resolve(r);
+      });
   } else {
     r.er = "no data provided";
     r.status = false;
@@ -1260,17 +1260,17 @@ plc.downloadStats = function(m) {
 };
 
 plc.downloadInstantPlcData = function(m) {
-  //console.log(" downloadStats----", m.pl.tank);
-
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.data) {
-    lib.procesDownloadInstantPlc(m.pl.data, m.pl.tank).then(function(res) {
-      //console.log("file res----", res);
-      r.pl = { file: res.path };
-      deferred.resolve(r);
-    });
+    lib
+      .procesDownloadInstantPlc(m.pl.data, m.pl.tank, m.pl.meter)
+      .then(function(res) {
+        //console.log("file res----", res);
+        r.pl = { file: res.path };
+        deferred.resolve(r);
+      });
   } else {
     r.er = "no data provided";
     r.status = false;

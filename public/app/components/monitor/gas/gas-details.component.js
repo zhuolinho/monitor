@@ -29,7 +29,7 @@ var GasDetails = GasDetails_1 = (function () {
         this.goodConnection = false;
         this.dataTimer = 300000;
         this.lastDataTime = 0;
-        this.currentPlcMetter = '1';
+        this.currentPlcMetter = "1";
         this.chartData = [];
         this.gotTableData = false;
         this.realTimeData = {};
@@ -120,18 +120,28 @@ var GasDetails = GasDetails_1 = (function () {
         this.statsEndDate = d.toISOString().slice(0, 10);
         d.setMonth(d.getMonth() - 1); //last month date;
         this.statsStartDate = d.toISOString().slice(0, 10);
-        console.log('set stats date value-----', this.statsStartDate, this.statsEndDate);
+        console.log("set stats date value-----", this.statsStartDate, this.statsEndDate);
     };
     GasDetails.prototype.getPlcStats = function () {
         var _this = this;
         this.statsData = [];
-        var mode = 'month';
+        var mode = "month";
         if (this.isShowByDay) {
-            mode = 'day';
+            mode = "day";
         }
         this.gotTableData = false;
-        console.log('get plc stats----', this.statsStartDate, this.statsEndDate, mode);
-        this.request.get('/plc/stats/' + this.statsStartDate + '/' + this.statsEndDate + '/' + this.currentPlcTank + '/' + mode + '.json').subscribe(function (resp) {
+        console.log("get plc stats----", this.statsStartDate, this.statsEndDate, mode);
+        this.request
+            .get("/plc/stats/" +
+            this.statsStartDate +
+            "/" +
+            this.statsEndDate +
+            "/" +
+            this.currentPlcTank +
+            "/" +
+            mode +
+            ".json")
+            .subscribe(function (resp) {
             console.log("plc stats-----", resp);
             if (resp && resp.pl && resp.pl.plc) {
                 _this.statsData = resp.pl.plc;
@@ -140,24 +150,33 @@ var GasDetails = GasDetails_1 = (function () {
         });
     };
     GasDetails.prototype.computeStats = function () {
-        console.log('this.statsStartDate,this.statsEndDate------', this.statsStartDate, this.statsEndDate);
+        console.log("this.statsStartDate,this.statsEndDate------", this.statsStartDate, this.statsEndDate);
         this.getPlcStats();
     };
     GasDetails.prototype.downloadData = function () {
-        var which = '';
+        var which = "";
         var mode = null;
         if (this.selectedDownloadTab === 1) {
-            which = 'instantaneous';
+            which = "instantaneous";
         }
         else if (this.selectedDownloadTab === 2) {
-            which = 'dayly-usage';
-            mode = 'day';
+            which = "dayly-usage";
+            mode = "day";
         }
         else if (this.selectedDownloadTab === 3) {
-            which = 'monthly-usage';
-            mode = 'month';
+            which = "monthly-usage";
+            mode = "month";
         }
-        this.request.post('/plc/stats/download.json', { start: this.statsStartDate, end: this.statsEndDate, which: which, mode: mode, tank: this.currentPlcTank }).subscribe(function (res) {
+        this.request
+            .post("/plc/stats/download.json", {
+            start: this.statsStartDate,
+            end: this.statsEndDate,
+            which: which,
+            mode: mode,
+            tank: this.currentPlcTank,
+            meter: this.currentPlcMetter
+        })
+            .subscribe(function (res) {
             console.log("res-----", res);
             window.location.href = res.pl.file;
         });
@@ -165,7 +184,9 @@ var GasDetails = GasDetails_1 = (function () {
     GasDetails.prototype.initChart = function () {
         var _this = this;
         var that = this;
-        this.request.get('/plc/forlasthours/' + this.currentPlcTank + '.json').subscribe(function (resp) {
+        this.request
+            .get("/plc/forlasthours/" + this.currentPlcTank + ".json")
+            .subscribe(function (resp) {
             console.log("plc stats chart data-->>>:---", resp);
             if (resp && resp.pl && resp.pl.plc) {
                 _this.chartData = resp.pl.plc;
@@ -180,7 +201,7 @@ var GasDetails = GasDetails_1 = (function () {
     GasDetails.prototype.generateChart = function () {
         var that = this;
         var Y;
-        if (this.currentPlcMetter == '1') {
+        if (this.currentPlcMetter == "1") {
             Y = that.chartData.values || [];
         }
         else {
@@ -188,21 +209,21 @@ var GasDetails = GasDetails_1 = (function () {
         }
         Y.unshift("瞬时流量");
         var X = that.chartData.dates || [];
-        X.unshift('x');
+        X.unshift("x");
         var statsChart = c3.generate({
-            bindto: '#statsChart',
+            bindto: "#statsChart",
             data: {
-                x: 'x',
-                xFormat: '%Y-%m-%d %H:%M:%S',
+                x: "x",
+                xFormat: "%Y-%m-%d %H:%M:%S",
                 columns: [X, Y]
             },
             axis: {
                 x: {
-                    type: 'timeseries',
+                    type: "timeseries",
                     tick: {
                         count: 24,
                         //  format: function (x) { return x.getFullYear(); }
-                        format: '%H:%M' //how the date is displayed
+                        format: "%H:%M" //how the date is displayed
                     }
                 }
             }
@@ -221,8 +242,8 @@ __decorate([
 ], GasDetails.prototype, "isShowByDay", void 0);
 GasDetails = GasDetails_1 = __decorate([
     core_1.Component({
-        selector: 'gas-details',
-        templateUrl: config_1.config.prefix + '/components/monitor/gas/gas-details.component.html'
+        selector: "gas-details",
+        templateUrl: config_1.config.prefix + "/components/monitor/gas/gas-details.component.html"
         // directives:[GasDetail]
     }),
     __metadata("design:paramtypes", [request_service_1.RequestService,

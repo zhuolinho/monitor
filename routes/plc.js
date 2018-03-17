@@ -618,7 +618,7 @@ module.exports = function(handler) {
       ns: "plc",
       vs: "1.0",
       op: "downloadStats",
-      pl: { data: null, tank: tank }
+      pl: { data: null, tank: tank, meter: req.body.meter }
     };
 
     if (which === "instantaneous") {
