@@ -1,6 +1,6 @@
 <div class="helper-relative">
     <div class="helper-padding-10  herlper-gray-bg-monitor module-sub-top-menu hide-on-small-only" style="position:absolute;top:0; left:0; width:100%;">
-        <a (click)="veSortBy('余量警报');  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span  *ngIf="alertGroups && alertGroups['余量警报'] && alertGroups['余量警报'].length " class="new-alert-badge">{{alertGroups['余量警报'].length}}</span></a>
+        <a (click)="veSortBy('余量报警');  selectedtab=1;" [class.monitor-tab-selected]="selectedtab==1" class="waves-effect waves-light monitor-gray-button helper-font-bigger" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 余量报警  <span  *ngIf="alertGroups && alertGroups['余量报警'] && alertGroups['余量报警'].length " class="new-alert-badge">{{alertGroups['余量报警'].length}}</span></a>
         <a (click)="veSortBy('压力报警');  selectedtab=2;" [class.monitor-tab-selected]="selectedtab==2"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 压力报警  <span  *ngIf="alertGroups && alertGroups['压力报警'] && alertGroups['压力报警'].length" class="new-alert-badge">{{alertGroups['压力报警'].length}}</span></a>
         <a (click)="veSortBy('信号中断');  selectedtab=3;" [class.monitor-tab-selected]="selectedtab==3"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 信号中断  <span  *ngIf="alertGroups && alertGroups['信号中断'] && alertGroups['信号中断'].length" class="new-alert-badge">{{alertGroups['信号中断'].length}}</span></a>
         <a (click)="veSortBy('泄漏报警');  selectedtab=4;" [class.monitor-tab-selected]="selectedtab==4"  class="waves-effect waves-light monitor-gray-button helper-font-bigger helper-margin-left-15" style=" width:130px; height:40px; line-height:40px; margin:auto; text-align:center;"> 泄漏报警 <span  *ngIf="alertGroups && alertGroups['泄漏报警'] && alertGroups['泄漏报警'].length" class="new-alert-badge">{{alertGroups['泄漏报警'].length}}</span></a>
@@ -72,7 +72,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="table-row" *ngIf="alert.atype == '余量警报'">
+                  <div class="table-row" *ngIf="alert.atype == '余量报警'">
                       <div class="table-cell"> 余量/压力 </div>
                       <div class="table-cell">
                         {{alert.am}}
@@ -114,12 +114,12 @@
                     </div>
                   </div>
 
-                  <div class="table-row" *ngIf="alert.atype == '余量警报'">
+                  <div class="table-row" *ngIf="alert.atype == '余量报警'">
                     <div class="table-cell"> 剩余时间 </div>
                     <div class="table-cell">{{alert.rt}} </div>
                   </div>
 
-                  <div class="table-row" *ngIf="alert.atype == '余量警报'">
+                  <div class="table-row" *ngIf="alert.atype == '余量报警'">
                     <div class="table-cell"> 剩余量 </div>
                     <div class="table-cell">{{alert.ra}} </div>
                   </div>

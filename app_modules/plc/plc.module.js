@@ -18,39 +18,39 @@ var PlcFormula = require("../../models/plc-formula");
 var plcConfig = require("../../configs/plc");
 var lib = require("../../lib/lib");
 
-var alertsList = [
-  {
-    addr: "C002-闸北区大宁路335号XX站",
-    id: "6112",
-    atype: "余量警报",
-    remainingTime: "2小时02分",
-    upTime: "15.5.3-13:02/----",
-    processed: false,
-    atime: "5.5.3-13:02",
-    am: "6%/12kg/hps",
-    processedAgent: "234"
-  },
-  {
-    addr: "C009-闸北区大宁路335号XX站",
-    id: "9832",
-    atype: "泄漏警报",
-    remainingTime: "",
-    upTime: "15.5.3-13:02/----",
-    processed: false,
-    atime: "5.5.3-13:02",
-    am: "泄漏报警"
-  },
-  {
-    addr: "C010-闸北区大宁路335号XX站",
-    id: "6842",
-    atype: "压力报警",
-    remainingTime: "",
-    upTime: "15.5.3-13:02/----",
-    processed: false,
-    atime: "5.5.3-13:02",
-    am: "压力报警"
-  }
-];
+// var alertsList = [
+//   {
+//     addr: "C002-闸北区大宁路335号XX站",
+//     id: "6112",
+//     atype: "余量报警",
+//     remainingTime: "2小时02分",
+//     upTime: "15.5.3-13:02/----",
+//     processed: false,
+//     atime: "5.5.3-13:02",
+//     am: "6%/12kg/hps",
+//     processedAgent: "234"
+//   },
+//   {
+//     addr: "C009-闸北区大宁路335号XX站",
+//     id: "9832",
+//     atype: "泄漏报警",
+//     remainingTime: "",
+//     upTime: "15.5.3-13:02/----",
+//     processed: false,
+//     atime: "5.5.3-13:02",
+//     am: "泄漏警报"
+//   },
+//   {
+//     addr: "C010-闸北区大宁路335号XX站",
+//     id: "6842",
+//     atype: "压力报警",
+//     remainingTime: "",
+//     upTime: "15.5.3-13:02/----",
+//     processed: false,
+//     atime: "5.5.3-13:02",
+//     am: "压力报警"
+//   }
+// ];
 
 plc.init = function(m) {
   var r = { pl: { status: true }, er: "" };
@@ -171,6 +171,7 @@ plc.handleIncommingData = function(m) {
                   if (chanelCheck.createAlert) {
                     var alert = {
                       am: "信号中断",
+                      smsam: "信号中断",
                       atype: "信号中断",
                       tank: dataToSave.tank
                     };
@@ -1003,6 +1004,7 @@ plc.addNewAlert = function(m) {
         addr: m.pl.alert.addr,
         tank: m.pl.alert.tank, //todo dynamically set tank id
         am: m.pl.alert.am,
+        smsam: m.pl.alert.smsam,
         rt: m.pl.alert.rt,
         ra: m.pl.alert.ra,
         st: m.pl.alert.st,
@@ -1132,7 +1134,7 @@ plc.getShipmentList = function(m) {
   if (m && m.pl && m.pl.user && m.pl.user.oID) {
     PlcAlert.find({ oID: m.pl.user.oID })
       .$where(
-        '(this.status == 1) && ((this.atype == "余量警报")||(this.atype == "拉回警报")||(this.atype == "进场警报"))'
+        '(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))'
       )
       .sort({ atime: -1 })
       .exec(function(err, resp) {
@@ -1750,7 +1752,8 @@ var _extractCngData = function(
   //   if (!lastestRemainingAmountAlerts[oID][tank]){  //to avoid recreating same alert multiple times
   //     //create alert
   //     var alert = {
-  //           am:'余量警报',
+  //           am:'余量报警',
+  //           smsam:'余量警报',
   //           atype:'余量警报',
   //           tank:tank,
   //           rt:rft,
@@ -1866,8 +1869,9 @@ var _checkCngAlert = function(
       //to avoid recreating same alert multiple times
       //create alert
       var alert = {
-        am: "余量警报",
-        atype: "余量警报",
+        am: "余量报警",
+        atype: "余量报警",
+        smsam: "余量警报",
         tank: tank,
         rt: lib.H2Hms(rft),
         ra: rfq + "%"
@@ -1929,8 +1933,9 @@ var _extractLngData = function(
   if (remainingAmount < formula.pt) {
     //create alert
     var alert = {
-      am: "余量警报",
-      atype: "余量警报",
+      am: "余量报警",
+      atype: "余量报警",
+      smsam: "余量警报",
       tank: tank,
       ra: remainingAmount + "%"
     };

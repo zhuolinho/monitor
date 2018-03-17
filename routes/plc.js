@@ -771,6 +771,7 @@ function saveData(handler, data) {
       for (var i = 0; i < r.pl.alerts.length; i++) {
         var alert = {
           am: "信号中断",
+          smsam: "信号中断",
           atype: "信号中断",
           tank: r.pl.alerts[i].tank
         };
@@ -833,6 +834,7 @@ function _checkInterruption(handler) {
         goodConnection = false;
         var alert = {
           am: "信号中断",
+          smsam: "信号中断",
           atype: "信号中断",
           tank: "VPN"
         };
@@ -1019,6 +1021,7 @@ function _checkInterruption(handler) {
         goodConnection = false;
         var alert = {
           am: "信号中断",
+          smsam: "信号中断",
           atype: "信号中断",
           tank: "VPN"
         };
