@@ -734,13 +734,17 @@ var _tcpSerever = function(handler) {
       // Remove the client from the list when it leaves
       socket.on("end", function() {
         console.log("CONNECTION ENDED|||||||PLC");
-        setTimeout(_tcpSerever(handler), 4000);
+        setTimeout(function() {
+          _tcpSerever(handler);
+        }, 4000);
         // console.log('plc server: client left----', socket.name );
       });
 
       socket.on("close", function() {
         console.log("CONNECTION CLOSED|||||||PLC");
-        setTimeout(_tcpSerever(handler), 4000);
+        setTimeout(function() {
+          _tcpSerever(handler);
+        }, 4000);
         // console.log('plc server: client left----', socket.name );
       });
     })

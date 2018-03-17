@@ -80,7 +80,7 @@ plc.init = function(m) {
 };
 
 plc.handleIncommingData = function(m) {
-  console.log("plc: handleIncommingData");
+  //console.log("plc: handleIncommingData");
   var r = { pl: { alerts: null }, status: true, er: "" };
   var latestIncommingData = null; //define these variable so we know what is in the redis server
   var latestInteruptedChanels = null;
@@ -103,7 +103,7 @@ plc.handleIncommingData = function(m) {
       pipeline.get("lastestInterupts");
       pipeline.get("lastestRemainingAmountAlerts");
       pipeline.exec(function(err, results) {
-        // console.log("redis client data ------", JSON.parse(results[0][1]));
+        // //console.log("redis client data ------", JSON.parse(results[0][1]));
 
         var temp1 = {};
         temp1[m.pl.org.oID] = {};
@@ -136,7 +136,7 @@ plc.handleIncommingData = function(m) {
               ).then(function(resp) {
                 var dataToSave = resp.data;
 
-                // console.log("--resp-->>>---",resp);
+                // //console.log("--resp-->>>---",resp);
                 if (
                   !(
                     dataToSave.dct == "0-0-0 0:0:0" ||
@@ -182,14 +182,14 @@ plc.handleIncommingData = function(m) {
                   }
                 }
 
-                // console.log("loop----",i);
+                // //console.log("loop----",i);
               })
             );
           })(i);
         }
 
         q.all(extractDataPchain).then(function() {
-          // console.log("mass extraced data done------",extractResponse);
+          // //console.log("mass extraced data done------",extractResponse);
 
           var result = q({ length: pchain.length });
           pchain.forEach(function(f) {
@@ -209,7 +209,7 @@ plc.handleIncommingData = function(m) {
 };
 
 var _saveIncommingData = function(m) {
-  // console.log("plc saveIncommingData");
+  // //console.log("plc saveIncommingData");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   if (m) {
@@ -231,7 +231,7 @@ var _saveIncommingData = function(m) {
 };
 
 plc.getData = function(m) {
-  console.log("plc module: getData FUNCTION");
+  //console.log("plc module: getData FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -257,7 +257,7 @@ plc.getData = function(m) {
 };
 
 plc.getLatestData = function(m) {
-  console.log("plc module: getLatestData FUNCTION");
+  //console.log("plc module: getLatestData FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var length = m.pl.length || 1;
@@ -291,7 +291,7 @@ plc.getLatestData = function(m) {
 };
 
 plc.getAlertForTimeInterval = function(m) {
-  console.log("plc mod: getLatestDataForTimeInterval ");
+  //console.log("plc mod: getLatestDataForTimeInterval ");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var instantaneousValues1 = [];
@@ -351,7 +351,7 @@ plc.getAlertForTimeInterval = function(m) {
 };
 
 plc.getPlcStats = function(m) {
-  console.log("plc module: getPlcStats FUNCTION");
+  //console.log("plc module: getPlcStats FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var computedValues = [];
@@ -393,7 +393,7 @@ plc.getPlcStats = function(m) {
           ])
           .sort({ date: 1 })
           .exec(function(err, plc) {
-            console.log("got group plc>>>>>>>---", plc);
+            // //console.log("got group plc>>>>>>>---", plc);
             if (err) {
               r.er = err;
               r.status = false;
@@ -410,7 +410,7 @@ plc.getPlcStats = function(m) {
                   .sort({ cd: -1 })
                   .limit(1)
                   .exec(function(err2, plc2) {
-                    console.log("got previous plc------", plc2);
+                    // //console.log("got previous plc------", plc2);
                     if (err2) {
                       r.er = err2;
                       r.status = false;
@@ -478,7 +478,7 @@ plc.getPlcStats = function(m) {
           ])
           .sort({ date: 1 })
           .exec(function(err, plc) {
-            // console.log("got group plc",plc);
+            // //console.log("got group plc",plc);
             if (err) {
               r.er = err;
               r.status = false;
@@ -495,7 +495,7 @@ plc.getPlcStats = function(m) {
                   .sort({ cd: -1 })
                   .limit(1)
                   .exec(function(err2, plc2) {
-                    // console.log("got previous plc",plc2);
+                    // //console.log("got previous plc",plc2);
                     if (err2) {
                       r.er = err2;
                       r.status = false;
@@ -554,7 +554,7 @@ plc.getPlcStats = function(m) {
 };
 
 plc.getAllPlcStats = function(m) {
-  console.log("plc module: getPlcAllStats FUNCTION");
+  //console.log("plc module: getPlcAllStats FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var computedValues = [];
@@ -687,7 +687,7 @@ plc.getAllPlcStats = function(m) {
 plc.getInstantaniousPlcData = function(m) {
   // for download
 
-  console.log("plc module: getInstantaniousPlcData FUNCTION", m.pl);
+  // //console.log("plc module: getInstantaniousPlcData FUNCTION", m.pl);
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -704,10 +704,10 @@ plc.getInstantaniousPlcData = function(m) {
         })
         .sort({ date: 1 })
         .exec(function(err, plc) {
-          console.log(
-            "getting instantaneous plc for downlaod-------",
-            m.pl.tank
-          );
+          // //console.log(
+          //   "getting instantaneous plc for downlaod-------",
+          //   m.pl.tank
+          // );
 
           if (err) {
             r.er = err;
@@ -734,7 +734,7 @@ plc.getInstantaniousPlcData = function(m) {
 };
 
 plc.getAddress = function(m) {
-  console.log("plc module: getData FUNCTION");
+  // //console.log("plc module: getData FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -762,7 +762,7 @@ plc.getAddress = function(m) {
 };
 
 plc.deleteAddress = function(m) {
-  console.log("plc module: deleteAddress FUNCTION");
+  // //console.log("plc module: deleteAddress FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -788,7 +788,7 @@ plc.deleteAddress = function(m) {
 };
 
 plc.getFormula = function(m) {
-  console.log("plc module: getFormula FUNCTION");
+  // //console.log("plc module: getFormula FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -816,7 +816,7 @@ plc.getFormula = function(m) {
 };
 
 plc.addNewAddress = function(m) {
-  console.log("add new address----");
+  ////console.log("add new address----");
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -859,7 +859,7 @@ plc.addNewAddress = function(m) {
 };
 
 plc.updateAddress = function(m) {
-  console.log(" update address----");
+  ////console.log(" update address----");
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -895,7 +895,7 @@ plc.updateAddress = function(m) {
 };
 
 var _addNewFormula = function(user, tank) {
-  console.log("add new formula----");
+  ////console.log("add new formula----");
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -908,7 +908,7 @@ var _addNewFormula = function(user, tank) {
       tankType: plcConfig.plcTypeByPrefix[tank[0]]
     });
 
-    console.log("newFormula------", newFormula);
+    ////console.log("newFormula------", newFormula);
 
     newFormula.setOwner(user, function(err, doc) {
       if (!err) {
@@ -936,7 +936,7 @@ var _addNewFormula = function(user, tank) {
 };
 
 plc.updateFormula = function(m) {
-  console.log(" update formula----");
+  ////console.log(" update formula----");
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -960,7 +960,7 @@ plc.updateFormula = function(m) {
               var temp = {};
               temp[m.pl.user.oID] = {};
               var latestFormula = JSON.parse(result) || temp;
-              //  console.log("latestFormula[m.pl.formula.tank]----",latestFormula[m.pl.user.oID][m.pl.formula.tank]);
+              //  //console.log("latestFormula[m.pl.formula.tank]----",latestFormula[m.pl.user.oID][m.pl.formula.tank]);
               latestFormula[m.pl.user.oID][m.pl.formula.tank] = r.pl.formula;
               m.redisClient.set(
                 "lastestFormula",
@@ -986,7 +986,7 @@ plc.updateFormula = function(m) {
 };
 
 plc.addNewAlert = function(m) {
-  // console.log("add new alert----",m.pl.alert);
+  // //console.log("add new alert----",m.pl.alert);
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -1013,7 +1013,7 @@ plc.addNewAlert = function(m) {
 
       newAlert.setOwner(m.pl.user, function(setErr, setDoc) {
         setDoc.save(function(error, alert) {
-          // console.log("new alert saved----",alert);
+          // //console.log("new alert saved----",alert);
           if (!error) {
             r.pl.alert = alert;
             deferred.resolve(r);
@@ -1038,7 +1038,7 @@ plc.addNewAlert = function(m) {
 };
 
 plc._sendAlertNotification = function(m) {
-  console.log("plc module: send alert notification");
+  //console.log("plc module: send alert notification");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var query = {};
@@ -1084,7 +1084,7 @@ plc._sendAlertNotification = function(m) {
 };
 
 plc.getPlcAlerts = function(m) {
-  console.log("plc module: getPlcAlerts FUNCTION", m.pl.which);
+  ////console.log("plc module: getPlcAlerts FUNCTION", m.pl.which);
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
   var query = {};
@@ -1125,7 +1125,7 @@ plc.getPlcAlerts = function(m) {
 };
 
 plc.getShipmentList = function(m) {
-  console.log("plc module: getShipmentList FUNCTION");
+  ////console.log("plc module: getShipmentList FUNCTION");
   var r = { pl: null, status: false, er: "" };
   var deferred = q.defer();
 
@@ -1155,7 +1155,7 @@ plc.getShipmentList = function(m) {
 };
 
 plc.updatePlcAlert = function(m) {
-  console.log(" update updatePlcAlert----", m);
+  ////console.log(" update updatePlcAlert----", m);
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -1196,14 +1196,13 @@ plc.updatePlcAlert = function(m) {
 };
 
 plc.downloadData = function(m) {
-  console.log(" downloadData----");
-
+  //console.log(" downloadData----");
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.user) {
     lib.procesDownload().then(function(res) {
-      console.log("file res----", res);
+      //console.log("file res----", res);
       r.pl = { file: res.path };
       deferred.resolve(r);
     });
@@ -1217,14 +1216,14 @@ plc.downloadData = function(m) {
 };
 
 plc.downloadDataProcessedAlerts = function(m) {
-  console.log(" downloadDataProcessedAlerts----");
+  //console.log(" downloadDataProcessedAlerts----");
 
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.data) {
     lib.processDownloadProcessedAlerts(m.pl.data).then(function(res) {
-      console.log("file res----", res);
+      //console.log("file res----", res);
       r.pl = { file: res.path };
       deferred.resolve(r);
     });
@@ -1236,15 +1235,16 @@ plc.downloadDataProcessedAlerts = function(m) {
 
   return deferred.promise;
 };
+
 plc.downloadStats = function(m) {
-  console.log(" downloadStats----");
+  //console.log(" downloadStats----");
 
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.data) {
     lib.procesDownloadStats(m.pl.data, m.pl.tank).then(function(res) {
-      console.log("file res----", res);
+      //console.log("file res----", res);
       r.pl = { file: res.path };
       deferred.resolve(r);
     });
@@ -1258,14 +1258,14 @@ plc.downloadStats = function(m) {
 };
 
 plc.downloadInstantPlcData = function(m) {
-  console.log(" downloadStats----", m.pl.tank);
+  //console.log(" downloadStats----", m.pl.tank);
 
   var r = { pl: null, er: "", em: "" };
   var deferred = q.defer();
 
   if (m && m.pl && m.pl.data) {
     lib.procesDownloadInstantPlc(m.pl.data, m.pl.tank).then(function(res) {
-      console.log("file res----", res);
+      //console.log("file res----", res);
       r.pl = { file: res.path };
       deferred.resolve(r);
     });
@@ -1310,13 +1310,13 @@ var _extractPlcData = function(
       plcCode = lib.padNum(i + 1, 3);
       tank = plcType[0] + plcCode;
       var formula = latestFormula[oID][tank];
-      // console.log('formula----',formula);
+      // //console.log('formula----',formula);
 
       if (!formula) {
         //create formula if not already created
 
         return _addNewFormula({ oID: oID }, tank).then(function(resp) {
-          // console.log("created formula---",resp);
+          // //console.log("created formula---",resp);
           if (resp && resp.pl && resp.pl.formula) {
             latestFormula[oID][tank] = resp.pl.formula;
             redisClient.set("lastestFormula", JSON.stringify(latestFormula)); //add new formula to the latest formula object
@@ -1361,12 +1361,12 @@ var _extractPlcData = function(
       plcCode = lib.padNum(i + 1, 3);
       tank = plcType[0] + plcCode;
       var formula = latestFormula[oID][tank];
-      // console.log('formula----',formula);
+      // //console.log('formula----',formula);
 
       if (!formula) {
         //create formula if not already created
         return _addNewFormula({ oID: oID }, tank).then(function(resp) {
-          // console.log("created formula---",resp);
+          // //console.log("created formula---",resp);
           if (resp && resp.pl && resp.pl.formula) {
             latestFormula[oID][tank] = resp.pl.formula;
             redisClient.set("lastestFormula", JSON.stringify(latestFormula)); //add new formula to the latest formula object
@@ -1405,12 +1405,12 @@ var _extractPlcData = function(
       plcCode = lib.padNum(i + 1, 3);
       tank = plcType[0] + plcCode;
       var formula = latestFormula[oID][tank];
-      // console.log('formula----',formula);
+      // //console.log('formula----',formula);
 
       if (!formula) {
         //create formula if not already created
         return _addNewFormula({ oID: oID }, tank).then(function(resp) {
-          // console.log("created formula---",resp);
+          // //console.log("created formula---",resp);
           if (resp && resp.pl && resp.pl.formula) {
             latestFormula[oID][tank] = resp.pl.formula;
             redisClient.set("lastestFormula", JSON.stringify(latestFormula)); //add new formula to the latest formula object
@@ -1714,8 +1714,8 @@ var _extractCngData = function(
   inputP1 = lib.getPlcFloat(inputP1.toString("hex"), 1);
   inputP2 = lib.getPlcFloat(inputP2.toString("hex"), 1);
 
-  // console.log("i is----",i);
-  // console.log("inputP1----",inputP1);
+  // //console.log("i is----",i);
+  // //console.log("inputP1----",inputP1);
 
   //
   //
@@ -1732,7 +1732,7 @@ var _extractCngData = function(
   //   usagePerHour = cumfow;
   // }
   //
-  // // console.log("usagePerHour----",usagePerHour);
+  // // //console.log("usagePerHour----",usagePerHour);
   // var dataRecepionIntervalInMinutes = plcConfig.sTimer/(60*1000);  // convert from millisecs to minutes
   // usagePerHour = usagePerHour*(60/dataRecepionIntervalInMinutes);   // get flow per hours, assuming the data reception occurs every dataRecepionIntervalInMinutes minutes
   //
@@ -1834,7 +1834,7 @@ var _checkCngAlert = function(
   var usagePerHour = null;
 
   if (latestIncommingData[oID] && latestIncommingData[oID][tank]) {
-    // console.log("cumfow , last cumfow", cumfow, parseFloat(latestIncommingData[oID][tank].cumfow))
+    // //console.log("cumfow , last cumfow", cumfow, parseFloat(latestIncommingData[oID][tank].cumfow))
     // TODO this diff is about 1 - 4 only.
     usagePerHour = Math.abs(
       cumfow - parseFloat(latestIncommingData[oID][tank].cumfow)
@@ -1853,7 +1853,7 @@ var _checkCngAlert = function(
     usagePerHour = 1;
   }
 
-  // console.log("usagePerHour----",usagePerHour);
+  // //console.log("usagePerHour----",usagePerHour);
 
   var rft = rfq / usagePerHour; //remaining time in hours
 
@@ -1888,7 +1888,7 @@ var _checkCngAlert = function(
     // };
   }
 
-  // console.log("rfq,rft---", rfq, rft);
+  // //console.log("rfq,rft---", rfq, rft);
   r.rfq = rfq;
   r.rft = lib.H2Hms(rft);
   return r;
@@ -2022,7 +2022,7 @@ var _checkChanelInterruption = function(
 ////TODO tanks related
 
 plc.getPlcTanks = function(m) {
-  console.log("plc module: getPlcTanks FUNCTION");
+  //console.log("plc module: getPlcTanks FUNCTION");
   var r = { pl: {}, status: false, er: "" };
   var deferred = q.defer();
 
@@ -2048,7 +2048,7 @@ plc.getPlcTanks = function(m) {
 };
 
 plc.addNewTank = function(m) {
-  console.log("add new address----");
+  //console.log("add new address----");
 
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
@@ -2086,7 +2086,7 @@ plc.addNewTank = function(m) {
 };
 
 plc.updatePlcTank = function(m) {
-  console.log(" update address----");
+  //console.log(" update address----");
   var r = { pl: {}, er: "", em: "" };
   var deferred = q.defer();
 
