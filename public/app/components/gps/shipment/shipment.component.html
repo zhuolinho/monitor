@@ -1,13 +1,8 @@
-
-
-
 <div class="center-align helper-white-bg helper-padding-30"  *ngIf="!shipmentList"  style=" height:70vh;">
   无配送
 </div>
-
 <div *ngIf="shipmentList"  class="scrollable-container" style=" height:70vh;">
     <div *ngFor="let shipment of shipmentList; let i = index;">
-
       <div class="helper-margin-bottom-20 valign-wrapper row">
         <div class="col m9">
           <div class="helper-white-bg ">
@@ -22,7 +17,14 @@
               <div class="monitor-table helper-font-bigger" >
                 <div class="table-row">
                   <div class="table-cell"> 罐号 </div>
-                  <div class="table-cell">{{shipment.code}}  </div>
+                  <div class="table-cell">
+                    {{shipment.ttank}}
+                    <div class="helper-ellipsis">
+                      <span *ngFor="let t of shipment.st;">
+                       {{t.ti}}
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div class="table-row">
                     <div class="table-cell"> 余量/压力 </div>

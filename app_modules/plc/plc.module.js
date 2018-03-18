@@ -1134,7 +1134,7 @@ plc.getShipmentList = function(m) {
   if (m && m.pl && m.pl.user && m.pl.user.oID) {
     PlcAlert.find({ oID: m.pl.user.oID })
       .$where(
-        '(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "拉回报警")||(this.atype == "进场报警"))'
+        '(this.status == 1) && ((this.atype == "余量报警")||(this.atype == "余量警报")||(this.atype == "拉回报警")||(this.atype == "进场报警"))'
       )
       .sort({ atime: -1 })
       .exec(function(err, resp) {

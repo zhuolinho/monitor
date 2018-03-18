@@ -1,21 +1,28 @@
 <div>
 <div class="container">
-  <div class="row" style="width:800px;">
 
-    <div class="col s8 helper-padding-left-0">
-      <!-- <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span> -->
-      <select class="helper-select-font-bigger select-address">
-        <option [value]="cam.id" *ngFor="let cam of allCameras" >{{cam.addr}}</option>
-      </select>
+  <div class="container">
+    <div class="row" style="width:800px; position: relative;">
+
+      <div class="col s8 helper-padding-left-0">
+        <!-- <span class="helper-font-bigger helper-gray-bg-light helper-padding-5-15 helper-display-block" style="height:60px; line-height:50px;"> 上海万事红危险货物流有限公司</span> -->
+        <select class="helper-select-font-bigger select-address">
+          <option [value]="cam.id" *ngFor="let cam of allCameras" >{{cam.addr}}</option>
+        </select>
+      </div>
+      <div class="col s4 ">
+        <select class="helper-select-font-bigger select-camera">
+          <option [value]="c.id" *ngFor="let c of currentCameras" >{{c.name}}</option>
+        </select>
+      </div>
+
+        <div class="clearfix"></div>
+
     </div>
-    <div class="col s4 ">
-      <select class="helper-select-font-bigger select-camera">
-        <option [value]="c.id" *ngFor="let c of currentCameras" >{{c.name}}</option>
-      </select>
-    </div>
 
-      <div class="clearfix"></div>
-
+    <!-- <div (click)="toggleGridMode()" style="position: absolute; right: 40px; top: 25px; background: #c8c8c8; border-radius: 4px;">
+      <i style="font-size: 35px; line-height:35px; display: block; height: 35px; width: 35px;"  class="material-icons switch-camera-view-mode" [class.active]="gridMode">border_all</i>
+    </div> -->
   </div>
 </div>
 

@@ -20,38 +20,94 @@ var Navigator = (function () {
         this.user = this.localUserService.getUser();
         if (this.user.ap == 1) {
             this.navigations = [
-                { link: ['/admin/home/alerts'], title: '首页', icon: 'dist/images/home.png', module: 'home', class: 'home-icon' },
-                { link: ['/admin/monitor/gas'], title: '实时监控', icon: 'dist/images/monitor.png', module: 'monitor', class: 'monitor-icon' },
-                { link: ['/admin/gps/shipments'], title: 'GPS ', icon: 'dist/images/gps.png', module: 'gps', class: 'gps-icon' },
-                { link: ['/admin/settings/auth'], title: '设置 ', icon: 'dist/images/settings.png', module: 'settings', class: 'settings-icon' }
+                {
+                    link: ["/admin/home/alerts"],
+                    title: "首页",
+                    icon: "dist/images/home.png",
+                    module: "home",
+                    class: "home-icon"
+                },
+                {
+                    link: ["/admin/monitor/gas"],
+                    title: "实时监控",
+                    icon: "dist/images/monitor.png",
+                    module: "monitor",
+                    class: "monitor-icon"
+                },
+                {
+                    link: ["/admin/gps/shipments"],
+                    title: "GPS ",
+                    icon: "dist/images/gps.png",
+                    module: "gps",
+                    class: "gps-icon"
+                },
+                {
+                    link: ["/admin/settings/auth"],
+                    title: "设置 ",
+                    icon: "dist/images/settings.png",
+                    module: "settings",
+                    class: "settings-icon"
+                }
             ];
         }
-        else if ((this.user.ap == 2)) {
+        else if (this.user.ap == 2) {
             this.navigations = [
-                { link: ['/admin/home/alerts'], title: '首页', icon: 'dist/images/home.png', module: 'home', class: 'home-icon' },
-                { link: ['/admin/monitor/gas'], title: '实时监控', icon: 'dist/images/monitor.png', module: 'monitor', class: 'monitor-icon' },
-                { link: ['/admin/gps/shipments'], title: 'GPS ', icon: 'dist/images/gps.png', module: 'gps', class: 'gps-icon' }
+                {
+                    link: ["/admin/home/alerts"],
+                    title: "首页",
+                    icon: "dist/images/home.png",
+                    module: "home",
+                    class: "home-icon"
+                },
+                {
+                    link: ["/admin/monitor/gas"],
+                    title: "实时监控",
+                    icon: "dist/images/monitor.png",
+                    module: "monitor",
+                    class: "monitor-icon"
+                },
+                {
+                    link: ["/admin/gps/shipments"],
+                    title: "GPS ",
+                    icon: "dist/images/gps.png",
+                    module: "gps",
+                    class: "gps-icon"
+                }
             ];
         }
-        else if ((this.user.ap == 3)) {
+        else if (this.user.ap == 3) {
             this.navigations = [
-                { link: ['/admin/home/alerts'], title: '首页', icon: 'dist/images/home.png', module: 'home', class: 'home-icon' },
-                { link: ['/admin/gps/shipments'], title: 'GPS ', icon: 'dist/images/gps.png', module: 'gps', class: 'gps-icon' }
+                {
+                    link: ["/admin/home/alerts"],
+                    title: "首页",
+                    icon: "dist/images/home.png",
+                    module: "home",
+                    class: "home-icon"
+                },
+                {
+                    link: ["/admin/gps/shipments"],
+                    title: "GPS ",
+                    icon: "dist/images/gps.png",
+                    module: "gps",
+                    class: "gps-icon"
+                }
             ];
         }
     }
     Navigator.prototype.ngAfterViewInit = function () {
-        jQuery('.sidebar-collapse').sideNav();
-        console.log('button-collapse');
+        jQuery(".sidebar-collapse").sideNav();
+        console.log("button-collapse");
     };
     return Navigator;
 }());
 Navigator = __decorate([
     core_1.Component({
-        selector: 'navigator',
-        templateUrl: config_1.config.prefix + 'layout_components/navigator/navigator.html',
+        selector: "navigator",
+        templateUrl: config_1.config.prefix + "layout_components/navigator/navigator.html",
         // directives: [RouterLink, ROUTER_DIRECTIVES,CORE_DIRECTIVES],
-        styleUrls: [config_1.config.prefix + 'layout_components/navigator/resources/css/style.css']
+        styleUrls: [
+            config_1.config.prefix + "layout_components/navigator/resources/css/style.css"
+        ]
     }),
     __metadata("design:paramtypes", [user_service_1.UserService,
         routerNav_service_1.routerNavService])

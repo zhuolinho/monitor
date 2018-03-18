@@ -13,9 +13,13 @@ var Camera = (function () {
         this.selectedCam = config_1.config.camera[0].cameras[0].id;
         this.currentCameras = config_1.config.camera[0].cameras;
         this.allCameras = config_1.config.camera;
+        this.gridMode = false;
     }
     Camera.prototype.ngAfterViewInit = function () {
         this.initUi();
+    };
+    Camera.prototype.toggleGridMode = function () {
+        this.gridMode = !this.gridMode;
     };
     Camera.prototype.veCameraChanged = function (event, comp) {
         comp.selectedCam = event.target.value;
@@ -32,13 +36,13 @@ var Camera = (function () {
     Camera.prototype.initUi = function () {
         var that = this;
         setTimeout(function (_) {
-            jQuery('select:not(simple-select)').material_select();
-            jQuery('select.select-camera').change(function (e) {
-                console.log('camera changed');
+            jQuery("select:not(simple-select)").material_select();
+            jQuery("select.select-camera").change(function (e) {
+                console.log("camera changed");
                 that.veCameraChanged(e, that);
             });
-            jQuery('select.select-address').change(function (e) {
-                console.log('addres changed');
+            jQuery("select.select-address").change(function (e) {
+                console.log("addres changed");
                 that.veAddressChanged(e, that);
             });
         });
@@ -47,8 +51,8 @@ var Camera = (function () {
 }());
 Camera = __decorate([
     core_1.Component({
-        selector: 'camera',
-        templateUrl: config_1.config.prefix + '/components/monitor/camera/camera.component.html'
+        selector: "camera",
+        templateUrl: config_1.config.prefix + "/components/monitor/camera/camera.component.html"
     })
 ], Camera);
 exports.Camera = Camera;

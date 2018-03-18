@@ -77,7 +77,7 @@ var Shipment = (function () {
         this.request.put("/plc/alert.json", alert).subscribe(function (res) {
             console.log("res----", res);
             if (res.pl && res.pl.alert && res.pl.alert.tank) {
-                _this.router.navigate(['/admin/gps/shipment-map/' + res.pl.alert.tank]);
+                _this.router.navigate(["/admin/gps/shipment-map/" + res.pl.alert.tank]);
             }
         });
     };
@@ -85,10 +85,10 @@ var Shipment = (function () {
 }());
 Shipment = __decorate([
     core_1.Component({
-        selector: 'shipment',
-        templateUrl: config_1.config.prefix + '/components/gps/shipment/shipment.component.html',
+        selector: "shipment",
+        templateUrl: config_1.config.prefix + "/components/gps/shipment/shipment.component.html"
+        // directives:[CORE_DIRECTIVES]
     }),
-    __metadata("design:paramtypes", [router_1.Router,
-        request_service_1.RequestService])
+    __metadata("design:paramtypes", [router_1.Router, request_service_1.RequestService])
 ], Shipment);
 exports.Shipment = Shipment;

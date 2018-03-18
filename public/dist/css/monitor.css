@@ -12,6 +12,16 @@
        url(../../bower_components/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
 }
 
+
+.switch-camera-view-mode {
+  color: #6e6e6e;
+  background-color: #c8c8c8;
+}
+
+.switch-camera-view-mode.active {
+  color: #08d408;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
