@@ -1,3 +1,6 @@
+/**
+ * Created by Y on 2017/9/4.
+ */
 function groupBy(arr, key) {
     var res = {};
     arr.forEach(function (ele) {
@@ -9,8 +12,7 @@ function groupBy(arr, key) {
     return res;
 }
 function userGet(url, callback) {
-    var user = localStorage.user;
-    $.ajax(url, {type: "GET", headers: {user: JSON.stringify({_id:user._id,ap:user.ap,an:user.an,oID:user.oID})}, success: callback});
+    $.ajax(url, {type: "GET", headers: {user: localStorage.user}, success: callback});
 }
 var EventEmitter = {
     _events: {},
@@ -63,7 +65,7 @@ var Header = React.createClass({
                 <img src="/mobile/images/logo2.png"
                      style={{height: "36px", position: "absolute", left: "0px", marginTop: "8px"}}/>
                 <img src="/mobile/images/logo1.png"
-                     style={{height: "32px", position: "absolute", right: "0px", margin: "8px 2px"}}/>
+                     style={{height: "36px", position: "absolute", right: "0px", margin: "8px 2px"}}/>
                 <div data-role="controlgroup" data-type="horizontal">
                     {buttonNodes}
                 </div>
@@ -84,7 +86,7 @@ var AllTable = React.createClass({
             var address = [];
             var plc = {};
             address = result.pl.address.sort(function (a, b) {
-                return a.addr > b.addr ? 1 : -1;
+                return b.tank > a.tank ? 1 : -1;
             });
             result.pl.plc.forEach(function (obj) {
                 plc[obj.tank] = obj;
@@ -146,12 +148,11 @@ var HomeTable = React.createClass({
                     <thead>
                     <tr>
                         <th/>
-                        {alert.atype == "余量警报" ? <th>余量/压力</th> : null}
+                        {alert.atype == "余量报警" ? <th>余量/压力</th> : null}
                         {alert.atype == "压力报警" ? <th>压力/异常</th> : null}
                         {alert.atype == "信号中断" ? <th>信号/异常</th> : null}
                         {alert.atype == "泄漏报警" ? <th>泄漏/异常</th> : null}
-                        {alert.atype == "余量警报" ? <th>剩余时间</th> : null}
-                        {alert.atype == "余量警报" ? <th>剩余量</th> : null}
+                        {alert.atype == "余量报警" ? <th>剩余时间</th> : null}
                         {alert.atype == "拉回报警" || alert.atype == "进场报警" ? <th>报警类型</th> : null}
                         {alert.atype == "拉回报警" || alert.atype == "进场报警" ? <th>已选罐号</th> : null}
                         {alert.atype == "拉回报警" || alert.atype == "进场报警" ? <th>拉回数量</th> : null}
@@ -161,12 +162,11 @@ var HomeTable = React.createClass({
                     <tbody>
                     <tr key={i}>
                         <th>{alert.tank}</th>
-                        {alert.atype == "余量警报" ? <td>{alert.am || ""}</td> : null}
+                        {alert.atype == "余量报警" ? <td>{alert.am || ""}</td> : null}
                         {alert.atype == "压力报警" ? <td>{alert.am || ""}</td> : null}
                         {alert.atype == "信号中断" ? <td>{alert.am || ""}</td> : null}
                         {alert.atype == "泄漏报警" ? <td>{alert.am || ""}</td> : null}
-                        {alert.atype == "余量警报" ? <td>{alert.rt || ""}</td> : null}
-                        {alert.atype == "余量警报" ? <td>{alert.ra || ""}</td> : null}
+                        {alert.atype == "余量报警" ? <td>{alert.rt || ""}</td> : null}
                         {alert.atype == "拉回报警" || alert.atype == "进场报警" ? <td>{alert.am}</td> : null}
                         {alert.atype == "拉回报警" || alert.atype == "进场报警" ? <td>{alert.st.map(function (res) {
                             return res.ti + ",";
@@ -187,24 +187,21 @@ var HomeTable = React.createClass({
     }
 });
 var HomeCollapsible = React.createClass({
-    getInitialState: function () {
-        return {month: new Date().getMonth()};
-    },
     componentDidUpdate: function () {
         $("table").table("refresh");
     },
-    handleChange: function (e) {
-        this.setState({month: e.target.value});
-    },
     render: function () {
-        var months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
         return (
             <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
                 <h3>{this.props.aType}</h3>
-                <select onChange={this.handleChange} value={this.state.month}>
-                    {months.map(function (month, i) {
+                <select>
+                    {months.map(function (month) {
+                        i++;
                         return (
-                            <option key={i} value={i}>{month}</option>
+                            <option key={i}>{month}</option>
                         );
                     })}
                 </select>
@@ -219,19 +216,18 @@ var HomeCollapsible = React.createClass({
                     </tr>
                     </thead>
                     <tbody>
-                    {this.props.alerts.map(function (alert, j) {
-                        if (new Date(alert.atime.replace(/\s/g,'T').replace(/\//g,'-')).getMonth() == this.state.month) {
-                            return (
-                                <tr key={j}>
-                                    <td>{alert.code}</td>
-                                    <td>{alert.atime}</td>
-                                    <td>{alert.pt}</td>
-                                    <td>{alert.pa}</td>
-                                    <td>{alert.atype}</td>
-                                </tr>
-                            );
-                        }
-                    }.bind(this))}
+                    {this.props.alerts.map(function (alert) {
+                        j++;
+                        return (
+                            <tr key={j}>
+                                <td>{alert.code}</td>
+                                <td>{alert.atime}</td>
+                                <td>{alert.pt}</td>
+                                <td>{alert.pa}</td>
+                                <td>{alert.atype}</td>
+                            </tr>
+                        );
+                    })}
                     </tbody>
                 </table>
             </div>
@@ -242,19 +238,18 @@ var GpsCollapsible = React.createClass({
     componentDidUpdate: function () {
         $("table").table("refresh");
     },
-    handleChange: function (e) {
-        console.log(e.target.value);
-    },
     render: function () {
-        var months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
         var j = 0;
         return (
             <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
                 <h3>{this.props.aType}</h3>
-                <select onChange={this.handleChange} defaultValue={new Date().getMonth()}>
-                    {months.map(function (month, i) {
+                <select>
+                    {months.map(function (month) {
+                        i++;
                         return (
-                            <option key={i} value={i}>{month}</option>
+                            <option key={i}>{month}</option>
                         );
                     })}
                 </select>
@@ -389,7 +384,7 @@ var Content2 = React.createClass({
     },
     render: function () {
         var {id, ...other} = this.props;
-        var alertTypes = ["余量警报", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
+        var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
         var i = 0;
         var groupObj = groupBy(this.state.alerts, "atype");
         return (
@@ -476,7 +471,7 @@ var Content4 = React.createClass({
         return {
             tableByMonth: [],
             realTimeData: {},
-            plcAddresses: [],
+            plcAddresses: {},
             month: d.getMonth() + 1,
             tank: "",
             table: 0
@@ -527,14 +522,23 @@ var Content4 = React.createClass({
     componentDidMount: function () {
         var component = this;
         userGet("/plc/latest/withaddress.json", function (result) {
-            var arr = result.pl.address.sort(function (a, b) {
-                return a.addr > b.addr ? 1 : -1;
-            });
-            var obj = arr[0].tank;
-            component.getMonthTable(component.state.month, obj);
-            component.setState({tank: obj});
-            component.getLast(obj);
-            component.setState({plcAddresses: arr, realTimeData: result.pl.plc});
+            var tmp = {};
+            var i = 0;
+            for (var obj in result.pl.plc) {
+                if (i == 0) {
+                    component.getMonthTable(component.state.month, obj);
+                    component.setState({tank: obj});
+                    component.getLast(obj);
+                }
+                tmp[obj] = result.pl.plc[obj];
+                i++;
+            }
+            component.setState({realTimeData: tmp});
+            var temp = {};
+            for (i = 0; i < result.pl.address.length; i++) {
+                temp[result.pl.address[i].tank] = result.pl.address[i];
+            }
+            component.setState({plcAddresses: temp});
         });
     },
     componentDidUpdate: function () {
@@ -772,8 +776,17 @@ var Content4 = React.createClass({
                 </div>
                 <div className="ui-block-a">
                     <select onChange={this.handleTank}>
-                        {this.state.plcAddresses.map(function (alert, ii) {
-                            return (<option value={alert.tank} key={ii}>{alert.addr}</option>);
+                        {Object.keys(this.state.realTimeData).sort(function (a, b) {
+                            return b > a ? 1 : -1;
+                        }).map(function (alert) {
+                            ii++;
+                            var str = "";
+                            if (component.state.plcAddresses[alert]) {
+                                str = component.state.plcAddresses[alert].addr
+                            } else {
+                                str = alert;
+                            }
+                            return (<option value={alert} key={ii}>{str}</option>);
                         })}
                     </select>
                 </div>
@@ -868,7 +881,7 @@ var Content5 = React.createClass({
         } else if (this.state.cam == 9) {
             url = "b272845e5b5c434eae96bd68b85d8c39";
         } else if (this.state.cam == 10) {
-            url = "df60fd0e61f0401d9e57e6dfe6f6e51d";
+            url = "0fcb89c9170d4b6896fadf88a5b52253";
         } else if (this.state.cam == 11) {
             url = "e3f2e13b4d834260bd356e7baeb302b1";
         } else if (this.state.cam == 12) {
@@ -1014,10 +1027,10 @@ var Footer = React.createClass({
                                                           data-transition="none"
                                                           className={this.props.id == "pageone" ? "ui-btn-active ui-state-persist" : ""}>首页</a>
                         </li>
-                        <li onClick={this.handleClick}><a id="pagetwo" href="#pagetwo" data-icon="custom"
-                                                          data-transition="none"
-                                                          className={this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : ""}>实时监控</a>
-                        </li>
+                        {/*<li onClick={this.handleClick}><a id="pagetwo" href="#pagetwo" data-icon="custom"*/}
+                                                          {/*data-transition="none"*/}
+                                                          {/*className={this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : ""}>实时监控</a>*/}
+                        {/*</li>*/}
                         <li onClick={this.handleClick}><a id="pagethree" href="#pagethree" data-icon="custom"
                                                           data-transition="none"
                                                           className={this.props.id == "pagethree" ? "ui-btn-active ui-state-persist" : ""}>GPS</a>
@@ -1092,7 +1105,7 @@ var App = React.createClass({
         return (
             <div>
                 <Page id="pageone" titles={["报警通知", "处理完成"]}/>
-                <Page id="pagetwo" titles={["各站总览", "各站详情", "视频监控"]}/>
+                {/*<Page id="pagetwo" titles={["各站总览", "各站详情", "视频监控"]}/>*/}
                 <Page id="pagethree" titles={["处理完成", "GPS地图"]}/>
             </div>
         );

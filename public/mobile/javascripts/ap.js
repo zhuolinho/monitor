@@ -1,3 +1,6 @@
+/**
+ * Created by Y on 2017/9/4.
+ */
 "use strict";
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -75,7 +78,7 @@ var Header = React.createClass({
             React.createElement("img", { src: "/mobile/images/logo2.png",
                 style: { height: "36px", position: "absolute", left: "0px", marginTop: "8px" } }),
             React.createElement("img", { src: "/mobile/images/logo1.png",
-                style: { height: "32px", position: "absolute", right: "0px", margin: "8px 2px" } }),
+                style: { height: "36px", position: "absolute", right: "0px", margin: "8px 2px" } }),
             React.createElement(
                 "div",
                 { "data-role": "controlgroup", "data-type": "horizontal" },
@@ -99,7 +102,7 @@ var AllTable = React.createClass({
             var address = [];
             var plc = {};
             address = result.pl.address.sort(function (a, b) {
-                return a.addr > b.addr ? 1 : -1;
+                return b.tank > a.tank ? 1 : -1;
             });
             result.pl.plc.forEach(function (obj) {
                 plc[obj.tank] = obj;
@@ -221,7 +224,7 @@ var HomeTable = React.createClass({
                         "tr",
                         null,
                         React.createElement("th", null),
-                        alert.atype == "余量警报" ? React.createElement(
+                        alert.atype == "余量报警" ? React.createElement(
                             "th",
                             null,
                             "余量/压力"
@@ -241,15 +244,10 @@ var HomeTable = React.createClass({
                             null,
                             "泄漏/异常"
                         ) : null,
-                        alert.atype == "余量警报" ? React.createElement(
+                        alert.atype == "余量报警" ? React.createElement(
                             "th",
                             null,
                             "剩余时间"
-                        ) : null,
-                        alert.atype == "余量警报" ? React.createElement(
-                            "th",
-                            null,
-                            "剩余量"
                         ) : null,
                         alert.atype == "拉回报警" || alert.atype == "进场报警" ? React.createElement(
                             "th",
@@ -284,7 +282,7 @@ var HomeTable = React.createClass({
                             null,
                             alert.tank
                         ),
-                        alert.atype == "余量警报" ? React.createElement(
+                        alert.atype == "余量报警" ? React.createElement(
                             "td",
                             null,
                             alert.am || ""
@@ -304,15 +302,10 @@ var HomeTable = React.createClass({
                             null,
                             alert.am || ""
                         ) : null,
-                        alert.atype == "余量警报" ? React.createElement(
+                        alert.atype == "余量报警" ? React.createElement(
                             "td",
                             null,
                             alert.rt || ""
-                        ) : null,
-                        alert.atype == "余量警报" ? React.createElement(
-                            "td",
-                            null,
-                            alert.ra || ""
                         ) : null,
                         alert.atype == "拉回报警" || alert.atype == "进场报警" ? React.createElement(
                             "td",
@@ -351,17 +344,13 @@ var HomeTable = React.createClass({
 var HomeCollapsible = React.createClass({
     displayName: "HomeCollapsible",
 
-    getInitialState: function getInitialState() {
-        return { month: new Date().getMonth() };
-    },
     componentDidUpdate: function componentDidUpdate() {
         $("table").table("refresh");
     },
-    handleChange: function handleChange(e) {
-        this.setState({ month: e.target.value });
-    },
     render: function render() {
-        var months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
+        var j = 0;
         return React.createElement(
             "div",
             { "data-role": "collapsible", "data-collapsed-icon": "carat-d", "data-expanded-icon": "carat-u" },
@@ -372,11 +361,12 @@ var HomeCollapsible = React.createClass({
             ),
             React.createElement(
                 "select",
-                { onChange: this.handleChange, value: this.state.month },
-                months.map(function (month, i) {
+                null,
+                months.map(function (month) {
+                    i++;
                     return React.createElement(
                         "option",
-                        { key: i, value: i },
+                        { key: i },
                         month
                     );
                 })
@@ -420,39 +410,38 @@ var HomeCollapsible = React.createClass({
                 React.createElement(
                     "tbody",
                     null,
-                    this.props.alerts.map((function (alert, j) {
-                        if (new Date(alert.atime.replace(/\s/g, 'T').replace(/\//g, '-')).getMonth() == this.state.month) {
-                            return React.createElement(
-                                "tr",
-                                { key: j },
-                                React.createElement(
-                                    "td",
-                                    null,
-                                    alert.code
-                                ),
-                                React.createElement(
-                                    "td",
-                                    null,
-                                    alert.atime
-                                ),
-                                React.createElement(
-                                    "td",
-                                    null,
-                                    alert.pt
-                                ),
-                                React.createElement(
-                                    "td",
-                                    null,
-                                    alert.pa
-                                ),
-                                React.createElement(
-                                    "td",
-                                    null,
-                                    alert.atype
-                                )
-                            );
-                        }
-                    }).bind(this))
+                    this.props.alerts.map(function (alert) {
+                        j++;
+                        return React.createElement(
+                            "tr",
+                            { key: j },
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.code
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.atime
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pt
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.pa
+                            ),
+                            React.createElement(
+                                "td",
+                                null,
+                                alert.atype
+                            )
+                        );
+                    })
                 )
             )
         );
@@ -464,11 +453,9 @@ var GpsCollapsible = React.createClass({
     componentDidUpdate: function componentDidUpdate() {
         $("table").table("refresh");
     },
-    handleChange: function handleChange(e) {
-        console.log(e.target.value);
-    },
     render: function render() {
-        var months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+        var months = ["4月", "3月", "2月", "1月"];
+        var i = 0;
         var j = 0;
         return React.createElement(
             "div",
@@ -480,11 +467,12 @@ var GpsCollapsible = React.createClass({
             ),
             React.createElement(
                 "select",
-                { onChange: this.handleChange, defaultValue: new Date().getMonth() },
-                months.map(function (month, i) {
+                null,
+                months.map(function (month) {
+                    i++;
                     return React.createElement(
                         "option",
-                        { key: i, value: i },
+                        { key: i },
                         month
                     );
                 })
@@ -739,7 +727,7 @@ var Content2 = React.createClass({
 
         var other = _objectWithoutProperties(_props2, ["id"]);
 
-        var alertTypes = ["余量警报", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
+        var alertTypes = ["余量报警", "压力报警", "信号中断", "泄漏报警", "拉回报警", "进场报警"];
         var i = 0;
         var groupObj = groupBy(this.state.alerts, "atype");
         return React.createElement(
@@ -842,7 +830,7 @@ var Content4 = React.createClass({
         return {
             tableByMonth: [],
             realTimeData: {},
-            plcAddresses: [],
+            plcAddresses: {},
             month: d.getMonth() + 1,
             tank: "",
             table: 0
@@ -893,14 +881,23 @@ var Content4 = React.createClass({
     componentDidMount: function componentDidMount() {
         var component = this;
         userGet("/plc/latest/withaddress.json", function (result) {
-            var arr = result.pl.address.sort(function (a, b) {
-                return a.addr > b.addr ? 1 : -1;
-            });
-            var obj = arr[0].tank;
-            component.getMonthTable(component.state.month, obj);
-            component.setState({ tank: obj });
-            component.getLast(obj);
-            component.setState({ plcAddresses: arr, realTimeData: result.pl.plc });
+            var tmp = {};
+            var i = 0;
+            for (var obj in result.pl.plc) {
+                if (i == 0) {
+                    component.getMonthTable(component.state.month, obj);
+                    component.setState({ tank: obj });
+                    component.getLast(obj);
+                }
+                tmp[obj] = result.pl.plc[obj];
+                i++;
+            }
+            component.setState({ realTimeData: tmp });
+            var temp = {};
+            for (i = 0; i < result.pl.address.length; i++) {
+                temp[result.pl.address[i].tank] = result.pl.address[i];
+            }
+            component.setState({ plcAddresses: temp });
         });
     },
     componentDidUpdate: function componentDidUpdate() {
@@ -1901,11 +1898,20 @@ var Content4 = React.createClass({
                 React.createElement(
                     "select",
                     { onChange: this.handleTank },
-                    this.state.plcAddresses.map(function (alert, ii) {
+                    Object.keys(this.state.realTimeData).sort(function (a, b) {
+                        return b > a ? 1 : -1;
+                    }).map(function (alert) {
+                        ii++;
+                        var str = "";
+                        if (component.state.plcAddresses[alert]) {
+                            str = component.state.plcAddresses[alert].addr;
+                        } else {
+                            str = alert;
+                        }
                         return React.createElement(
                             "option",
-                            { value: alert.tank, key: ii },
-                            alert.addr
+                            { value: alert, key: ii },
+                            str
                         );
                     })
                 )
@@ -2072,7 +2078,7 @@ var Content5 = React.createClass({
         } else if (this.state.cam == 9) {
             url = "b272845e5b5c434eae96bd68b85d8c39";
         } else if (this.state.cam == 10) {
-            url = "df60fd0e61f0401d9e57e6dfe6f6e51d";
+            url = "0fcb89c9170d4b6896fadf88a5b52253";
         } else if (this.state.cam == 11) {
             url = "e3f2e13b4d834260bd356e7baeb302b1";
         } else if (this.state.cam == 12) {
@@ -2327,17 +2333,6 @@ var Footer = React.createClass({
                         { onClick: this.handleClick },
                         React.createElement(
                             "a",
-                            { id: "pagetwo", href: "#pagetwo", "data-icon": "custom",
-                                "data-transition": "none",
-                                className: this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : "" },
-                            "实时监控"
-                        )
-                    ),
-                    React.createElement(
-                        "li",
-                        { onClick: this.handleClick },
-                        React.createElement(
-                            "a",
                             { id: "pagethree", href: "#pagethree", "data-icon": "custom",
                                 "data-transition": "none",
                                 className: this.props.id == "pagethree" ? "ui-btn-active ui-state-persist" : "" },
@@ -2418,9 +2413,9 @@ var App = React.createClass({
             "div",
             null,
             React.createElement(Page, { id: "pageone", titles: ["报警通知", "处理完成"] }),
-            React.createElement(Page, { id: "pagetwo", titles: ["各站总览", "各站详情", "视频监控"] }),
             React.createElement(Page, { id: "pagethree", titles: ["处理完成", "GPS地图"] })
         );
     }
 });
 ReactDOM.render(React.createElement(App, null), document.getElementById("content"));
+/*<li onClick={this.handleClick}><a id="pagetwo" href="#pagetwo" data-icon="custom"*/ /*data-transition="none"*/ /*className={this.props.id == "pagetwo" ? "ui-btn-active ui-state-persist" : ""}>实时监控</a>*/ /*</li>*/ /*<Page id="pagetwo" titles={["各站总览", "各站详情", "视频监控"]}/>*/

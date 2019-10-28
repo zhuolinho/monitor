@@ -4,26 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <title>上海万事红智能信息管理系统</title>
-    <link rel="stylesheet" href="jquery/css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <link href="https://cdn.bootcss.com/jquery-modal/0.8.2/jquery.modal.min.css" rel="stylesheet">
     <style>
-        td {
-            border-bottom: 1px solid #d6d6d6;
+        .ui-page {
+            background-image: url(images/bg.png);
+            background-size: 100% 100%;
+            background-position: 0px -1px;
         }
-        th {
-            background: #e9e9e9;
+
+        label {
+            color: white;
+            text-shadow: none;
         }
-        .ui-table-columntoggle-btn {
-            display: none;
+
+        #login {
+            color: white;
+            text-shadow: none;
+            background-color: rgb(0, 58, 130);
+            border-width: 0px;
+        }
+
+        h4 {
+            color: white;
+            text-shadow: none;
+            text-align: center;
+        }
+
+        .ui-input-text {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border-color: transparent !important;
+            margin-bottom: 13.5%;
         }
     </style>
 </head>
 <body>
-<div id="content"></div>
-<script src="jquery/js/jquery.min.js"></script>
-<script src="jquery/js/jquery.mobile-1.4.5.min.js"></script>
-<script src="react/react.min.js"></script>
-<script src="react/react-dom.min.js"></script>
-<script src="javascripts/app.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg"></script>
+<div class="ui-content">
+    <h4>上海万事红智能信息管理系统</h4>
+    <h4>顺天（上海）能源技术发展有限公司</h4>
+    <div style="background: url(images/inputs.png) no-repeat;padding: 18% 20% 30%;background-size: 100% auto;margin: 5%">
+        <form>
+            <input type="text" name="text-1" id="text-1" placeholder="手机\用户名">
+            <input type="password" name="text-3" id="text-3" placeholder="密码">
+        </form>
+        <button id="login">登录</button>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-modal/0.8.2/jquery.modal.min.js"></script>
+<script>
+    $(document).ready(function () {
+        if (localStorage.loginTime) {
+            var mydate = new Date(localStorage.loginTime);
+            if ((new Date().getTime() - mydate.getTime()) / 10800000 < 1) {
+                var user = JSON.parse(localStorage.user);
+                if (/^[A-Z][0-9]{3}$/.test(user.name)) window.location.href = "main.html";
+                else if (user.ap > 2) window.location.href = "ap.html";
+                else window.location.href = "app.html";
+            }
+        }
+        $("#login").click(function () {
+            $.ajax("/users/login.json", {
+                type: "POST",
+                data: {username: $("#text-1").val(), password: $("#text-3").val()},
+                success: function (res) {
+                    if (res.pl) {
+                        localStorage.user = JSON.stringify(res.pl.user);
+                        localStorage.loginTime = new Date();
+                        if (/^[A-Z][0-9]{3}$/.test(res.pl.user.name)) window.location.href = "main.html";
+                        else if (res.pl.user.ap > 2) window.location.href = "ap.html";
+                        else window.location.href = "app.html";
+                    } else {
+                        $('<div class="modal"><p>账号或密码错误</p></div>').appendTo('body').modal({showClose: false});
+                    }
+                }, error: function () {
+                    $('<div class="modal"><p>网络异常</p></div>').appendTo('body').modal({showClose: false});
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

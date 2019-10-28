@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>上海万事红智能信息管理系统</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/c3/0.4.11/c3.min.css">
+    <style>
+        td {
+            border-bottom: 1px solid #d6d6d6;
+        }
+
+        th {
+            background: #e9e9e9;
+        }
+
+        .ui-table-columntoggle-btn {
+            display: none;
+        }
+
+        .nav-glyphish-example .ui-btn {
+            padding-top: 40px !important;
+        }
+
+        .nav-glyphish-example .ui-btn:after {
+            width: 30px !important;
+            height: 30px !important;
+            margin-left: -15px !important;
+            box-shadow: none !important;
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            -webkit-border-radius: 0 !important;
+            border-radius: 0 !important;
+        }
+
+        #pageone:after {
+            background: url("./images/home.png") 50% 50% no-repeat;
+            background-size: 23.5px 25px;
+        }
+
+        #pagetwo:after {
+            background: url("./images/cam.png") 50% 50% no-repeat;
+            background-size: 27px 25px;
+        }
+
+        #pagethree:after {
+            background: url("./images/gps.png") 50% 50% no-repeat;
+            background-size: 16.5px 25px;
+        }
+
+        #pageone.ui-btn-active:after {
+            background: url("./images/home-a.png") 50% 50% no-repeat;
+            background-size: 23.5px 25px;
+        }
+
+        #pagetwo.ui-btn-active:after {
+            background: url("./images/cam-a.png") 50% 50% no-repeat;
+            background-size: 27px 25px;
+        }
+
+        #pagethree.ui-btn-active:after {
+            background: url("./images/gps-a.png") 50% 50% no-repeat;
+            background-size: 16.5px 25px;
+        }
+    </style>
+</head>
+<body>
+<div id="content"></div>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="http://cdn.bootcss.com/react/15.2.1/react.min.js"></script>
+<script src="http://cdn.bootcss.com/react/15.2.1/react-dom.min.js"></script>
+<script src="https://cdn.bootcss.com/d3/3.5.17/d3.min.js"></script>
+<script src="https://cdn.bootcss.com/c3/0.4.11/c3.min.js"></script>
+<script src="javascripts/ap.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=RomHDfoS6RNiOTe4Z7IDynKrM6fLX2Cg"></script>
+<script src="https://open.ys7.com/sdk/js/1.1/ezuikit.js"></script>
+</body>
+</html>
